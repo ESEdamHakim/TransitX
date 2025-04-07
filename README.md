@@ -1,58 +1,55 @@
-<p align="center">
-  <img src="./logo.png" alt="TransitX Logo" width="250"/>
-</p>
-<h2><strong>🚍 TransitX – Plateforme de Mobilité Durable</strong></h2>
+# 🚍 TransitX – Plateforme de Mobilité Durable
 
-<p>TransitX est une application web destinée à améliorer la mobilité urbaine grâce au covoiturage, à la gestion des bus, et à la livraison intelligente. Elle vise à promouvoir des déplacements plus écologiques, efficaces et durables.</p>
+TransitX est une application web destinée à améliorer la mobilité urbaine grâce au covoiturage, à la gestion des bus, et à la livraison intelligente. Elle vise à promouvoir des déplacements plus écologiques, efficaces et durables.
 
-<h3>🔧 Technologies</h3>
-<ul>
-  <li>Frontend : HTML5, CSS3, JavaScript</li>
-  <li>Backend : PHP 8</li>
-  <li>Base de données : MySQL</li>
-  <li>Cartographie : Leaflet.js, OpenRouteService API</li>
-</ul>
+## 🔧 Technologies
 
-<h3>🧩 Modules Principaux</h3>
-<ul>
-  <li>Utilisateurs (clients, chauffeurs, employés, administrateurs)</li>
-  <li>Covoiturage (création et consultation des trajets)</li>
-  <li>Livraison (gestion des colis par les employés)</li>
-  <li>Bus (gestion des trajets)</li>
-  <li>Blog (articles et commentaires)</li>
-</ul>
+- Frontend : HTML5, CSS3, JavaScript
+- Backend : PHP 8
+- Base de données : MySQL
+- Cartographie : Leaflet.js, OpenRouteService API
 
-<h3>👥 Rôles et Accès</h3>
-<table>
-  <tr>
-    <th>Rôle</th>
-    <th>Accès aux modules</th>
-  </tr>
-  <tr>
-    <td>Administrateur</td>
-    <td>Tous les modules</td>
-  </tr>
-  <tr>
-    <td>Employé</td>
-    <td>Livraison, Blog</td>
-  </tr>
-  <tr>
-    <td>Client</td>
-    <td>Consultation : Covoiturage, Bus, Livraison, Blog</td>
-  </tr>
-</table>
+## 🧩 Modules Principaux
 
-<h3>🎯 Objectifs Durables (ODD)</h3>
-<p>TransitX soutient les ODD suivants :</p>
-<ul>
-  <li>ODD 9 : Infrastructures de transport intelligentes</li>
-  <li>ODD 11 : Mobilité urbaine écologique</li>
-  <li>ODD 13 : Réduction des émissions via transport partagé</li>
-</ul>
+- Utilisateurs (clients, chauffeurs, employés, administrateurs)
+- Covoiturage (création et consultation des trajets)
+- Livraison (gestion des colis par les employés)
+- Bus (gestion des trajets)
+- Blog (articles et commentaires)
 
-<h3>🎨 Charte Graphique</h3>
-<ul>
-  <li>🎨 Couleurs : `#97c3a2`, `#1f4f65`, `#d7dd83`, `#f9d86d`, `#ffffff`</li>
-</ul>
+## 👥 Rôles et Accès
 
-<p>© 2025 TransitX | Propulsé par l’équipe Pentavision</p>
+| Rôle         | Accès aux modules                                             |
+|--------------|---------------------------------------------------------------|
+| Administrateur | Tous les modules                                             |
+| Employé       | Livraison, Blog                                              |
+| Client        | Consultation : Covoiturage, Bus, Livraison, Blog             |
+
+## 🎯 Objectifs Durables (ODD)
+
+TransitX soutient les ODD suivants :
+
+- ODD 9 : Infrastructures de transport intelligentes
+- ODD 11 : Mobilité urbaine écologique
+- ODD 13 : Réduction des émissions via transport partagé
+
+## 🎨 Charte Graphique
+
+### Couleurs
+
+- **#97c3a2** (Soft Green)  
+  ![#97c3a2](https://www.colorhexa.com/97c3a2.png)
+
+- **#1f4f65** (Deep Blue)  
+  ![#1f4f65](https://www.colorhexa.com/1f4f65.png)
+
+- **#d7dd83** (Light Yellow)  
+  ![#d7dd83](https://www.colorhexa.com/d7dd83.png)
+
+- **#f9d86d** (Golden Yellow)  
+  ![#f9d86d](https://www.colorhexa.com/f9d86d.png)
+
+- **#ffffff** (White)  
+  ![#ffffff](https://www.colorhexa.com/ffffff.png)
+
+© 2025 TransitX | Propulsé par l’équipe Pentavision
