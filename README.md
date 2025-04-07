@@ -1,5 +1,6 @@
-<img src="./logo.png" alt="TransitX Logo" width="150"/>
-# 🚍 TransitX – Plateforme de Mobilité Durable
+<p align="center">
+  <img src="./logo.png" alt="TransitX Logo" width="250"/>
+</p># 🚍 TransitX – Plateforme de Mobilité Durable
 
 TransitX est une application web destinée à améliorer la mobilité urbaine grâce au covoiturage, à la gestion des bus, et à la livraison intelligente. Elle vise à promouvoir des déplacements plus écologiques, efficaces et durables.
 
