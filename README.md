@@ -37,12 +37,6 @@ TransitX soutient les ODD suivants :
 
 ### Couleurs
 
-<div style="display: flex; gap: 10px;">
-  <div style="width: 50px; height: 50px; background-color: #97c3a2;"></div>
-  <div style="width: 50px; height: 50px; background-color: #1f4f65;"></div>
-  <div style="width: 50px; height: 50px; background-color: #d7dd83;"></div>
-  <div style="width: 50px; height: 50px; background-color: #f9d86d;"></div>
-  <div style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #ccc;"></div>
-</div>
+![#97c3a2](https://www.colorhexa.com/97c3a2.png) ![#1f4f65](https://www.colorhexa.com/1f4f65.png) ![#d7dd83](https://www.colorhexa.com/d7dd83.png) ![#f9d86d](https://www.colorhexa.com/f9d86d.png) ![#ffffff](https://www.colorhexa.com/ffffff.png)
 
 © 2025 TransitX | Propulsé par l’équipe Pentavision
