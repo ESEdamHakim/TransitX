@@ -11,7 +11,7 @@ TransitX est une application web destinée à améliorer la mobilité urbaine gr
 
 ## 🧩 Modules Principaux
 
-- Utilisateurs (clients, chauffeurs, employés, administrateurs)
+- Utilisateurs (clients, employés, administrateurs)
 - Covoiturage (création et consultation des trajets)
 - Livraison (gestion des colis par les employés)
 - Bus (gestion des trajets)
