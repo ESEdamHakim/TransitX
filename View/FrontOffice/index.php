@@ -17,21 +17,21 @@
   </head>
   <body>
     <!-- Header -->
-  <header class="header">
-    <a class="logo d-flex align-items-center" href="index.php">
-      <img src="assets/TransitXLogo.png" alt="TransitX Logo" height="50" />
-      <span class="logo-text">TransitX</span>
-    </a>
-    <nav class="nav">
-      <a href="index.php">Accueil</a>
-      <a href="bus.php" class="active">Bus</a>
-      <a href="colis.php" class="active">Colis</a>
-      <a href="#">Covoiturage</a>
-      <a href="#">Blog</a>
-      <a href="#">À propos</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
+    <header class="header">
+      <a class="logo d-flex align-items-center" href="index.php">
+        <img src="assets/TransitXLogo.png" alt="TransitX Logo" height="50" />
+        <span class="logo-text">TransitX</span>
+      </a>
+      <nav class="nav">
+        <a href="index.php">Accueil</a>
+        <a href="bus.php" class="active">Bus</a>
+        <a href="colis.php" class="active">Colis</a>
+        <a href="#">Covoiturage</a>
+        <a href="#">Blog</a>
+        <a href="#">À propos</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
 
     <section class="home">
       <div class="video-wrapper">
@@ -43,9 +43,9 @@
       <div class="content">
         <h1>Move Green <br /><span>Live clean</span></h1>
         <p>
-        TransitX est une application web destinée à améliorer la mobilité urbaine grâce au covoiturage, à la gestion des bus, et à la livraison intelligente. Elle vise à promouvoir des déplacements plus écologiques, efficaces et durables.
+          TransitX est une application web destinée à améliorer la mobilité urbaine grâce au covoiturage, à la gestion des bus, et à la livraison intelligente. Elle vise à promouvoir des déplacements plus écologiques, efficaces et durables.
         </p>
-        <a href="#" class="btn-primary">Read more</a>
+        <a href="../BackOffice/index.php" class="btn-primary">Dashboard</a>
       </div>
 
       <div class="icons">
