@@ -101,7 +101,7 @@
     </a>
     <nav class="nav">
       <a href="index.php">Accueil</a>
-      <a href="#">Bus</a>
+      <a href="bus.php" class="active">Bus</a>
       <a href="colis.php" class="active">Colis</a>
       <a href="#">Covoiturage</a>
       <a href="#">Blog</a>

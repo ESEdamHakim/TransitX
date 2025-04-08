@@ -24,7 +24,7 @@
     </a>
     <nav class="nav">
       <a href="index.php">Accueil</a>
-      <a href="#">Bus</a>
+      <a href="bus.php" class="active">Bus</a>
       <a href="colis.php" class="active">Colis</a>
       <a href="#">Covoiturage</a>
       <a href="#">Blog</a>
@@ -41,7 +41,7 @@
       </div>
 
       <div class="content">
-        <h1>Move Green <br /><span>Live Glean</span></h1>
+        <h1>Move Green <br /><span>Live clean</span></h1>
         <p>
         TransitX est une application web destinée à améliorer la mobilité urbaine grâce au covoiturage, à la gestion des bus, et à la livraison intelligente. Elle vise à promouvoir des déplacements plus écologiques, efficaces et durables.
         </p>
