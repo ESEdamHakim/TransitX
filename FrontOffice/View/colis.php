@@ -11,9 +11,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <!-- Bootstrap & Custom CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet" />
-  <link href="css/style.css" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/css/style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
 
   <!-- Style amélioré -->
   <style>
@@ -24,12 +24,12 @@
     }
 
     header {
-      background-color: #97c3a2;
-      padding: 15px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+  background-color: #97c3a2;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  gap: 260px; /* space between logo and nav */
+}
 
     .logo-text {
       font-size: 24px;
@@ -39,11 +39,14 @@
     }
 
     nav a {
-      margin: 0 15px;
-      color: #1f4f65;
-      font-weight: 500;
-      text-decoration: none;
-    }
+        position: relative;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  margin-left: 30px;
+  transition: 0.3s;
+}
+
 
     nav a.active, nav a:hover {
       color: #f9d86d;
@@ -107,12 +110,14 @@
     </nav>
   </header>
 
+  
   <!-- Main Content -->
   <section id="content" class="py-5">
     <div class="container">
       <div class="row">
         <!-- Formulaire de Colis -->
         <div class="col-md-6 mb-5">
+        <br>
           <h3>Envoyer un Colis</h3>
           <p>Veuillez remplir les informations ci-dessous pour planifier la livraison de votre colis.</p>
 
@@ -164,6 +169,7 @@
 
         <!-- Google Map -->
         <div class="col-md-6">
+        <br>
           <h3>Lieu de Ramassage</h3>
           <div id="gmap_canvas" style="width:100%; height:500px;"></div>
         </div>
@@ -175,9 +181,9 @@
   <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 
   <!-- Scripts -->
-  <script src="js/jquery.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/custom.js"></script>
+  <script src="assets/js/jquery.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/custom.js"></script>
 
   <!-- Google Maps -->
   <script src="http://maps.google.com/maps/api/js?sensor=false"></script>

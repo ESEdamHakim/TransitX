@@ -13,7 +13,7 @@
     />
 
     <!-- CSS file -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="assets/styles.css" />
   </head>
   <body>
     <!-- Header -->
