@@ -137,22 +137,61 @@
               <textarea id="colis-description" rows="3" placeholder="Décrivez le contenu de votre colis"></textarea>
             </div>
             <div class="form-actions text-center">
-              <button type="submit" class="btn btn-primary">
-                Calculer le prix
-                <i class="fas fa-calculator"></i>
-              </button>
-            </div>
-          </form>
-          <div class="map-container">
-            <h3>Localisation</h3>
-            <div id="map">
-              <!-- Google Maps sera intégré ici -->
-              <img src="../../assets/images/colis-map.jpg" alt="Map" class="placeholder-map">
-            </div>
-            <div class="map-info">
-              <p><i class="fas fa-info-circle"></i> Sélectionnez les adresses sur la carte ou entrez-les manuellement.</p>
-            </div>
-          </div>
+  <button type="submit" class="btn btn-primary">
+    Calculer le prix
+    <i class="fas fa-calculator"></i>
+  </button>
+</div>
+</form>
+
+<div class="map-container">
+  <h3>Localisation</h3>
+  <div id="gmap_canvas" style="height: 400px; width: 100%;">
+    <!-- La carte Google Maps s'affichera ici -->
+  </div>
+
+  <div class="map-info">
+    <p><i class="fas fa-info-circle"></i> Sélectionnez les adresses sur la carte ou entrez-les manuellement.</p>
+  </div>
+
+  <!-- Replace with your actual API key -->
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script>
+  let map;
+  let marker;
+
+  function initMap() {
+    const defaultLocation = { lat: 36.8065, lng: 10.1815 }; // Tunis
+
+    // Initialize map
+    map = new google.maps.Map(document.getElementById("gmap_canvas"), {
+      center: defaultLocation,
+      zoom: 14
+    });
+
+    // Place default marker
+    marker = new google.maps.Marker({
+      position: defaultLocation,
+      map: map,
+      draggable: true,
+      title: "Cliquez sur la carte pour choisir une position"
+    });
+
+    // Update marker position on map click
+    map.addListener("click", function (event) {
+      const clickedLocation = event.latLng;
+      marker.setPosition(clickedLocation);
+
+      // Optionally update hidden form fields
+      document.getElementById("latitude").value = clickedLocation.lat();
+      document.getElementById("longitude").value = clickedLocation.lng();
+    });
+  }
+
+  window.onload = initMap;
+</script>
+
+    </div>
         </div>
       </div>
     </section>
