@@ -8,7 +8,6 @@ TransitX est une application web destinée à améliorer la mobilité urbaine gr
 
 - Frontend : HTML5, CSS3, JavaScript
 - Backend : PHP 8
-- Base de données : MySQL
 
 ## 🧩 Modules Principaux
 
