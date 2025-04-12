@@ -334,62 +334,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>R001</td>
-                    <td>Jean Dupont</td>
-                    <td>Colis</td>
-                    <td>Retard de livraison de colis</td>
-                    <td>20/04/2023</td>
-                    <td><span class="priority medium">Moyenne</span></td>
-                    <td><span class="status in-progress">En cours</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>R002</td>
-                    <td>Fatma Riahi</td>
-                    <td>Covoiturage</td>
-                    <td>Problème d'annulation de covoiturage</td>
-                    <td>20/04/2023</td>
-                    <td><span class="priority high">Haute</span></td>
-                    <td><span class="status pending">En attente</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>R003</td>
-                    <td>Youssef Mejri</td>
-                    <td>Colis</td>
-                    <td>Colis endommagé</td>
-                    <td>19/04/2023</td>
-                    <td><span class="priority high">Haute</span></td>
-                    <td><span class="status resolved">Résolue</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>R004</td>
-                    <td>Amira Belhaj</td>
-                    <td>Bus</td>
-                    <td>Retard de bus</td>
-                    <td>18/04/2023</td>
-                    <td><span class="priority low">Basse</span></td>
-                    <td><span class="status resolved">Résolue</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
+                 <!-- The table is now empty. You can dynamically populate it later using PHP or JavaScript -->
                 </tbody>
               </table>
             </div>

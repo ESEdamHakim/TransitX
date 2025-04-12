@@ -148,7 +148,7 @@
           <i class="fas fa-bars"></i>
         </button>
       </div>
-      
+      //for the models :
       <div class="sidebar-content">
         <nav class="sidebar-menu">
           <ul>
@@ -212,7 +212,7 @@
         </a>
       </div>
     </aside>
-    
+    <!--pour l'acceuil-->
     <main class="main-content">
       <header class="dashboard-header">
         <div class="header-left">

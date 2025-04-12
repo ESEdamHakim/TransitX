@@ -135,58 +135,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>U001</td>
-                    <td>Ahmed Ben Ali</td>
-                    <td>ahmed@example.com</td>
-                    <td>+216 12 345 678</td>
-                    <td>Client</td>
-                    <td><span class="status active">Actif</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>U002</td>
-                    <td>Leila Mansour</td>
-                    <td>leila@example.com</td>
-                    <td>+216 23 456 789</td>
-                    <td>Administrateur</td>
-                    <td><span class="status active">Actif</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>U003</td>
-                    <td>Mohamed Khelifi</td>
-                    <td>mohamed@example.com</td>
-                    <td>+216 34 567 890</td>
-                    <td>Chauffeur</td>
-                    <td><span class="status inactive">Inactif</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>U004</td>
-                    <td>Nadia Mansouri</td>
-                    <td>nadia@example.com</td>
-                    <td>+216 45 678 901</td>
-                    <td>Client</td>
-                    <td><span class="status active">Actif</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
+                  <!-- The table is now empty. You can dynamically populate it later using PHP or JavaScript -->
                 </tbody>
               </table>
             </div>

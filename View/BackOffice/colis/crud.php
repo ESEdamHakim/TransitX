@@ -317,58 +317,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>C001</td>
-                    <td>Ahmed Ben Ali</td>
-                    <td>Sami Trabelsi</td>
-                    <td>123 Rue Habib Bourguiba, Tunis</td>
-                    <td>20/04/2025</td>
-                    <td><span class="status in-transit">En transit</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>C002</td>
-                    <td>Leila Mansour</td>
-                    <td>Karim Belhaj</td>
-                    <td>45 Avenue Mohamed V, Sousse</td>
-                    <td>19/04/2025</td>
-                    <td><span class="status delivered">Livré</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>C003</td>
-                    <td>Mohamed Khelifi</td>
-                    <td>Nadia Mansouri</td>
-                    <td>78 Rue Ibn Khaldoun, Sfax</td>
-                    <td>18/04/2025</td>
-                    <td><span class="status pending">En attente</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>C004</td>
-                    <td>Sarah Meddeb</td>
-                    <td>Yassine Jouini</td>
-                    <td>12 Avenue Habib Thameur, Monastir</td>
-                    <td>17/04/2025</td>
-                    <td><span class="status delivered">Livré</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
+                  
                 </tbody>
               </table>
             </div>

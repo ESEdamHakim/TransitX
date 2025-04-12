@@ -97,86 +97,7 @@
           <p>Découvrez les trajets les plus demandés par notre communauté.</p>
         </div>
         <div class="route-cards">
-          <div class="route-card">
-            <div class="route-cities">
-              <span class="departure">Tunis</span>
-              <i class="fas fa-arrow-right"></i>
-              <span class="arrival">Sousse</span>
-            </div>
-            <div class="route-details">
-              <div class="departure-date">
-                <i class="fas fa-calendar"></i>
-                <span>Aujourd'hui, 18h00</span>
-              </div>
-              <div class="available-seats">
-                <i class="fas fa-users"></i>
-                <span>3 places disponibles</span>
-              </div>
-              <div class="price">20 TND</div>
-            </div>
-            <div class="driver-info">
-              <img src="../../assets/images/placeholder-user.png" alt="Driver" class="driver-img">
-              <div class="driver-rating">
-                <i class="fas fa-star"></i>
-                <span>4.8</span>
-              </div>
-            </div>
-            <a href="#" class="btn btn-primary">Réserver</a>
-          </div>
 
-          <div class="route-card">
-            <div class="route-cities">
-              <span class="departure">Sousse</span>
-              <i class="fas fa-arrow-right"></i>
-              <span class="arrival">Sfax</span>
-            </div>
-            <div class="route-details">
-              <div class="departure-date">
-                <i class="fas fa-calendar"></i>
-                <span>Demain, 10h30</span>
-              </div>
-              <div class="available-seats">
-                <i class="fas fa-users"></i>
-                <span>2 places disponibles</span>
-              </div>
-              <div class="price">15 TND</div>
-            </div>
-            <div class="driver-info">
-              <img src="../../assets/images/placeholder-user.png" alt="Driver" class="driver-img">
-              <div class="driver-rating">
-                <i class="fas fa-star"></i>
-                <span>4.6</span>
-              </div>
-            </div>
-            <a href="#" class="btn btn-primary">Réserver</a>
-          </div>
-
-          <div class="route-card">
-            <div class="route-cities">
-              <span class="departure">Hammamet</span>
-              <i class="fas fa-arrow-right"></i>
-              <span class="arrival">Monastir</span>
-            </div>
-            <div class="route-details">
-              <div class="departure-date">
-                <i class="fas fa-calendar"></i>
-                <span>Après-demain, 14h00</span>
-              </div>
-              <div class="available-seats">
-                <i class="fas fa-users"></i>
-                <span>1 place disponible</span>
-              </div>
-              <div class="price">12 TND</div>
-            </div>
-            <div class="driver-info">
-              <img src="../../assets/images/placeholder-user.png" alt="Driver" class="driver-img">
-              <div class="driver-rating">
-                <i class="fas fa-star"></i>
-                <span>4.9</span>
-              </div>
-            </div>
-            <a href="#" class="btn btn-primary">Réserver</a>
-          </div>
         </div>
       </div>
     </section>
@@ -226,6 +147,22 @@
                   <input type="number" id="price-per-seat" min="1" step="1">
                 </div>
               </div>
+              <div class="form-row">
+            <div class="form-group">
+              <label for="accept-parcels">Accepte les colis</label>
+              <select id="accept-parcels">
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="full-parcels">Colis complet</label>
+              <select id="full-parcels">
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+            </div>
+          </div>
               <div class="form-group">
                 <label for="vehicle">Véhicule</label>
                 <select id="vehicle">
