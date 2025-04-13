@@ -13,7 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prix = filter_input(INPUT_POST, 'prix', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION); 
     $tempsDepart = filter_input(INPUT_POST, 'temps_depart', FILTER_SANITIZE_STRING);
     $placesDispo = filter_input(INPUT_POST, 'places_dispo', FILTER_SANITIZE_NUMBER_INT);
-  
+   // Convert "oui" and "non" to 1 and 0
+   $accepteColis = ($accepteColis === 'oui') ? 1 : 0;
+   $colisComplet = ($colisComplet === 'oui') ? 1 : 0;
+
     // Validate required fields
     if (!$dateDepart || !$placesDispo || !$lieuDepart || !$lieuArrivee || !$accepteColis || !$colisComplet || !$tempsDepart || !$prix) {
         echo "Erreur : Tous les champs sont obligatoires.";
