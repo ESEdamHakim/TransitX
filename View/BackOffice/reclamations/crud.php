@@ -179,7 +179,7 @@
               </a>
             </li>
             <li>
-              <a href="../users/crud.php">
+              <a href="../users/index.php">
                 <i class="fas fa-users"></i>
                 <span>Utilisateurs</span>
               </a>
@@ -226,7 +226,7 @@
             <p>Administrateur</p>
           </div>
         </a>
-        <a href="../../../index.php" class="logout">
+        <a href="../../index.php" class="logout">
           <i class="fas fa-sign-out-alt"></i>
           <span>Déconnexion</span>
         </a>
