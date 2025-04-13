@@ -1,12 +1,9 @@
-
-
 <?php
 try {
   require_once __DIR__ . '/../../../Controller/BackOffice/ArticleC.php';
 } catch (Exception $e) {
-    echo 'Erreur lors de l\'inclusion du fichier : ' . $e->getMessage();
+  echo 'Erreur lors de l\'inclusion du fichier : ' . $e->getMessage();
 }
-
 
 $articc = new ArticleC();  
 $list = $articc->listoffre();
@@ -14,8 +11,8 @@ $list = $articc->listoffre();
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TransitX - Gestion du Blog</title>
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/styles.css">
@@ -23,7 +20,51 @@ $list = $articc->listoffre();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     .header-left h1 {
-      color: #1f4f65; /* Blue color for the title */
+      color: #1f4f65;
+    }
+    .buses-table-container {
+      margin-top: 30px;
+      overflow-x: auto;
+    }
+    .buses-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    }
+    .buses-table thead {
+      background-color: #1f4f65;
+      color: #fff;
+    }
+    .buses-table th, .buses-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .buses-table tr:hover {
+      background-color: #f9f9f9;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .action-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: #333;
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+    .action-btn:hover {
+      transform: scale(1.1);
+    }
+    .action-btn.edit {
+      color: #007bff;
+    }
+    .action-btn.delete {
+      color: #dc3545;
     }
   </style>
 </head>
@@ -35,60 +76,23 @@ $list = $articc->listoffre();
           <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
           <span>Transit</span><span class="highlight">X</span>
         </div>
-        <button class="sidebar-toggle">
-          <i class="fas fa-bars"></i>
-        </button>
+        <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
       </div>
-      
+
       <div class="sidebar-content">
         <nav class="sidebar-menu">
           <ul>
-            <li>
-              <a href="../index.php">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-              </a>
-            </li>
-            <li>
-              <a href="../users/crud.php">
-                <i class="fas fa-users"></i>
-                <span>Utilisateurs</span>
-              </a>
-            </li>
-            <li>
-              <a href="../bus/crud.php">
-                <i class="fas fa-bus"></i>
-                <span>Bus</span>
-              </a>
-            </li>
-            <li>
-              <a href="../colis/crud.php">
-                <i class="fas fa-box"></i>
-                <span>Colis</span>
-              </a>
-            </li>
-            <li>
-              <a href="../reclamations/crud.php">
-                <i class="fas fa-exclamation-circle"></i>
-                <span>Réclamations</span>
-              </a>
-            </li>
-            <li>
-              <a href="../covoiturage/crud.php">
-                <i class="fas fa-car-side"></i>
-                <span>Covoiturage</span>
-              </a>
-            </li>
-            <li class="active">
-              <a href="crud.php">
-                <i class="fas fa-blog"></i>
-                <span>Blog</span>
-              </a>
-            </li>
+            <li><a href="../index.php"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li><a href="../users/crud.php"><i class="fas fa-users"></i><span>Utilisateurs</span></a></li>
+            <li><a href="../bus/crud.php"><i class="fas fa-bus"></i><span>Bus</span></a></li>
+            <li><a href="../colis/crud.php"><i class="fas fa-box"></i><span>Colis</span></a></li>
+            <li><a href="../reclamations/crud.php"><i class="fas fa-exclamation-circle"></i><span>Réclamations</span></a></li>
+            <li><a href="../covoiturage/crud.php"><i class="fas fa-car-side"></i><span>Covoiturage</span></a></li>
+            <li class="active"><a href="crud.php"><i class="fas fa-blog"></i><span>Blog</span></a></li>
           </ul>
         </nav>
       </div>
-      
+
       <div class="sidebar-footer">
         <a href="#" class="user-profile">
           <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
@@ -103,7 +107,7 @@ $list = $articc->listoffre();
         </a>
       </div>
     </aside>
-    
+
     <main class="main-content">
       <header class="dashboard-header">
         <div class="header-left">
@@ -114,62 +118,71 @@ $list = $articc->listoffre();
           <div class="search-bar">
             <input type="text" placeholder="Rechercher un article...">
             <button><i class="fas fa-search"></i></button>
-         
+          </div>
+        </div>
       </header>
-      
-      <!-- Formulaire -->
-    <section class="form-section">
-      <h2>Ajouter un Article</h2>
-      <form action="addarticle.php" method="POST" class="form-container">
-        <!-- Article -->
-        <fieldset>
-          <legend>Ajouter un Article</legend>
-          <div class="form-group">
-            <label for="id_article">ID Article :</label>
-            <input type="number" id="id_article" name="id_article" class="form-input" required />
-          </div>
-          <div class="form-group">
-            <label for="titre">Titre :</label>
-            <input type="text" id="titre" name="titre" class="form-input" required />
-          </div>
-          <div class="form-group">
-            <label for="contenu">Contenu :</label>
-            <textarea id="contenu" name="contenu" class="form-textarea" rows="4" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="date_publication">Date de Publication :</label>
-            <input type="date" id="date_publication" name="date_publication" class="form-input" required />
-          </div>
-        </fieldset>
 
-        <button type="submit" class="btn">Ajouter</button>
-      </form>
-      <table border="1">
+      <!-- Formulaire d'ajout -->
+      <section class="form-section">
+        <h2>Ajouter un Article</h2>
+        <form action="addarticle.php" method="POST" class="form-container">
+          <fieldset>
+            <legend>Ajouter un Article</legend>
+            <div class="form-group">
+              <label for="id_article">ID Article :</label>
+              <input type="number" id="id_article" name="id_article" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="titre">Titre :</label>
+              <input type="text" id="titre" name="titre" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="contenu">Contenu :</label>
+              <textarea id="contenu" name="contenu" class="form-textarea" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="date_publication">Date de Publication :</label>
+              <input type="date" id="date_publication" name="date_publication" class="form-input" required />
+            </div>
+          </fieldset>
+          <button type="submit" class="btn">Ajouter</button>
+        </form>
+      </section>
+
+      <!-- Tableau stylisé -->
+      <div class="buses-table-container">
+        <table class="buses-table">
+          <thead>
             <tr>
-                <th>id_article</th>
-                <th>titre</th>
-                <th>contenu</th>
-                <th>date_publication</th>
-                <th>Actions</th>  <!-- Ajouter une colonne pour les actions -->
+              <th>ID Article</th>
+              <th>Titre</th>
+              <th>Contenu</th>
+              <th>Date Publication</th>
+              <th>Actions</th>
             </tr>
-            <?php
-            foreach ($list as $offer) {
-            ?>
-                <tr>
-                    <td><?= htmlspecialchars($offer['id_article']); ?></td>
-                    <td><?= htmlspecialchars($offer['titre']); ?></td>
-                    <td><?= htmlspecialchars($offer['contenu']); ?></td>
-                    <td><?= htmlspecialchars($offer['date_publication']); ?></td>
-                    <td>
-                        <a href="updatearticle.php?id=<?= htmlspecialchars($offer['id_article']); ?>">Update</a>
-                        <a href="deletearticle.php?id_article=<?= htmlspecialchars($offer['id_article']); ?>" onclick="return confirm('Are you sure you want to delete this article?');">Delete</a>
-                        </td>
-                </tr>
-            <?php
-            }
-            ?>
-    </section>
-          
-       
+          </thead>
+          <tbody>
+            <?php foreach ($list as $offer) { ?>
+              <tr>
+                <td><?= htmlspecialchars($offer['id_article']); ?></td>
+                <td><?= htmlspecialchars($offer['titre']); ?></td>
+                <td><?= htmlspecialchars($offer['contenu']); ?></td>
+                <td><?= htmlspecialchars($offer['date_publication']); ?></td>
+                <td class="actions">
+                  <a href="updatearticle.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn edit" title="Modifier">
+                    <i class="fas fa-edit"></i>
+                  </a>
+                  <a href="deletearticle.php?id_article=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn delete" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
 </body>
 </html>
