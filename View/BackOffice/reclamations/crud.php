@@ -218,6 +218,7 @@
         </nav>
       </div>
       
+      
       <div class="sidebar-footer">
         <a href="#" class="user-profile">
           <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">

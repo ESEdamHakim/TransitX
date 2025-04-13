@@ -1,3 +1,28 @@
+<?php
+require_once '../../../Controller/ColisController.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $ColisC = new ColisController();
+    $ColisC->addColis(
+        $_POST['id_client'],
+        $_POST['id_covoit'],
+        $_POST['adresse'],
+        $_POST['statut'],
+        $_POST['date_colis'],
+        $_POST['longueur'],
+        $_POST['largeur'],
+        $_POST['hauteur'],
+        $_POST['poids'],
+        $_POST['latitude_dest'],
+        $_POST['longitude_dest'],
+        $_POST['prix']
+    );
+
+    header("Location: ColisList.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -92,6 +117,9 @@
       <div class="hero-content">
         <h1>Service de Livraison de Colis</h1>
         <p>Envoyez vos colis de manière écologique et économique partout en Tunisie.</p>
+        <div style="text-align: center;">
+  <a href="ColisList.php" class="btn btn-primary">Mes Colis</a>
+</div>
       </div>
     </section>
 
@@ -103,56 +131,116 @@
           <p>Remplissez le formulaire ci-dessous pour calculer le prix de votre envoi.</p>
         </div>
         <div class="colis-form-container">
-          <form class="colis-form">
-            <div class="form-group">
-              <label for="pickup-address">Adresse de ramassage</label>
-              <input type="text" id="pickup-address" placeholder="Entrez l'adresse de ramassage">
-            </div>
-            <div class="form-group">
-              <label for="delivery-address">Adresse de livraison</label>
-              <input type="text" id="delivery-address" placeholder="Entrez l'adresse de livraison">
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="colis-weight">Poids (kg)</label>
-                <input type="number" id="colis-weight" min="0.1" step="0.1" placeholder="Poids">
-              </div>
-              <div class="form-group">
-                <label for="colis-dimensions">Dimensions (cm)</label>
-                <div class="dimensions-inputs">
-                  <input type="number" placeholder="L" min="1">
-                  <span>×</span>
-                  <input type="number" placeholder="l" min="1">
-                  <span>×</span>
-                  <input type="number" placeholder="H" min="1">
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="colis-date">Date d'envoi</label>
-              <input type="date" id="colis-date">
-            </div>
-            <div class="form-group">
-              <label for="colis-description">Description du contenu</label>
-              <textarea id="colis-description" rows="3" placeholder="Décrivez le contenu de votre colis"></textarea>
-            </div>
-            <div class="form-actions text-center">
-              <button type="submit" class="btn btn-primary">
-                Calculer le prix
-                <i class="fas fa-calculator"></i>
-              </button>
-            </div>
-          </form>
-          <div class="map-container">
-            <h3>Localisation</h3>
-            <div id="map">
-              <!-- Google Maps sera intégré ici -->
-              <img src="../../assets/images/colis-map.jpg" alt="Map" class="placeholder-map">
-            </div>
-            <div class="map-info">
-              <p><i class="fas fa-info-circle"></i> Sélectionnez les adresses sur la carte ou entrez-les manuellement.</p>
-            </div>
-          </div>
+        <form class="colis-form" method="POST">
+  <div class="form-group">
+    <label for="id_client">Client ID:
+      <input type="number" name="id_client" id="id_client" required placeholder="Entrez l'ID du client">
+    </label>
+
+    <label for="id_covoit">Carpool ID:
+      <input type="number" name="id_covoit" id="id_covoit" required placeholder="Entrez l'ID du covoiturage">
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label for="adresse">Adresse de Ramassage</label>
+    <input type="text" name="adresse" id="adresse" placeholder="Entrez l'adresse de ramassage" required>
+  </div>
+
+  <div class="form-group">
+    <label for="date_colis">Date d'envoi</label>
+    <input type="date" name="date_colis" id="date_colis" required>
+  </div>
+
+  <div class="form-group">
+    <label>Status:
+      <select name="statut" required>
+        <option value="en attente">En attente</option>
+        <option value="en cours">En cours</option>
+        <option value="livré">Livré</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="dimensions">Dimensions (cm)</label>
+      <div class="dimensions-inputs">
+        <input type="number" name="longueur" id="longueur" placeholder="L" min="1" required>
+        <span>×</span>
+        <input type="number" name="largeur" id="largeur" placeholder="l" min="1" required>
+        <span>×</span>
+        <input type="number" name="hauteur" id="hauteur" placeholder="H" min="1" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="poids">Poids (kg)</label>
+      <input type="number" name="poids" id="poids" placeholder="Poids" min="0.1" step="0.1" required>
+    </div>
+  </div>
+
+  <!-- Hidden fields to capture map click -->
+  <input type="hidden" name="latitude_dest" id="latitude" value="10.1814465">
+  <input type="hidden" name="longitude_dest" id="longitude" value="10.1814465">
+  <input type="hidden" name="prix" id="prix" value="10"> <!-- You can calculate this via JS later -->
+
+  <div class="form-actions text-center">
+    <button type="submit" class="btn btn-primary">
+      Calculer le prix
+      <i class="fas fa-calculator"></i>
+    </button>
+  </div>
+</form>
+
+
+<div class="map-container">
+  <h3>Localisation</h3>
+  <div id="gmap_canvas" style="height: 400px; width: 100%;">
+    <!-- La carte Google Maps s'affichera ici -->
+  </div>
+
+  <div class="map-info">
+    <p><i class="fas fa-info-circle"></i> Sélectionnez les adresses sur la carte ou entrez-les manuellement.</p>
+  </div>
+
+  <!-- Replace with your actual API key -->
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script>
+  let map;
+  let marker;
+
+  function initMap() {
+    const defaultLocation = { lat: 36.8065, lng: 10.1815 }; // Tunis
+
+    // Initialize map
+    map = new google.maps.Map(document.getElementById("gmap_canvas"), {
+      center: defaultLocation,
+      zoom: 14
+    });
+
+    // Place default marker
+    marker = new google.maps.Marker({
+      position: defaultLocation,
+      map: map,
+      draggable: true,
+      title: "Cliquez sur la carte pour choisir une position"
+    });
+
+    // Update marker position on map click
+    map.addListener("click", function (event) {
+      const clickedLocation = event.latLng;
+      marker.setPosition(clickedLocation);
+
+      // Optionally update hidden form fields
+      document.getElementById("latitude").value = clickedLocation.lat();
+      document.getElementById("longitude").value = clickedLocation.lng();
+    });
+  }
+
+  window.onload = initMap;
+</script>
+
+    </div>
         </div>
       </div>
     </section>
