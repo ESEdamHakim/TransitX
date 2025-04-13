@@ -102,84 +102,67 @@
       </div>
     </section>
 
-    <section id="create-ride" class="create-ride-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Proposer</span>
-          <h2>Proposer un trajet</h2>
-          <p>Partagez votre trajet et contribuez à une mobilité plus durable.</p>
-        </div>
-        <div class="service-item">
-          <div class="service-content">
-            <form class="create-ride-form">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="start-point">Point de départ</label>
-                  <input type="text" id="start-point" placeholder="Ville de départ">
-                </div>
-                <div class="form-group">
-                  <label for="end-point">Destination</label>
-                  <input type="text" id="end-point" placeholder="Ville d'arrivée">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="ride-date">Date</label>
-                  <input type="date" id="ride-date">
-                </div>
-                <div class="form-group">
-                  <label for="ride-time">Heure</label>
-                  <input type="time" id="ride-time">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="seats">Places disponibles</label>
-                  <select id="seats">
-                    <option value="1">1 place</option>
-                    <option value="2">2 places</option>
-                    <option value="3">3 places</option>
-                    <option value="4">4 places</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="price-per-seat">Prix par place (TND)</label>
-                  <input type="number" id="price-per-seat" min="1" step="1">
-                </div>
-              </div>
-              <div class="form-row">
-            <div class="form-group">
-              <label for="accept-parcels">Accepte les colis</label>
-              <select id="accept-parcels">
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="full-parcels">Colis complet</label>
-              <select id="full-parcels">
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-            </div>
-          </div>
-             
-              <div class="form-group">
-                <label for="ride-details">Détails supplémentaires</label>
-                <textarea id="ride-details" rows="3" placeholder="Précisez les détails de votre trajet (arrêts, bagages autorisés, etc.)"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">
-                Publier le trajet
-                <i class="fas fa-paper-plane"></i>
-              </button>
-            </form>
-          </div>
-          <div class="service-image">
-            <img src="../../assets/images/covoiturage-service.jpg" alt="Proposer un covoiturage">
-          </div>
-        </div>
-      </div>
-    </section>
+    <form class="create-ride-form" action="addCovoiturage.php" method="POST">
+  <div class="form-row">
+    <div class="form-group">
+      <label for="start-point">Point de départ</label>
+      <input type="text" id="start-point" name="lieu_depart" placeholder="Ville de départ" required>
+    </div>
+    <div class="form-group">
+      <label for="end-point">Destination</label>
+      <input type="text" id="end-point" name="lieu_arrivee" placeholder="Ville d'arrivée" required>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label for="ride-date">Date</label>
+      <input type="date" id="ride-date" name="date_depart" required>
+    </div>
+    <div class="form-group">
+      <label for="ride-time">Heure</label>
+      <input type="time" id="ride-time" name="temps_depart" required>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label for="seats">Places disponibles</label>
+      <select id="seats" name="places_dispo" required>
+        <option value="1">1 place</option>
+        <option value="2">2 places</option>
+        <option value="3">3 places</option>
+        <option value="4">4 places</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="price-per-seat">Prix par place (TND)</label>
+      <input type="number" id="price-per-seat" name="prix" min="1" step="1" required>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label for="accept-parcels">Accepte les colis</label>
+      <select id="accept-parcels" name="accepte_colis" required>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="full-parcels">Colis complet</label>
+      <select id="full-parcels" name="colis_complet" required>
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="ride-details">Détails supplémentaires</label>
+    <textarea id="ride-details" name="details" rows="3" maxlength="100" placeholder="Précisez les détails de votre trajet (arrêts, bagages autorisés, etc.)"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">
+    Publier le trajet
+    <i class="fas fa-paper-plane"></i>
+  </button>
+</form>
 
     <section class="how-it-works">
       <div class="container">
