@@ -163,15 +163,7 @@
               </select>
             </div>
           </div>
-              <div class="form-group">
-                <label for="vehicle">Véhicule</label>
-                <select id="vehicle">
-                  <option value="">Sélectionner un véhicule</option>
-                  <option value="car">Voiture</option>
-                  <option value="van">Minivan</option>
-                  <option value="moto">Moto</option>
-                </select>
-              </div>
+             
               <div class="form-group">
                 <label for="ride-details">Détails supplémentaires</label>
                 <textarea id="ride-details" rows="3" placeholder="Précisez les détails de votre trajet (arrêts, bagages autorisés, etc.)"></textarea>
