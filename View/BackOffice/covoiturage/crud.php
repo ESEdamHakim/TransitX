@@ -166,8 +166,7 @@ include 'Bdisplaycovoiturage.php';
                       <td>
                         <button class="btn edit" data-id="<?= $covoiturage['id_covoit'] ?>"><i
                             class="fas fa-edit"></i></button>
-                        <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>"><i
-                            class="fas fa-trash"></i></button>
+                            <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -308,96 +307,122 @@ include 'Bdisplaycovoiturage.php';
   </div>
 
   <script>
-    // Sidebar Toggle
-    document.querySelector('.sidebar-toggle').addEventListener('click', function () {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-content').classList.toggle('expanded');
+  // Sidebar Toggle
+  document.querySelector('.sidebar-toggle').addEventListener('click', function () {
+    document.querySelector('.sidebar').classList.toggle('collapsed');
+    document.querySelector('.main-content').classList.toggle('expanded');
+  });
+
+  // Tab Switching
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+
+      // Filter rides based on tab (for a real application, this would use AJAX to fetch filtered data)
+      const tabName = this.getAttribute('data-tab');
+      console.log(`Switching to tab: ${tabName}`);
     });
+  });
 
-    // Tab Switching
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    tabButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
+  // View Switching
+  const viewButtons = document.querySelectorAll('.view-btn');
+  const viewContainers = document.querySelectorAll('.view-container');
+  viewButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      viewButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
 
-        // Filter rides based on tab (for a real application, this would use AJAX to fetch filtered data)
-        const tabName = this.getAttribute('data-tab');
-        console.log(`Switching to tab: ${tabName}`);
+      const viewType = this.getAttribute('data-view');
+      viewContainers.forEach(container => {
+        container.classList.remove('active');
+        if (container.classList.contains(`${viewType}-view`)) {
+          container.classList.add('active');
+        }
       });
     });
+  });
 
-    // View Switching
-    const viewButtons = document.querySelectorAll('.view-btn');
-    const viewContainers = document.querySelectorAll('.view-container');
-    viewButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        viewButtons.forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
+  // Modal Functions
+  const rideModal = document.getElementById('ride-modal');
+  const deleteModal = document.getElementById('delete-modal');
+  const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
 
-        const viewType = this.getAttribute('data-view');
-        viewContainers.forEach(container => {
-          container.classList.remove('active');
-          if (container.classList.contains(`${viewType}-view`)) {
-            container.classList.add('active');
-          }
-        });
-      });
-    });
+  // Open Add Ride Modal
+  document.getElementById('add-covoiturage-btn').addEventListener('click', function () {
+    document.getElementById('modal-title').textContent = 'Ajouter un Trajet';
+    document.getElementById('ride-form').reset();
+    rideModal.classList.add('active');
+  });
 
-    // Modal Functions
-    const rideModal = document.getElementById('ride-modal');
-    const deleteModal = document.getElementById('delete-modal');
-    const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
-
-    // Open Add Ride Modal
-    document.getElementById('add-covoiturage-btn').addEventListener('click', function () {
-      document.getElementById('modal-title').textContent = 'Ajouter un Trajet';
-      document.getElementById('ride-form').reset();
+  // Open Edit Ride Modal
+  const editButtons = document.querySelectorAll('.edit');
+  editButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      document.getElementById('modal-title').textContent = 'Modifier un Trajet';
+      // Here you would populate the form with the ride data
       rideModal.classList.add('active');
     });
+  });
 
-    // Open Edit Ride Modal
-    const editButtons = document.querySelectorAll('.edit');
-    editButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        document.getElementById('modal-title').textContent = 'Modifier un Trajet';
-        // Here you would populate the form with the ride data
-        rideModal.classList.add('active');
-      });
+  // Open Delete Confirmation Modal
+  const deleteButtons = document.querySelectorAll('.delete');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const row = this.closest('tr'); // Get the row to delete
+      const idCovoit = this.getAttribute('data-id'); // Get the ID of the covoiturage
+
+      // Open the delete confirmation modal
+      deleteModal.classList.add('active');
+
+      // Handle the confirmation button click
+      const confirmDeleteButton = document.getElementById('confirm-delete-btn');
+      confirmDeleteButton.onclick = function () {
+        // Send AJAX request to delete the covoiturage
+        fetch('deleteCovoiturage.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `id_covoit=${idCovoit}`,
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Remove the row from the table
+              row.remove();
+              alert('Trajet supprimé avec succès !');
+            } else {
+              alert('Erreur : ' + data.message);
+            }
+            deleteModal.classList.remove('active'); // Close the modal
+          })
+          .catch(error => {
+            console.error('Erreur lors de la suppression :', error);
+            alert('Une erreur est survenue lors de la suppression.');
+            deleteModal.classList.remove('active'); // Close the modal
+          });
+      };
     });
+  });
 
-    // Open Delete Confirmation Modal
-    const deleteButtons = document.querySelectorAll('.delete');
-    deleteButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        deleteModal.classList.add('active');
-      });
-    });
-
-    // Close Modals
-    closeButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        rideModal.classList.remove('active');
-        deleteModal.classList.remove('active');
-      });
-    });
-
-    // Form Submit Handler (would normally use AJAX)
-    document.getElementById('ride-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      // Here you would send the form data to the server
-      alert('Trajet enregistré avec succès!');
+  // Close Modals
+  closeButtons.forEach(button => {
+    button.addEventListener('click', function () {
       rideModal.classList.remove('active');
-    });
-
-    // Delete Confirmation Handler
-    document.getElementById('confirm-delete-btn').addEventListener('click', function () {
-      // Here you would send a delete request to the server
-      alert('Trajet supprimé avec succès!');
       deleteModal.classList.remove('active');
     });
-  </script>
+  });
+
+  // Form Submit Handler (would normally use AJAX)
+  document.getElementById('ride-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    // Here you would send the form data to the server
+    alert('Trajet enregistré avec succès!');
+    rideModal.classList.remove('active');
+  });
+</script>
 </body>
 
 </html>
