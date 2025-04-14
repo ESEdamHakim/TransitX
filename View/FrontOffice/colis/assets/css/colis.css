@@ -11,6 +11,23 @@
   text-align: center;
 }
 
+.colis-table {
+  min-width: 1000px; /* or more depending on columns */
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.colis-table th, .colis-table td {
+  white-space: nowrap;
+  padding: 8px 12px;
+  text-align: left;
+}
+.colis-table th {
+  background-color: var(--secondary);
+  color: white;
+  font-weight: 500;
+}
+
 .colis-hero .hero-content {
   max-width: 800px;
   margin: 0 auto;
