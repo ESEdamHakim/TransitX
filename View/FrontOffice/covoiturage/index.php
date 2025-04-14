@@ -97,7 +97,7 @@
           <p>Découvrez les trajets les plus demandés par notre communauté.</p>
         </div>
         <div class="route-cards">
-
+        <?php include 'displaycovoiturage.php'; ?>
         </div>
       </div>
     </section>
@@ -156,7 +156,16 @@
   </div>
   <div class="form-group">
     <label for="ride-details">Détails supplémentaires</label>
+    <select id="details-options" class="form-control" onchange="updateDetailsInput()">
+    <option value="">Sélectionnez un détail</option>
+    <option value="Bagages légers uniquement.">✅ Bagages légers uniquement.</option>
+    <option value="Trajet non-fumeur.">✅ Trajet non-fumeur.</option>
+    <option value="Merci d’être ponctuel.">✅ Merci d’être ponctuel.</option>
+    <option value="Pas de retard accepté.">✅ Pas de retard accepté.</option>
+    <option value="custom">Autre (ajoutez votre propre détail)</option>
+  </select>
     <textarea id="ride-details" name="details" rows="3" maxlength="100" placeholder="Précisez les détails de votre trajet (arrêts, bagages autorisés, etc.)"></textarea>
+    <span id="details-error" style="color: red; font-size: 0.9em;"></span>
   </div>
   <button type="submit" class="btn btn-primary">
     Publier le trajet
@@ -295,14 +304,56 @@
   </footer>
 
   <script>
-    // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-      document.querySelector('.main-nav').classList.toggle('active');
-    });
+  // Mobile menu toggle
+  document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+    document.querySelector('.main-nav').classList.toggle('active');
+  });
 
-    // Ensure dashboard button is visible
-    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-    document.querySelector('.logout-btn').style.display = 'inline-flex';
-  </script>
+  // Ensure dashboard button is visible
+  document.querySelector('.dashboard-btn').style.display = 'inline-flex';
+  document.querySelector('.logout-btn').style.display = 'inline-flex';
+
+  // Handle "Détails supplémentaires" dropdown and text area
+  function updateDetailsInput() {
+    const select = document.getElementById('details-options');
+    const textarea = document.getElementById('ride-details');
+    const errorMessage = document.getElementById('details-error');
+
+    // Clear any previous error message
+    errorMessage.textContent = '';
+
+    if (select.value === 'custom') {
+      textarea.value = ''; // Clear the text area for custom input
+      textarea.placeholder = 'Ajoutez votre propre détail ici...';
+      textarea.focus();
+    } else if (select.value) {
+      textarea.value = select.value; // Set the selected option in the text area
+    }
+  }
+
+  // Attach the updateDetailsInput function to the dropdown
+  document.getElementById('details-options').addEventListener('change', updateDetailsInput);
+
+  // Ensure the textarea value is synchronized before form submission
+  document.querySelector('.create-ride-form').addEventListener('submit', function(event) {
+    const select = document.getElementById('details-options');
+    const textarea = document.getElementById('ride-details');
+    const errorMessage = document.getElementById('details-error');
+
+    // Clear any previous error message
+    errorMessage.textContent = '';
+
+    // Allow the field to be optional (skip validation if empty)
+    if (!textarea.value.trim()) {
+      return; // Allow form submission if the field is empty
+    }
+
+    // Check if the textarea value exceeds 100 characters
+    if (textarea.value.length > 100) {
+      errorMessage.textContent = "Le détail ne peut pas dépasser 100 caractères.";
+      event.preventDefault(); // Prevent form submission
+    }
+  });
+</script>
 </body>
 </html>

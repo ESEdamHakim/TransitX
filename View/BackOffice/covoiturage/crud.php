@@ -136,21 +136,37 @@
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Conducteur</th>
                     <th>Départ</th>
                     <th>Destination</th>
-                    <th>Date & Heure</th>
-                    <th>Places</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Places disponibles</th>
                     <th>Prix</th>
-                    <th>Statut</th>
+                    <th>Colis</th>
+                    <th>Détails</th>
                     <th>Actions</th>
-                    <th>accepte_colis</th>
-                    <th>colis_complet</th>
-
                   </tr>
                 </thead>
                 <tbody>
-
+                  <?php foreach ($covoiturages as $covoiturage): ?>
+                    <tr>
+                      <td><?= htmlspecialchars($covoiturage['id_covoit']) ?></td>
+                      <td><?= htmlspecialchars($covoiturage['lieu_depart']) ?></td>
+                      <td><?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></td>
+                      <td><?= htmlspecialchars($covoiturage['date_depart']) ?></td>
+                      <td><?= htmlspecialchars($covoiturage['temps_depart']) ?></td>
+                      <td><?= htmlspecialchars($covoiturage['places_dispo']) ?></td>
+                      <td><?= htmlspecialchars($covoiturage['prix']) ?> TND</td>
+                      <td><?= $covoiturage['accepte_colis'] ? 'Oui' : 'Non' ?></td>
+                      <td><?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></td>
+                      <td>
+                        <button class="btn edit" data-id="<?= $covoiturage['id_covoit'] ?>"><i
+                            class="fas fa-edit"></i></button>
+                        <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>"><i
+                            class="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
@@ -229,42 +245,42 @@
               </select>
             </div>
             <div class="form-group">
-    <label for="full-parcels">Colis complet</label>
-    <select id="full-parcels" name="full_parcels" required>
-      <option value="oui">Oui</option>
-      <option value="non">Non</option>
-    </select>
-  </div>
-</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="ride-driver">Conducteur</label>
-                <select id="ride-driver" name="driver" required>
-                  <option value="">Sélectionner un conducteur</option>
-                  <option value="1">Ahmed Ben Ali</option>
-                  <option value="2">Leila Mansour</option>
-                  <option value="3">Mohamed Khelifi</option>
-                  <option value="4">Nadia Mansouri</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="ride-status">Statut</label>
-                <select id="ride-status" name="status" required>
-                  <option value="">Sélectionner un statut</option>
-                  <option value="active">Actif</option>
-                  <option value="pending">En attente</option>
-                  <option value="completed">Terminé</option>
-                </select>
-              </div>
+              <label for="full-parcels">Colis complet</label>
+              <select id="full-parcels" name="full_parcels" required>
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ride-driver">Conducteur</label>
+              <select id="ride-driver" name="driver" required>
+                <option value="">Sélectionner un conducteur</option>
+                <option value="1">Ahmed Ben Ali</option>
+                <option value="2">Leila Mansour</option>
+                <option value="3">Mohamed Khelifi</option>
+                <option value="4">Nadia Mansouri</option>
+              </select>
             </div>
             <div class="form-group">
-              <label for="ride-description">Description</label>
-              <textarea id="ride-description" name="description" rows="3"></textarea>
+              <label for="ride-status">Statut</label>
+              <select id="ride-status" name="status" required>
+                <option value="">Sélectionner un statut</option>
+                <option value="active">Actif</option>
+                <option value="pending">En attente</option>
+                <option value="completed">Terminé</option>
+              </select>
             </div>
-            <div class="form-actions">
-              <button type="button" class="btn secondary cancel-btn">Annuler</button>
-              <button type="submit" class="btn primary" id="save-ride-btn">Enregistrer</button>
-            </div>
+          </div>
+          <div class="form-group">
+            <label for="ride-description">Description</label>
+            <textarea id="ride-description" name="description" rows="3"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn secondary cancel-btn">Annuler</button>
+            <button type="submit" class="btn primary" id="save-ride-btn">Enregistrer</button>
+          </div>
         </form>
       </div>
     </div>
