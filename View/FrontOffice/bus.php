@@ -219,7 +219,7 @@ footer p {
         </a>
         <nav class="nav">
             <a href="index.php">Accueil</a>
-            <a href="bus.php" class="active">Buses</a>
+            <a href="bus.php" class="active">Bus</a>
             <a href="colis.php">Colis</a>
             <a href="#">Covoiturage</a>
             <a href="#">Blog</a>
