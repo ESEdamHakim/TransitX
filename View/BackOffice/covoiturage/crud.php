@@ -1,3 +1,7 @@
+<?php
+// Include the display logic
+include 'Bdisplaycovoiturage.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
