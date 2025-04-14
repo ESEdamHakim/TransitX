@@ -1,3 +1,7 @@
+<?php
+session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Controller/userC.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,33 +13,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="landing-header">
+<header class="landing-header">
     <div class="container">
-      <div class="header-left">
-        <div class="logo">
-          <img src="../assets/images/logo.png" alt="TransitX Logo" class="main-logo">
-          <span class="logo-text">TransitX</span>
+        <div class="header-left">
+            <div class="logo">
+                <img src="../assets/images/logo.png" alt="TransitX Logo" class="main-logo">
+                <span class="logo-text">TransitX</span>
+            </div>
         </div>
-      </div>
-      <nav class="main-nav">
-        <ul>
-          <li class="active"><a href="index.php">Accueil</a></li>
-          <li><a href="bus/index.php">Bus</a></li>
-          <li><a href="colis/index.php">Colis</a></li>
-          <li><a href="covoiturage/index.php">Covoiturage</a></li>
-          <li><a href="blog/index.php">Blog</a></li>
-          <li><a href="reclamation/index.php">Réclamation</a></li>
-        </ul>
-      </nav>
-      <div class="header-right">
-        <a href="../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
-        <a href="../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-        <button class="mobile-menu-btn">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
+        <nav class="main-nav">
+            <ul>
+                <li class="active"><a href="index.php">Accueil</a></li>
+                <li><a href="bus/index.php">Bus</a></li>
+                <li><a href="colis/index.php">Colis</a></li>
+                <li><a href="covoiturage/index.php">Covoiturage</a></li>
+                <li><a href="blog/index.php">Blog</a></li>
+                <li><a href="reclamation/index.php">Réclamation</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">
+            <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+                <a href="../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+            <?php endif; ?>
+            <a href="../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </div>
-  </header>
+</header>
 
   <main>
     <!-- Hero Section -->

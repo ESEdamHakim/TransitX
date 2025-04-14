@@ -1,3 +1,43 @@
+<?php
+session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Controller/userC.php';
+
+$userController = new UserC();
+
+// In your login page (index.php)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+
+  $user = $userController->getUserByEmail($email);
+
+  if ($user) {
+      // Debug output (remove in production)
+      error_log("User found. Type: " . $user->getType());
+      error_log("Input password: " . $password);
+      error_log("Stored password: " . $user->getPassword());
+
+      // First try password_verify, then fallback to plain text comparison
+      // (Remove the plain text fallback after fixing all passwords)
+      if (password_verify($password, $user->getPassword()) || 
+          $password === $user->getPassword()) {
+          
+          $_SESSION['user_id'] = $user->getId();
+          $_SESSION['user_type'] = $user->getType();
+          $_SESSION['user_name'] = $user->getNom() . ' ' . $user->getPrenom();
+
+          // Redirect based on user type
+          header('Location: View/' . 
+                ($user->getType() === 'employe' ? 'BackOffice' : 'FrontOffice') . 
+                '/index.php');
+          exit();
+      }
+  }
+  
+  $error = "Email ou mot de passe incorrect.";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -21,21 +61,28 @@
           <h1>Connexion</h1>
           <p>Bienvenue sur TransitX. Veuillez vous connecter pour continuer.</p>
         </div>
-        <form class="auth-form" action="View/FrontOffice/index.php">
+
+        <form class="auth-form" method="post">
+          <?php if (isset($error)): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+          <?php endif; ?>
+
           <div class="form-group">
             <label for="email">Email</label>
             <div class="input-with-icon">
               <i class="fas fa-envelope"></i>
-              <input type="email" id="email" placeholder="Entrez votre email">
+              <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
             </div>
           </div>
+
           <div class="form-group">
             <label for="password">Mot de passe</label>
             <div class="input-with-icon">
               <i class="fas fa-lock"></i>
-              <input type="password" id="password" placeholder="Entrez votre mot de passe">
+              <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
             </div>
           </div>
+
           <div class="form-options">
             <div class="remember-me">
               <input type="checkbox" id="remember">
@@ -43,6 +90,7 @@
             </div>
             <a href="forgot-password.php" class="forgot-password">Mot de passe oublié?</a>
           </div>
+
           <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
           <div class="social-login">
             <p>Ou connectez-vous avec</p>
@@ -59,8 +107,9 @@
             </div>
           </div>
         </form>
+
         <div class="auth-footer">
-          <p>Vous n'avez pas de compte? <a href="register.php">S'inscrire</a></p>
+        <p>Vous n'avez pas de compte? <a href="/user/register.php">S'inscrire</a></p>
         </div>
       </div>
     </div>
@@ -68,13 +117,5 @@
       <div class="overlay"></div>
     </div>
   </div>
-
-  <script>
-    // Simple login without authentication
-    document.querySelector('.auth-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      window.location.href = 'View/FrontOffice/index.php';
-    });
-  </script>
 </body>
 </html>

@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/../../../Controller/UserC.php';
+
+$userController = new UserC();
+$users = $userController->listUsers();
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,6 +14,7 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/users.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="dashboard">
@@ -97,9 +105,9 @@
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
-            <button class="btn primary" id="add-user-btn">
-              <i class="fas fa-plus"></i> Ajouter un Utilisateur
-            </button>
+          <a href="../../add_user.php" class="btn primary" id="add-user-btn">
+  <i class="fas fa-plus"></i> Ajouter un Utilisateur
+</a>
           </div>
         </div>
       </header>
@@ -127,66 +135,32 @@
                   <tr>
                     <th>ID</th>
                     <th>Nom</th>
+                    <th>Prénom</th>
                     <th>Email</th>
                     <th>Téléphone</th>
-                    <th>Rôle</th>
-                    <th>Statut</th>
+                    <th>Type</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
+                  <?php foreach ($users as $user): ?>
                   <tr>
-                    <td>U001</td>
-                    <td>Ahmed Ben Ali</td>
-                    <td>ahmed@example.com</td>
-                    <td>+216 12 345 678</td>
-                    <td>Client</td>
-                    <td><span class="status active">Actif</span></td>
+                    <td><?= htmlspecialchars($user->getId()) ?></td>
+                    <td><?= htmlspecialchars($user->getNom()) ?></td>
+                    <td><?= htmlspecialchars($user->getPrenom()) ?></td>
+                    <td><?= htmlspecialchars($user->getEmail()) ?></td>
+                    <td><?= htmlspecialchars($user->getTelephone()) ?></td>
+                    <td><?= ucfirst(htmlspecialchars($user->getType())) ?></td>
                     <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
+  <a href="../../edit_user.php?id=<?= $user->getId() ?>" class="action-btn edit" title="Modifier">
+    <i class="fas fa-edit"></i>
+  </a>
+  <a href="../../delete_user.php?id=<?= $user->getId() ?>" class="action-btn delete" title="Supprimer">
+    <i class="fas fa-trash"></i>
+  </a>
+</td>
                   </tr>
-                  <tr>
-                    <td>U002</td>
-                    <td>Leila Mansour</td>
-                    <td>leila@example.com</td>
-                    <td>+216 23 456 789</td>
-                    <td>Administrateur</td>
-                    <td><span class="status active">Actif</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>U003</td>
-                    <td>Mohamed Khelifi</td>
-                    <td>mohamed@example.com</td>
-                    <td>+216 34 567 890</td>
-                    <td>Chauffeur</td>
-                    <td><span class="status inactive">Inactif</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>U004</td>
-                    <td>Nadia Mansouri</td>
-                    <td>nadia@example.com</td>
-                    <td>+216 45 678 901</td>
-                    <td>Client</td>
-                    <td><span class="status active">Actif</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
@@ -202,7 +176,26 @@
           <!-- Grid View -->
           <div class="view-container grid-view">
             <div class="users-grid">
-              <!-- User cards will go here -->
+              <?php foreach ($users as $user): ?>
+              <div class="user-card">
+                <div class="user-avatar">
+                  <img src="../assets/images/user-placeholder.png" alt="User Avatar">
+                </div>
+                <div class="user-info">
+                  <h3><?= htmlspecialchars($user->getPrenom() . ' ' . $user->getNom()) ?></h3>
+                  <p><?= htmlspecialchars($user->getEmail()) ?></p>
+                  <span class="user-role <?= $user->getType() ?>"><?= ucfirst(htmlspecialchars($user->getType())) ?></span>
+                </div>
+                <div class="user-actions">
+  <a href="../../edit_user.php?id=<?= $user->getId() ?>" class="action-btn edit" title="Modifier">
+    <i class="fas fa-edit"></i>
+  </a>
+  <a href="../../delete_user.php?id=<?= $user->getId() ?>" class="action-btn delete" title="Supprimer">
+    <i class="fas fa-trash"></i>
+  </a>
+</div>
+              </div>
+              <?php endforeach; ?>
             </div>
             <div class="pagination">
               <button class="pagination-btn prev"><i class="fas fa-chevron-left"></i></button>
@@ -216,68 +209,7 @@
       </div>
     </main>
   </div>
-  
-  <!-- Modal for Adding/Editing User -->
-  <div class="modal" id="user-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modal-title">Ajouter un Utilisateur</h2>
-        <button class="close-modal"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <form id="user-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="user-firstname">Prénom</label>
-              <input type="text" id="user-firstname" name="firstname" required>
-            </div>
-            <div class="form-group">
-              <label for="user-lastname">Nom</label>
-              <input type="text" id="user-lastname" name="lastname" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="user-email">Email</label>
-              <input type="email" id="user-email" name="email" required>
-            </div>
-            <div class="form-group">
-              <label for="user-phone">Téléphone</label>
-              <input type="tel" id="user-phone" name="phone" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="user-role">Rôle</label>
-              <select id="user-role" name="role" required>
-                <option value="">Sélectionner un rôle</option>
-                <option value="admin">Administrateur</option>
-                <option value="client">Client</option>
-                <option value="driver">Chauffeur</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="user-status">Statut</label>
-              <select id="user-status" name="status" required>
-                <option value="">Sélectionner un statut</option>
-                <option value="active">Actif</option>
-                <option value="inactive">Inactif</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="user-address">Adresse</label>
-            <textarea id="user-address" name="address" rows="3"></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn secondary cancel-btn">Annuler</button>
-            <button type="submit" class="btn primary" id="save-user-btn">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  
+
   <!-- Delete Confirmation Modal -->
   <div class="modal" id="delete-modal">
     <div class="modal-content">
@@ -312,6 +244,7 @@
         // Filter users based on tab
         const tabName = this.getAttribute('data-tab');
         console.log(`Switching to tab: ${tabName}`);
+        // You would need to implement actual filtering here
       });
     });
 
@@ -333,32 +266,19 @@
       });
     });
 
-    // Modal Functions
-    const userModal = document.getElementById('user-modal');
+    // Delete Confirmation Modal
     const deleteModal = document.getElementById('delete-modal');
     const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
     
-    // Open Add User Modal
-    document.getElementById('add-user-btn').addEventListener('click', function() {
-      document.getElementById('modal-title').textContent = 'Ajouter un Utilisateur';
-      document.getElementById('user-form').reset();
-      userModal.classList.add('active');
-    });
-    
-    // Open Edit User Modal
-    const editButtons = document.querySelectorAll('.edit');
-    editButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        document.getElementById('modal-title').textContent = 'Modifier un Utilisateur';
-        // Here you would populate the form with the user data
-        userModal.classList.add('active');
-      });
-    });
-    
     // Open Delete Confirmation Modal
-    const deleteButtons = document.querySelectorAll('.delete');
+    const deleteButtons = document.querySelectorAll('.action-btn.delete');
     deleteButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const deleteUrl = this.getAttribute('href');
+        document.getElementById('confirm-delete-btn').onclick = function() {
+          window.location.href = deleteUrl;
+        };
         deleteModal.classList.add('active');
       });
     });
@@ -366,23 +286,12 @@
     // Close Modals
     closeButtons.forEach(button => {
       button.addEventListener('click', function() {
-        userModal.classList.remove('active');
         deleteModal.classList.remove('active');
       });
     });
     
-    // Form Submit Handler
-    document.getElementById('user-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Here you would send the form data to the server
-      alert('Utilisateur enregistré avec succès!');
-      userModal.classList.remove('active');
-    });
-    
     // Delete Confirmation Handler
     document.getElementById('confirm-delete-btn').addEventListener('click', function() {
-      // Here you would send a delete request to the server
-      alert('Utilisateur supprimé avec succès!');
       deleteModal.classList.remove('active');
     });
   </script>
