@@ -1,36 +1,53 @@
 <?php
 require_once '../../../Controller/ColisController.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (
-        isset($_POST['id_client'], $_POST['id_covoit'], $_POST['statut'], $_POST['date_colis'],
-        $_POST['longueur'], $_POST['largeur'], $_POST['hauteur'], $_POST['poids'],
-        $_POST['latitude_ram'], $_POST['longitude_ram'], $_POST['latitude_dest'], $_POST['longitude_dest'],
-        $_POST['prix'])
-    ) {
-        $ColisC = new ColisController();
-        $ColisC->addColis(
-            $_POST['id_client'],
-            $_POST['id_covoit'],
-            $_POST['statut'],
-            $_POST['date_colis'],
-            $_POST['longueur'],
-            $_POST['largeur'],
-            $_POST['hauteur'],
-            $_POST['poids'],
-            $_POST['latitude_ram'],
-            $_POST['longitude_ram'],
-            $_POST['latitude_dest'],
-            $_POST['longitude_dest'],
-            $_POST['prix']
-        );
-        header("Location: ColisList.php");
-        exit();
-    } else {
-        echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
+$ColisC = new ColisController();
+
+// Check if an ID is provided in the URL
+if (!isset($_GET['id_colis'])) {
+    die("Invalid Request");
+}
+
+$id_colis = $_GET['id_colis'];
+$colis = null;
+
+// Fetch the existing colis details
+$list = $ColisC->listColis();
+foreach ($list as $c) {
+    if ($c['id_colis'] == $id_colis) {
+        $colis = $c;
+        break;
     }
 }
+
+if (!$colis) {
+    die("Colis not found");
+}
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $ColisC->updateColis(
+        $id_colis,
+        $_POST['id_client'],
+        $_POST['id_covoit'],
+        $_POST['statut'],
+        $_POST['date_colis'],
+        $_POST['longueur'],
+        $_POST['largeur'],
+        $_POST['hauteur'],
+        $_POST['poids'],
+        $_POST['latitude_ram'],
+        $_POST['longitude_ram'],
+        $_POST['latitude_dest'],
+        $_POST['longitude_dest'],
+        $_POST['prix']
+    );
+
+    header("Location: ColisList.php"); // Redirect to the colis list
+    exit();
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -136,68 +153,80 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="container">
         <div class="section-header">
           <span class="badge">Expédition</span>
-          <h2>Envoyer un Colis</h2>
+          <h2>Modifier un Colis</h2>
           <p>Remplissez le formulaire ci-dessous pour calculer le prix de votre envoi.</p>
         </div>
-
         <script src="assets/js/colisValidation.js"></script>
         <div class="colis-form-container">
-  <form class="colis-form" method="POST">
-  <input type="hidden" name="id_client" id="id_client" value="3">
-  <br>
+        <form class="colis-form" method="POST">
+      <input type="hidden" name="id_client" id="id_client" value="3">
+      <br>
   <div class="form-group">
     <label for="id_covoit">Carpool ID:
-      <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage">
+      <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage"
+             value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
     </label>
   </div>
   <br>
   <div class="form-group">
     <label for="date_colis">Date d'envoi</label>
-    <input type="date" name="date_colis" id="date_colis">
+    <input type="date" name="date_colis" id="date_colis"
+           value="<?php echo htmlspecialchars($colis['date_colis']); ?>">
   </div>
   <br>
-  <input type="hidden" name="statut" id="statut" value="en attente">
+  <input type="hidden" name="statut" id="statut" value="<?php echo htmlspecialchars($colis['statut']); ?>">
 
   <div class="form-row">
-  <div class="form-group">
-    <label for="dimensions">Dimensions (cm)</label>
-    <div class="dimensions-inputs">
-      <input type="number" name="longueur" id="longueur" placeholder="L" step="1">
-      <span>×</span>
-      <input type="number" name="largeur" id="largeur" placeholder="l" step="1">
-      <span>×</span>
-      <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
+    <div class="form-group">
+      <label for="dimensions">Dimensions (cm)</label>
+      <div class="dimensions-inputs">
+        <input type="number" name="longueur" id="longueur" placeholder="L"
+               value="<?php echo htmlspecialchars($colis['longueur']); ?>">
+        <span>×</span>
+        <input type="number" name="largeur" id="largeur" placeholder="l"
+               value="<?php echo htmlspecialchars($colis['largeur']); ?>">
+        <span>×</span>
+        <input type="number" name="hauteur" id="hauteur" placeholder="H"
+               value="<?php echo htmlspecialchars($colis['hauteur']); ?>">
+      </div>
     </div>
+    <div class="form-group">
+      <label for="poids">Poids (kg)</label>
+      <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1"
+             value="<?php echo htmlspecialchars($colis['poids']); ?>">
+    </div>
+    <br>
   </div>
-  <div class="form-group">
-    <label for="poids">Poids (kg)</label>
-    <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1">
-  </div>
+
+
+  <!-- Hidden coordinates -->
+  <input type="hidden" name="latitude_ram" id="latitude_ram"
+         value="<?php echo htmlspecialchars($colis['latitude_ram']); ?>">
+  <input type="hidden" name="longitude_ram" id="longitude_ram"
+         value="<?php echo htmlspecialchars($colis['longitude_ram']); ?>">
+  <input type="hidden" name="latitude_dest" id="latitude_dest"
+         value="<?php echo htmlspecialchars($colis['latitude_dest']); ?>">
+  <input type="hidden" name="longitude_dest" id="longitude_dest"
+         value="<?php echo htmlspecialchars($colis['longitude_dest']); ?>">
+
+  <!-- Hidden price field -->
+  <input type="hidden" name="prix" id="prix">
   <br>
-</div>
-
-
-<input type="hidden" name="latitude_ram" id="latitude_ram">
-<input type="hidden" name="longitude_ram" id="longitude_ram">
-<input type="hidden" name="latitude_dest" id="latitude_dest">
-<input type="hidden" name="longitude_dest" id="longitude_dest">
-<input type="hidden" name="prix" id="prix"> <!-- You can calculate this via JS later -->
-<br>
   <div class="form-actions text-center">
     <button type="submit" class="btn btn-primary">
-      Calculer le prix
-      <i class="fas fa-calculator"></i>
+      Mettre à jour
+      <i class="fas fa-sync-alt"></i>
     </button>
   </div>
 </form>
-
 
 <div class="map-container">
   <h3>Localisation</h3>
   <div id="gmap_canvas" style="height: 400px; width: 400px;">
     <!-- La carte Google Maps s'affichera ici -->
   </div>
-<div class="map-info" style="background-color: #f9f9f9; border-radius: 6px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 400px; margin: 5px auto;">
+
+  <div class="map-info" style="background-color: #f9f9f9; border-radius: 6px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 400px; margin: 5px auto;">
   <p style="font-size: 14px; color: #333; line-height: 1.3; margin: 0;">
     <i class="fas fa-info-circle" style="color: #86b391; margin-right: 6px;"></i>
     <span style="font-weight: 600; color: #555;">Instructions:</span> 
@@ -210,9 +239,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 
-
   <!-- Replace with your actual API key -->
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script>
   let map;
   let pickupMarker = null;

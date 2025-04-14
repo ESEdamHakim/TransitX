@@ -2,33 +2,25 @@
 require_once '../../../Controller/ColisController.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (
-        isset($_POST['id_client'], $_POST['id_covoit'], $_POST['statut'], $_POST['date_colis'],
-        $_POST['longueur'], $_POST['largeur'], $_POST['hauteur'], $_POST['poids'],
-        $_POST['latitude_ram'], $_POST['longitude_ram'], $_POST['latitude_dest'], $_POST['longitude_dest'],
-        $_POST['prix'])
-    ) {
-        $ColisC = new ColisController();
-        $ColisC->addColis(
-            $_POST['id_client'],
-            $_POST['id_covoit'],
-            $_POST['statut'],
-            $_POST['date_colis'],
-            $_POST['longueur'],
-            $_POST['largeur'],
-            $_POST['hauteur'],
-            $_POST['poids'],
-            $_POST['latitude_ram'],
-            $_POST['longitude_ram'],
-            $_POST['latitude_dest'],
-            $_POST['longitude_dest'],
-            $_POST['prix']
-        );
-        header("Location: ColisList.php");
-        exit();
-    } else {
-        echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
-    }
+    $ColisC = new ColisController();
+    $ColisC->addColis(
+        $_POST['id_client'],
+        $_POST['id_covoit'],
+        $_POST['statut'],
+        $_POST['date_colis'],
+        $_POST['longueur'],
+        $_POST['largeur'],
+        $_POST['hauteur'],
+        $_POST['poids'],
+        $_POST['latitude_ram'],
+        $_POST['longitude_ram'],
+        $_POST['latitude_dest'],
+        $_POST['longitude_dest'],
+        $_POST['prix']
+    );
+
+    header("Location: ColisList.php");
+    exit();
 }
 ?>
 
@@ -139,50 +131,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <h2>Envoyer un Colis</h2>
           <p>Remplissez le formulaire ci-dessous pour calculer le prix de votre envoi.</p>
         </div>
-
-        <script src="assets/js/colisValidation.js"></script>
         <div class="colis-form-container">
-  <form class="colis-form" method="POST">
-  <input type="hidden" name="id_client" id="id_client" value="3">
-  <br>
+        <form class="colis-form" method="POST">
   <div class="form-group">
+    <label for="id_client">Client ID:
+      <input type="number" name="id_client" id="id_client" required placeholder="Entrez l'ID du client">
+    </label>
+
     <label for="id_covoit">Carpool ID:
-      <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage">
+      <input type="number" name="id_covoit" id="id_covoit" required placeholder="Entrez l'ID du covoiturage">
     </label>
   </div>
-  <br>
+
   <div class="form-group">
     <label for="date_colis">Date d'envoi</label>
-    <input type="date" name="date_colis" id="date_colis">
+    <input type="date" name="date_colis" id="date_colis" required>
   </div>
-  <br>
+
   <input type="hidden" name="statut" id="statut" value="en attente">
 
   <div class="form-row">
-  <div class="form-group">
-    <label for="dimensions">Dimensions (cm)</label>
-    <div class="dimensions-inputs">
-      <input type="number" name="longueur" id="longueur" placeholder="L" step="1">
-      <span>×</span>
-      <input type="number" name="largeur" id="largeur" placeholder="l" step="1">
-      <span>×</span>
-      <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
+    <div class="form-group">
+      <label for="dimensions">Dimensions (cm)</label>
+      <div class="dimensions-inputs">
+        <input type="number" name="longueur" id="longueur" placeholder="L" min="1" required>
+        <span>×</span>
+        <input type="number" name="largeur" id="largeur" placeholder="l" min="1" required>
+        <span>×</span>
+        <input type="number" name="hauteur" id="hauteur" placeholder="H" min="1" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="poids">Poids (kg)</label>
+      <input type="number" name="poids" id="poids" placeholder="Poids" min="0.1" step="0.5" required>
     </div>
   </div>
-  <div class="form-group">
-    <label for="poids">Poids (kg)</label>
-    <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1">
-  </div>
-  <br>
-</div>
 
-
-<input type="hidden" name="latitude_ram" id="latitude_ram">
+  <input type="hidden" name="latitude_ram" id="latitude_ram">
 <input type="hidden" name="longitude_ram" id="longitude_ram">
 <input type="hidden" name="latitude_dest" id="latitude_dest">
 <input type="hidden" name="longitude_dest" id="longitude_dest">
-<input type="hidden" name="prix" id="prix"> <!-- You can calculate this via JS later -->
-<br>
+<input type="hidden" name="prix" id="prix" value="18.5"> <!-- You can calculate this via JS later -->
+
   <div class="form-actions text-center">
     <button type="submit" class="btn btn-primary">
       Calculer le prix
@@ -194,21 +184,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="map-container">
   <h3>Localisation</h3>
-  <div id="gmap_canvas" style="height: 400px; width: 400px;">
+  <div id="gmap_canvas" style="height: 400px; width: 100%;">
     <!-- La carte Google Maps s'affichera ici -->
   </div>
-<div class="map-info" style="background-color: #f9f9f9; border-radius: 6px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 400px; margin: 5px auto;">
-  <p style="font-size: 14px; color: #333; line-height: 1.3; margin: 0;">
-    <i class="fas fa-info-circle" style="color: #86b391; margin-right: 6px;"></i>
-    <span style="font-weight: 600; color: #555;">Instructions:</span> 
-    <br>
-    <span>
-      <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
-      <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
-    </span>
-  </p>
-</div>
 
+  <div class="map-info" style="background-color: #f9f9f9; border-radius: 8px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-width: 400px; margin: 10px auto;">
+    <p style="font-size: 16px; color: #333; line-height: 1.5;">
+        <i class="fas fa-info-circle" style="color: #86b391; margin-right: 8px;"></i>
+        <span style="font-weight: 600; color: #555;">Instructions:</span> 
+        <br>
+        <span><strong>Étape 1:</strong> Cliquez sur la carte pour définir l'adresse de <strong>ramassage</strong><br><strong>Étape 2:</strong> cliquez à nouveau pour définir l'adresse de <strong>livraison</strong>.</span>
+    </p>
+</div>
 
 
   <!-- Replace with your actual API key -->
@@ -235,6 +222,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       map: map,
       title: "Default Location",
     });
+
+    /*
+  // Try to get the user's current location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const userLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      console.log("User's current location:", userLocation); // Debugging line
+
+      // Re-center the map to the user's current location
+      map.setCenter(userLocation);
+
+      // Add a marker for the user's current location
+      if (currentLocationMarker) {
+        currentLocationMarker.setMap(null); // Remove any previous markers
+      }
+
+      currentLocationMarker = new google.maps.Marker({
+        position: userLocation,
+        map: map,
+        title: "Current Location", // Tooltip text
+        icon: {
+          url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" // Blue marker icon
+        }
+      });
+
+    }, function(error) {
+      // Error handling for geolocation failure
+      console.error("Error occurred while getting geolocation:", error);
+      alert("Geolocation failed. Using default location.");
+    });
+  } else {
+    // If geolocation is not supported, use default location
+    alert("Geolocation is not supported by this browser.");
+  }
+*/
+
 
     // Handle map clicks for setting pickup and delivery locations
     map.addListener("click", function (event) {
@@ -273,6 +300,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="colis-tracking">
+      <div class="container">
+        <div class="section-header">
+          <span class="badge">Suivi</span>
+          <h2>Suivre un Colis</h2>
+          <p>Entrez votre numéro de suivi pour connaître l'état de votre colis.</p>
+        </div>
+        <div class="tracking-form">
+          <input type="text" placeholder="Entrez votre numéro de suivi">
+          <button class="btn btn-primary">
+            Suivre
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="colis-features">
+      <div class="container">
+        <div class="section-header">
+          <span class="badge">Avantages</span>
+          <h2>Pourquoi Choisir Notre Service de Colis</h2>
+          <p>Découvrez les avantages qui font de notre service de livraison le choix idéal pour vos envois.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <h3>Écologique</h3>
+            <p>Nos livraisons sont effectuées avec des véhicules à faible émission pour réduire l'impact environnemental.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-truck"></i>
+            </div>
+            <h3>Rapide</h3>
+            <p>Livraison le jour même ou le lendemain selon la distance et la disponibilité.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Sécurisé</h3>
+            <p>Vos colis sont assurés et manipulés avec soin tout au long du trajet.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <h3>Économique</h3>
+            <p>Tarifs compétitifs et transparents, sans frais cachés.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -323,46 +407,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </table>
         </div>
         <p class="pricing-note text-center">* Des frais supplémentaires peuvent s'appliquer pour les colis volumineux ou nécessitant une manipulation spéciale.</p>
-      </div>
-    </section>
-    
-    <section class="colis-features">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Avantages</span>
-          <h2>Pourquoi Choisir Notre Service de Colis</h2>
-          <p>Découvrez les avantages qui font de notre service de livraison le choix idéal pour vos envois.</p>
-        </div>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-leaf"></i>
-            </div>
-            <h3>Écologique</h3>
-            <p>Nos livraisons sont effectuées avec des véhicules à faible émission pour réduire l'impact environnemental.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-truck"></i>
-            </div>
-            <h3>Rapide</h3>
-            <p>Livraison le jour même ou le lendemain selon la distance et la disponibilité.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-shield-alt"></i>
-            </div>
-            <h3>Sécurisé</h3>
-            <p>Vos colis sont assurés et manipulés avec soin tout au long du trajet.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-money-bill-wave"></i>
-            </div>
-            <h3>Économique</h3>
-            <p>Tarifs compétitifs et transparents, sans frais cachés.</p>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -461,5 +505,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+      document.querySelector('.main-nav').classList.toggle('active');
+    });
+
+    // FAQ toggle
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', () => {
+        item.classList.toggle('active');
+      });
+    });
+
+    // Ensure dashboard button is visible
+    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
+    document.querySelector('.logout-btn').style.display = 'inline-flex';
+  </script>
 </body>
 </html>
