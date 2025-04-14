@@ -1,36 +1,53 @@
 <?php
 require_once '../../../Controller/ColisController.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (
-        isset($_POST['id_client'], $_POST['id_covoit'], $_POST['statut'], $_POST['date_colis'],
-        $_POST['longueur'], $_POST['largeur'], $_POST['hauteur'], $_POST['poids'],
-        $_POST['latitude_ram'], $_POST['longitude_ram'], $_POST['latitude_dest'], $_POST['longitude_dest'],
-        $_POST['prix'])
-    ) {
-        $ColisC = new ColisController();
-        $ColisC->addColis(
-            $_POST['id_client'],
-            $_POST['id_covoit'],
-            $_POST['statut'],
-            $_POST['date_colis'],
-            $_POST['longueur'],
-            $_POST['largeur'],
-            $_POST['hauteur'],
-            $_POST['poids'],
-            $_POST['latitude_ram'],
-            $_POST['longitude_ram'],
-            $_POST['latitude_dest'],
-            $_POST['longitude_dest'],
-            $_POST['prix']
-        );
-        header("Location: crud.php");
-        exit();
-    } else {
-        echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
+$ColisC = new ColisController();
+
+// Check if an ID is provided in the URL
+if (!isset($_GET['id_colis'])) {
+    die("Invalid Request");
+}
+
+$id_colis = $_GET['id_colis'];
+$colis = null;
+
+// Fetch the existing colis details
+$list = $ColisC->listColis();
+foreach ($list as $c) {
+    if ($c['id_colis'] == $id_colis) {
+        $colis = $c;
+        break;
     }
 }
+
+if (!$colis) {
+    die("Colis not found");
+}
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $ColisC->updateColis(
+        $id_colis,
+        $_POST['id_client'],
+        $_POST['id_covoit'],
+        $_POST['statut'],
+        $_POST['date_colis'],
+        $_POST['longueur'],
+        $_POST['largeur'],
+        $_POST['hauteur'],
+        $_POST['poids'],
+        $_POST['latitude_ram'],
+        $_POST['longitude_ram'],
+        $_POST['latitude_dest'],
+        $_POST['longitude_dest'],
+        $_POST['prix']
+    );
+
+    header("Location: crud.php"); // Redirect to the colis list
+    exit();
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -202,27 +219,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <section>
         <div class="container">
           <div class="header-left">
-            <h2>Ajouter un Colis</h2>
-            <p>Remplissez le formulaire ci-dessous</p>
+            <h2>Modifier un Colis</h2>
+            <p>Modifier le formulaire ci-dessous</p>
           </div>
           <div class="colis-form-container">
             <form class="colis-form" method="POST">
               <div class="form-group">
                 <label for="id_client">Client ID:</label>
-                <input type="number" name="id_client" id="id_client" placeholder="Entrez l'ID du client">
+                <input type="number" name="id_client" id="id_client" placeholder="Entrez l'ID du client"
+             value="<?php echo htmlspecialchars($colis['id_client']); ?>">
               </div>
 
               <div class="form-group">
-                <label for="id_covoit">Carpool ID:</label>
-                <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage">
-              </div>
-
-              <div class="form-group">
-                <label for="date_colis">Date d'envoi:</label>
-                <input type="date" name="date_colis" id="date_colis">
-              </div>
-
-              <div class="form-group">
+    <label for="id_covoit">Carpool ID:
+      <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage"
+             value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
+    </label>
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="date_colis">Date d'envoi</label>
+    <input type="date" name="date_colis" id="date_colis"
+           value="<?php echo htmlspecialchars($colis['date_colis']); ?>">
+  </div>
+  <br>
+  <input name="statut" id="statut" value="<?php echo htmlspecialchars($colis['statut']); ?>">
+  <div class="form-group">
                 <label for="statut">Statut:</label>
                 <select name="statut" id="statut" class="form-group">
                   <option value="en attente" selected>En attente</option>
@@ -231,31 +253,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
               </div>
 
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="dimensions">Dimensions (cm)</label>
-                  <div class="dimensions-inputs">
-                    <input type="number" name="longueur" id="longueur" placeholder="L" step="1">
-                    <span>×</span>
-                    <input type="number" name="largeur" id="largeur" placeholder="l" step="1">
-                    <span>×</span>
-                    <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                <label for="poids">Poids (kg)</label>
-                <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1">
-                </div>
-              </div>
-
-              <input type="hidden" name="latitude_ram" id="latitude_ram">
-              <input type="hidden" name="longitude_ram" id="longitude_ram">
-              <input type="hidden" name="latitude_dest" id="latitude_dest">
-              <input type="hidden" name="longitude_dest" id="longitude_dest">
-              <input type="hidden" name="prix" id="prix">
-
-              <div class="form-actions text-center">
+  <div class="form-row">
+    <div class="form-group">
+      <label for="dimensions">Dimensions (cm)</label>
+      <div class="dimensions-inputs">
+        <input type="number" name="longueur" id="longueur" placeholder="L"
+               value="<?php echo htmlspecialchars($colis['longueur']); ?>">
+        <span>×</span>
+        <input type="number" name="largeur" id="largeur" placeholder="l"
+               value="<?php echo htmlspecialchars($colis['largeur']); ?>">
+        <span>×</span>
+        <input type="number" name="hauteur" id="hauteur" placeholder="H"
+               value="<?php echo htmlspecialchars($colis['hauteur']); ?>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="poids">Poids (kg)</label>
+      <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1"
+             value="<?php echo htmlspecialchars($colis['poids']); ?>">
+    </div>
     <button type="submit" class="btn btn-primary">
       Ajouter Colis
       <i class="fas fa-plus"></i>
