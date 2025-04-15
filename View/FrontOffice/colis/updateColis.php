@@ -5,7 +5,7 @@ $ColisC = new ColisController();
 
 // Check if an ID is provided in the URL
 if (!isset($_GET['id_colis'])) {
-    die("Invalid Request");
+  die("Invalid Request");
 }
 
 $id_colis = $_GET['id_colis'];
@@ -14,14 +14,14 @@ $colis = null;
 // Fetch the existing colis details
 $list = $ColisC->listColis();
 foreach ($list as $c) {
-    if ($c['id_colis'] == $id_colis) {
-        $colis = $c;
-        break;
-    }
+  if ($c['id_colis'] == $id_colis) {
+    $colis = $c;
+    break;
+  }
 }
 
 if (!$colis) {
-    die("Colis not found");
+  die("Colis not found");
 }
 
 // Handle form submission
@@ -29,20 +29,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
 
   $ColisC->updateColis(
-      $id_colis,
-      $_POST['id_client'],
-      $id_covoit,
-      $_POST['statut'],
-      $_POST['date_colis'],
-      $_POST['longueur'],
-      $_POST['largeur'],
-      $_POST['hauteur'],
-      $_POST['poids'],
-      $_POST['latitude_ram'],
-      $_POST['longitude_ram'],
-      $_POST['latitude_dest'],
-      $_POST['longitude_dest'],
-      $_POST['prix']
+    $id_colis,
+    $_POST['id_client'],
+    $id_covoit,
+    $_POST['statut'],
+    $_POST['date_colis'],
+    $_POST['longueur'],
+    $_POST['largeur'],
+    $_POST['hauteur'],
+    $_POST['poids'],
+    $_POST['latitude_ram'],
+    $_POST['longitude_ram'],
+    $_POST['latitude_dest'],
+    $_POST['longitude_dest'],
+    $_POST['prix']
   );
 
   header("Location: ColisList.php"); // Redirect to the colis list
@@ -53,6 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,26 +67,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       text-align: center;
       margin-bottom: 2rem;
     }
-    
+
     .section-header h2 {
       margin-top: 0.5rem;
       margin-bottom: 1rem;
     }
-    
+
     .tracking-form {
       display: flex;
       justify-content: center;
       max-width: 600px;
       margin: 0 auto;
     }
-    
+
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
     }
-    
+
     .feature-card {
       text-align: center;
       padding: 2rem;
@@ -94,23 +95,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease;
     }
-    
+
     .feature-card:hover {
       transform: translateY(-5px);
     }
-    
+
     .pricing-table-container {
       display: flex;
       justify-content: center;
       margin-top: 2rem;
     }
-    
+
     .faq-container {
       max-width: 800px;
       margin: 0 auto;
     }
   </style>
 </head>
+
 <body>
   <header class="landing-header">
     <div class="container">
@@ -146,8 +148,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Service de Livraison de Colis</h1>
         <p>Envoyez vos colis de manière écologique et économique partout en Tunisie.</p>
         <div style="text-align: center;">
-  <a href="ColisList.php" class="btn btn-primary">Mes Colis</a>
-</div>
+          <a href="ColisList.php" class="btn btn-primary">Mes Colis</a>
+        </div>
       </div>
     </section>
 
@@ -159,144 +161,146 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <p>Remplissez le formulaire ci-dessous pour calculer le prix de votre envoi.</p>
         </div>
         <div class="colis-form-container">
-        <form class="colis-form" method="POST">
-      <input type="hidden" name="id_client" id="id_client" value="3">
-      <br>
-    <input type="hidden" name="id_covoit" id="id_covoit" value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
+          <form class="colis-form" method="POST">
+            <input type="hidden" name="id_client" id="id_client" value="3">
+            <br>
+            <input type="hidden" name="id_covoit" id="id_covoit"
+              value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
 
-  <div class="form-group">
-    <label for="date_colis">Date d'envoi</label>
-    <input type="date" name="date_colis" id="date_colis"
-           value="<?php echo htmlspecialchars($colis['date_colis']); ?>">
-  </div>
-  <br>
-  <input type="hidden" name="statut" id="statut" value="<?php echo htmlspecialchars($colis['statut']); ?>">
+            <div class="form-group">
+              <label for="date_colis">Date d'envoi</label>
+              <input type="date" name="date_colis" id="date_colis"
+                value="<?php echo htmlspecialchars($colis['date_colis']); ?>">
+            </div>
+            <br>
+            <input type="hidden" name="statut" id="statut" value="<?php echo htmlspecialchars($colis['statut']); ?>">
 
-  <div class="form-row">
-    <div class="form-group">
-      <label for="dimensions">Dimensions (cm)</label>
-      <div class="dimensions-inputs">
-        <input type="number" name="longueur" id="longueur" placeholder="L"
-               value="<?php echo htmlspecialchars($colis['longueur']); ?>">
-        <span>×</span>
-        <input type="number" name="largeur" id="largeur" placeholder="l"
-               value="<?php echo htmlspecialchars($colis['largeur']); ?>">
-        <span>×</span>
-        <input type="number" name="hauteur" id="hauteur" placeholder="H"
-               value="<?php echo htmlspecialchars($colis['hauteur']); ?>">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="poids">Poids (kg)</label>
-      <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1"
-             value="<?php echo htmlspecialchars($colis['poids']); ?>">
-    </div>
-    <br>
-  </div>
-
-
-  <!-- Hidden coordinates -->
-  <input type="hidden" name="latitude_ram" id="latitude_ram"
-         value="<?php echo htmlspecialchars($colis['latitude_ram']); ?>">
-  <input type="hidden" name="longitude_ram" id="longitude_ram"
-         value="<?php echo htmlspecialchars($colis['longitude_ram']); ?>">
-  <input type="hidden" name="latitude_dest" id="latitude_dest"
-         value="<?php echo htmlspecialchars($colis['latitude_dest']); ?>">
-  <input type="hidden" name="longitude_dest" id="longitude_dest"
-         value="<?php echo htmlspecialchars($colis['longitude_dest']); ?>">
-
-  <!-- Hidden price field -->
-  <input type="hidden" name="prix" id="prix">
-  <br>
-  <div class="form-actions text-center">
-    <button type="submit" class="btn btn-primary">
-      Mettre à jour
-      <i class="fas fa-sync-alt"></i>
-    </button>
-  </div>
-</form>
-
-<div class="map-container">
-  <h3>Localisation</h3>
-  <div id="gmap_canvas" style="height: 400px; width: 400px;">
-    <!-- La carte Google Maps s'affichera ici -->
-  </div>
-
-  <div class="map-info" style="background-color: #f9f9f9; border-radius: 6px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 400px; margin: 5px auto;">
-  <p style="font-size: 14px; color: #333; line-height: 1.3; margin: 0;">
-    <i class="fas fa-info-circle" style="color: #86b391; margin-right: 6px;"></i>
-    <span style="font-weight: 600; color: #555;">Instructions:</span> 
-    <br>
-    <span>
-      <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
-      <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
-    </span>
-  </p>
-</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="dimensions">Dimensions (cm)</label>
+                <div class="dimensions-inputs">
+                  <input type="number" name="longueur" id="longueur" placeholder="L"
+                    value="<?php echo htmlspecialchars($colis['longueur']); ?>">
+                  <span>×</span>
+                  <input type="number" name="largeur" id="largeur" placeholder="l"
+                    value="<?php echo htmlspecialchars($colis['largeur']); ?>">
+                  <span>×</span>
+                  <input type="number" name="hauteur" id="hauteur" placeholder="H"
+                    value="<?php echo htmlspecialchars($colis['hauteur']); ?>">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="poids">Poids (kg)</label>
+                <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1"
+                  value="<?php echo htmlspecialchars($colis['poids']); ?>">
+              </div>
+              <br>
+            </div>
 
 
-  <!-- Replace with your actual API key -->
-  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script>
-  let map;
-  let pickupMarker = null;
-  let deliveryMarker = null;
-  let currentLocationMarker = null; // Marker for current location
-  let clickStep = 0;
+            <!-- Hidden coordinates -->
+            <input type="hidden" name="latitude_ram" id="latitude_ram"
+              value="<?php echo htmlspecialchars($colis['latitude_ram']); ?>">
+            <input type="hidden" name="longitude_ram" id="longitude_ram"
+              value="<?php echo htmlspecialchars($colis['longitude_ram']); ?>">
+            <input type="hidden" name="latitude_dest" id="latitude_dest"
+              value="<?php echo htmlspecialchars($colis['latitude_dest']); ?>">
+            <input type="hidden" name="longitude_dest" id="longitude_dest"
+              value="<?php echo htmlspecialchars($colis['longitude_dest']); ?>">
 
-  function initMap() {
-    const defaultLocation = { lat: 36.8980431, lng: 10.1888733 }; // Default location (Tunis)
+            <!-- Hidden price field -->
+            <input type="hidden" name="prix" id="prix">
+            <br>
+            <div class="form-actions text-center">
+              <button type="submit" class="btn btn-primary">
+                Mettre à jour
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </form>
 
-    // Initialize map with default location first
-    map = new google.maps.Map(document.getElementById("gmap_canvas"), {
-      center: defaultLocation,
-      zoom: 13,
-    });
+          <div class="map-container">
+            <h3>Localisation</h3>
+            <div id="gmap_canvas" style="height: 400px; width: 400px;">
+              <!-- La carte Google Maps s'affichera ici -->
+            </div>
 
-    // Add marker for the default location
-    new google.maps.Marker({
-      position: defaultLocation,
-      map: map,
-      title: "Default Location",
-    });
-
-    // Handle map clicks for setting pickup and delivery locations
-    map.addListener("click", function (event) {
-      const clickedLocation = event.latLng;
-
-      if (clickStep === 0) {
-        if (pickupMarker) pickupMarker.setMap(null); // Remove old pickup marker
-        pickupMarker = new google.maps.Marker({
-          position: clickedLocation,
-          map: map,
-          label: "A", // Pickup
-        });
-
-        document.getElementById("latitude_ram").value = clickedLocation.lat();
-        document.getElementById("longitude_ram").value = clickedLocation.lng();
-        clickStep = 1;
-        alert("Pickup location set. Now click to choose the delivery location.");
-      } else if (clickStep === 1) {
-        if (deliveryMarker) deliveryMarker.setMap(null); // Remove old delivery marker
-        deliveryMarker = new google.maps.Marker({
-          position: clickedLocation,
-          map: map,
-          label: "B", // Delivery
-        });
-
-        document.getElementById("latitude_dest").value = clickedLocation.lat();
-        document.getElementById("longitude_dest").value = clickedLocation.lng();
-        clickStep = 0;
-        alert("Delivery location set.");
-      }
-    });
-  }
-
-  window.onload = initMap;
-</script>
+            <div class="map-info"
+              style="background-color: #f9f9f9; border-radius: 6px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 400px; margin: 5px auto;">
+              <p style="font-size: 14px; color: #333; line-height: 1.3; margin: 0;">
+                <i class="fas fa-info-circle" style="color: #86b391; margin-right: 6px;"></i>
+                <span style="font-weight: 600; color: #555;">Instructions:</span>
+                <br>
+                <span>
+                  <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
+                  <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
+                </span>
+              </p>
+            </div>
 
 
-    </div>
+            <!-- Replace with your actual API key -->
+            <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+            <script>
+              let map;
+              let pickupMarker = null;
+              let deliveryMarker = null;
+              let currentLocationMarker = null; // Marker for current location
+              let clickStep = 0;
+
+              function initMap() {
+                const defaultLocation = { lat: 36.8980431, lng: 10.1888733 }; // Default location (Tunis)
+
+                // Initialize map with default location first
+                map = new google.maps.Map(document.getElementById("gmap_canvas"), {
+                  center: defaultLocation,
+                  zoom: 13,
+                });
+
+                // Add marker for the default location
+                new google.maps.Marker({
+                  position: defaultLocation,
+                  map: map,
+                  title: "Default Location",
+                });
+
+                // Handle map clicks for setting pickup and delivery locations
+                map.addListener("click", function (event) {
+                  const clickedLocation = event.latLng;
+
+                  if (clickStep === 0) {
+                    if (pickupMarker) pickupMarker.setMap(null); // Remove old pickup marker
+                    pickupMarker = new google.maps.Marker({
+                      position: clickedLocation,
+                      map: map,
+                      label: "A", // Pickup
+                    });
+
+                    document.getElementById("latitude_ram").value = clickedLocation.lat();
+                    document.getElementById("longitude_ram").value = clickedLocation.lng();
+                    clickStep = 1;
+                    alert("Pickup location set. Now click to choose the delivery location.");
+                  } else if (clickStep === 1) {
+                    if (deliveryMarker) deliveryMarker.setMap(null); // Remove old delivery marker
+                    deliveryMarker = new google.maps.Marker({
+                      position: clickedLocation,
+                      map: map,
+                      label: "B", // Delivery
+                    });
+
+                    document.getElementById("latitude_dest").value = clickedLocation.lat();
+                    document.getElementById("longitude_dest").value = clickedLocation.lng();
+                    clickStep = 0;
+                    alert("Delivery location set.");
+                  }
+                });
+              }
+
+              window.onload = initMap;
+            </script>
+
+
+          </div>
         </div>
       </div>
     </section>
@@ -320,7 +324,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </thead>
             <tbody>
               <tr>
-                <td>< 1kg</td>
+                <td>
+                  < 1kg</td>
                 <td>5 TND</td>
                 <td>8 TND</td>
                 <td>12 TND</td>
@@ -346,10 +351,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tbody>
           </table>
         </div>
-        <p class="pricing-note text-center">* Des frais supplémentaires peuvent s'appliquer pour les colis volumineux ou nécessitant une manipulation spéciale.</p>
+        <p class="pricing-note text-center">* Des frais supplémentaires peuvent s'appliquer pour les colis volumineux ou
+          nécessitant une manipulation spéciale.</p>
       </div>
     </section>
-    
+
     <section class="colis-features">
       <div class="container">
         <div class="section-header">
@@ -363,7 +369,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <i class="fas fa-leaf"></i>
             </div>
             <h3>Écologique</h3>
-            <p>Nos livraisons sont effectuées avec des véhicules à faible émission pour réduire l'impact environnemental.</p>
+            <p>Nos livraisons sont effectuées avec des véhicules à faible émission pour réduire l'impact
+              environnemental.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">
@@ -404,7 +411,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
-              <p>Vous remplissez le formulaire avec les détails de votre colis, nous calculons le prix, et après paiement, un de nos livreurs vient récupérer votre colis pour le livrer à destination.</p>
+              <p>Vous remplissez le formulaire avec les détails de votre colis, nous calculons le prix, et après
+                paiement, un de nos livreurs vient récupérer votre colis pour le livrer à destination.</p>
             </div>
           </div>
           <div class="faq-item">
@@ -413,7 +421,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
-              <p>Vous pouvez envoyer la plupart des objets non dangereux et non périssables. Les objets de valeur doivent être déclarés et assurés séparément.</p>
+              <p>Vous pouvez envoyer la plupart des objets non dangereux et non périssables. Les objets de valeur
+                doivent être déclarés et assurés séparément.</p>
             </div>
           </div>
           <div class="faq-item">
@@ -422,7 +431,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
-              <p>Après l'envoi, vous recevrez un numéro de suivi par email. Vous pourrez utiliser ce numéro sur notre site ou notre application pour suivre votre colis en temps réel.</p>
+              <p>Après l'envoi, vous recevrez un numéro de suivi par email. Vous pourrez utiliser ce numéro sur notre
+                site ou notre application pour suivre votre colis en temps réel.</p>
             </div>
           </div>
         </div>
@@ -487,4 +497,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </footer>
   <script src="assets/js/colisValidation.js"></script>
 </body>
+
 </html>

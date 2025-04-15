@@ -7,6 +7,7 @@ $list = $ReclamationC->listReclamation();
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,22 +24,22 @@ $list = $ReclamationC->listReclamation();
       font-size: 0.85rem;
       font-weight: 500;
     }
-    
+
     .status.pending {
       background-color: #fff3cd;
       color: #856404;
     }
-    
+
     .status.in-progress {
       background-color: #cce5ff;
       color: #004085;
     }
-    
+
     .status.resolved {
       background-color: #d4edda;
       color: #155724;
     }
-    
+
     .priority {
       display: inline-block;
       padding: 0.25rem 0.75rem;
@@ -46,29 +47,29 @@ $list = $ReclamationC->listReclamation();
       font-size: 0.85rem;
       font-weight: 500;
     }
-    
+
     .priority.low {
       background-color: #e2e3e5;
       color: #383d41;
     }
-    
+
     .priority.medium {
       background-color: #fff3cd;
       color: #856404;
     }
-    
+
     .priority.high {
       background-color: #f8d7da;
       color: #721c24;
     }
-    
+
     .dashboard-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-    
+
     .stat-box {
       background-color: #fff;
       border-radius: 8px;
@@ -77,42 +78,42 @@ $list = $ReclamationC->listReclamation();
       display: flex;
       flex-direction: column;
     }
-    
+
     .stat-box .stat-title {
       font-size: 0.9rem;
       color: #6c757d;
       margin-bottom: 0.5rem;
     }
-    
+
     .stat-box .stat-value {
       font-size: 1.75rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
-    
+
     .stat-box .stat-icon {
       align-self: flex-end;
       margin-top: -2.5rem;
       font-size: 1.5rem;
       opacity: 0.2;
     }
-    
+
     .stat-box.primary {
       border-left: 4px solid #1f4f65;
     }
-    
+
     .stat-box.success {
       border-left: 4px solid #28a745;
     }
-    
+
     .stat-box.warning {
       border-left: 4px solid #ffc107;
     }
-    
+
     .stat-box.danger {
       border-left: 4px solid #dc3545;
     }
-    
+
     .complaints-filters {
       display: flex;
       flex-wrap: wrap;
@@ -122,47 +123,50 @@ $list = $ReclamationC->listReclamation();
       padding: 1rem;
       border-radius: 8px;
     }
-    
+
     .filter-item {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    
+
     .filter-item label {
       font-weight: 500;
       font-size: 0.9rem;
     }
-    
-    .filter-item select, .filter-item input {
+
+    .filter-item select,
+    .filter-item input {
       padding: 0.5rem;
       border: 1px solid #ced4da;
       border-radius: 4px;
     }
-    
+
     .filter-actions {
       margin-left: auto;
     }
-    
-    .complaints-table th, .complaints-table td {
+
+    .complaints-table th,
+    .complaints-table td {
       padding: 0.75rem 1rem;
     }
-    
+
     .complaints-table th {
       background-color: #f8f9fa;
       font-weight: 600;
     }
-    
+
     .complaints-table tr:hover {
       background-color: #f8f9fa;
     }
-    
+
     .action-btn {
       width: 32px;
       height: 32px;
     }
   </style>
 </head>
+
 <body>
   <div class="dashboard">
     <aside class="sidebar">
@@ -175,7 +179,7 @@ $list = $ReclamationC->listReclamation();
           <i class="fas fa-bars"></i>
         </button>
       </div>
-      
+
       <div class="sidebar-content">
         <nav class="sidebar-menu">
           <ul>
@@ -224,8 +228,8 @@ $list = $ReclamationC->listReclamation();
           </ul>
         </nav>
       </div>
-      
-      
+
+
       <div class="sidebar-footer">
         <a href="#" class="user-profile">
           <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
@@ -240,7 +244,7 @@ $list = $ReclamationC->listReclamation();
         </a>
       </div>
     </aside>
-    
+
     <main class="main-content">
       <header class="dashboard-header">
         <div class="header-left">
@@ -254,7 +258,7 @@ $list = $ReclamationC->listReclamation();
           </div>
         </div>
       </header>
-      
+
       <div class="dashboard-content">
         <!-- Stats Overview -->
         <div class="dashboard-stats">
@@ -279,7 +283,7 @@ $list = $ReclamationC->listReclamation();
             <div class="stat-icon"><i class="fas fa-clock"></i></div>
           </div>
         </div>
-        
+
         <!-- Filters -->
         <div class="complaints-filters">
           <div class="filter-item">
@@ -314,7 +318,7 @@ $list = $ReclamationC->listReclamation();
             <button class="btn secondary">Réinitialiser</button>
           </div>
         </div>
-        
+
         <div class="crud-container">
           <div class="crud-header">
             <div class="tabs">
@@ -324,52 +328,52 @@ $list = $ReclamationC->listReclamation();
               <button class="tab-btn" data-tab="resolved">Résolues</button>
             </div>
           </div>
-          
+
           <!-- Table View -->
           <div class="view-container table-view active">
             <div class="complaints-table-container">
               <table class="complaints-table">
                 <thead>
                   <tr>
+                    <th>ID</th>
                     <th>Client</th>
                     <th>Objet</th>
                     <th>Date</th>
                     <th>Covoiturage</th>
-                    <th>Date</th>
                     <th>Description</th>
                     <th>Statut</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-  <?php foreach ($list as $rec): ?>
-    <tr>
-      <td><?= $rec['id_rec'] ?></td>
-      <td><?= htmlspecialchars($rec['id_client']) ?></td>
-      <td><?= htmlspecialchars($rec['id_covoit']) ?></td>
-      <td><?= htmlspecialchars($rec['date_rec']) ?></td>
-      <td><?= htmlspecialchars($rec['objet']) ?></td>
-      <td><?= htmlspecialchars($rec['description']) ?></td>
-      <td><?= htmlspecialchars($rec['statut']) ?></td>
-      <td class="actions">
-        <form method="GET" action="updateRec.php" style="display:inline;">
-          <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
-          <button type="submit" class="action-btn edit" title="Modifier">
-            <i class="fas fa-edit"></i>
-          </button>
-        </form>
+                  <?php foreach ($list as $rec): ?>
+                    <tr>
+                      <td><?= $rec['id_rec'] ?></td>
+                      <td><?= htmlspecialchars($rec['id_client']) ?></td>
+                      <td><?= htmlspecialchars($rec['objet']) ?></td>
+                      <td><?= htmlspecialchars($rec['date_rec']) ?></td>
+                      <td><?= htmlspecialchars($rec['id_covoit']) ?></td>
+                      <td><?= htmlspecialchars($rec['description']) ?></td>
+                      <td><?= htmlspecialchars($rec['statut']) ?></td>
+                      <td class="actions">
+                        <form method="GET" action="updateRec.php" style="display:inline;">
+                          <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
+                          <button type="submit" class="action-btn edit" title="Modifier">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </form>
 
-        <form method="POST" action="deleteRec.php" style="display:inline;" 
-              onsubmit="return confirm('Are you sure you want to delete this reclamation?');">
-          <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
-          <button type="submit" class="action-btn delete" title="Supprimer">
-            <i class="fas fa-trash"></i>
-          </button>
-        </form>
-      </td>
-    </tr>
-  <?php endforeach; ?>
-</tbody>
+                        <form method="POST" action="deleteRec.php" style="display:inline;"
+                          onsubmit="return confirm('Are you sure you want to delete this reclamation?');">
+                          <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
+                          <button type="submit" class="action-btn delete" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
 
               </table>
             </div>
@@ -378,7 +382,7 @@ $list = $ReclamationC->listReclamation();
       </div>
     </main>
   </div>
-  
+
   <!-- Modal for Adding/Editing Complaint -->
   <div class="modal" id="complaint-modal">
     <div class="modal-content">
@@ -458,7 +462,7 @@ $list = $ReclamationC->listReclamation();
       </div>
     </div>
   </div>
-  
+
   <!-- Delete Confirmation Modal -->
   <div class="modal" id="delete-modal">
     <div class="modal-content">
@@ -478,7 +482,7 @@ $list = $ReclamationC->listReclamation();
 
   <script>
     // Sidebar Toggle
-    document.querySelector('.sidebar-toggle').addEventListener('click', function() {
+    document.querySelector('.sidebar-toggle').addEventListener('click', function () {
       document.querySelector('.sidebar').classList.toggle('collapsed');
       document.querySelector('.main-content').classList.toggle('expanded');
     });
@@ -486,10 +490,10 @@ $list = $ReclamationC->listReclamation();
     // Tab Switching
     const tabButtons = document.querySelectorAll('.tab-btn');
     tabButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         tabButtons.forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
-        
+
         // Filter complaints based on tab (for a real application, this would use AJAX to fetch filtered data)
         const tabName = this.getAttribute('data-tab');
         console.log(`Switching to tab: ${tabName}`);
@@ -500,54 +504,55 @@ $list = $ReclamationC->listReclamation();
     const complaintModal = document.getElementById('complaint-modal');
     const deleteModal = document.getElementById('delete-modal');
     const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
-    
+
     // Open Add Complaint Modal
-    document.getElementById('add-complaint-btn').addEventListener('click', function() {
+    document.getElementById('add-complaint-btn').addEventListener('click', function () {
       document.getElementById('modal-title').textContent = 'Ajouter une Réclamation';
       document.getElementById('complaint-form').reset();
       complaintModal.classList.add('active');
     });
-    
+
     // Open Edit Complaint Modal
     const editButtons = document.querySelectorAll('.edit');
     editButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         document.getElementById('modal-title').textContent = 'Modifier une Réclamation';
         // Here you would populate the form with the complaint data
         complaintModal.classList.add('active');
       });
     });
-    
+
     // Open Delete Confirmation Modal
     const deleteButtons = document.querySelectorAll('.delete');
     deleteButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         deleteModal.classList.add('active');
       });
     });
-    
+
     // Close Modals
     closeButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         complaintModal.classList.remove('active');
         deleteModal.classList.remove('active');
       });
     });
-    
+
     // Form Submit Handler (would normally use AJAX)
-    document.getElementById('complaint-form').addEventListener('submit', function(e) {
+    document.getElementById('complaint-form').addEventListener('submit', function (e) {
       e.preventDefault();
       // Here you would send the form data to the server
       alert('Réclamation enregistrée avec succès!');
       complaintModal.classList.remove('active');
     });
-    
+
     // Delete Confirmation Handler
-    document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+    document.getElementById('confirm-delete-btn').addEventListener('click', function () {
       // Here you would send a delete request to the server
       alert('Réclamation supprimée avec succès!');
       deleteModal.classList.remove('active');
     });
   </script>
 </body>
+
 </html>

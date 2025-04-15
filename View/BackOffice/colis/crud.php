@@ -6,6 +6,7 @@ $list = $ColisC->listColis();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,34 +23,34 @@ $list = $ColisC->listColis();
       font-size: 0.85rem;
       font-weight: 500;
     }
-    
+
     .status.pending {
       background-color: #fff3cd;
       color: #856404;
     }
-    
+
     .status.in-transit {
       background-color: #cce5ff;
       color: #004085;
     }
-    
+
     .status.delivered {
       background-color: #d4edda;
       color: #155724;
     }
-    
+
     .status.cancelled {
       background-color: #f8d7da;
       color: #721c24;
     }
-    
+
     .dashboard-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-    
+
     .stat-box {
       background-color: #fff;
       border-radius: 8px;
@@ -58,42 +59,42 @@ $list = $ColisC->listColis();
       display: flex;
       flex-direction: column;
     }
-    
+
     .stat-box .stat-title {
       font-size: 0.9rem;
       color: #6c757d;
       margin-bottom: 0.5rem;
     }
-    
+
     .stat-box .stat-value {
       font-size: 1.75rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
-    
+
     .stat-box .stat-icon {
       align-self: flex-end;
       margin-top: -2.5rem;
       font-size: 1.5rem;
       opacity: 0.2;
     }
-    
+
     .stat-box.primary {
       border-left: 4px solid #1f4f65;
     }
-    
+
     .stat-box.success {
       border-left: 4px solid #28a745;
     }
-    
+
     .stat-box.warning {
       border-left: 4px solid #ffc107;
     }
-    
+
     .stat-box.danger {
       border-left: 4px solid #dc3545;
     }
-    
+
     .colis-filters {
       display: flex;
       flex-wrap: wrap;
@@ -103,47 +104,50 @@ $list = $ColisC->listColis();
       padding: 1rem;
       border-radius: 8px;
     }
-    
+
     .filter-item {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    
+
     .filter-item label {
       font-weight: 500;
       font-size: 0.9rem;
     }
-    
-    .filter-item select, .filter-item input {
+
+    .filter-item select,
+    .filter-item input {
       padding: 0.5rem;
       border: 1px solid #ced4da;
       border-radius: 4px;
     }
-    
+
     .filter-actions {
       margin-left: auto;
     }
-    
-    .parcels-table th, .parcels-table td {
+
+    .parcels-table th,
+    .parcels-table td {
       padding: 0.75rem 1rem;
     }
-    
+
     .parcels-table th {
       background-color: #f8f9fa;
       font-weight: 600;
     }
-    
+
     .parcels-table tr:hover {
       background-color: #f8f9fa;
     }
-    
+
     .action-btn {
       width: 32px;
       height: 32px;
     }
   </style>
 </head>
+
 <body>
   <div class="dashboard">
     <aside class="sidebar">
@@ -156,7 +160,7 @@ $list = $ColisC->listColis();
           <i class="fas fa-bars"></i>
         </button>
       </div>
-      
+
       <div class="sidebar-content">
         <nav class="sidebar-menu">
           <ul>
@@ -205,7 +209,7 @@ $list = $ColisC->listColis();
           </ul>
         </nav>
       </div>
-      
+
       <div class="sidebar-footer">
         <a href="#" class="user-profile">
           <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
@@ -220,7 +224,7 @@ $list = $ColisC->listColis();
         </a>
       </div>
     </aside>
-    
+
     <main class="main-content">
       <header class="dashboard-header">
         <div class="header-left">
@@ -233,14 +237,14 @@ $list = $ColisC->listColis();
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
-  <a href="addColis.php" class="btn primary">
-    <i class="fas fa-plus"></i> Ajouter un Colis
-  </a>
-</div>
+            <a href="addColis.php" class="btn primary">
+              <i class="fas fa-plus"></i> Ajouter un Colis
+            </a>
+          </div>
 
         </div>
       </header>
-      
+
       <div class="dashboard-content">
         <!-- Stats Overview -->
         <div class="dashboard-stats">
@@ -265,7 +269,7 @@ $list = $ColisC->listColis();
             <div class="stat-icon"><i class="fas fa-clock"></i></div>
           </div>
         </div>
-        
+
         <!-- Filters -->
         <div class="colis-filters">
           <div class="filter-item">
@@ -295,7 +299,7 @@ $list = $ColisC->listColis();
             <button class="btn secondary">Réinitialiser</button>
           </div>
         </div>
-        
+
         <div class="crud-container">
           <div class="crud-header">
             <div class="tabs">
@@ -305,66 +309,66 @@ $list = $ColisC->listColis();
               <button class="tab-btn" data-tab="delivered">Livrés</button>
             </div>
           </div>
-          
+
           <!-- Table View -->
           <div class="view-container table-view active">
             <div class="colis-table-container">
               <table class="parcels-table">
                 <thead>
                   <tr>
-                  <th>ID</th>
-                  <th>Client</th>
-                  <th>Covoit</th>
-                  <th>Date.d'envoi</th>
-                  <th>Dimensions (L × l × H)</th>
-                  <th>Poids</th>
-                  <th>Latitude Ram</th>
-                  <th>Longitude Ram</th>
-                  <th>Latitude Dest</th>
-                  <th>Longitude Dest</th>
-                  <th>Statut</th>
-                  <th>Prix</th>
-                  <th>Actions</th>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Covoit</th>
+                    <th>Date.d'envoi</th>
+                    <th>Dimensions (L × l × H)</th>
+                    <th>Poids</th>
+                    <th>Latitude Ram</th>
+                    <th>Longitude Ram</th>
+                    <th>Latitude Dest</th>
+                    <th>Longitude Dest</th>
+                    <th>Statut</th>
+                    <th>Prix</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-  <?php foreach ($list as $colis): ?>
-    <tr>
-      <td><?= $colis['id_colis'] ?></td>
-      <td><?= htmlspecialchars($colis['id_client']) ?></td>
-      <td><?= htmlspecialchars($colis['id_covoit']) ?></td>
-      <td><?= htmlspecialchars($colis['date_colis']) ?></td>
-      <td>
-        <?= number_format($colis['longueur'], 2) ?> × 
-        <?= number_format($colis['largeur'], 2) ?> × 
-        <?= number_format($colis['hauteur'], 2) ?> cm
-      </td>
-      <td><?= number_format($colis['poids'], 2) ?> kg</td>
-      <td><?= htmlspecialchars($colis['latitude_ram']) ?></td>
-      <td><?= htmlspecialchars($colis['longitude_ram']) ?></td>
-      <td><?= htmlspecialchars($colis['latitude_dest']) ?></td>
-      <td><?= htmlspecialchars($colis['longitude_dest']) ?></td>
-      <td><?= htmlspecialchars($colis['statut']) ?></td>
-      <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
-      <td class="actions">
-        <form method="GET" action="updateColis.php" style="display:inline;">
-          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-          <button type="submit" class="action-btn edit" title="Modifier">
-            <i class="fas fa-edit"></i>
-          </button>
-        </form>
+                  <?php foreach ($list as $colis): ?>
+                    <tr>
+                      <td><?= $colis['id_colis'] ?></td>
+                      <td><?= htmlspecialchars($colis['id_client']) ?></td>
+                      <td><?= htmlspecialchars($colis['id_covoit']) ?></td>
+                      <td><?= htmlspecialchars($colis['date_colis']) ?></td>
+                      <td>
+                        <?= number_format($colis['longueur'], 2) ?> ×
+                        <?= number_format($colis['largeur'], 2) ?> ×
+                        <?= number_format($colis['hauteur'], 2) ?> cm
+                      </td>
+                      <td><?= number_format($colis['poids'], 2) ?> kg</td>
+                      <td><?= htmlspecialchars($colis['latitude_ram']) ?></td>
+                      <td><?= htmlspecialchars($colis['longitude_ram']) ?></td>
+                      <td><?= htmlspecialchars($colis['latitude_dest']) ?></td>
+                      <td><?= htmlspecialchars($colis['longitude_dest']) ?></td>
+                      <td><?= htmlspecialchars($colis['statut']) ?></td>
+                      <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
+                      <td class="actions">
+                        <form method="GET" action="updateColis.php" style="display:inline;">
+                          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
+                          <button type="submit" class="action-btn edit" title="Modifier">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </form>
 
-        <form method="POST" action="deleteColis.php" style="display:inline;" 
-              onsubmit="return confirm('Are you sure you want to delete this colis?');">
-          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-          <button type="submit" class="action-btn delete" title="Supprimer">
-            <i class="fas fa-trash"></i>
-          </button>
-        </form>
-      </td>
-    </tr>
-  <?php endforeach; ?>
-</tbody>
+                        <form method="POST" action="deleteColis.php" style="display:inline;"
+                          onsubmit="return confirm('Are you sure you want to delete this colis?');">
+                          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
+                          <button type="submit" class="action-btn delete" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
 
               </table>
             </div>
@@ -373,7 +377,7 @@ $list = $ColisC->listColis();
       </div>
     </main>
   </div>
-  
+
   <!-- Delete Confirmation Modal -->
   <div class="modal" id="delete-modal">
     <div class="modal-content">
@@ -393,7 +397,7 @@ $list = $ColisC->listColis();
 
   <script>
     // Sidebar Toggle
-    document.querySelector('.sidebar-toggle').addEventListener('click', function() {
+    document.querySelector('.sidebar-toggle').addEventListener('click', function () {
       document.querySelector('.sidebar').classList.toggle('collapsed');
       document.querySelector('.main-content').classList.toggle('expanded');
     });
@@ -401,10 +405,10 @@ $list = $ColisC->listColis();
     // Tab Switching
     const tabButtons = document.querySelectorAll('.tab-btn');
     tabButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         tabButtons.forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
-        
+
         // Filter colis based on tab (for a real application, this would use AJAX to fetch filtered data)
         const tabName = this.getAttribute('data-tab');
         console.log(`Switching to tab: ${tabName}`);
@@ -415,54 +419,55 @@ $list = $ColisC->listColis();
     const colisModal = document.getElementById('colis-modal');
     const deleteModal = document.getElementById('delete-modal');
     const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
-    
+
     // Open Add Colis Modal
-    document.getElementById('add-colis-btn').addEventListener('click', function() {
+    document.getElementById('add-colis-btn').addEventListener('click', function () {
       document.getElementById('modal-title').textContent = 'Ajouter un Colis';
       document.getElementById('colis-form').reset();
       colisModal.classList.add('active');
     });
-    
+
     // Open Edit Colis Modal
     const editButtons = document.querySelectorAll('.edit');
     editButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         document.getElementById('modal-title').textContent = 'Modifier un Colis';
         // Here you would populate the form with the colis data
         colisModal.classList.add('active');
       });
     });
-    
+
     // Open Delete Confirmation Modal
     const deleteButtons = document.querySelectorAll('.delete');
     deleteButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         deleteModal.classList.add('active');
       });
     });
-    
+
     // Close Modals
     closeButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         colisModal.classList.remove('active');
         deleteModal.classList.remove('active');
       });
     });
-    
+
     // Form Submit Handler (would normally use AJAX)
-    document.getElementById('colis-form').addEventListener('submit', function(e) {
+    document.getElementById('colis-form').addEventListener('submit', function (e) {
       e.preventDefault();
       // Here you would send the form data to the server
       alert('Colis enregistré avec succès!');
       colisModal.classList.remove('active');
     });
-    
+
     // Delete Confirmation Handler
-    document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+    document.getElementById('confirm-delete-btn').addEventListener('click', function () {
       // Here you would send a delete request to the server
       alert('Colis supprimé avec succès!');
       deleteModal.classList.remove('active');
     });
   </script>
 </body>
+
 </html>

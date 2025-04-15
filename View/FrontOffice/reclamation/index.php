@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $_POST['date_rec'],
           $_POST['statut']
       );
-      header("Location: index.php");
+      header("Location: RecList.php");
       exit();
   } else {
       echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="hero-content">
         <h1>Service de Réclamations</h1>
         <p>Votre satisfaction est notre priorité. Nous sommes à votre écoute pour résoudre tout problème rencontré.</p>
-        <a href="ColisList.php" class="btn btn-primary">Mes Réclamations</a>
+        <a href="RecList.php" class="btn btn-primary">Mes Réclamations</a>
       </div>
     </section>
 
