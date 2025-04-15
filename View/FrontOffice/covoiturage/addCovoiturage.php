@@ -13,26 +13,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prix = filter_input(INPUT_POST, 'prix', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION); 
     $tempsDepart = filter_input(INPUT_POST, 'temps_depart', FILTER_SANITIZE_STRING);
     $placesDispo = filter_input(INPUT_POST, 'places_dispo', FILTER_SANITIZE_NUMBER_INT);
-   // Convert "oui" and "non" to 1 and 0
-   $accepteColis = ($accepteColis === 'oui') ? 1 : 0;
-   $colisComplet = ($colisComplet === 'oui') ? 1 : 0;
+  // Convert "oui" and "non" to 1 and 0
+if ($accepteColis === 'oui') {
+    $accepteColis = 1;
+} elseif ($accepteColis === 'non') {
+    $accepteColis = 0;
+} else {
+    echo "Erreur : Veuillez indiquer si vous acceptez les colis.";
+    exit;
+}
 
-    // Validate required fields
-    if (!$dateDepart || !$placesDispo || !$lieuDepart || !$lieuArrivee || !$accepteColis || !$colisComplet || !$tempsDepart || !$prix) {
-        echo "Erreur : Tous les champs sont obligatoires.";
-        exit;
-    }
+if ($colisComplet === 'oui') {
+    $colisComplet = 1;
+} elseif ($colisComplet === 'non') {
+    $colisComplet = 0;
+} else {
+    echo "Erreur : Veuillez indiquer si les colis sont complets.";
+    exit;
+}
 
-    // Validate the length of the details field
-    if (!empty($details) && strlen($details) > 100) {
-        echo "Erreur : Le champ 'Détails supplémentaires' ne peut pas dépasser 100 caractères.";
-        exit;
-    }
 
-    // If details is empty, set it to null
-    if (empty($details)) {
-        $details = null;
-    }
+  
+   
+
+    
 
     // Validate the number of available seats
     if (!$placesDispo || $placesDispo <= 0) {
