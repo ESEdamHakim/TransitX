@@ -1,3 +1,28 @@
+<?php
+require_once '../../../Controller/ReclamationController.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (
+      isset($_POST['id_client'], $_POST['statut'], $_POST['date_rec'],
+      $_POST['objet'], $_POST['description'], $_POST['id_covoit'])
+  ) {
+      $ReclamationC = new ReclamationController();
+      $ReclamationC->addReclamation(
+          $_POST['id_client'],
+          $_POST['id_covoit'],  
+          $_POST['objet'],
+          $_POST['description'],
+          $_POST['date_rec'],
+          $_POST['statut']
+      );
+      header("Location: index.php");
+      exit();
+  } else {
+      echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -43,19 +68,14 @@
       <div class="hero-content">
         <h1>Service de Réclamations</h1>
         <p>Votre satisfaction est notre priorité. Nous sommes à votre écoute pour résoudre tout problème rencontré.</p>
+        <a href="ColisList.php" class="btn btn-primary">Mes Réclamations</a>
       </div>
     </section>
 
     <section class="reclamation-content">
       <div class="container">
-        <div class="section-header">
-          <span class="badge">Assistance</span>
-          <h2>Comment pouvons-nous vous aider ?</h2>
-          <p>Nous sommes là pour vous aider à résoudre tout problème que vous pourriez rencontrer avec nos services.</p>
-        </div>
         <div class="reclamation-tabs">
           <button class="tab-btn active" data-tab="new">Nouvelle réclamation</button>
-          <button class="tab-btn" data-tab="track">Suivre ma réclamation</button>
           <button class="tab-btn" data-tab="faq">Questions fréquentes</button>
         </div>
 
@@ -66,38 +86,38 @@
               <p>Veuillez remplir le formulaire ci-dessous avec autant de détails que possible pour nous permettre de traiter votre demande efficacement.</p>
             </div>
 
-            <form class="reclamation-form">
-              <div class="form-section">
+            <form class="reclamation-form"  method="POST">
 
               <div class="form-section">
                 <h3>Détails de la réclamation</h3>
+                <input type="hidden" name="id_client" id="id_client" value="3">
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="complaint-type">Nature de la réclamation</label>
-                    <select id="complaint-type" required>
+                    <label for="complaint-type">Objet de la réclamation</label>
+                    <select id="complaint-type" name="objet" required>
                       <option value="">Sélectionner</option>
-                      <option value="delay">Retard</option>
-                      <option value="cancellation">Annulation</option>
-                      <option value="damage">Dommage</option>
-                      <option value="service">Qualité de service</option>
-                      <option value="billing">Facturation</option>
-                      <option value="other">Autre</option>
+                      <option value="Retard">Retard</option>
+                      <option value="Annulation">Annulation</option>
+                      <option value="Dommage">Dommage</option>
+                      <option value="Qualité de service">Qualité de service</option>
+                      <option value="Facturation">Facturation</option>
+                      <option value="Autre">Autre</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="incident-date">Date de l'incident</label>
-                  <input type="date" id="incident-date" required>
+                  <input type="date" name="date_rec" id="incident-date" required>
+                </div>
+                <div class="form-group">
+                  <label for="id_covoit">ID Covoiturage</label>
+                  <input type="number" name="id_covoit" id="id_covoit" step="1">
                 </div>
                 <div class="form-group">
                   <label for="description">Description détaillée</label>
-                  <textarea id="description" rows="5" required placeholder="Veuillez décrire votre problème en détail..."></textarea>
+                  <textarea name="description" id="description" rows="5" required placeholder="Veuillez décrire votre problème en détail..."></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="attachments">Pièces jointes (optionnel)</label>
-                  <input type="file" id="attachments" multiple>
-                  <small>Vous pouvez joindre des photos, reçus ou autres documents pertinents (max 5MB par fichier)</small>
-                </div>
+                <input type="hidden" name="statut" id="statut" value="En attente">
               </div>
 
               <div class="form-actions">
@@ -108,79 +128,7 @@
               </div>
             </form>
           </div>
-
-          <div class="tab-pane" id="track-reclamation">
-            <div class="form-intro">
-              <h2>Suivre ma réclamation</h2>
-              <p>Entrez votre numéro de référence pour suivre l'état de votre réclamation.</p>
-            </div>
-            <div class="tracking-form">
-              <div class="form-group">
-                <label for="reference-number">Numéro de référence</label>
-                <input type="text" id="reference-number" placeholder="Ex: REC-123456">
-              </div>
-              <button type="submit" class="btn btn-primary">
-                Vérifier
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-            <div class="tracking-result" style="display: none;">
-              <h3>Statut de votre réclamation</h3>
-              <div class="status-timeline">
-                <div class="status-step completed">
-                  <div class="step-icon"><i class="fas fa-check"></i></div>
-                  <div class="step-content">
-                    <h4>Réclamation reçue</h4>
-                    <p>Nous avons bien reçu votre réclamation.</p>
-                    <span class="step-date">12 Juin 2023</span>
-                  </div>
-                </div>
-                <div class="status-step completed">
-                  <div class="step-icon"><i class="fas fa-check"></i></div>
-                  <div class="step-content">
-                    <h4>En cours d'examen</h4>
-                    <p>Notre équipe examine votre dossier.</p>
-                    <span class="step-date">13 Juin 2023</span>
-                  </div>
-                </div>
-                <div class="status-step active">
-                  <div class="step-icon"><i class="fas fa-sync-alt"></i></div>
-                  <div class="step-content">
-                    <h4>Traitement en cours</h4>
-                    <p>Des actions sont en cours pour résoudre votre problème.</p>
-                    <span class="step-date">En cours</span>
-                  </div>
-                </div>
-                <div class="status-step">
-                  <div class="step-icon"><i class="fas fa-hourglass-half"></i></div>
-                  <div class="step-content">
-                    <h4>Solution proposée</h4>
-                    <p>Une résolution vous a été proposée.</p>
-                  </div>
-                </div>
-                <div class="status-step">
-                  <div class="step-icon"><i class="fas fa-check-circle"></i></div>
-                  <div class="step-content">
-                    <h4>Réclamation clôturée</h4>
-                    <p>Votre dossier a été résolu.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="agent-response">
-                <h4>Message de votre conseiller</h4>
-                <div class="message">
-                  <p>Bonjour, nous avons bien pris en compte votre réclamation concernant le retard de votre bus. Nous analysons actuellement la situation et reviendrons vers vous dans les 48 heures avec une proposition. Nous vous remercions pour votre patience.</p>
-                  <p class="signature">- Marie Dubois, Service Client</p>
-                </div>
-              </div>
-              <div class="reply-section">
-                <h4>Ajouter un commentaire</h4>
-                <textarea rows="3" placeholder="Écrivez votre message ici..."></textarea>
-                <button class="btn btn-primary">Envoyer</button>
-              </div>
-            </div>
-          </div>
-
+          
           <div class="tab-pane" id="faq-reclamation">
             <div class="form-intro">
               <h2>Questions fréquentes</h2>
