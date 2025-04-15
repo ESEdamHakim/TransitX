@@ -68,42 +68,10 @@
 
             <form class="reclamation-form">
               <div class="form-section">
-                <h3>Vos informations</h3>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="name">Nom complet</label>
-                    <input type="text" id="name" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="phone">Téléphone</label>
-                    <input type="tel" id="phone">
-                  </div>
-                  <div class="form-group">
-                    <label for="order-number">Numéro de réservation (si applicable)</label>
-                    <input type="text" id="order-number">
-                  </div>
-                </div>
-              </div>
 
               <div class="form-section">
                 <h3>Détails de la réclamation</h3>
                 <div class="form-row">
-                  <div class="form-group">
-                    <label for="service-type">Type de service concerné</label>
-                    <select id="service-type" required>
-                      <option value="">Sélectionner</option>
-                      <option value="bus">Bus</option>
-                      <option value="colis">Colis</option>
-                      <option value="covoiturage">Covoiturage</option>
-                      <option value="autre">Autre</option>
-                    </select>
-                  </div>
                   <div class="form-group">
                     <label for="complaint-type">Nature de la réclamation</label>
                     <select id="complaint-type" required>
