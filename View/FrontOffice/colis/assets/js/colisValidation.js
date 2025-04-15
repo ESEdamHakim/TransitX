@@ -12,20 +12,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const latDest = parseFloat(document.getElementById("latitude_dest").value);
     const lonDest = parseFloat(document.getElementById("longitude_dest").value);
 
-    if (!dateColis || isNaN(longueur) || isNaN(largeur) || isNaN(hauteur) || isNaN(poids)) {
-      alert("Veuillez remplir tous les champs de dimensions et le poids.");
-      e.preventDefault();
-      return;
+    const errors = [];
+
+    // Date validation
+    if (!dateColis) {
+      errors.push("La date du colis est requise.");
+    } else {
+      const today = new Date();
+      const selectedDate = new Date(dateColis);
+      today.setHours(0, 0, 0, 0);
+      selectedDate.setHours(0, 0, 0, 0);
+
+      if (selectedDate < today) {
+        errors.push("La date du colis ne peut pas être dans le passé.");
+      }
     }
 
-    if (!latRam || !lonRam || !latDest || !lonDest) {
-      alert("Veuillez sélectionner les emplacements sur la carte.");
-      e.preventDefault();
-      return;
+    // Dimension and weight validation
+    if (isNaN(longueur) || isNaN(largeur) || isNaN(hauteur) || isNaN(poids)) {
+      errors.push("Veuillez remplir tous les champs de dimensions et le poids.");
     }
 
     if (longueur < 1 || largeur < 1 || hauteur < 1 || poids < 0.1) {
-      alert("Dimensions et poids doivent être supérieurs à zéro.");
+      errors.push("Dimensions et poids doivent être supérieurs à zéro.");
+    }
+
+    //  Map coordinates validation
+    if (isNaN(latRam) || isNaN(lonRam) || isNaN(latDest) || isNaN(lonDest)) {
+      errors.push("Veuillez sélectionner les emplacements sur la carte.");
+    }
+
+    //  Show errors if any
+    if (errors.length > 0) {
+      alert(errors.join("\n"));
       e.preventDefault();
       return;
     }
@@ -35,15 +54,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Calculate price based on distance and weight
     const price = calculatePrice(poids, distance);
-    console.log(`Price: ${price}`);
+    console.log(`Prix calculé: ${price} TND`);
 
-    // Update the hidden input field for price
-    document.getElementById("prix").value = price; // Set the value to the calculated price
+    // Set hidden input field value for price
+    document.getElementById("prix").value = price;
   });
 
-  // Function to calculate distance
+  // Function to calculate distance using Haversine formula
   function calculateDistance(lat1, lon1, lat2, lon2) {
-    const earthRadius = 6371; // in km
+    const earthRadius = 6371; // in kilometers
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -53,12 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return earthRadius * c;
   }
 
-  // Function to convert degrees to radians
+  // Convert degrees to radians
   function deg2rad(deg) {
     return deg * (Math.PI / 180);
   }
 
-  // Function to calculate price based on weight and distance
+  // Price calculation logic
   function calculatePrice(weight, distance) {
     if (weight < 1) {
       if (distance < 10) return 5;

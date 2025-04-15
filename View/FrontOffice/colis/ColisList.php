@@ -468,8 +468,8 @@ $list = $ColisC->listColis();
     <thead>
       <tr>
         <th>ID</th>
-        <th>Covoiturage</th>
-        <th>Date d'envoi</th>
+        <th>Covoit</th>
+        <th>Date.d'envoi</th>
         <th>Dimensions (L × l × H)</th>
         <th>Poids</th>
         <th>Latitude Ram</th>
