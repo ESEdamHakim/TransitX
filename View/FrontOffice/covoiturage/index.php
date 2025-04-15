@@ -313,47 +313,58 @@
   document.querySelector('.dashboard-btn').style.display = 'inline-flex';
   document.querySelector('.logout-btn').style.display = 'inline-flex';
 
-  // Handle "Détails supplémentaires" dropdown and text area
-  function updateDetailsInput() {
-    const select = document.getElementById('details-options');
-    const textarea = document.getElementById('ride-details');
-    const errorMessage = document.getElementById('details-error');
+  // Form validation and submission
+  document.addEventListener("DOMContentLoaded", () => {
+  const createRideForm = document.querySelector(".create-ride-form");
 
-    // Clear any previous error message
-    errorMessage.textContent = '';
+  createRideForm.addEventListener("submit", function (e) {
+    // Get form fields
+    const lieuDepart = document.getElementById("start-point").value.trim();
+    const lieuArrivee = document.getElementById("end-point").value.trim();
+    const dateDepart = document.getElementById("ride-date").value.trim();
+    const tempsDepart = document.getElementById("ride-time").value.trim();
+    const placesDispo = parseInt(document.getElementById("seats").value);
+    const prix = parseFloat(document.getElementById("price-per-seat").value);
+    const accepteColis = document.getElementById("accept-parcels").value.trim();
+    const colisComplet = document.getElementById("full-parcels").value.trim();
+    const details = document.getElementById("ride-details").value.trim();
 
-    if (select.value === 'custom') {
-      textarea.value = ''; // Clear the text area for custom input
-      textarea.placeholder = 'Ajoutez votre propre détail ici...';
-      textarea.focus();
-    } else if (select.value) {
-      textarea.value = select.value; // Set the selected option in the text area
-    }
-  }
-
-  // Attach the updateDetailsInput function to the dropdown
-  document.getElementById('details-options').addEventListener('change', updateDetailsInput);
-
-  // Ensure the textarea value is synchronized before form submission
-  document.querySelector('.create-ride-form').addEventListener('submit', function(event) {
-    const select = document.getElementById('details-options');
-    const textarea = document.getElementById('ride-details');
-    const errorMessage = document.getElementById('details-error');
-
-    // Clear any previous error message
-    errorMessage.textContent = '';
-
-    // Allow the field to be optional (skip validation if empty)
-    if (!textarea.value.trim()) {
-      return; // Allow form submission if the field is empty
+    // Validate required fields
+    if (!lieuDepart || !lieuArrivee || !dateDepart || !tempsDepart || !details) {
+      alert("Veuillez remplir tous les champs obligatoires.");
+      e.preventDefault();
+      return;
     }
 
-    // Check if the textarea value exceeds 100 characters
-    if (textarea.value.length > 100) {
-      errorMessage.textContent = "Le détail ne peut pas dépasser 100 caractères.";
-      event.preventDefault(); // Prevent form submission
+    // Validate numeric fields
+    if (isNaN(placesDispo) || placesDispo <= 0) {
+      alert("Le nombre de places disponibles doit être supérieur à zéro.");
+      e.preventDefault();
+      return;
     }
+
+    if (isNaN(prix) || prix <= 0) {
+      alert("Le prix par place doit être supérieur à zéro.");
+      e.preventDefault();
+      return;
+    }
+
+    // Validate select fields
+    if (!accepteColis) {
+      alert("Veuillez indiquer si vous acceptez les colis.");
+      e.preventDefault();
+      return;
+    }
+
+    if (!colisComplet) {
+      alert("Veuillez indiquer si les colis sont complets.");
+      e.preventDefault();
+      return;
+    }
+
+    // If all validations pass, the form will be submitted
   });
+});
 </script>
 </body>
 </html>
