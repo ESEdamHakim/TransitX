@@ -187,8 +187,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <br>
   <div class="form-actions text-center">
     <button type="submit" class="btn btn-primary">
-      Calculer le prix
-      <i class="fas fa-calculator"></i>
+      Valider
+      <i class="fas fa-add"></i>
     </button>
   </div>
 </form>
