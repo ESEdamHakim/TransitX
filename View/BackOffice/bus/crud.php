@@ -1,7 +1,12 @@
 <?php
-include("..\..\..\Controller\buscontroller.php");
+include("../../../Controller/buscontroller.php");
+include("../../../Controller/trajetcontroller.php");
+
 $controller = new BusController();
 $buslist = $controller->listBuses();
+
+$controller_trajet = new TrajetController();
+$trajetlist = $controller_trajet->listTrajets();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -94,17 +99,27 @@ $buslist = $controller->listBuses();
     <main class="main-content">
       <header class="dashboard-header">
         <div class="header-left">
-          <h1>Gestion des Bus</h1>
-          <p>Ajoutez, modifiez et supprimez des bus</p>
+          <h1 >Gestion des Bus et des Trajets </h1>
+          <p>Ajoutez, modifiez et supprimez des bus et des trajets</p>
         </div>
         <div class="header-right">
           <div class="search-bar">
             <input type="text" placeholder="Rechercher un bus...">
             <button><i class="fas fa-search"></i></button>
           </div>
+          <div class="search-bar">
+            <input type="text" placeholder="Rechercher un trajet...">
+            <button><i class="fas fa-search"></i></button>
+          </div>
           <div class="actions">
-          <a href="addbus.php" class="btn primary" id="add-bus-btn">
+          <a href="addbus.php" class="btn primary" id="add-bus-btn" style="padding: 4px 8px; font-size: 12px;">
   <i class="fas fa-plus"></i> Ajouter un Bus
+</a>
+</div>
+
+<div class="actions">
+          <a href="addtrajet.php" class="btn primary" id="add-trajet-btn" style="padding: 4px 8px; font-size: 12px;">
+  <i class="fas fa-plus"></i> Ajouter un Trajet
 </a>
 
           </div>
@@ -165,11 +180,51 @@ $buslist = $controller->listBuses();
   </td>
 </tr>
 <?php endforeach; ?>
-
 </tbody>
+</table>
+</div>
 
+<!-- Table View -->
+<div class="buses-table-container">
+  <table class="buses-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Lieu de Départ</th>
+        <th>Lieu d'Arrivée</th>
+        <th>Heure de Départ</th>
+        <th>Durée</th>
+        <th>Distance (km)</th>
+        <th>Prix (TND)</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($trajetlist as $trajet): ?>
+    <tr>
+      <td><?= htmlspecialchars($trajet['id_trajet']) ?></td>
+      <td><?= htmlspecialchars($trajet['place_depart']) ?></td>
+      <td><?= htmlspecialchars($trajet['place_arrivee']) ?></td>
+      <td><?= htmlspecialchars($trajet['heure_depart']) ?></td>
+      <td><?= htmlspecialchars($trajet['duree']) ?></td>
+      <td><?= htmlspecialchars($trajet['distance_km']) ?></td>
+      <td><?= htmlspecialchars($trajet['prix']) ?></td>
+      <td class="actions">
+        <form method="GET" action="updatetrajet.php" style="display:inline;">
+          <input type="hidden" name="id_trajet" value="<?= htmlspecialchars($trajet['id_trajet']) ?>">
+          <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
+        </form>
+        <form method="GET" action="deletetrajet.php" onsubmit="return confirm('Êtes-vous sûr ?');" style="display:inline;">
+          <input type="hidden" name="id_trajet" value="<?= htmlspecialchars($trajet['id_trajet']) ?>">
+          <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
+        </form>
+      </td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
   </table>
 </div>
+
 
       </div>
     </main>

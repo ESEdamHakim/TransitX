@@ -630,3 +630,12 @@
 .form-actions {
   margin-top: 2rem;
 }
+.error {
+  border: 1px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+}

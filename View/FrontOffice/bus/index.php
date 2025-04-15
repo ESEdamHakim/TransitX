@@ -1,3 +1,8 @@
+<?php
+include("../../../Controller/trajetcontroller.php");
+$controller_trajet = new TrajetController();
+$trajetlist = $controller_trajet->listTrajets();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -56,15 +61,15 @@
           <form class="search-form">
             <div class="form-group">
               <label for="departure">Départ</label>
-              <input type="text" id="departure" placeholder="Ville de départ">
+              <input type="text" id="departure" placeholder="Place de départ">
             </div>
             <div class="form-group">
               <label for="arrival">Arrivée</label>
-              <input type="text" id="arrival" placeholder="Ville d'arrivée">
+              <input type="text" id="arrival" placeholder="Place d'arrivée">
             </div>
             <div class="form-group">
-              <label for="date">Date</label>
-              <input type="date" id="date">
+              <label for="heure de départ">heure de départ</label>
+              <input type="heure_départ_rech" id="heure_départ_rech" placeholder="HH:MM">
             </div>
             <button type="submit" class="btn btn-primary">
               Rechercher
@@ -75,122 +80,45 @@
       </div>
     </section>
 
-    <section class="popular-routes">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Trajets</span>
-          <h2>Trajets populaires</h2>
-          <p>Découvrez nos trajets les plus populaires et réservez dès maintenant.</p>
-        </div>
-        <div class="route-cards">
-          <div class="route-card">
-            <div class="route-info">
-              <div class="route-cities">
-                <span class="departure">Tunis</span>
-                <i class="fas fa-long-arrow-alt-right"></i>
-                <span class="arrival">Sousse</span>
-              </div>
-              <div class="route-details">
-                <div class="detail">
-                  <i class="fas fa-clock"></i>
-                  <span>2h30</span>
-                </div>
-                <div class="detail">
-                  <i class="fas fa-calendar-alt"></i>
-                  <span>Quotidien</span>
-                </div>
-                <div class="detail">
-                  <i class="fas fa-bus"></i>
-                  <span>Bus Électrique</span>
-                </div>
-              </div>
+    <section class="bus-routes">
+  <div class="container">
+    <div class="section-header">
+      <span class="badge">Trajets</span>
+      <h2>Les trajets</h2>
+    </div>
+    <div class="route-cards">
+      <?php foreach ($trajetlist as $trajet): ?>
+        <div class="route-card">
+          <div class="route-info">
+            <div class="route-cities">
+              <span class="departure"><?= htmlspecialchars($trajet['place_depart']) ?></span>
+              <i class="fas fa-long-arrow-alt-right"></i>
+              <span class="arrival"><?= htmlspecialchars($trajet['place_arrivee']) ?></span>
             </div>
-            <div class="route-price">
-              <span class="price">25 TND</span>
-              <a href="#" class="btn btn-primary">Voir les horaires</a>
+            <div class="route-details">
+              <div class="detail">
+              <i class="fas fa-clock"></i>
+              <span><?= htmlspecialchars($trajet['heure_depart']) ?></span>
+              </div> 
+              <div class="detail">
+              <i class="fas fa-hourglass-start"></i>
+                <span><?= htmlspecialchars($trajet['duree']) ?></span>
+              </div>
+              <div class="detail">
+                <i class="fas fa-road"></i>
+                <span><?= htmlspecialchars($trajet['distance_km']) ?> km</span>
+              </div>
             </div>
           </div>
-
-          <div class="route-card">
-            <div class="route-info">
-              <div class="route-cities">
-                <span class="departure">Sousse</span>
-                <i class="fas fa-long-arrow-alt-right"></i>
-                <span class="arrival">Sfax</span>
-              </div>
-              <div class="route-details">
-                <div class="detail">
-                  <i class="fas fa-clock"></i>
-                  <span>3h15</span>
-                </div>
-                <div class="detail">
-                  <i class="fas fa-calendar-alt"></i>
-                  <span>Quotidien</span>
-                </div>
-                <div class="detail">
-                  <i class="fas fa-bus"></i>
-                  <span>Bus Hybride</span>
-                </div>
-              </div>
-            </div>
-            <div class="route-price">
-              <span class="price">30 TND</span>
-              <a href="#" class="btn btn-primary">Voir les horaires</a>
-            </div>
-          </div>
-
-          <div class="route-card">
-            <div class="route-info">
-              <div class="route-cities">
-                <span class="departure">Tunis</span>
-                <i class="fas fa-long-arrow-alt-right"></i>
-                <span class="arrival">Hammamet</span>
-              </div>
-              <div class="route-details">
-                <div class="detail">
-                  <i class="fas fa-clock"></i>
-                  <span>1h45</span>
-                </div>
-                <div class="detail">
-                  <i class="fas fa-calendar-alt"></i>
-                  <span>Quotidien</span>
-                </div>
-                <div class="detail">
-                  <i class="fas fa-bus"></i>
-                  <span>Bus Électrique</span>
-                </div>
-              </div>
-            </div>
-            <div class="route-price">
-              <span class="price">15 TND</span>
-              <a href="#" class="btn btn-primary">Voir les horaires</a>
-            </div>
+          <div class="route-price">
+            <span class="price"><?= htmlspecialchars($trajet['prix']) ?> TND</span>
+            <a href="#" class="btn btn-primary">Inoformations sur le bus</a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="bus-info">
-      <div class="container">
-        <div class="service-item">
-          <div class="service-content">
-            <span class="badge">Écologie</span>
-            <h3>Nos Bus Écologiques</h3>
-            <p>Chez TransitX, nous nous engageons à réduire notre empreinte carbone en utilisant une flotte de bus écologiques. Nos véhicules sont équipés des dernières technologies pour assurer un confort optimal tout en respectant l'environnement.</p>
-            <ul class="features-list">
-              <li><i class="fas fa-leaf"></i> Émissions de CO₂ réduites</li>
-              <li><i class="fas fa-wifi"></i> Wi-Fi gratuit à bord</li>
-              <li><i class="fas fa-plug"></i> Prises électriques</li>
-              <li><i class="fas fa-wheelchair"></i> Accessibilité PMR</li>
-              <li><i class="fas fa-snowflake"></i> Climatisation</li>
-            </ul>
-          </div>
-          <div class="service-image">
-            <img src="../../assets/images/bus-service.jpg" alt="Eco-friendly Bus">
-          </div>
-        </div>
-      </div>
-    </section>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
 
     <section class="bus-map">
       <div class="container">

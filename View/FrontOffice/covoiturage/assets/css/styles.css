@@ -82,12 +82,12 @@
   margin-top: 1rem;
 }
 
-/* Popular Routes */
-.popular-routes {
+/* bus Routes */
+.bus-routes {
   padding: 5rem 5%;
 }
 
-.popular-routes h2 {
+.bus-routes h2 {
   text-align: center;
   margin-bottom: 3rem;
   color: var(--secondary-1);

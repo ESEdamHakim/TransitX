@@ -89,12 +89,12 @@
       </div>
     </section>
 
-    <section class="popular-routes">
+    <section class="bus-routes">
       <div class="container">
         <div class="section-header">
           <span class="badge">Trajets</span>
-          <h2>Trajets populaires</h2>
-          <p>Découvrez les trajets les plus demandés par notre communauté.</p>
+          <h2>Les trajets</h2>
+          <p>Découvrez les trajets.</p>
         </div>
         <div class="route-cards">
           <div class="route-card">
