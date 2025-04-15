@@ -106,27 +106,27 @@
   <div class="form-row">
     <div class="form-group">
       <label for="start-point">Point de départ</label>
-      <input type="text" id="start-point" name="lieu_depart" placeholder="Ville de départ" required>
+      <input type="text" id="start-point" name="lieu_depart" placeholder="Ville de départ" >
     </div>
     <div class="form-group">
       <label for="end-point">Destination</label>
-      <input type="text" id="end-point" name="lieu_arrivee" placeholder="Ville d'arrivée" required>
+      <input type="text" id="end-point" name="lieu_arrivee" placeholder="Ville d'arrivée" >
     </div>
   </div>
   <div class="form-row">
     <div class="form-group">
       <label for="ride-date">Date</label>
-      <input type="date" id="ride-date" name="date_depart" required>
+      <input type="date" id="ride-date" name="date_depart" >
     </div>
     <div class="form-group">
       <label for="ride-time">Heure</label>
-      <input type="time" id="ride-time" name="temps_depart" required>
+      <input type="time" id="ride-time" name="temps_depart" >
     </div>
   </div>
   <div class="form-row">
     <div class="form-group">
       <label for="seats">Places disponibles</label>
-      <select id="seats" name="places_dispo" required>
+      <select id="seats" name="places_dispo" >
         <option value="1">1 place</option>
         <option value="2">2 places</option>
         <option value="3">3 places</option>
@@ -135,38 +135,37 @@
     </div>
     <div class="form-group">
       <label for="price-per-seat">Prix par place (TND)</label>
-      <input type="number" id="price-per-seat" name="prix" min="1" step="1" required>
+      <input type="number" id="price-per-seat" name="prix" min="1" step="1" >
     </div>
   </div>
   <div class="form-row">
     <div class="form-group">
       <label for="accept-parcels">Accepte les colis</label>
-      <select id="accept-parcels" name="accepte_colis" required>
+      <select id="accept-parcels" name="accepte_colis" >
         <option value="oui">Oui</option>
         <option value="non">Non</option>
       </select>
     </div>
     <div class="form-group">
       <label for="full-parcels">Colis complet</label>
-      <select id="full-parcels" name="colis_complet" required>
+      <select id="full-parcels" name="colis_complet" >
         <option value="oui">Oui</option>
         <option value="non">Non</option>
       </select>
     </div>
   </div>
   <div class="form-group">
-    <label for="ride-details">Détails supplémentaires</label>
-    <select id="details-options" class="form-control" onchange="updateDetailsInput()">
-    <option value="">Sélectionnez un détail</option>
-    <option value="Bagages légers uniquement.">✅ Bagages légers uniquement.</option>
-    <option value="Trajet non-fumeur.">✅ Trajet non-fumeur.</option>
-    <option value="Merci d’être ponctuel.">✅ Merci d’être ponctuel.</option>
-    <option value="Pas de retard accepté.">✅ Pas de retard accepté.</option>
-    <option value="custom">Autre (ajoutez votre propre détail)</option>
-  </select>
-    <textarea id="ride-details" name="details" rows="3" maxlength="100" placeholder="Précisez les détails de votre trajet (arrêts, bagages autorisés, etc.)"></textarea>
-    <span id="details-error" style="color: red; font-size: 0.9em;"></span>
-  </div>
+  <label for="ride-details">Détails supplémentaires</label>
+  <textarea 
+    id="ride-details" 
+    name="details" 
+    rows="3" 
+    maxlength="100" 
+    placeholder="Précisez les détails de votre trajet (arrêts, bagages autorisés, etc.)"
+    class="form-control">
+  </textarea>
+  <span id="details-error" style="color: red; font-size: 0.9em;"></span>
+</div>
   <button type="submit" class="btn btn-primary">
     Publier le trajet
     <i class="fas fa-paper-plane"></i>
@@ -303,68 +302,6 @@
     </div>
   </footer>
 
-  <script>
-  // Mobile menu toggle
-  document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-    document.querySelector('.main-nav').classList.toggle('active');
-  });
-
-  // Ensure dashboard button is visible
-  document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-  document.querySelector('.logout-btn').style.display = 'inline-flex';
-
-  // Form validation and submission
-  document.addEventListener("DOMContentLoaded", () => {
-  const createRideForm = document.querySelector(".create-ride-form");
-
-  createRideForm.addEventListener("submit", function (e) {
-    // Get form fields
-    const lieuDepart = document.getElementById("start-point").value.trim();
-    const lieuArrivee = document.getElementById("end-point").value.trim();
-    const dateDepart = document.getElementById("ride-date").value.trim();
-    const tempsDepart = document.getElementById("ride-time").value.trim();
-    const placesDispo = parseInt(document.getElementById("seats").value);
-    const prix = parseFloat(document.getElementById("price-per-seat").value);
-    const accepteColis = document.getElementById("accept-parcels").value.trim();
-    const colisComplet = document.getElementById("full-parcels").value.trim();
-    const details = document.getElementById("ride-details").value.trim();
-
-    // Validate required fields
-    if (!lieuDepart || !lieuArrivee || !dateDepart || !tempsDepart || !details) {
-      alert("Veuillez remplir tous les champs obligatoires.");
-      e.preventDefault();
-      return;
-    }
-
-    // Validate numeric fields
-    if (isNaN(placesDispo) || placesDispo <= 0) {
-      alert("Le nombre de places disponibles doit être supérieur à zéro.");
-      e.preventDefault();
-      return;
-    }
-
-    if (isNaN(prix) || prix <= 0) {
-      alert("Le prix par place doit être supérieur à zéro.");
-      e.preventDefault();
-      return;
-    }
-
-    // Validate select fields
-    if (!accepteColis) {
-      alert("Veuillez indiquer si vous acceptez les colis.");
-      e.preventDefault();
-      return;
-    }
-
-    if (!colisComplet) {
-      alert("Veuillez indiquer si les colis sont complets.");
-      e.preventDefault();
-      return;
-    }
-
-    // If all validations pass, the form will be submitted
-  });
-});
-</script>
+  <script src="validcovoiturage.js"></script>
 </body>
 </html>
