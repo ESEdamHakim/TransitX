@@ -14,6 +14,7 @@ $list = $ColisC->listColis();
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/colis.css">
+  <link rel="stylesheet" href="../../BackOffice/bus/assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
@@ -467,7 +468,6 @@ $list = $ColisC->listColis();
     <thead>
       <tr>
         <th>ID</th>
-        <th>Client</th>
         <th>Covoiturage</th>
         <th>Date d'envoi</th>
         <th>Dimensions (L × l × H)</th>
@@ -482,43 +482,44 @@ $list = $ColisC->listColis();
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($list as $colis): ?>
-        <tr>
-          <td><?= $colis['id_colis'] ?></td>
-          <td><?= htmlspecialchars($colis['id_client']) ?></td>
-          <td><?= htmlspecialchars($colis['id_covoit']) ?></td>
-          <td><?= htmlspecialchars($colis['date_colis']) ?></td>
-          <td>
-            <?= number_format($colis['longueur'], 2) ?> × 
-            <?= number_format($colis['largeur'], 2) ?> × 
-            <?= number_format($colis['hauteur'], 2) ?> cm
-          </td>
-          <td><?= number_format($colis['poids'], 2) ?> kg</td>
-          <td><?= $colis['latitude_ram'] ?></td>
-          <td><?= $colis['longitude_ram'] ?></td>
-          <td><?= $colis['latitude_dest'] ?></td>
-          <td><?= $colis['longitude_dest'] ?></td>
-          <td><?= htmlspecialchars($colis['statut']) ?></td>
-          <td><?= htmlspecialchars($colis['prix']) ?></td>
-          <td class="actions">
-          <form method="GET" action="updateColis.php" style="display:inline;">
-  <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-  <button type="submit" class="action-btn edit" title="Modifier">
-    <i class="fas fa-edit"></i>
-  </button>
-</form>
+  <?php foreach ($list as $colis): ?>
+    <?php if ($colis['id_client'] != 3) continue; ?>
+    <tr>
+      <td><?= $colis['id_colis'] ?></td>
+      <td><?= htmlspecialchars($colis['id_covoit']) ?></td>
+      <td><?= htmlspecialchars($colis['date_colis']) ?></td>
+      <td>
+        <?= number_format($colis['longueur'], 2) ?> × 
+        <?= number_format($colis['largeur'], 2) ?> × 
+        <?= number_format($colis['hauteur'], 2) ?> cm
+      </td>
+      <td><?= number_format($colis['poids'], 2) ?> kg</td>
+      <td><?= htmlspecialchars($colis['latitude_ram']) ?></td>
+      <td><?= htmlspecialchars($colis['longitude_ram']) ?></td>
+      <td><?= htmlspecialchars($colis['latitude_dest']) ?></td>
+      <td><?= htmlspecialchars($colis['longitude_dest']) ?></td>
+      <td><?= htmlspecialchars($colis['statut']) ?></td>
+      <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
+      <td class="actions">
+        <form method="GET" action="updateColis.php" style="display:inline;">
+          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
+          <button type="submit" class="action-btn edit" title="Modifier">
+            <i class="fas fa-edit"></i>
+          </button>
+        </form>
 
+        <form method="POST" action="deleteColis.php" style="display:inline;" 
+              onsubmit="return confirm('Are you sure you want to delete this colis?');">
+          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
+          <button type="submit" class="action-btn delete" title="Supprimer">
+            <i class="fas fa-trash"></i>
+          </button>
+        </form>
+      </td>
+    </tr>
+  <?php endforeach; ?>
+</tbody>
 
-            <form method="POST" action="deleteColis.php" onsubmit="return confirm('Are you sure you want to delete this colis?');" style="display:inline;">
-              <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-              <button type="submit" class="action-btn delete" title="Supprimer">
-                <i class="fas fa-trash"></i>
-              </button>
-            </form>
-          </td>
-        </tr>
-      <?php endforeach; ?>
-    </tbody>
   </table>
 </div>
 
@@ -584,11 +585,6 @@ $list = $ColisC->listColis();
   </footer>
 
   <script>
-    // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-      document.querySelector('.main-nav').classList.toggle('active');
-    });
-
     // Filters toggle
     document.querySelector('.filters-toggle').addEventListener('click', function() {
       const filtersContent = document.querySelector('.filters-content');

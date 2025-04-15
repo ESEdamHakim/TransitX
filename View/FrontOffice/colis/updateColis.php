@@ -26,25 +26,27 @@ if (!$colis) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $ColisC->updateColis(
-        $id_colis,
-        $_POST['id_client'],
-        $_POST['id_covoit'],
-        $_POST['statut'],
-        $_POST['date_colis'],
-        $_POST['longueur'],
-        $_POST['largeur'],
-        $_POST['hauteur'],
-        $_POST['poids'],
-        $_POST['latitude_ram'],
-        $_POST['longitude_ram'],
-        $_POST['latitude_dest'],
-        $_POST['longitude_dest'],
-        $_POST['prix']
-    );
+  $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
 
-    header("Location: ColisList.php"); // Redirect to the colis list
-    exit();
+  $ColisC->updateColis(
+      $id_colis,
+      $_POST['id_client'],
+      $id_covoit,
+      $_POST['statut'],
+      $_POST['date_colis'],
+      $_POST['longueur'],
+      $_POST['largeur'],
+      $_POST['hauteur'],
+      $_POST['poids'],
+      $_POST['latitude_ram'],
+      $_POST['longitude_ram'],
+      $_POST['latitude_dest'],
+      $_POST['longitude_dest'],
+      $_POST['prix']
+  );
+
+  header("Location: ColisList.php"); // Redirect to the colis list
+  exit();
 }
 ?>
 
@@ -156,18 +158,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <h2>Modifier un Colis</h2>
           <p>Remplissez le formulaire ci-dessous pour calculer le prix de votre envoi.</p>
         </div>
-        <script src="assets/js/colisValidation.js"></script>
         <div class="colis-form-container">
         <form class="colis-form" method="POST">
       <input type="hidden" name="id_client" id="id_client" value="3">
       <br>
-  <div class="form-group">
-    <label for="id_covoit">Carpool ID:
-      <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage"
-             value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
-    </label>
-  </div>
-  <br>
+    <input type="hidden" name="id_covoit" id="id_covoit" value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
+
   <div class="form-group">
     <label for="date_colis">Date d'envoi</label>
     <input type="date" name="date_colis" id="date_colis"
@@ -489,5 +485,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </footer>
+  <script src="assets/js/colisValidation.js"></script>
 </body>
 </html>

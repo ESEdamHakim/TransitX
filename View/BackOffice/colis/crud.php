@@ -1,3 +1,9 @@
+<?php
+require_once __DIR__ . '/../../../Controller/ColisController.php';
+
+$ColisC = new ColisController();
+$list = $ColisC->listColis();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -227,10 +233,11 @@
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
-            <button class="btn primary" id="add-colis-btn">
-              <i class="fas fa-plus"></i> Ajouter un Colis
-            </button>
-          </div>
+  <a href="addColis.php" class="btn primary">
+    <i class="fas fa-plus"></i> Ajouter un Colis
+  </a>
+</div>
+
         </div>
       </header>
       
@@ -284,8 +291,6 @@
               <option value="sfax">Sfax</option>
               <option value="monastir">Monastir</option>
             </select>
-          </div>
-          <div class="filter-actions">
             <button class="btn primary">Appliquer</button>
             <button class="btn secondary">Réinitialiser</button>
           </div>
@@ -307,148 +312,66 @@
               <table class="parcels-table">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Expéditeur</th>
-                    <th>Destinataire</th>
-                    <th>Adresse Livraison</th>
-                    <th>Date d'envoi</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
+                  <th>ID</th>
+                  <th>Client</th>
+                  <th>Covoit</th>
+                  <th>Date.d'envoi</th>
+                  <th>Dimensions (L × l × H)</th>
+                  <th>Poids</th>
+                  <th>Latitude Ram</th>
+                  <th>Longitude Ram</th>
+                  <th>Latitude Dest</th>
+                  <th>Longitude Dest</th>
+                  <th>Statut</th>
+                  <th>Prix</th>
+                  <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>C001</td>
-                    <td>Ahmed Ben Ali</td>
-                    <td>Sami Trabelsi</td>
-                    <td>123 Rue Habib Bourguiba, Tunis</td>
-                    <td>20/04/2025</td>
-                    <td><span class="status in-transit">En transit</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>C002</td>
-                    <td>Leila Mansour</td>
-                    <td>Karim Belhaj</td>
-                    <td>45 Avenue Mohamed V, Sousse</td>
-                    <td>19/04/2025</td>
-                    <td><span class="status delivered">Livré</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>C003</td>
-                    <td>Mohamed Khelifi</td>
-                    <td>Nadia Mansouri</td>
-                    <td>78 Rue Ibn Khaldoun, Sfax</td>
-                    <td>18/04/2025</td>
-                    <td><span class="status pending">En attente</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>C004</td>
-                    <td>Sarah Meddeb</td>
-                    <td>Yassine Jouini</td>
-                    <td>12 Avenue Habib Thameur, Monastir</td>
-                    <td>17/04/2025</td>
-                    <td><span class="status delivered">Livré</span></td>
-                    <td class="actions">
-                      <button class="action-btn view" title="Voir"><i class="fas fa-eye"></i></button>
-                      <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                      <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
+  <?php foreach ($list as $colis): ?>
+    <tr>
+      <td><?= $colis['id_colis'] ?></td>
+      <td><?= htmlspecialchars($colis['id_client']) ?></td>
+      <td><?= htmlspecialchars($colis['id_covoit']) ?></td>
+      <td><?= htmlspecialchars($colis['date_colis']) ?></td>
+      <td>
+        <?= number_format($colis['longueur'], 2) ?> × 
+        <?= number_format($colis['largeur'], 2) ?> × 
+        <?= number_format($colis['hauteur'], 2) ?> cm
+      </td>
+      <td><?= number_format($colis['poids'], 2) ?> kg</td>
+      <td><?= htmlspecialchars($colis['latitude_ram']) ?></td>
+      <td><?= htmlspecialchars($colis['longitude_ram']) ?></td>
+      <td><?= htmlspecialchars($colis['latitude_dest']) ?></td>
+      <td><?= htmlspecialchars($colis['longitude_dest']) ?></td>
+      <td><?= htmlspecialchars($colis['statut']) ?></td>
+      <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
+      <td class="actions">
+        <form method="GET" action="updateColis.php" style="display:inline;">
+          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
+          <button type="submit" class="action-btn edit" title="Modifier">
+            <i class="fas fa-edit"></i>
+          </button>
+        </form>
+
+        <form method="POST" action="deleteColis.php" style="display:inline;" 
+              onsubmit="return confirm('Are you sure you want to delete this colis?');">
+          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
+          <button type="submit" class="action-btn delete" title="Supprimer">
+            <i class="fas fa-trash"></i>
+          </button>
+        </form>
+      </td>
+    </tr>
+  <?php endforeach; ?>
+</tbody>
+
               </table>
-            </div>
-            <div class="pagination">
-              <button class="pagination-btn prev"><i class="fas fa-chevron-left"></i></button>
-              <button class="pagination-btn active">1</button>
-              <button class="pagination-btn">2</button>
-              <button class="pagination-btn">3</button>
-              <button class="pagination-btn next"><i class="fas fa-chevron-right"></i></button>
             </div>
           </div>
         </div>
       </div>
     </main>
-  </div>
-  
-  <!-- Modal for Adding/Editing Colis -->
-  <div class="modal" id="colis-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modal-title">Ajouter un Colis</h2>
-        <button class="close-modal"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <form id="colis-form">
-          <div class="form-group">
-            <label for="colis-sender">Expéditeur</label>
-            <input type="text" id="colis-sender" name="sender" required>
-          </div>
-          <div class="form-group">
-            <label for="colis-recipient">Destinataire</label>
-            <input type="text" id="colis-recipient" name="recipient" required>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="colis-pickup">Adresse de ramassage</label>
-              <input type="text" id="colis-pickup" name="pickup" required>
-            </div>
-            <div class="form-group">
-              <label for="colis-delivery">Adresse de livraison</label>
-              <input type="text" id="colis-delivery" name="delivery" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="colis-weight">Poids (kg)</label>
-              <input type="number" id="colis-weight" name="weight" min="0.1" step="0.1" required>
-            </div>
-            <div class="form-group">
-              <label for="colis-date">Date d'envoi</label>
-              <input type="date" id="colis-date" name="date" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="colis-status">Statut</label>
-              <select id="colis-status" name="status" required>
-                <option value="">Sélectionner un statut</option>
-                <option value="pending">En attente</option>
-                <option value="in-transit">En transit</option>
-                <option value="delivered">Livré</option>
-                <option value="cancelled">Annulé</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="colis-price">Prix (TND)</label>
-              <input type="number" id="colis-price" name="price" min="1" step="0.1" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="colis-description">Description</label>
-            <textarea id="colis-description" name="description" rows="3"></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn secondary cancel-btn">Annuler</button>
-            <button type="submit" class="btn primary">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
   </div>
   
   <!-- Delete Confirmation Modal -->

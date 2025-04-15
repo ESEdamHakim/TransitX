@@ -2,33 +2,35 @@
 require_once '../../../Controller/ColisController.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (
-        isset($_POST['id_client'], $_POST['id_covoit'], $_POST['statut'], $_POST['date_colis'],
-        $_POST['longueur'], $_POST['largeur'], $_POST['hauteur'], $_POST['poids'],
-        $_POST['latitude_ram'], $_POST['longitude_ram'], $_POST['latitude_dest'], $_POST['longitude_dest'],
-        $_POST['prix'])
-    ) {
-        $ColisC = new ColisController();
-        $ColisC->addColis(
-            $_POST['id_client'],
-            $_POST['id_covoit'],
-            $_POST['statut'],
-            $_POST['date_colis'],
-            $_POST['longueur'],
-            $_POST['largeur'],
-            $_POST['hauteur'],
-            $_POST['poids'],
-            $_POST['latitude_ram'],
-            $_POST['longitude_ram'],
-            $_POST['latitude_dest'],
-            $_POST['longitude_dest'],
-            $_POST['prix']
-        );
-        header("Location: ColisList.php");
-        exit();
-    } else {
-        echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
-    }
+  if (
+      isset($_POST['id_client'], $_POST['statut'], $_POST['date_colis'],
+      $_POST['longueur'], $_POST['largeur'], $_POST['hauteur'], $_POST['poids'],
+      $_POST['latitude_ram'], $_POST['longitude_ram'], $_POST['latitude_dest'], $_POST['longitude_dest'],
+      $_POST['prix'])
+  ) {
+      $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
+
+      $ColisC = new ColisController();
+      $ColisC->addColis(
+          $_POST['id_client'],
+          $id_covoit,
+          $_POST['statut'],
+          $_POST['date_colis'],
+          $_POST['longueur'],
+          $_POST['largeur'],
+          $_POST['hauteur'],
+          $_POST['poids'],
+          $_POST['latitude_ram'],
+          $_POST['longitude_ram'],
+          $_POST['latitude_dest'],
+          $_POST['longitude_dest'],
+          $_POST['prix']
+      );
+      header("Location: ColisList.php");
+      exit();
+  } else {
+      echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
+  }
 }
 ?>
 
@@ -144,13 +146,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="colis-form-container">
   <form class="colis-form" method="POST">
   <input type="hidden" name="id_client" id="id_client" value="3">
+
+  <input type="hidden" name="id_covoit" id="id_covoit" value="">
   <br>
-  <div class="form-group">
-    <label for="id_covoit">Carpool ID:
-      <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage">
-    </label>
-  </div>
-  <br>
+  
+
   <div class="form-group">
     <label for="date_colis">Date d'envoi</label>
     <input type="date" name="date_colis" id="date_colis">
@@ -169,14 +169,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
     </div>
   </div>
+  <br>
   <div class="form-group">
     <label for="poids">Poids (kg)</label>
     <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1">
   </div>
+  
   <br>
 </div>
 
-
+<br>
 <input type="hidden" name="latitude_ram" id="latitude_ram">
 <input type="hidden" name="longitude_ram" id="longitude_ram">
 <input type="hidden" name="latitude_dest" id="latitude_dest">
