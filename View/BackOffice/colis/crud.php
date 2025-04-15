@@ -233,13 +233,11 @@ $list = $ColisC->listColis();
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
-          <a href="addColis.php" class="btn primary">
-  <button type="button">
+  <a href="addColis.php" class="btn primary">
     <i class="fas fa-plus"></i> Ajouter un Colis
-  </button>
-</a>
+  </a>
+</div>
 
-          </div>
         </div>
       </header>
       
@@ -293,8 +291,6 @@ $list = $ColisC->listColis();
               <option value="sfax">Sfax</option>
               <option value="monastir">Monastir</option>
             </select>
-          </div>
-          <div class="filter-actions">
             <button class="btn primary">Appliquer</button>
             <button class="btn secondary">Réinitialiser</button>
           </div>

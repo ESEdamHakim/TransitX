@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const latDest = parseFloat(document.getElementById("latitude_dest").value);
       const lonDest = parseFloat(document.getElementById("longitude_dest").value);
   
-      if (!idCovoit || !dateColis || isNaN(longueur) || isNaN(largeur) || isNaN(hauteur) || isNaN(poids)) {
+      if (!dateColis || isNaN(longueur) || isNaN(largeur) || isNaN(hauteur) || isNaN(poids)) {
         alert("Veuillez remplir tous les champs de dimensions et le poids.");
         e.preventDefault();
         return;

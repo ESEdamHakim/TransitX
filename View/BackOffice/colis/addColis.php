@@ -2,33 +2,35 @@
 require_once '../../../Controller/ColisController.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (
-        isset($_POST['id_client'], $_POST['id_covoit'], $_POST['statut'], $_POST['date_colis'],
-        $_POST['longueur'], $_POST['largeur'], $_POST['hauteur'], $_POST['poids'],
-        $_POST['latitude_ram'], $_POST['longitude_ram'], $_POST['latitude_dest'], $_POST['longitude_dest'],
-        $_POST['prix'])
-    ) {
-        $ColisC = new ColisController();
-        $ColisC->addColis(
-            $_POST['id_client'],
-            $_POST['id_covoit'],
-            $_POST['statut'],
-            $_POST['date_colis'],
-            $_POST['longueur'],
-            $_POST['largeur'],
-            $_POST['hauteur'],
-            $_POST['poids'],
-            $_POST['latitude_ram'],
-            $_POST['longitude_ram'],
-            $_POST['latitude_dest'],
-            $_POST['longitude_dest'],
-            $_POST['prix']
-        );
-        header("Location: crud.php");
-        exit();
-    } else {
-        echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
-    }
+  if (
+      isset($_POST['id_client'], $_POST['statut'], $_POST['date_colis'],
+      $_POST['longueur'], $_POST['largeur'], $_POST['hauteur'], $_POST['poids'],
+      $_POST['latitude_ram'], $_POST['longitude_ram'], $_POST['latitude_dest'], $_POST['longitude_dest'],
+      $_POST['prix'])
+  ) {
+      $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
+
+      $ColisC = new ColisController();
+      $ColisC->addColis(
+          $_POST['id_client'],
+          $id_covoit,
+          $_POST['statut'],
+          $_POST['date_colis'],
+          $_POST['longueur'],
+          $_POST['largeur'],
+          $_POST['hauteur'],
+          $_POST['poids'],
+          $_POST['latitude_ram'],
+          $_POST['longitude_ram'],
+          $_POST['latitude_dest'],
+          $_POST['longitude_dest'],
+          $_POST['prix']
+      );
+      header("Location: crud.php");
+      exit();
+  } else {
+      echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
+  }
 }
 ?>
 
@@ -208,14 +210,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="colis-form-container">
             <form class="colis-form" method="POST">
               <div class="form-group">
-                <label for="id_client">Client ID:</label>
+                <label for="id_client">ID Client:</label>
                 <input type="number" name="id_client" id="id_client" placeholder="Entrez l'ID du client">
               </div>
 
-              <div class="form-group">
-                <label for="id_covoit">Carpool ID:</label>
-                <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage">
-              </div>
+              <input type="hidden" name="id_covoit" id="id_covoit" value="">
 
               <div class="form-group">
                 <label for="date_colis">Date d'envoi:</label>
@@ -224,7 +223,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
               <div class="form-group">
                 <label for="statut">Statut:</label>
-                <select name="statut" id="statut" class="form-group">
+                <select name="statut" id="statut" style="border: 1px solid #dddddd; border-radius: 5px; padding: 8px;">
                   <option value="en attente" selected>En attente</option>
                   <option value="en transit">En transit</option>
                   <option value="livré">Livré</option>
@@ -254,12 +253,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <input type="hidden" name="latitude_dest" id="latitude_dest">
               <input type="hidden" name="longitude_dest" id="longitude_dest">
               <input type="hidden" name="prix" id="prix">
-
+              </br>
               <div class="form-actions text-center">
-    <button type="submit" class="btn btn-primary">
+              <a href="crud.php" class="btn secondary">
+    Annuler
+    <i class="fas fa-times"></i>
+  </a>
+    <button type="submit" class="btn primary">
       Ajouter Colis
       <i class="fas fa-plus"></i>
-    </button>
+    </button>   
   </div>
             </form>
 

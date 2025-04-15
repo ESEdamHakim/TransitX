@@ -26,25 +26,27 @@ if (!$colis) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $ColisC->updateColis(
-        $id_colis,
-        $_POST['id_client'],
-        $_POST['id_covoit'],
-        $_POST['statut'],
-        $_POST['date_colis'],
-        $_POST['longueur'],
-        $_POST['largeur'],
-        $_POST['hauteur'],
-        $_POST['poids'],
-        $_POST['latitude_ram'],
-        $_POST['longitude_ram'],
-        $_POST['latitude_dest'],
-        $_POST['longitude_dest'],
-        $_POST['prix']
-    );
+  $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
 
-    header("Location: crud.php"); // Redirect to the colis list
-    exit();
+  $ColisC->updateColis(
+      $id_colis,
+      $_POST['id_client'],
+      $id_covoit,
+      $_POST['statut'],
+      $_POST['date_colis'],
+      $_POST['longueur'],
+      $_POST['largeur'],
+      $_POST['hauteur'],
+      $_POST['poids'],
+      $_POST['latitude_ram'],
+      $_POST['longitude_ram'],
+      $_POST['latitude_dest'],
+      $_POST['longitude_dest'],
+      $_POST['prix']
+  );
+
+  header("Location: crud.php"); // Redirect to the colis list
+  exit();
 }
 ?>
 
@@ -216,85 +218,105 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </aside>
 
     <main class="main-content">
-      <section>
-        <div class="container">
-          <div class="header-left">
-            <h2>Modifier un Colis</h2>
-            <p>Modifier le formulaire ci-dessous</p>
-          </div>
-          <div class="colis-form-container">
-            <form class="colis-form" method="POST">
-              <div class="form-group">
-                <label for="id_client">Client ID:</label>
-                <input type="number" name="id_client" id="id_client" placeholder="Entrez l'ID du client"
-             value="<?php echo htmlspecialchars($colis['id_client']); ?>">
-              </div>
+  <section>
+    <div class="container">
+      <div class="header-left">
+        <h2>Modifier un Colis</h2>
+        <p>Modifiez les informations ci-dessous</p>
+      </div>
 
-              <div class="form-group">
-    <label for="id_covoit">Carpool ID:
+      <div class="colis-form-container">
+        <form class="colis-form" method="POST">
+          <div class="form-group">
+            <label for="id_client">ID Client:</label>
+            <input type="number" name="id_client" id="id_client" required
+                   placeholder="Entrez l'ID du client"
+                   value="<?php echo htmlspecialchars($colis['id_client']); ?>">
+          </div>
+
+          <div class="form-group">
+    <label for="id_covoit">ID Covoiturage:
       <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage"
              value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
     </label>
   </div>
-  <br>
-  <div class="form-group">
-    <label for="date_colis">Date d'envoi</label>
-    <input type="date" name="date_colis" id="date_colis"
-           value="<?php echo htmlspecialchars($colis['date_colis']); ?>">
-  </div>
-  <br>
-  <input name="statut" id="statut" value="<?php echo htmlspecialchars($colis['statut']); ?>">
-  <div class="form-group">
-                <label for="statut">Statut:</label>
-                <select name="statut" id="statut" class="form-group">
-                  <option value="en attente" selected>En attente</option>
-                  <option value="en transit">En transit</option>
-                  <option value="livré">Livré</option>
-                </select>
-              </div>
 
-  <div class="form-row">
-    <div class="form-group">
-      <label for="dimensions">Dimensions (cm)</label>
-      <div class="dimensions-inputs">
-        <input type="number" name="longueur" id="longueur" placeholder="L"
-               value="<?php echo htmlspecialchars($colis['longueur']); ?>">
-        <span>×</span>
-        <input type="number" name="largeur" id="largeur" placeholder="l"
-               value="<?php echo htmlspecialchars($colis['largeur']); ?>">
-        <span>×</span>
-        <input type="number" name="hauteur" id="hauteur" placeholder="H"
-               value="<?php echo htmlspecialchars($colis['hauteur']); ?>">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="poids">Poids (kg)</label>
-      <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1"
-             value="<?php echo htmlspecialchars($colis['poids']); ?>">
-    </div>
-    <button type="submit" class="btn btn-primary">
-      Ajouter Colis
-      <i class="fas fa-plus"></i>
-    </button>
-  </div>
-            </form>
+          <div class="form-group">
+            <label for="date_colis">Date d'envoi:</label>
+            <input type="date" name="date_colis" id="date_colis"
+                   value="<?php echo htmlspecialchars($colis['date_colis']); ?>">
+          </div>
 
-            <div class="map-container">
-              <h3>Localisation</h3>
-              <div id="gmap_canvas" style="height: 400px; width: 100%;"></div>
-              <div class="map-info">
-                <p>
-                  <i class="fas fa-info-circle"></i>
-                  <strong>Instructions:</strong><br>
-                  <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
-                  <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
-                </p>
+          <div class="form-group">
+  <label for="statut">Statut:</label>
+  <select name="statut" id="statut" style="border: 1px solid #dddddd; border-radius: 5px; padding: 8px;">
+    <option value="en attente" <?php if ($colis['statut'] == 'en attente') echo 'selected'; ?>>En attente</option>
+    <option value="en transit" <?php if ($colis['statut'] == 'en transit') echo 'selected'; ?>>En transit</option>
+    <option value="livré" <?php if ($colis['statut'] == 'livré') echo 'selected'; ?>>Livré</option>
+  </select>
+</div>
+
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dimensions">Dimensions (cm)</label>
+              <div class="dimensions-inputs">
+                <input type="number" name="longueur" id="longueur" placeholder="L" step="1"
+                       value="<?php echo htmlspecialchars($colis['longueur']); ?>">
+                <span>×</span>
+                <input type="number" name="largeur" id="largeur" placeholder="l" step="1"
+                       value="<?php echo htmlspecialchars($colis['largeur']); ?>">
+                <span>×</span>
+                <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1"
+                       value="<?php echo htmlspecialchars($colis['hauteur']); ?>">
               </div>
             </div>
+
+            <div class="form-group">
+              <label for="poids">Poids (kg):</label>
+              <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1"
+                     value="<?php echo htmlspecialchars($colis['poids']); ?>">
+            </div>
+          </div>
+
+          <!-- Hidden fields for coordinates and price -->
+          <input type="hidden" name="latitude_ram" id="latitude_ram" value="<?php echo htmlspecialchars($colis['latitude_ram']); ?>">
+          <input type="hidden" name="longitude_ram" id="longitude_ram" value="<?php echo htmlspecialchars($colis['longitude_ram']); ?>">
+          <input type="hidden" name="latitude_dest" id="latitude_dest" value="<?php echo htmlspecialchars($colis['latitude_dest']); ?>">
+          <input type="hidden" name="longitude_dest" id="longitude_dest" value="<?php echo htmlspecialchars($colis['longitude_dest']); ?>">
+          <input type="hidden" name="prix" id="prix" value="<?php echo htmlspecialchars($colis['prix']); ?>">
+            </br>
+          <div class="form-actions text-center">
+          <a href="crud.php" class="btn secondary">
+    Annuler
+    <i class="fas fa-times"></i>
+  </a>
+            <button type="submit" class="btn primary">
+              Mettre à jour
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+        </form>
+
+        <!-- Map Container -->
+        <div class="map-container">
+          <h3>Localisation</h3>
+          <div id="gmap_canvas" style="height: 400px; width: 100%;"></div>
+          <div class="map-info">
+            <p>
+              <i class="fas fa-info-circle"></i>
+              <strong>Instructions :</strong><br>
+              <strong>1:</strong> Cliquez sur la carte pour sélectionner l’adresse de <strong>ramassage</strong><br>
+              <strong>2:</strong> Cliquez encore pour définir l’adresse de <strong>livraison</strong>.
+            </p>
           </div>
         </div>
-      </section>
-    </main>
+
+      </div>
+    </div>
+  </section>
+</main>
+
   </div>
 
 
