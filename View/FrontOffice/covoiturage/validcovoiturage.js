@@ -41,6 +41,7 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
         return;
       }
   
+    
       // Validate numeric fields
       if (isNaN(placesDispo) || placesDispo <= 0) {
         alert("Le nombre de places disponibles doit être supérieur à zéro.");
@@ -49,7 +50,11 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
       }
   
       if (isNaN(prix) || prix <= 0) {
-        alert("Le prix par place doit être supérieur à zéro.");
+        if (prix < 0) {
+          alert("Le prix par place ne peut pas être négatif.");
+        } else {
+          alert("Le prix par place doit être supérieur à zéro.");
+        }
         e.preventDefault();
         return;
       }

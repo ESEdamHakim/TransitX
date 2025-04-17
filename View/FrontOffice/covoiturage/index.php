@@ -102,7 +102,7 @@
       </div>
     </section>
 
-    <form class="create-ride-form" action="addCovoiturage.php" method="POST">
+    <form class="create-ride-form" action="addCovoiturage.php" method="POST"> <!--novalidate-->
   <div class="form-row">
     <div class="form-group">
       <label for="start-point">Point de départ</label>
@@ -135,7 +135,7 @@
     </div>
     <div class="form-group">
       <label for="price-per-seat">Prix par place (TND)</label>
-      <input type="number" id="price-per-seat" name="prix" min="1" step="1" >
+      <input type="number" id="price-per-seat" name="prix" step="1" >
     </div>
   </div>
   <div class="form-row">
