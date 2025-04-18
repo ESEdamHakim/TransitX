@@ -9,9 +9,34 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
   
   // Form validation and submission
   document.addEventListener("DOMContentLoaded", () => {
+    const detailsOptions = document.getElementById("details-options");
+    const rideDetails = document.getElementById("ride-details");
+  
+    // Populate the textarea when an option is selected
+    detailsOptions.addEventListener("change", () => {
+      const selectedOption = detailsOptions.value;
+  
+      if (selectedOption === "other") {
+        // Clear the textarea for custom input
+        rideDetails.value = "";
+        rideDetails.placeholder = "Ajoutez vos propres détails...";
+      } else {
+        // Populate the textarea with the selected option
+        rideDetails.value = selectedOption;
+      }
+    });
+  
     const createRideForm = document.querySelector(".create-ride-form");
   
     createRideForm.addEventListener("submit", function (e) {
+      // Prevent form submission initially
+      e.preventDefault();
+  
+      // Clear previous error messages
+      document.querySelectorAll(".error-message").forEach((span) => {
+        span.textContent = "";
+      });
+  
       // Get form fields
       const lieuDepart = document.getElementById("start-point").value.trim();
       const lieuArrivee = document.getElementById("end-point").value.trim();
@@ -23,11 +48,44 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
       const colisComplet = document.getElementById("full-parcels").value.trim();
       const details = document.getElementById("ride-details").value.trim();
   
+      let hasError = false;
+  
       // Validate required fields
-      if (!lieuDepart || !lieuArrivee || !dateDepart || !tempsDepart || !details) {
-        alert("Veuillez remplir tous les champs obligatoires.");
-        e.preventDefault();
-        return;
+      if (!lieuDepart) {
+        document.getElementById("start-point-error").textContent = "Veuillez remplir le point de départ.";
+        hasError = true;
+      }
+  
+      if (!lieuArrivee) {
+        document.getElementById("end-point-error").textContent = "Veuillez remplir la destination.";
+        hasError = true;
+      }
+  
+      if (!dateDepart) {
+        document.getElementById("ride-date-error").textContent = "Veuillez sélectionner une date.";
+        hasError = true;
+      }
+  
+      if (!tempsDepart) {
+        document.getElementById("ride-time-error").textContent = "Veuillez sélectionner une heure.";
+        hasError = true;
+      }
+  
+      if (!details) {
+        document.getElementById("ride-details-error").textContent = "Veuillez ajouter des détails.";
+        hasError = true;
+      }
+  
+      // Validate that departure and arrival locations are not the same
+      if (lieuDepart === lieuArrivee) {
+        document.getElementById("end-point-error").textContent = "Le point de départ et la destination ne peuvent pas être identiques.";
+        hasError = true;
+      }
+  
+      // Validate details length
+      if (details.length > 100) {
+        document.getElementById("ride-details-error").textContent = "Les détails ne peuvent pas dépasser 100 caractères.";
+        hasError = true;
       }
   
       // Validate date (no past dates allowed)
@@ -36,42 +94,39 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
       today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate comparison
   
       if (selectedDate < today) {
-        alert("La date de départ ne peut pas être dans le passé.");
-        e.preventDefault();
-        return;
+        document.getElementById("ride-date-error").textContent = "La date de départ ne peut pas être dans le passé.";
+        hasError = true;
       }
   
-    
       // Validate numeric fields
       if (isNaN(placesDispo) || placesDispo <= 0) {
-        alert("Le nombre de places disponibles doit être supérieur à zéro.");
-        e.preventDefault();
-        return;
+        document.getElementById("seats-error").textContent = "Le nombre de places disponibles doit être supérieur à zéro.";
+        hasError = true;
       }
   
       if (isNaN(prix) || prix <= 0) {
         if (prix < 0) {
-          alert("Le prix par place ne peut pas être négatif.");
+          document.getElementById("price-error").textContent = "Le prix par place ne peut pas être négatif.";
         } else {
-          alert("Le prix par place doit être supérieur à zéro.");
+          document.getElementById("price-error").textContent = "Le prix par place doit être supérieur à zéro.";
         }
-        e.preventDefault();
-        return;
+        hasError = true;
       }
   
       // Validate select fields
       if (!accepteColis) {
-        alert("Veuillez indiquer si vous acceptez les colis.");
-        e.preventDefault();
-        return;
+        document.getElementById("accept-parcels-error").textContent = "Veuillez indiquer si vous acceptez les colis.";
+        hasError = true;
       }
   
       if (!colisComplet) {
-        alert("Veuillez indiquer si les colis sont complets.");
-        e.preventDefault();
-        return;
+        document.getElementById("full-parcels-error").textContent = "Veuillez indiquer si les colis sont complets.";
+        hasError = true;
       }
   
-      // If all validations pass, the form will be submitted
+      // If no errors, submit the form
+      if (!hasError) {
+        createRideForm.submit();
+      }
     });
   });
