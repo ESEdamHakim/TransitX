@@ -201,6 +201,7 @@ include 'Bdisplaycovoiturage.php';
     </main>
   </div>
 
+
   <!-- Modal for Adding/Editing Ride -->
   <div class="modal" id="ride-modal">
     <div class="modal-content">
@@ -209,81 +210,63 @@ include 'Bdisplaycovoiturage.php';
         <button class="close-modal"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
-        <form id="ride-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="ride-departure">Départ</label>
-              <input type="text" id="ride-departure" name="departure" required>
-            </div>
-            <div class="form-group">
-              <label for="ride-destination">Destination</label>
-              <input type="text" id="ride-destination" name="destination" required>
-            </div>
+        <form id="ride-form" method="POST" action="updateCovoiturage.php">
+          <input type="hidden" id="id_covoit" name="id_covoit">
+
+          <div class="form-group">
+            <label for="ride-departure">Départ</label>
+            <input type="text" id="ride-departure" name="departure">
+            <span id="ride-departure-error" class="error-message"></span>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="ride-date">Date</label>
-              <input type="date" id="ride-date" name="date" required>
-            </div>
-            <div class="form-group">
-              <label for="ride-time">Heure</label>
-              <input type="time" id="ride-time" name="time" required>
-            </div>
+          <div class="form-group">
+            <label for="ride-destination">Destination</label>
+            <input type="text" id="ride-destination" name="destination">
+            <span id="ride-destination-error" class="error-message"></span>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="ride-seats">Places disponibles</label>
-              <input type="number" id="ride-seats" name="seats" min="1" max="8" required>
-            </div>
-            <div class="form-group">
-              <label for="ride-price">Prix par place (TND)</label>
-              <input type="number" id="ride-price" name="price" min="1" step="0.5" required>
-            </div>
+          <div class="form-group">
+            <label for="ride-date">Date</label>
+            <input type="date" id="ride-date" name="date">
+            <span id="ride-date-error" class="error-message"></span>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="accept-parcels">Accepte les colis</label>
-              <select id="accept-parcels" name="accept_parcels" required>
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="full-parcels">Colis complet</label>
-              <select id="full-parcels" name="full_parcels" required>
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label for="ride-time">Heure</label>
+            <input type="time" id="ride-time" name="time">
+            <span id="ride-time-error" class="error-message"></span>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="ride-driver">Conducteur</label>
-              <select id="ride-driver" name="driver" required>
-                <option value="">Sélectionner un conducteur</option>
-                <option value="1">Ahmed Ben Ali</option>
-                <option value="2">Leila Mansour</option>
-                <option value="3">Mohamed Khelifi</option>
-                <option value="4">Nadia Mansouri</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="ride-status">Statut</label>
-              <select id="ride-status" name="status" required>
-                <option value="">Sélectionner un statut</option>
-                <option value="active">Actif</option>
-                <option value="pending">En attente</option>
-                <option value="completed">Terminé</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label for="ride-seats">Places disponibles</label>
+            <input type="number" id="ride-seats" name="seats">
+            <span id="ride-seats-error" class="error-message"></span>
+          </div>
+          <div class="form-group">
+            <label for="ride-price">Prix par place (TND)</label>
+            <input type="number" id="ride-price" name="price"  step="1">
+            <span id="ride-price-error" class="error-message"></span>
+          </div>
+          <div class="form-group">
+            <label for="accept-parcels">Accepte les colis</label>
+            <select id="accept-parcels" name="accept_parcels">
+              <option value="oui">Oui</option>
+              <option value="non">Non</option>
+            </select>
+            <span id="accept-parcels-error" class="error-message"></span>
+          </div>
+          <div class="form-group">
+            <label for="full-parcels">Colis complet</label>
+            <select id="full-parcels" name="full_parcels">
+              <option value="oui">Oui</option>
+              <option value="non">Non</option>
+            </select>
+            <span id="full-parcels-error" class="error-message"></span>
           </div>
           <div class="form-group">
             <label for="ride-description">Description</label>
             <textarea id="ride-description" name="description" rows="3"></textarea>
+            <span id="ride-description-error" class="error-message"></span>
           </div>
           <div class="form-actions">
             <button type="button" class="btn secondary cancel-btn">Annuler</button>
-            <button type="submit" class="btn primary" id="save-ride-btn">Enregistrer</button>
+            <button type="submit" class="btn primary">Enregistrer</button>
           </div>
         </form>
       </div>
