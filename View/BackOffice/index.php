@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,19 +17,19 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       padding: 1.5rem;
     }
-    
+
     .reports-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1.5rem;
     }
-    
+
     .reports-header h3 {
       font-size: 1.2rem;
       color: var(--secondary-1);
     }
-    
+
     .reports-tabs {
       display: flex;
       gap: 1rem;
@@ -36,7 +37,7 @@
       border-bottom: 1px solid var(--gray-light);
       padding-bottom: 0.5rem;
     }
-    
+
     .report-tab {
       padding: 0.5rem 1rem;
       border: none;
@@ -46,11 +47,11 @@
       color: #666;
       position: relative;
     }
-    
+
     .report-tab.active {
       color: var(--primary);
     }
-    
+
     .report-tab.active::after {
       content: '';
       position: absolute;
@@ -60,64 +61,65 @@
       height: 2px;
       background-color: var(--primary);
     }
-    
+
     .report-content {
       display: none;
     }
-    
+
     .report-content.active {
       display: block;
     }
-    
+
     .report-summary {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-    
+
     .summary-item {
       background-color: var(--gray-light);
       padding: 1rem;
       border-radius: 8px;
       text-align: center;
     }
-    
+
     .summary-item .value {
       font-size: 1.5rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
-    
+
     .summary-item .label {
       font-size: 0.9rem;
       color: #666;
     }
-    
+
     .report-table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 1.5rem;
     }
-    
-    .report-table th, .report-table td {
+
+    .report-table th,
+    .report-table td {
       padding: 0.75rem 1rem;
       text-align: left;
       border-bottom: 1px solid var(--gray-light);
     }
-    
+
     .report-table th {
       font-weight: 600;
       color: var(--secondary-1);
       background-color: var(--gray-light);
     }
-    
+
     .report-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
     }
-    
+
     .btn-outline {
       padding: 0.5rem 1rem;
       border: 1px solid var(--gray);
@@ -130,12 +132,13 @@
       gap: 0.5rem;
       transition: all 0.3s ease;
     }
-    
+
     .btn-outline:hover {
       background-color: var(--gray-light);
     }
   </style>
 </head>
+
 <body>
   <div class="dashboard">
     <aside class="sidebar">
@@ -148,7 +151,7 @@
           <i class="fas fa-bars"></i>
         </button>
       </div>
-      //for the models :
+
       <div class="sidebar-content">
         <nav class="sidebar-menu">
           <ul>
@@ -197,7 +200,7 @@
           </ul>
         </nav>
       </div>
-      
+
       <div class="sidebar-footer">
         <a href="#" class="user-profile">
           <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
@@ -230,7 +233,7 @@
           </button>
         </div>
       </header>
-      
+
       <div class="dashboard-content">
         <!-- Stats Cards -->
         <div class="stats-cards">
@@ -247,7 +250,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="stat-card">
             <div class="stat-icon rides">
               <i class="fas fa-car-side"></i>
@@ -261,7 +264,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="stat-card">
             <div class="stat-icon parcels">
               <i class="fas fa-box"></i>
@@ -275,7 +278,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="stat-card">
             <div class="stat-icon complaints">
               <i class="fas fa-exclamation-circle"></i>
@@ -290,7 +293,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Charts Section -->
         <div class="charts-section">
           <div class="chart-container">
@@ -309,7 +312,7 @@
               <canvas id="monthlyStats"></canvas>
             </div>
           </div>
-          
+
           <div class="chart-container">
             <div class="chart-header">
               <h3>Répartition des services</h3>
@@ -327,7 +330,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Reports Section -->
         <div class="reports-section">
           <div class="reports-header">
@@ -336,13 +339,13 @@
               <i class="fas fa-plus"></i> Nouveau rapport
             </button>
           </div>
-          
+
           <div class="reports-tabs">
             <button class="report-tab active" data-report="financial">Financier</button>
             <button class="report-tab" data-report="operations">Opérations</button>
             <button class="report-tab" data-report="users">Utilisateurs</button>
           </div>
-          
+
           <div class="report-content active" id="financial-report">
             <div class="report-summary">
               <div class="summary-item">
@@ -362,7 +365,7 @@
                 <div class="label">Marge</div>
               </div>
             </div>
-            
+
             <table class="report-table">
               <thead>
                 <tr>
@@ -397,7 +400,7 @@
                 </tr>
               </tbody>
             </table>
-            
+
             <div class="report-actions">
               <button class="btn-outline"><i class="fas fa-download"></i> Télécharger PDF</button>
               <button class="btn-outline"><i class="fas fa-file-excel"></i> Exporter Excel</button>
@@ -405,7 +408,7 @@
               <button class="btn-outline"><i class="fas fa-envelope"></i> Envoyer par email</button>
             </div>
           </div>
-          
+
           <div class="report-content" id="operations-report">
             <div class="report-summary">
               <div class="summary-item">
@@ -425,7 +428,7 @@
                 <div class="label">Satisfaction</div>
               </div>
             </div>
-            
+
             <table class="report-table">
               <thead>
                 <tr>
@@ -456,14 +459,14 @@
                 </tr>
               </tbody>
             </table>
-            
+
             <div class="report-actions">
               <button class="btn-outline"><i class="fas fa-download"></i> Télécharger PDF</button>
               <button class="btn-outline"><i class="fas fa-file-excel"></i> Exporter Excel</button>
               <button class="btn-outline"><i class="fas fa-print"></i> Imprimer</button>
             </div>
           </div>
-          
+
           <div class="report-content" id="users-report">
             <div class="report-summary">
               <div class="summary-item">
@@ -483,7 +486,7 @@
                 <div class="label">Note moyenne</div>
               </div>
             </div>
-            
+
             <table class="report-table">
               <thead>
                 <tr>
@@ -514,7 +517,7 @@
                 </tr>
               </tbody>
             </table>
-            
+
             <div class="report-actions">
               <button class="btn-outline"><i class="fas fa-download"></i> Télécharger PDF</button>
               <button class="btn-outline"><i class="fas fa-file-excel"></i> Exporter Excel</button>
@@ -522,14 +525,14 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Recent Activity -->
         <div class="recent-activity">
           <div class="section-header">
             <h3>Activité récente</h3>
             <a href="#" class="view-all">Voir tout</a>
           </div>
-          
+
           <div class="activity-list">
             <div class="activity-item">
               <div class="activity-icon">
@@ -541,7 +544,7 @@
                 <span class="activity-time">Il y a 2 heures</span>
               </div>
             </div>
-            
+
             <div class="activity-item">
               <div class="activity-icon">
                 <i class="fas fa-car-side"></i>
@@ -552,7 +555,7 @@
                 <span class="activity-time">Il y a 3 heures</span>
               </div>
             </div>
-            
+
             <div class="activity-item">
               <div class="activity-icon">
                 <i class="fas fa-box"></i>
@@ -563,7 +566,7 @@
                 <span class="activity-time">Il y a 5 heures</span>
               </div>
             </div>
-            
+
             <div class="activity-item">
               <div class="activity-icon">
                 <i class="fas fa-exclamation-circle"></i>
@@ -576,14 +579,14 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Recent Parcels -->
         <div class="recent-parcels">
           <div class="section-header">
             <h3>Colis récents</h3>
             <a href="colis/crud.php" class="view-all">Voir tout</a>
           </div>
-          
+
           <div class="parcels-table-container">
             <table class="parcels-table">
               <thead>
@@ -660,30 +663,30 @@
 
   <script>
     // Sidebar Toggle
-    document.querySelector('.sidebar-toggle').addEventListener('click', function() {
+    document.querySelector('.sidebar-toggle').addEventListener('click', function () {
       document.querySelector('.sidebar').classList.toggle('collapsed');
       document.querySelector('.main-content').classList.toggle('expanded');
     });
-    
+
     // Report Tabs
     const reportTabs = document.querySelectorAll('.report-tab');
     const reportContents = document.querySelectorAll('.report-content');
-    
+
     reportTabs.forEach(tab => {
-      tab.addEventListener('click', function() {
+      tab.addEventListener('click', function () {
         // Remove active class from all tabs and contents
         reportTabs.forEach(t => t.classList.remove('active'));
         reportContents.forEach(c => c.classList.remove('active'));
-        
+
         // Add active class to clicked tab
         this.classList.add('active');
-        
+
         // Show corresponding content
         const reportType = this.getAttribute('data-report');
         document.getElementById(`${reportType}-report`).classList.add('active');
       });
     });
-    
+
     // Charts
     const monthlyStatsCtx = document.getElementById('monthlyStats').getContext('2d');
     const monthlyStatsChart = new Chart(monthlyStatsCtx, {
@@ -727,7 +730,7 @@
         }
       }
     });
-    
+
     const servicesDistributionCtx = document.getElementById('servicesDistribution').getContext('2d');
     const servicesDistributionChart = new Chart(servicesDistributionCtx, {
       type: 'doughnut',
@@ -746,4 +749,5 @@
     });
   </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header class="landing-header">
     <div class="container">
@@ -97,95 +99,97 @@
           <p>Découvrez les trajets les plus demandés par notre communauté.</p>
         </div>
         <div class="route-cards">
-        <?php include 'displaycovoiturage.php'; ?>
+          <?php include 'displaycovoiturage.php'; ?>
         </div>
       </div>
     </section>
-
-    <form class="create-ride-form" action="addCovoiturage.php" method="POST"> <!--novalidate-->
-  <div class="form-row">
-    <div class="form-group">
-      <label for="start-point">Point de départ</label>
-      <input type="text" id="start-point" name="lieu_depart" placeholder="Ville de départ">
-      <span id="start-point-error" class="error-message"></span>
-    </div>
-    <div class="form-group">
-      <label for="end-point">Destination</label>
-      <input type="text" id="end-point" name="lieu_arrivee" placeholder="Ville d'arrivée">
-      <span id="end-point-error" class="error-message"></span>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group">
-      <label for="ride-date">Date</label>
-      <input type="date" id="ride-date" name="date_depart">
-      <span id="ride-date-error" class="error-message"></span>
-    </div>
-    <div class="form-group">
-      <label for="ride-time">Heure</label>
-      <input type="time" id="ride-time" name="temps_depart">
-      <span id="ride-time-error" class="error-message"></span>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group">
-      <label for="seats">Places disponibles</label>
-      <select id="seats" name="places_dispo">
-        <option value="1">1 place</option>
-        <option value="2">2 places</option>
-        <option value="3">3 places</option>
-        <option value="4">4 places</option>
-      </select>
-      <span id="seats-error" class="error-message"></span>
-    </div>
-    <div class="form-group">
-      <label for="price-per-seat">Prix par place (TND)</label>
-      <input type="number" id="price-per-seat" name="prix" step="1">
-      <span id="price-error" class="error-message"></span>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group">
-      <label for="accept-parcels">Accepte les colis</label>
-      <select id="accept-parcels" name="accepte_colis">
-        <option value="oui">Oui</option>
-        <option value="non">Non</option>
-      </select>
-      <span id="accept-parcels-error" class="error-message"></span>
-    </div>
-    <div class="form-group">
-      <label for="full-parcels">Colis complet</label>
-      <select id="full-parcels" name="colis_complet">
-        <option value="oui">Oui</option>
-        <option value="non">Non</option>
-      </select>
-      <span id="full-parcels-error" class="error-message"></span>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="ride-details">Détails supplémentaires</label>
-    <select id="details-options" class="form-control">
-      <option value="">-- Sélectionnez une option --</option>
-      <option value="Bagages légers uniquement.">Bagages légers uniquement.</option>
-      <option value="Trajet non-fumeur.">Trajet non-fumeur.</option>
-      <option value="Merci d’être ponctuel.">Merci d’être ponctuel.</option>
-      <option value="Pas de retard accepté.">Pas de retard accepté.</option>
-      <option value="other">Autre...</option>
-    </select>
-    <textarea 
-      id="ride-details" 
-      name="details" 
-      placeholder="Ajoutez des détails ou complétez l'option sélectionnée"
-      class="form-control"
-      style="margin-top: 10px;">
+    <section id="create-ride" class="create-ride-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Proposer un trajet</h2>
+        </div>
+        <form class="create-ride-form" action="addCovoiturage.php" method="POST"> <!--novalidate-->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="start-point">Point de départ</label>
+              <input type="text" id="start-point" name="lieu_depart" placeholder="Ville de départ">
+              <span id="start-point-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+              <label for="end-point">Destination</label>
+              <input type="text" id="end-point" name="lieu_arrivee" placeholder="Ville d'arrivée">
+              <span id="end-point-error" class="error-message"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ride-date">Date</label>
+              <input type="date" id="ride-date" name="date_depart">
+              <span id="ride-date-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+              <label for="ride-time">Heure</label>
+              <input type="time" id="ride-time" name="temps_depart">
+              <span id="ride-time-error" class="error-message"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="seats">Places disponibles</label>
+              <select id="seats" name="places_dispo">
+                <option value="1">1 place</option>
+                <option value="2">2 places</option>
+                <option value="3">3 places</option>
+                <option value="4">4 places</option>
+              </select>
+              <span id="seats-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+              <label for="price-per-seat">Prix par place (TND)</label>
+              <input type="number" id="price-per-seat" name="prix" step="1">
+              <span id="price-error" class="error-message"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="accept-parcels">Accepte les colis</label>
+              <select id="accept-parcels" name="accepte_colis">
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+              <span id="accept-parcels-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+              <label for="full-parcels">Colis complet</label>
+              <select id="full-parcels" name="colis_complet">
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+              <span id="full-parcels-error" class="error-message"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ride-details">Détails supplémentaires</label>
+            <select id="details-options" class="form-control">
+              <option value="">-- Sélectionnez une option --</option>
+              <option value="Bagages légers uniquement.">Bagages légers uniquement.</option>
+              <option value="Trajet non-fumeur.">Trajet non-fumeur.</option>
+              <option value="Merci d’être ponctuel.">Merci d’être ponctuel.</option>
+              <option value="Pas de retard accepté.">Pas de retard accepté.</option>
+              <option value="other">Autre...</option>
+            </select>
+            <textarea id="ride-details" name="details"
+              placeholder="Ajoutez des détails ou complétez l'option sélectionnée" class="form-control"
+              style="margin-top: 10px;">
     </textarea>
-    <span id="ride-details-error" class="error-message"></span>
-  </div>
-  <button type="submit" class="btn btn-primary">
-    Publier le trajet
-    <i class="fas fa-paper-plane"></i>
-  </button>
-</form>
+            <span id="ride-details-error" class="error-message"></span>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Publier le trajet
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+    </section>
     <section class="how-it-works">
       <div class="container">
         <div class="section-header">
@@ -318,4 +322,5 @@
 
   <script src="validcovoiturage.js"></script>
 </body>
+
 </html>
