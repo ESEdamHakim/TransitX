@@ -165,23 +165,34 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
       });
     });
     // Handle Edit Button Click
-  editButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      // Populate the modal fields with the data from the button's attributes
-      document.getElementById("id_covoit").value = this.getAttribute("data-id");
-      document.getElementById("ride-departure").value = this.getAttribute("data-departure");
-      document.getElementById("ride-destination").value = this.getAttribute("data-destination");
-      document.getElementById("ride-date").value = this.getAttribute("data-date");
-      document.getElementById("ride-time").value = this.getAttribute("data-time");
-      document.getElementById("ride-seats").value = this.getAttribute("data-seats");
-      document.getElementById("ride-price").value = this.getAttribute("data-price");
-      document.getElementById("accept-parcels").value = this.getAttribute("data-accept-parcels");
-      document.getElementById("full-parcels").value = this.getAttribute("data-full-parcels");
-      document.getElementById("ride-description").value = this.getAttribute("data-description");
+    editButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+          const idCovoit = this.getAttribute("data-id");
+          const departure = this.getAttribute("data-departure");
+          const destination = this.getAttribute("data-destination");
+          const date = this.getAttribute("data-date");
+          const time = this.getAttribute("data-time");
+          const seats = this.getAttribute("data-seats");
+          const price = this.getAttribute("data-price");
+          const acceptParcels = this.getAttribute("data-accept-parcels");
+          const fullParcels = this.getAttribute("data-full-parcels");
+          const description = this.getAttribute("data-description");
 
-      // Show the modal
-      modal.style.display = "block";
-    });
+          // Populate the modal fields
+          document.getElementById("id_covoit").value = idCovoit;
+          document.getElementById("ride-departure").value = departure;
+          document.getElementById("ride-destination").value = destination;
+          document.getElementById("ride-date").value = date;
+          document.getElementById("ride-time").value = time;
+          document.getElementById("ride-seats").value = seats;
+          document.getElementById("ride-price").value = price;
+          document.getElementById("accept-parcels").value = acceptParcels;
+          document.getElementById("full-parcels").value = fullParcels;
+          document.getElementById("ride-description").value = description;
+
+          // Open the modal
+          modal.style.display = "block";
+      });
   });
 
   // Close Modal

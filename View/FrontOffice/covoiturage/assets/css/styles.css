@@ -382,6 +382,7 @@
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal.active {
@@ -392,25 +393,30 @@
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 500px;
-  max-width: 90%;
+  width: 90%; /* Adjust width for smaller screens */
+  max-width: 500px; /* Limit the maximum width */
+  max-height: 90vh; /* Limit the height to 90% of the viewport */
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.modal-header h2 {
-  margin: 0;
+  margin-bottom: 10px;
 }
 
 .modal-body {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .form-actions {
+  position: sticky; /* Keep buttons visible at the bottom */
+  bottom: 0;
+  background-color: #fff;
+  padding: 10px;
+  border-top: 1px solid #ddd;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
