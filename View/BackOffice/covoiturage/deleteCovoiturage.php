@@ -6,7 +6,7 @@ if (isset($_POST['id_covoit'])) {
     $id_covoit = $_POST['id_covoit'];
     $covoiturageController = new CovoiturageC();
     try {
-        $covoiturageController->deleteCovoiturage($id_covoit);
+        $covoiturageController->deleteCovoiturage($id_covoit, null, true);
         echo json_encode(['success' => true]);
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);

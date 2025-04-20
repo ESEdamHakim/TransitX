@@ -2,11 +2,13 @@
 require_once __DIR__ . '/../configuration/config.php';
 require_once __DIR__ . '/../model/Covoiturage.php';
 
-class CovoiturageC {
+class CovoiturageC
+{
 
     // List all covoiturages
-    public function listCovoiturages() {
-        $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, accepte_colis, colis_complet, details, prix, temps_depart, places_dispo
+    public function listCovoiturages()
+    {
+        $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, accepte_colis, colis_complet, details, prix, temps_depart, places_dispo, id_user
                 FROM covoiturage";
         $db = config::getConnexion();
         $query = $db->prepare($sql);
@@ -15,11 +17,12 @@ class CovoiturageC {
     }
 
     // Add a new covoiturage
-    public function addCovoiturage(Covoiturage $covoit) {
+    public function addCovoiturage(Covoiturage $covoit)
+    {
         $sql = "INSERT INTO covoiturage 
-                (date_depart, lieu_depart, lieu_arrivee, accepte_colis, colis_complet, details, prix, temps_depart, places_dispo) 
+                (date_depart, lieu_depart, lieu_arrivee, accepte_colis, colis_complet, details, prix, temps_depart, places_dispo, id_user) 
                 VALUES 
-                (:date_depart, :lieu_depart, :lieu_arrivee, :accepte_colis, :colis_complet, :details, :prix, :temps_depart, :places_dispo)";
+                (:date_depart, :lieu_depart, :lieu_arrivee, :accepte_colis, :colis_complet, :details, :prix, :temps_depart, :places_dispo, :id_user)";
 
         $db = config::getConnexion();
 
@@ -34,7 +37,8 @@ class CovoiturageC {
                 ':details' => $covoit->getDetails(),
                 ':prix' => $covoit->getPrix(),
                 ':temps_depart' => $covoit->getTempsDepart(),
-                ':places_dispo' => $covoit->getPlacesDispo()
+                ':places_dispo' => $covoit->getPlacesDispo(),
+                ':id_user' => $covoit->getIdUser()
             ]);
             return "Trajet ajouté avec succès.";
         } catch (Exception $e) {
@@ -42,56 +46,100 @@ class CovoiturageC {
         }
     }
 
-    // Delete a covoiturage by ID
-    public function deleteCovoiturage($id_covoit) {
-        $sql = "DELETE FROM covoiturage WHERE id_covoit = :id";
+
+    // Delete a covoiturage by ID (with user verification for FrontOffice)
+    public function deleteCovoiturage($id_covoit, $id_user = null, $isAdmin = false)
+    {
         $db = config::getConnexion();
 
         try {
-            $query = $db->prepare($sql);
-            $query->execute([':id' => $id_covoit]);
+            if ($isAdmin) {
+                // Admin can delete any covoiturage
+                $sql = "DELETE FROM covoiturage WHERE id_covoit = :id";
+                $query = $db->prepare($sql);
+                $query->execute([':id' => $id_covoit]);
+            } else {
+                // Regular user can only delete their own covoiturage
+                $sql = "DELETE FROM covoiturage WHERE id_covoit = :id AND id_user = :id_user";
+                $query = $db->prepare($sql);
+                $query->execute([
+                    ':id' => $id_covoit,
+                    ':id_user' => $id_user
+                ]);
+            }
+            return "Trajet supprimé avec succès.";
         } catch (Exception $e) {
             throw new Exception('Erreur : ' . $e->getMessage());
         }
     }
-
-    // Update an existing covoiturage
-    public function updateCovoiturage(Covoiturage $covoit) {
-        $sql = "UPDATE covoiturage SET 
-                    date_depart = :date_depart,
-                    lieu_depart = :lieu_depart,
-                    lieu_arrivee = :lieu_arrivee,
-                    accepte_colis = :accepte_colis,
-                    colis_complet = :colis_complet,
-                    details = :details,
-                    prix = :prix,
-                    temps_depart = :temps_depart,
-                    places_dispo = :places_dispo
-                WHERE id_covoit = :id";
-
+    // Update an existing covoiturage (with user verification for FrontOffice)
+    public function updateCovoiturage(Covoiturage $covoit, $id_user = null, $isAdmin = false)
+    {
         $db = config::getConnexion();
 
         try {
-            $query = $db->prepare($sql);
-            $query->execute([
-                ':id' => $covoit->getIdCovoit(),
-                ':date_depart' => $covoit->getDateDepart(),
-                ':lieu_depart' => $covoit->getLieuDepart(),
-                ':lieu_arrivee' => $covoit->getLieuArrivee(),
-                ':accepte_colis' => $covoit->getAccepteColis(),
-                ':colis_complet' => $covoit->getColisComplet(),
-                ':details' => $covoit->getDetails(),
-                ':prix' => $covoit->getPrix(),
-                ':temps_depart' => $covoit->getTempsDepart(),
-                ':places_dispo' => $covoit->getPlacesDispo()
-            ]);
+            if ($isAdmin) {
+                // Admin can update any covoiturage (BackOffice)
+                $sql = "UPDATE covoiturage SET 
+                            date_depart = :date_depart,
+                            lieu_depart = :lieu_depart,
+                            lieu_arrivee = :lieu_arrivee,
+                            accepte_colis = :accepte_colis,
+                            colis_complet = :colis_complet,
+                            details = :details,
+                            prix = :prix,
+                            temps_depart = :temps_depart,
+                            places_dispo = :places_dispo
+                        WHERE id_covoit = :id";
+                $query = $db->prepare($sql);
+                $query->execute([
+                    ':id' => $covoit->getIdCovoit(),
+                    ':date_depart' => $covoit->getDateDepart(),
+                    ':lieu_depart' => $covoit->getLieuDepart(),
+                    ':lieu_arrivee' => $covoit->getLieuArrivee(),
+                    ':accepte_colis' => $covoit->getAccepteColis(),
+                    ':colis_complet' => $covoit->getColisComplet(),
+                    ':details' => $covoit->getDetails(),
+                    ':prix' => $covoit->getPrix(),
+                    ':temps_depart' => $covoit->getTempsDepart(),
+                    ':places_dispo' => $covoit->getPlacesDispo()
+                ]);
+            } else {
+                // Regular user can only update their own covoiturage (FrontOffice)
+                $sql = "UPDATE covoiturage SET 
+                            date_depart = :date_depart,
+                            lieu_depart = :lieu_depart,
+                            lieu_arrivee = :lieu_arrivee,
+                            accepte_colis = :accepte_colis,
+                            colis_complet = :colis_complet,
+                            details = :details,
+                            prix = :prix,
+                            temps_depart = :temps_depart,
+                            places_dispo = :places_dispo
+                        WHERE id_covoit = :id AND id_user = :id_user";
+                $query = $db->prepare($sql);
+                $query->execute([
+                    ':id' => $covoit->getIdCovoit(),
+                    ':date_depart' => $covoit->getDateDepart(),
+                    ':lieu_depart' => $covoit->getLieuDepart(),
+                    ':lieu_arrivee' => $covoit->getLieuArrivee(),
+                    ':accepte_colis' => $covoit->getAccepteColis(),
+                    ':colis_complet' => $covoit->getColisComplet(),
+                    ':details' => $covoit->getDetails(),
+                    ':prix' => $covoit->getPrix(),
+                    ':temps_depart' => $covoit->getTempsDepart(),
+                    ':places_dispo' => $covoit->getPlacesDispo(),
+                    ':id_user' => $id_user // Ensure only the owner can update
+                ]);
+            }
+            return "Trajet mis à jour avec succès.";
         } catch (Exception $e) {
             throw new Exception('Erreur : ' . $e->getMessage());
         }
     }
-
     // Get a single covoiturage by ID
-    public function getCovoiturageById($id_covoit) {
+    public function getCovoiturageById($id_covoit)
+    {
         $sql = "SELECT * FROM covoiturage WHERE id_covoit = :id";
         $db = config::getConnexion();
 
@@ -106,7 +154,8 @@ class CovoiturageC {
     }
 
     // Get all covoiturages
-    public function getAllCovoiturages() {
+    public function getAllCovoiturages()
+    {
         return $this->listCovoiturages();
     }
 }

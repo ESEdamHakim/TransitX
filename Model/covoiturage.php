@@ -12,6 +12,7 @@ class Covoiturage
     private $prix;
     private $temps_depart;
     private $places_dispo;
+    private $id_user;
 
     // Constructor
     public function __construct(
@@ -23,7 +24,8 @@ class Covoiturage
         $details = null,
         $prix = null,
         $temps_depart = null,
-        $places_dispo = null
+        $places_dispo = null,
+        $id_user = null 
     ) {
         $this->date_depart = $date_depart;
         $this->lieu_depart = $lieu_depart;
@@ -34,6 +36,7 @@ class Covoiturage
         $this->prix = $prix;
         $this->temps_depart = $temps_depart;
         $this->places_dispo = $places_dispo;
+        $this->id_user = $id_user;
     }
 
     // Getters
@@ -86,7 +89,11 @@ class Covoiturage
     {
         return $this->places_dispo;
     }
-
+    public function getIdUser()
+    {
+        return $this->id_user;
+    }
+   
     // Setters
     public function setIdCovoit($id_covoit)
     {
@@ -137,5 +144,10 @@ class Covoiturage
     {
         $this->places_dispo = $places_dispo;
     }
+    public function setIdUser($id_user)
+    {
+        $this->id_user = $id_user;
+    }
+
 }
 ?>

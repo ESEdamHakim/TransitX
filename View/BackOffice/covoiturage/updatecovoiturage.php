@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $covoiturageC = new CovoiturageC();
 
     try {
-        $covoiturageC->updateCovoiturage($covoit);
+        $covoiturageC->updateCovoiturage($covoit, null, true);
         echo "Trajet mis à jour avec succès.";
     } catch (Exception $e) {
         echo "Erreur lors de la mise à jour : " . $e->getMessage();
