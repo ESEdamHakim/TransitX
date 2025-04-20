@@ -158,5 +158,18 @@ class CovoiturageC
     {
         return $this->listCovoiturages();
     }
+    public function listUserCovoiturages($id_user)
+    {
+        $sql = "SELECT * FROM covoiturage WHERE id_user = :id_user";
+        $db = config::getConnexion();
+
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([':id_user' => $id_user]);
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            throw new Exception('Erreur : ' . $e->getMessage());
+        }
+    }
 }
 ?>

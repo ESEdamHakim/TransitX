@@ -11,7 +11,11 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
   document.addEventListener("DOMContentLoaded", () => {
     const detailsOptions = document.getElementById("details-options");
     const rideDetails = document.getElementById("ride-details");
-  
+    const deleteButtons = document.querySelectorAll(".btn.delete");
+    const editButtons = document.querySelectorAll(".btn.edit");
+    const modal = document.getElementById("ride-modal");
+    const closeModalButton = document.querySelector(".close-modal");
+    const cancelButton = document.querySelector(".cancel-btn");
     // Populate the textarea when an option is selected
     detailsOptions.addEventListener("change", () => {
       const selectedOption = detailsOptions.value;
@@ -129,4 +133,63 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
         createRideForm.submit();
       }
     });
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const idCovoit = this.getAttribute("data-id");
+  
+        // Confirm deletion
+        if (confirm("Êtes-vous sûr de vouloir supprimer ce trajet ?")) {
+          // Send delete request to UserDeleteCovoiturage.php
+          fetch("UserDeleteCovoiturage.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `id_covoit=${idCovoit}`,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Remove the deleted covoiturage from the DOM
+                this.closest(".route-card").remove();
+                alert("Trajet supprimé avec succès !");
+              } else {
+                alert("Erreur : " + data.message);
+              }
+            })
+            .catch((error) => {
+              console.error("Erreur lors de la suppression :", error);
+              alert("Une erreur est survenue lors de la suppression.");
+            });
+        }
+      });
+    });
+    // Handle Edit Button Click
+  editButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      // Populate the modal fields with the data from the button's attributes
+      document.getElementById("id_covoit").value = this.getAttribute("data-id");
+      document.getElementById("ride-departure").value = this.getAttribute("data-departure");
+      document.getElementById("ride-destination").value = this.getAttribute("data-destination");
+      document.getElementById("ride-date").value = this.getAttribute("data-date");
+      document.getElementById("ride-time").value = this.getAttribute("data-time");
+      document.getElementById("ride-seats").value = this.getAttribute("data-seats");
+      document.getElementById("ride-price").value = this.getAttribute("data-price");
+      document.getElementById("accept-parcels").value = this.getAttribute("data-accept-parcels");
+      document.getElementById("full-parcels").value = this.getAttribute("data-full-parcels");
+      document.getElementById("ride-description").value = this.getAttribute("data-description");
+
+      // Show the modal
+      modal.style.display = "block";
+    });
   });
+
+  // Close Modal
+  closeModalButton.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  cancelButton.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+});

@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Hardcoded user ID for testing
-    $id_user = 2;
+    $id_user = 1;
     // Create a new Covoiturage object
     $covoiturage = new Covoiturage(
         $dateDepart,

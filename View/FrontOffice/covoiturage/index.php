@@ -51,7 +51,7 @@
         </div>
       </div>
     </section>
-
+    <!--for the search bar-->
     <section id="search-rides" class="search-section">
       <div class="container">
         <div class="section-header">
@@ -103,6 +103,19 @@
         </div>
       </div>
     </section>
+    <section class="user-routes">
+      <div class="container">
+        <div class="section-header">
+          <span class="badge">Vos Trajets</span>
+          <h2>Vos Trajets Populaires</h2>
+          <p>Voici les trajets que vous avez ajoutés.</p>
+        </div>
+        <div class="route-cards">
+          <?php include 'UserDisplayCovoiturage.php'; ?>
+        </div>
+      </div>
+    </section>
+    <!--for the form to add a ride-->
     <section id="create-ride" class="create-ride-section">
       <div class="container">
         <div class="section-header">
