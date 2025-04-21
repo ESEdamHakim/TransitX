@@ -7,7 +7,7 @@ try {
 
 
 $articc = new ArticleC();  
-$list = $articc->listoffre();
+$list = $articc->listarticle();
 ?>
 <html>
     <head>

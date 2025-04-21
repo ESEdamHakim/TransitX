@@ -1,100 +1,105 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <style>
-    .blog-posts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
-        .blog-post {
-            width: 300px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .blog-post:hover {
-            transform: translateY(-5px);
-        }
-
-        .blog-post img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .post-info {
-            padding: 20px;
-        }
-
-        .post-info h3 {
-            font-size: 20px;
-            color: #1f4f65;
-            margin-bottom: 10px;
-        }
-
-        .post-info p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .btn-primary {
-            background-color: #97c3a2;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-
-        .btn-primary:hover {
-            background-color: #1f4f65;
-            color: white;
-        }
-
-        footer {
-            background-color: #1f4f65;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        footer p {
-            margin: 0;
-        }
-
-        .content {
-            text-align: center;
-        }
-  </style>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Blog</title>
+
+  <!-- Feuilles de style -->
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .blog-posts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .blog-post {
+      width: 300px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .blog-post:hover {
+      transform: translateY(-5px);
+    }
+
+    .blog-post img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .post-info {
+      padding: 20px;
+    }
+
+    .post-info h3 {
+      font-size: 20px;
+      color: #1f4f65;
+      margin-bottom: 10px;
+    }
+
+    .post-info p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      background-color: #97c3a2;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .btn-primary:hover {
+      background-color: #1f4f65;
+      color: white;
+    }
+
+    footer {
+      background-color: #1f4f65;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    .content {
+      text-align: center;
+    }
+  </style>
+
   <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
   fetch('/TransitX-main/Controller/FrontOffice/get_articles.php')
-  .then(response => response.json())
+    .then(response => response.json())
     .then(articles => {
       const container = document.querySelector('.blog-posts');
-      container.innerHTML = '';
+      if (!container) return;
 
+      container.innerHTML = '';
       articles.forEach(article => {
         const post = document.createElement('article');
         post.className = 'blog-post';
         post.innerHTML = `
-          <img src="assets/blog1.jpeg" alt="Image" />
+<img src="/TransitX-main/uploads/${article.photo}" alt="Image de ${article.titre}" />
           <div class="post-info">
             <h3>${article.titre}</h3>
             <p>${article.contenu.substring(0, 100)}...</p>
@@ -103,12 +108,17 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         container.appendChild(post);
       });
+    })
+    .catch(error => {
+      console.error("Erreur lors du chargement des articles :", error);
     });
 });
-</script>
 
+
+  </script>
 </head>
 <body>
+
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -138,89 +148,30 @@ document.addEventListener('DOMContentLoaded', function() {
   </header>
 
   <section class="blog" id="blog">
-        <div class="content">
-            <h2>Notre blog</h2>
-            <p>
-                Restez informé avec les dernières nouvelles, idées et tendances sur la mobilité urbaine durable.
-                Explorez nos articles pour découvrir l'avenir des transports.
-            </p>
-        </div>
+    <div class="content">
+      <h2>Notre blog</h2>
+      <p>
+        Restez informé avec les dernières nouvelles, idées et tendances sur la mobilité urbaine durable.
+        Explorez nos articles pour découvrir l'avenir des transports.
+      </p>
+    </div>
 
-        <div class="blog-posts">
-            <!-- Article 1 -->
-            <article class="blog-post">
-            <img src="assets/blog1.jpeg" alt="Blog Post 1" width="300" />
-            <div class="post-info">
-                    <h3>Il existe des variations de passage disponibles.</h3>
-                    <p>Découvrez les différentes options de transport que TransitX met à votre disposition, adaptées à vos besoins et à votre rythme.</p>
-                    <a href="blog-detail.php?id=1" class="btn-primary">Lire la suite</a>
-                </div>
-            </article>
+    <div class="blog-posts">
+      <!-- Articles dynamiques ajoutés ici par JS -->
+    </div>
+  </section>
 
-            <!-- Article 2 -->
-            <article class="blog-post">
-                <img src="assets/blog1.jpeg" alt="Blog Post 2" width="300" />
-                <div class="post-info">
-                    <h3>Autre titre d'article</h3>
-                    <p>Brève description de l'article...</p>
-                    <a href="blog-detail.php?id=2" class="btn-primary">Lire la suite</a>
-                </div>
-            </article>
-
-            <!-- Article 3 -->
-            <article class="blog-post">
-                <img src="assets/blog1.jpeg" alt="Blog Post 3" width="300" />
-                <div class="post-info">
-                    <h3>Encore un autre article</h3>
-                    <p>Brève description de l'article...</p>
-                    <a href="blog-detail.php?id=3" class="btn-primary">Lire la suite</a>
-                </div>
-            </article>
-
-            <!-- Duplicate the Articles (same content) -->
-            <!-- Article 1 Duplicate -->
-            <article class="blog-post">
-                <img src="assets/blog1.jpeg" alt="Blog Post 1" width="300" />
-                <div class="post-info">
-                    <h3>Il existe des variations de passage disponibles.</h3>
-                    <p>Découvrez les différentes options de transport que TransitX met à votre disposition, adaptées à vos besoins et à votre rythme.</p>
-                    <a href="blog-detail.php?id=1" class="btn-primary">Lire la suite</a>
-                </div>
-            </article>
-
-            <!-- Article 2 Duplicate -->
-            <article class="blog-post">
-                <img src="assets/blog1.jpeg" alt="Blog Post 2" width="300" />
-                <div class="post-info">
-                    <h3>Autre titre d'article</h3>
-                    <p>Brève description de l'article...</p>
-                    <a href="blog-detail.php?id=2" class="btn-primary">Lire la suite</a>
-                </div>
-            </article>
-
-            <!-- Article 3 Duplicate -->
-            <article class="blog-post">
-                <img src="assets/blog1.jpeg" alt="Blog Post 3" width="300" />
-                <div class="post-info">
-                    <h3>Encore un autre article</h3>
-                    <p>Brève description de l'article...</p>
-                    <a href="blog-detail.php?id=3" class="btn-primary">Lire la suite</a>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2023 TransitX. Tous droits réservés.</p>
-    </footer>
+  <footer>
+    <p>&copy; 2023 TransitX. Tous droits réservés.</p>
+  </footer>
 
   <script>
-    // Mobile menu toggle
+    // Menu mobile
     document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
       document.querySelector('.main-nav').classList.toggle('active');
     });
 
-    // Filter buttons
+    // Boutons de filtre (si présents)
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(button => {
       button.addEventListener('click', function() {
@@ -229,9 +180,10 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Ensure dashboard button is visible
+    // Affichage conditionnel boutons dashboard / logout
     document.querySelector('.dashboard-btn').style.display = 'inline-flex';
     document.querySelector('.logout-btn').style.display = 'inline-flex';
   </script>
+
 </body>
 </html>

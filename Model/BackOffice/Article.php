@@ -4,13 +4,15 @@ class Article {
     private $titre;
     private $contenu;
     private $date_publication;
+    private $photo;
    
 
-    public function __construct($titre, $contenu, $date_publication, $id_article = null) {
+    public function __construct($titre, $contenu, $date_publication, $photo, $id_article = null) {
         $this->id_article = $id_article;
         $this->titre = $titre;
         $this->contenu = $contenu;
         $this->date_publication = $date_publication;
+        $this->photo= $photo;
     }
 
    
@@ -29,6 +31,9 @@ class Article {
     public function getDatepublication() {
         return $this->date_publication;
     }
+    public function getPhoto() {
+        return $this->photo;
+    }
 
     
     public function setIdarticle($id_article) {
@@ -45,6 +50,9 @@ class Article {
 
     public function setDate_publication($date_publication) {
         $this->date_publication = $date_publication;
+    }
+    public function setPhoto($photo) {
+        $this->photo = $photo;
     }
 }
 ?>

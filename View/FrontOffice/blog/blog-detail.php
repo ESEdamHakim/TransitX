@@ -169,11 +169,27 @@ $commentaires = $commentStmt->fetchAll(PDO::FETCH_ASSOC);
             <p>Pas encore de commentaires.</p>
         <?php else: ?>
             <?php foreach ($commentaires as $commentaire): ?>
-                <div class="comment">
-                    <p><?php echo nl2br(htmlspecialchars($commentaire['contenu_commentaire'])); ?></p>
-                    <small>Posté le <?php echo htmlspecialchars($commentaire['date_commentaire']); ?></small>
-                </div>
-            <?php endforeach; ?>
+    <div class="comment">
+        <p class="comment-date"><?php echo htmlspecialchars($commentaire['date_commentaire']); ?></p>
+        <p class="comment-content"><?php echo nl2br(htmlspecialchars($commentaire['contenu_commentaire'])); ?></p>
+
+        <!-- Bouton Modifier -->
+        <form method="get" action="modifier_commentaire.php" style="display:inline;">
+            <input type="hidden" name="id" value="<?php echo $commentaire['id_commentaire']; ?>">
+            <button type="submit">Modifier</button>
+        </form>
+
+        <!-- Lien Supprimer -->
+        <a href="/TransitX-main/View/FrontOffice/blog/supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>" 
+   onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');"
+   style="color:red; margin-left:10px;">
+    Supprimer
+</a>
+
+    </div>
+<?php endforeach; ?>
+
+
         <?php endif; ?>
     </div>
 

@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 try {
   require_once __DIR__ . '/../../../Controller/BackOffice/ArticleC.php';
 } catch (Exception $e) {
@@ -6,7 +9,7 @@ try {
 }
 
 $articc = new ArticleC();  
-$list = $articc->listoffre();
+$list = $articc->listarticle();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -65,6 +68,13 @@ $list = $articc->listoffre();
     }
     .action-btn.delete {
       color: #dc3545;
+    }
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 4px;
+      display: block;
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -125,29 +135,63 @@ $list = $articc->listoffre();
       <!-- Formulaire d'ajout -->
       <section class="form-section">
         <h2>Ajouter un Article</h2>
-        <form action="addarticle.php" method="POST" class="form-container">
+        <form id="articleForm" action="addarticle.php" method="POST" enctype="multipart/form-data" class="form-container" onsubmit="return validateForm();">
           <fieldset>
             <legend>Ajouter un Article</legend>
-            <div class="form-group">
-              <label for="id_article">ID Article :</label>
-              <input type="number" id="id_article" name="id_article" class="form-input" required />
-            </div>
+
             <div class="form-group">
               <label for="titre">Titre :</label>
-              <input type="text" id="titre" name="titre" class="form-input" required />
+              <input type="text" id="titre" name="titre" class="form-input" />
+              <span class="error-message" id="titre-error"></span>
             </div>
+
             <div class="form-group">
               <label for="contenu">Contenu :</label>
-              <textarea id="contenu" name="contenu" class="form-textarea" rows="4" required></textarea>
+              <textarea id="contenu" name="contenu" class="form-textarea" rows="4"></textarea>
+              <span class="error-message" id="contenu-error"></span>
             </div>
+
             <div class="form-group">
               <label for="date_publication">Date de Publication :</label>
-              <input type="date" id="date_publication" name="date_publication" class="form-input" required />
+              <input type="date" id="date_publication" name="date_publication" class="form-input" />
+              <span class="error-message" id="date-error"></span>
             </div>
+
+            <div class="form-group">
+              <label for="photo">Photo :</label>
+              <input type="file" id="photo" name="photo" accept="image/*" class="form-input" />
+              <span class="error-message" id="photo-error"></span>
+            </div>
+
           </fieldset>
           <button type="submit" class="btn">Ajouter</button>
         </form>
-      </section>
+        
+        <!-- Formulaire de recherche d'articles -->
+        <form action="searchArticles.php" method="GET">
+  <label for="article">Choisir un article :</label>
+  <select name="article" id="article">
+    <?php
+    // Connexion à la base de données pour récupérer tous les articles
+    try {
+      $pdo = new PDO('mysql:host=localhost;dbname=transitx', 'root', '');
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $query = $pdo->query("SELECT * FROM article");
+      $articles = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      echo 'Erreur de connexion à la base de données : ' . $e->getMessage();
+    }
+
+    // Affichage des articles dans un menu déroulant
+    foreach ($articles as $article) {
+        echo "<option value='" . $article['id_article'] . "'>" . $article['titre'] . "</option>";
+    }
+    ?>
+  </select>
+  <button type="submit">Afficher les commentaires</button>
+</form>
+
+
 
       <!-- Tableau stylisé -->
       <div class="buses-table-container">
@@ -158,6 +202,7 @@ $list = $articc->listoffre();
               <th>Titre</th>
               <th>Contenu</th>
               <th>Date Publication</th>
+              <th>Photo</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -168,12 +213,19 @@ $list = $articc->listoffre();
                 <td><?= htmlspecialchars($offer['titre']); ?></td>
                 <td><?= htmlspecialchars($offer['contenu']); ?></td>
                 <td><?= htmlspecialchars($offer['date_publication']); ?></td>
+                <td>
+                  <?php if (!empty($offer['photo'])): ?>
+                    <img src="../../../uploads/<?= htmlspecialchars($offer['photo']); ?>" alt="Photo Article" style="width: 80px;">
+                  <?php else: ?>
+                    Aucune image
+                  <?php endif; ?>
+                </td>
                 <td class="actions">
                   <a href="updatearticle.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn edit" title="Modifier">
                     <i class="fas fa-edit"></i>
                   </a>
-                  <a href="deletearticle.php?id_article=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn delete" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
-                    <i class="fas fa-trash"></i>
+                  <a href="deletearticle.php?id_article=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn delete" title="Supprimer">
+                  <i class="fas fa-trash-alt"></i>
                   </a>
                 </td>
               </tr>
@@ -181,8 +233,44 @@ $list = $articc->listoffre();
           </tbody>
         </table>
       </div>
-
     </main>
   </div>
+
+  <script>
+    // Fonction de validation pour le formulaire d'ajout
+    function validateForm() {
+      let valid = true;
+
+      // Validation du titre
+      const titre = document.getElementById("titre").value;
+      if (titre === "") {
+        document.getElementById("titre-error").textContent = "Le titre est requis.";
+        valid = false;
+      }
+
+      // Validation du contenu
+      const contenu = document.getElementById("contenu").value;
+      if (contenu === "") {
+        document.getElementById("contenu-error").textContent = "Le contenu est requis.";
+        valid = false;
+      }
+
+      // Validation de la date de publication
+      const date_publication = document.getElementById("date_publication").value;
+      if (date_publication === "") {
+        document.getElementById("date-error").textContent = "La date de publication est requise.";
+        valid = false;
+      }
+
+      // Validation de la photo
+      const photo = document.getElementById("photo").value;
+      if (photo === "") {
+        document.getElementById("photo-error").textContent = "La photo est requise.";
+        valid = false;
+      }
+
+      return valid;
+    }
+  </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../config.php';
 
 class ArticleC {
-    public function listoffre() {
+    public function listarticle() {
         $sql = "SELECT * FROM article";
         $db = config::getConnexion(); 
         try {
@@ -12,7 +12,7 @@ class ArticleC {
             throw new Exception('Error: ' . $e->getMessage()); 
         }
     }
-    public function deleteOffer($id_article) {
+    public function deletearticle($id_article) {
         $sql = "DELETE FROM article WHERE id_article = :id";
         $db = config::getConnexion(); 
 
@@ -26,56 +26,56 @@ class ArticleC {
         }
     }
 
-    public function updateOffre($offre) {
-        // Vérification que l'objet possède la méthode getId() avant de procéder
+    public function updatearticle($offre) {
         if (!method_exists($offre, 'getIdarticle')) {
             throw new Exception('Erreur : la méthode getId() est introuvable dans l’objet passé.');
         }
     
-        // Mise à jour de tous les champs
         $sql = "UPDATE article SET 
                     titre = :titre, 
                     contenu = :contenu, 
-                    date_publication = :date_publication
+                    date_publication = :date_publication,
+                    photo = :photo
                 WHERE id_article = :id";
     
         $db = config::getConnexion(); 
     
         try {
-            // Préparation et exécution de la requête avec les paramètres
             $query = $db->prepare($sql);
             $query->execute([
-                ':id' => $offre->getIdarticle(),  // Utilisation de la méthode getId() pour obtenir l'ID
+                ':id' => $offre->getIdarticle(),  
                 ':titre' => $offre->getTitre(),
                 ':contenu' => $offre->getContenu(),
                 ':date_publication' => $offre->getDatepublication(),
+                ':photo' => $offre->getPhoto(),
+
             ]);
         } catch (Exception $e) {
             throw new Exception('Error: ' . $e->getMessage());
         }
     }
     
-    // Ajout d'une offre
-    public function addOffre($titre, $contenu, $date_publication) {
-        $sql = "INSERT INTO article (titre, contenu, date_publication) 
-                VALUES (:titre, :contenu, :date_publication)";
+    public function addarticle($article) {
+        $sql = "INSERT INTO article (titre, contenu, date_publication, photo) 
+                VALUES (:titre, :contenu, :date_publication, :photo)";
     
         $db = config::getConnexion();
     
         try {
             $query = $db->prepare($sql);
-            $query->bindParam(':titre', $titre, PDO::PARAM_STR);
-            $query->bindParam(':contenu', $contenu, PDO::PARAM_STR);
-            $query->bindParam(':date_publication', $date_publication, PDO::PARAM_STR);
+            $query->bindValue(':titre', $article->getTitre(), PDO::PARAM_STR);
+            $query->bindValue(':contenu', $article->getContenu(), PDO::PARAM_STR);
+            $query->bindValue(':date_publication', $article->getDatepublication(), PDO::PARAM_STR);
+            $query->bindValue(':photo', $article->getPhoto(), PDO::PARAM_STR);
             $query->execute();
     
-            return "Offre ajoutée avec succès."; 
+            return "Article ajouté avec succès."; 
         } catch (PDOException $e) {
             return 'Erreur : ' . $e->getMessage();
         }
     }
+    
 
-    // Récupérer une offre par son ID
     public function getOfferById($id_article) {
         $sql = "SELECT * FROM article WHERE id_article = :id";
         $db = config::getConnexion();
@@ -93,11 +93,30 @@ class ArticleC {
             throw new Exception('Error: ' . $e->getMessage());
         }
     }
-
-
-    // Récupérer toutes les offres
-    public function getAllOffres() {
-        return $this->listoffre();
+    public function afficherCommentaires($idArticle) {
+        // Utiliser la connexion de la config (au lieu de créer une nouvelle connexion)
+        $db = config::getConnexion();
+        
+        // Requête SQL pour récupérer les commentaires liés à l'article
+        $sql = "SELECT * FROM commentaire WHERE id_article = :idArticle";
+        $query = $db->prepare($sql);
+        $query->bindParam(':idArticle', $idArticle, PDO::PARAM_INT);
+        $query->execute();
+        
+        // Retourner les résultats (tous les commentaires de l'article)
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function searchArticles($searchTerm) {
+        // Crée une connexion à la base de données
+        $db = Database::getConnection();
+        
+        // Préparer la requête SQL pour rechercher les articles avec le terme donné
+        $stmt = $db->prepare("SELECT * FROM articles WHERE titre LIKE :searchTerm OR contenu LIKE :searchTerm");
+        $stmt->execute([':searchTerm' => "%$searchTerm%"]);
+        
+        // Retourne les articles trouvés
+        return $stmt->fetchAll();
+    }
+    
 }
 ?>
