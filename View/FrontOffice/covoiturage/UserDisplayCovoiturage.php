@@ -93,13 +93,13 @@
                             <span id="ride-destination-error" class="error-message"></span>
                         </div>
                         <div class="form-group">
-                            <label for="ride-date">Date</label>
-                            <input type="date" id="ride-date" name="date">
+                            <label for="ride-date-edit">Date</label>
+                            <input type="date" id="ride-date-edit" name="date">
                             <span id="ride-date-error" class="error-message"></span>
                         </div>
                         <div class="form-group">
-                            <label for="ride-time">Heure</label>
-                            <input type="time" id="ride-time" name="time">
+                            <label for="ride-time-edit">Heure</label>
+                            <input type="time" id="ride-time-edit" name="time">
                             <span id="ride-time-error" class="error-message"></span>
                         </div>
                         <div class="form-group">

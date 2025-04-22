@@ -44,14 +44,15 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
       // Get form fields
       const lieuDepart = document.getElementById("start-point").value.trim();
       const lieuArrivee = document.getElementById("end-point").value.trim();
-      const dateDepart = document.getElementById("ride-date").value.trim();
-      const tempsDepart = document.getElementById("ride-time").value.trim();
+      const dateDepart = document.getElementById("ride-date-create").value.trim();
+      const tempsDepart = document.getElementById("ride-time-create").value.trim();
       const placesDispo = parseInt(document.getElementById("seats").value);
       const prix = parseFloat(document.getElementById("price-per-seat").value);
-      const accepteColis = document.getElementById("accept-parcels-unique").value.trim();
-      const colisComplet = document.getElementById("full-parcels-unique").value.trim();
+      const accepteColis = document.getElementById("accept-parcels").value.trim();
+      const colisComplet = document.getElementById("full-parcels").value.trim();
       const details = document.getElementById("ride-details").value.trim();
-  
+      const dateEdit = document.getElementById("ride-date-edit").value.trim();
+         const timeEdit = document.getElementById("ride-time-edit").value.trim();  
       let hasError = false;
   
       // Validate required fields
@@ -70,10 +71,6 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
         hasError = true;
       }
   
-      if (!tempsDepart) {
-        document.getElementById("ride-time-error").textContent = "Veuillez sélectionner une heure.";
-        hasError = true;
-      }
   
       if (!details) {
         document.getElementById("ride-details-error").textContent = "Veuillez ajouter des détails.";
@@ -92,15 +89,39 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
         hasError = true;
       }
   
-      // Validate date (no past dates allowed)
-      const today = new Date();
-      const selectedDate = new Date(dateDepart);
-      today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate comparison
-  
-      if (selectedDate < today) {
-        document.getElementById("ride-date-error").textContent = "La date de départ ne peut pas être dans le passé.";
-        hasError = true;
-      }
+    // Validate date (no past dates allowed)
+if (!dateDepart) {
+  document.getElementById("ride-date-error").textContent = "Veuillez sélectionner une date.";
+  hasError = true;
+} else {
+  const today = new Date();
+  const selectedDate = new Date(dateDepart);
+  today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate comparison
+
+  if (isNaN(selectedDate.getTime())) {
+    document.getElementById("ride-date-error").textContent = "La date sélectionnée est invalide.";
+    hasError = true;
+  } else if (selectedDate < today) {
+    document.getElementById("ride-date-error").textContent = "La date de départ ne peut pas être dans le passé.";
+    hasError = true;
+  }
+}
+
+if (!dateEdit) {
+  document.getElementById("ride-date-error").textContent = "Veuillez sélectionner une date.";
+  hasError = true;
+}
+
+if (!timeEdit) {
+  document.getElementById("ride-time-error").textContent = "Veuillez sélectionner une heure.";
+  hasError = true;
+}
+
+// Validate time (ensure it's not empty)
+if (!tempsDepart) {
+  document.getElementById("ride-time-error").textContent = "Veuillez sélectionner une heure.";
+  hasError = true;
+}
   
       // Validate numeric fields
       if (isNaN(placesDispo) || placesDispo <= 0) {
@@ -123,6 +144,7 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
         hasError = true;
       }
   
+
       if (!colisComplet) {
         document.getElementById("full-parcels-error").textContent = "Veuillez indiquer si les colis sont complets.";
         hasError = true;
@@ -178,7 +200,7 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
           const acceptParcels = this.getAttribute("data-accept-parcels");
           const fullParcels = this.getAttribute("data-full-parcels");
           const description = this.getAttribute("data-description");
-
+          
           // Populate the modal fields
           document.getElementById("id_covoit").value = idCovoit;
           document.getElementById("ride-departure").value = departure;
