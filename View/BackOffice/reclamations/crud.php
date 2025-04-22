@@ -256,6 +256,11 @@ $list = $ReclamationC->listReclamation();
             <input type="text" placeholder="Rechercher une réclamation...">
             <button><i class="fas fa-search"></i></button>
           </div>
+          <div class="actions">
+            <a href="addRec.php" class="btn primary">
+              <i class="fas fa-plus"></i> Ajouter une réclamation
+            </a>
+          </div>
         </div>
       </header>
 

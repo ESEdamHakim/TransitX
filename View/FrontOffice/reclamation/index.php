@@ -3,28 +3,35 @@ require_once '../../../Controller/ReclamationController.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (
-      isset($_POST['id_client'], $_POST['statut'], $_POST['date_rec'],
-      $_POST['objet'], $_POST['description'], $_POST['id_covoit'])
+    isset(
+    $_POST['id_client'],
+    $_POST['statut'],
+    $_POST['date_rec'],
+    $_POST['objet'],
+    $_POST['description'],
+    $_POST['id_covoit']
+  )
   ) {
-      $ReclamationC = new ReclamationController();
-      $ReclamationC->addReclamation(
-          $_POST['id_client'],
-          $_POST['id_covoit'],  
-          $_POST['objet'],
-          $_POST['description'],
-          $_POST['date_rec'],
-          $_POST['statut']
-      );
-      header("Location: RecList.php");
-      exit();
+    $ReclamationC = new ReclamationController();
+    $ReclamationC->addReclamation(
+      $_POST['id_client'],
+      $_POST['id_covoit'],
+      $_POST['objet'],
+      $_POST['description'],
+      $_POST['date_rec'],
+      $_POST['statut']
+    );
+    header("Location: RecList.php");
+    exit();
   } else {
-      echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
+    echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
   }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header class="landing-header">
     <div class="container">
@@ -83,10 +91,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="tab-pane active" id="new-reclamation">
             <div class="form-intro">
               <h2>Soumettre une nouvelle réclamation</h2>
-              <p>Veuillez remplir le formulaire ci-dessous avec autant de détails que possible pour nous permettre de traiter votre demande efficacement.</p>
+              <p>Veuillez remplir le formulaire ci-dessous avec autant de détails que possible pour nous permettre de
+                traiter votre demande efficacement.</p>
             </div>
 
-            <form class="reclamation-form"  method="POST">
+            <form class="reclamation-form" method="POST">
 
               <div class="form-section">
                 <h3>Détails de la réclamation</h3>
@@ -115,7 +124,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                   <label for="description">Description détaillée</label>
-                  <textarea name="description" id="description" rows="5" required placeholder="Veuillez décrire votre problème en détail..."></textarea>
+                  <textarea name="description" id="description" rows="5" required
+                    placeholder="Veuillez décrire votre problème en détail..."></textarea>
                 </div>
                 <input type="hidden" name="statut" id="statut" value="En attente">
               </div>
@@ -128,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </form>
           </div>
-          
+
           <div class="tab-pane" id="faq-reclamation">
             <div class="form-intro">
               <h2>Questions fréquentes</h2>
@@ -141,7 +151,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                  <p>Nous nous efforçons de traiter toutes les réclamations dans un délai de 5 jours ouvrables. Pour les cas complexes, ce délai peut être prolongé jusqu'à 14 jours. Vous serez informé par email de l'avancement de votre dossier.</p>
+                  <p>Nous nous efforçons de traiter toutes les réclamations dans un délai de 5 jours ouvrables. Pour les
+                    cas complexes, ce délai peut être prolongé jusqu'à 14 jours. Vous serez informé par email de
+                    l'avancement de votre dossier.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -150,7 +162,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                  <p>Pour annuler une réclamation, veuillez contacter notre service client par email à reclamations@transitx.com en indiquant votre numéro de référence dans l'objet du message.</p>
+                  <p>Pour annuler une réclamation, veuillez contacter notre service client par email à
+                    reclamations@transitx.com en indiquant votre numéro de référence dans l'objet du message.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -159,7 +172,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                  <p>En cas de retard, plusieurs types de compensations peuvent être proposés selon la durée du retard et la nature du service : remboursement partiel ou total, bon d'achat pour un prochain trajet, ou services additionnels gratuits. Chaque situation est évaluée individuellement.</p>
+                  <p>En cas de retard, plusieurs types de compensations peuvent être proposés selon la durée du retard
+                    et la nature du service : remboursement partiel ou total, bon d'achat pour un prochain trajet, ou
+                    services additionnels gratuits. Chaque situation est évaluée individuellement.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -168,7 +183,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                  <p>Oui, vous pouvez modifier ou ajouter des informations à votre réclamation en utilisant la section "Suivre ma réclamation" et en laissant un commentaire. Vous pouvez également contacter directement notre service client.</p>
+                  <p>Oui, vous pouvez modifier ou ajouter des informations à votre réclamation en utilisant la section
+                    "Suivre ma réclamation" et en laissant un commentaire. Vous pouvez également contacter directement
+                    notre service client.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -177,7 +194,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="faq-answer">
-                  <p>Si vous n'êtes pas satisfait de la résolution proposée, vous pouvez demander une réévaluation de votre dossier en répondant directement à l'email de résolution ou en laissant un commentaire dans la section de suivi. Un responsable examinera à nouveau votre situation.</p>
+                  <p>Si vous n'êtes pas satisfait de la résolution proposée, vous pouvez demander une réévaluation de
+                    votre dossier en répondant directement à l'email de résolution ou en laissant un commentaire dans la
+                    section de suivi. Un responsable examinera à nouveau votre situation.</p>
                 </div>
               </div>
             </div>
@@ -281,7 +300,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <script>
     // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
       document.querySelector('.main-nav').classList.toggle('active');
     });
 
@@ -290,13 +309,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     const tabPanes = document.querySelectorAll('.tab-pane');
 
     tabButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         const tabId = button.getAttribute('data-tab');
-        
+
         // Remove active class from all buttons and panes
         tabButtons.forEach(btn => btn.classList.remove('active'));
         tabPanes.forEach(pane => pane.classList.remove('active'));
-        
+
         // Add active class to current button and pane
         button.classList.add('active');
         document.getElementById(tabId + '-reclamation').classList.add('active');
@@ -315,9 +334,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Show tracking result on submit (demo purpose)
     const trackingForm = document.querySelector('.tracking-form');
     const trackingResult = document.querySelector('.tracking-result');
-    
+
     if (trackingForm) {
-      trackingForm.addEventListener('submit', function(e) {
+      trackingForm.addEventListener('submit', function (e) {
         e.preventDefault();
         trackingResult.style.display = 'block';
         trackingForm.querySelector('input').value = '';
@@ -331,4 +350,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     document.querySelector('.logout-btn').style.display = 'inline-flex';
   </script>
 </body>
+
 </html>

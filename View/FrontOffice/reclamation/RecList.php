@@ -292,37 +292,6 @@ $list = $ReclamationC->listReclamation();
         color: #dc3545;
     }
 
-    .pagination {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-top: 2rem;
-    }
-
-    .pagination-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        background-color: white;
-        color: #666;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .pagination-btn.active {
-        background-color: var(--primary);
-        color: white;
-        border-color: var(--primary);
-    }
-
-    .pagination-btn:hover:not(.active) {
-        background-color: #f8f9fa;
-    }
-
     .empty-state {
         text-align: center;
         padding: 3rem;
@@ -466,7 +435,6 @@ $list = $ReclamationC->listReclamation();
                                 <th>Objet</th>
                                 <th>Date</th>
                                 <th>Covoiturage</th>
-                                <th>Date</th>
                                 <th>Description</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
@@ -474,13 +442,13 @@ $list = $ReclamationC->listReclamation();
                         </thead>
                         <tbody>
                             <?php foreach ($list as $rec): ?>
-                                <?php if ($colis['id_client'] != 3)
+                                <?php if ($rec['id_client'] != 3)
                                     continue; ?>
                                 <tr>
                                     <td><?= $rec['id_rec'] ?></td>
-                                    <td><?= htmlspecialchars($rec['id_covoit']) ?></td>
-                                    <td><?= htmlspecialchars($rec['date_rec']) ?></td>
                                     <td><?= htmlspecialchars($rec['objet']) ?></td>
+                                    <td><?= htmlspecialchars($rec['date_rec']) ?></td>
+                                    <td><?= htmlspecialchars($rec['id_covoit']) ?></td>
                                     <td><?= htmlspecialchars($rec['description']) ?></td>
                                     <td><?= htmlspecialchars($rec['statut']) ?></td>
                                     <td class="actions">
