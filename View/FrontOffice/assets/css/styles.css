@@ -653,3 +653,53 @@ footer {
     grid-template-columns: 1fr 1fr;
   }
 }
+.vehicule-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 60vh; /* Adjust height as needed */
+  background-color: #f5f5f5; /* Optional: Add a background color */
+  padding: 20px;
+}
+
+.vehicule-hero .hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.vehicule-hero h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.vehicule-hero p {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.vehicule-hero .hero-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.vehicule-hero .btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.vehicule-hero .btn-primary {
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+}
+
+.vehicule-hero .btn-outline {
+  background-color: transparent;
+  color: #27ae60;
+  border: 2px solid #27ae60;
+}

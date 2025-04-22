@@ -25,6 +25,7 @@
           <li><a href="covoiturage/index.php">Covoiturage</a></li>
           <li><a href="blog/index.php">Blog</a></li>
           <li><a href="reclamation/index.php">Réclamation</a></li>
+          <li><a href="../vehicule/index.php">Véhicule</a></li>
         </ul>
       </nav>
       <div class="header-right">
