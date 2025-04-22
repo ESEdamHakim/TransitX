@@ -136,12 +136,12 @@
         <div class="form-group">
           <label for="ride-date-create">Date</label>
           <input type="date" id="ride-date-create" name="date_depart">
-          <span id="ride-date-error" class="error-message"></span>
+          <span id="ride-date-create-error" class="error-message"></span>
         </div>
         <div class="form-group">
           <label for="ride-time-create">Heure</label>
           <input type="time" id="ride-time-create" name="temps_depart">
-          <span id="ride-time-error" class="error-message"></span>
+          <span id="ride-time-create-error" class="error-message"></span>
         </div>
       </div>
       <div class="form-row">

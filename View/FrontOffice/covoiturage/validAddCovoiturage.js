@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (!dateDepart) {
-            document.getElementById("ride-date-error").textContent = "Veuillez sélectionner une date.";
+            document.getElementById("ride-date-create-error").textContent = "Veuillez sélectionner une date.";
             hasError = true;
         } else {
             const today = new Date();
@@ -67,13 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
             today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate comparison
 
             if (selectedDate < today) {
-                document.getElementById("ride-date-error").textContent = "La date de départ ne peut pas être dans le passé.";
+                document.getElementById("ride-date-create-error").textContent = "La date de départ ne peut pas être dans le passé.";
                 hasError = true;
             }
         }
 
         if (!tempsDepart) {
-            document.getElementById("ride-time-error").textContent = "Veuillez sélectionner une heure.";
+            document.getElementById("ride-time-create-error").textContent = "Veuillez sélectionner une heure.";
             hasError = true;
         }
 
