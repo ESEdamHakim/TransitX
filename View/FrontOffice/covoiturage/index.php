@@ -114,167 +114,166 @@
           <?php include 'UserDisplayCovoiturage.php'; ?>
         </div>
       </div>
-    </section>
-    <!--for the form to add a ride-->
-    <section id="create-ride" class="create-ride-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Proposer un trajet</h2>
-        </div>
-        <form class="create-ride-form" action="addCovoiturage.php" method="POST"> <!--novalidate-->
-          <div class="form-row">
-            <div class="form-group">
-              <label for="start-point">Point de départ</label>
-              <input type="text" id="start-point" name="lieu_depart" placeholder="Ville de départ">
-              <span id="start-point-error" class="error-message"></span>
-            </div>
-            <div class="form-group">
-              <label for="end-point">Destination</label>
-              <input type="text" id="end-point" name="lieu_arrivee" placeholder="Ville d'arrivée">
-              <span id="end-point-error" class="error-message"></span>
-            </div>
+      <section id="create-ride" class="create-ride-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Proposer un trajet</h2>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="ride-date">Date</label>
-              <input type="date" id="ride-date" name="date_depart">
-              <span id="ride-date-error" class="error-message"></span>
+          <form class="create-ride-form" action="addCovoiturage.php" method="POST"> <!--novalidate-->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="start-point">Point de départ</label>
+                <input type="text" id="start-point" name="lieu_depart" placeholder="Ville de départ">
+                <span id="start-point-error" class="error-message"></span>
+              </div>
+              <div class="form-group">
+                <label for="end-point">Destination</label>
+                <input type="text" id="end-point" name="lieu_arrivee" placeholder="Ville d'arrivée">
+                <span id="end-point-error" class="error-message"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ride-date">Date</label>
+                <input type="date" id="ride-date" name="date_depart">
+                <span id="ride-date-error" class="error-message"></span>
+              </div>
+              <div class="form-group">
+                <label for="ride-time">Heure</label>
+                <input type="time" id="ride-time" name="temps_depart">
+                <span id="ride-time-error" class="error-message"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="seats">Places disponibles</label>
+                <select id="seats" name="places_dispo">
+                  <option value="1">1 place</option>
+                  <option value="2">2 places</option>
+                  <option value="3">3 places</option>
+                  <option value="4">4 places</option>
+                </select>
+                <span id="seats-error" class="error-message"></span>
+              </div>
+              <div class="form-group">
+                <label for="price-per-seat">Prix par place (TND)</label>
+                <input type="number" id="price-per-seat" name="prix" step="1">
+                <span id="price-error" class="error-message"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="accept-parcels-unique">Accepte les colis</label> <!-- Updated id -->
+                <select id="accept-parcels-unique" name="accepte_colis"> <!-- Updated id -->
+                  <option value="oui">Oui</option>
+                  <option value="non">Non</option>
+                </select>
+                <span id="accept-parcels-error" class="error-message"></span>
+              </div>
+              <div class="form-group">
+                <label for="full-parcels-unique">Colis complet</label> <!-- Updated id -->
+                <select id="full-parcels-unique" name="colis_complet"> <!-- Updated id -->
+                  <option value="oui">Oui</option>
+                  <option value="non">Non</option>
+                </select>
+                <span id="full-parcels-error" class="error-message"></span>
+              </div>
             </div>
             <div class="form-group">
-              <label for="ride-time">Heure</label>
-              <input type="time" id="ride-time" name="temps_depart">
-              <span id="ride-time-error" class="error-message"></span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="seats">Places disponibles</label>
-              <select id="seats" name="places_dispo">
-                <option value="1">1 place</option>
-                <option value="2">2 places</option>
-                <option value="3">3 places</option>
-                <option value="4">4 places</option>
+              <label for="ride-details">Détails supplémentaires</label>
+              <select id="details-options" class="form-control">
+                <option value="">-- Sélectionnez une option --</option>
+                <option value="Bagages légers uniquement.">Bagages légers uniquement.</option>
+                <option value="Trajet non-fumeur.">Trajet non-fumeur.</option>
+                <option value="Merci d’être ponctuel.">Merci d’être ponctuel.</option>
+                <option value="Pas de retard accepté.">Pas de retard accepté.</option>
+                <option value="other">Autre...</option>
               </select>
-              <span id="seats-error" class="error-message"></span>
+              <textarea id="ride-details" name="details"
+                placeholder="Ajoutez des détails ou complétez l'option sélectionnée" class="form-control"
+                style="margin-top: 10px;">
+        </textarea>
+              <span id="ride-details-error" class="error-message"></span>
             </div>
-            <div class="form-group">
-              <label for="price-per-seat">Prix par place (TND)</label>
-              <input type="number" id="price-per-seat" name="prix" step="1">
-              <span id="price-error" class="error-message"></span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="accept-parcels">Accepte les colis</label>
-              <select id="accept-parcels" name="accepte_colis">
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-              <span id="accept-parcels-error" class="error-message"></span>
-            </div>
-            <div class="form-group">
-              <label for="full-parcels">Colis complet</label>
-              <select id="full-parcels" name="colis_complet">
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-              <span id="full-parcels-error" class="error-message"></span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="ride-details">Détails supplémentaires</label>
-            <select id="details-options" class="form-control">
-              <option value="">-- Sélectionnez une option --</option>
-              <option value="Bagages légers uniquement.">Bagages légers uniquement.</option>
-              <option value="Trajet non-fumeur.">Trajet non-fumeur.</option>
-              <option value="Merci d’être ponctuel.">Merci d’être ponctuel.</option>
-              <option value="Pas de retard accepté.">Pas de retard accepté.</option>
-              <option value="other">Autre...</option>
-            </select>
-            <textarea id="ride-details" name="details"
-              placeholder="Ajoutez des détails ou complétez l'option sélectionnée" class="form-control"
-              style="margin-top: 10px;">
-    </textarea>
-            <span id="ride-details-error" class="error-message"></span>
-          </div>
-          <button type="submit" class="btn btn-primary">
-            Publier le trajet
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </form>
-    </section>
-    <section class="how-it-works">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Fonctionnement</span>
-          <h2>Comment ça marche</h2>
-          <p>Découvrez comment fonctionne notre service de covoiturage en 3 étapes simples.</p>
+            <button type="submit" class="btn btn-primary">
+              Publier le trajet
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
         </div>
-        <div class="steps-container">
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-search"></i>
-            </div>
-            <h3>Recherchez</h3>
-            <p>Trouvez un trajet qui correspond à vos besoins en quelques clics.</p>
+      </section>
+      <section class="how-it-works">
+        <div class="container">
+          <div class="section-header">
+            <span class="badge">Fonctionnement</span>
+            <h2>Comment ça marche</h2>
+            <p>Découvrez comment fonctionne notre service de covoiturage en 3 étapes simples.</p>
           </div>
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-calendar-check"></i>
+          <div class="steps-container">
+            <div class="step">
+              <div class="step-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <h3>Recherchez</h3>
+              <p>Trouvez un trajet qui correspond à vos besoins en quelques clics.</p>
             </div>
-            <h3>Réservez</h3>
-            <p>Réservez votre place et payez en ligne en toute sécurité.</p>
-          </div>
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-car"></i>
+            <div class="step">
+              <div class="step-icon">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+              <h3>Réservez</h3>
+              <p>Réservez votre place et payez en ligne en toute sécurité.</p>
             </div>
-            <h3>Voyagez</h3>
-            <p>Rejoignez votre conducteur au point de rendez-vous et profitez du trajet.</p>
+            <div class="step">
+              <div class="step-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <h3>Voyagez</h3>
+              <p>Rejoignez votre conducteur au point de rendez-vous et profitez du trajet.</p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="benefits">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Avantages</span>
-          <h2>Avantages du Covoiturage</h2>
-          <p>Découvrez pourquoi le covoiturage est bénéfique pour vous et pour l'environnement.</p>
+      <section class="benefits">
+        <div class="container">
+          <div class="section-header">
+            <span class="badge">Avantages</span>
+            <h2>Avantages du Covoiturage</h2>
+            <p>Découvrez pourquoi le covoiturage est bénéfique pour vous et pour l'environnement.</p>
+          </div>
+          <div class="benefits-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-leaf"></i>
+              </div>
+              <h3>Écologique</h3>
+              <p>Réduisez votre empreinte carbone en partageant un véhicule plutôt que de conduire seul.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-euro-sign"></i>
+              </div>
+              <h3>Économique</h3>
+              <p>Partagez les frais de transport et économisez sur vos déplacements quotidiens.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3>Social</h3>
+              <p>Rencontrez de nouvelles personnes et rendez vos trajets plus agréables.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-road"></i>
+              </div>
+              <h3>Moins de Trafic</h3>
+              <p>Contribuez à réduire la congestion routière dans votre ville.</p>
+            </div>
+          </div>
         </div>
-        <div class="benefits-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-leaf"></i>
-            </div>
-            <h3>Écologique</h3>
-            <p>Réduisez votre empreinte carbone en partageant un véhicule plutôt que de conduire seul.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-euro-sign"></i>
-            </div>
-            <h3>Économique</h3>
-            <p>Partagez les frais de transport et économisez sur vos déplacements quotidiens.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-users"></i>
-            </div>
-            <h3>Social</h3>
-            <p>Rencontrez de nouvelles personnes et rendez vos trajets plus agréables.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-road"></i>
-            </div>
-            <h3>Moins de Trafic</h3>
-            <p>Contribuez à réduire la congestion routière dans votre ville.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
   </main>
 
   <footer class="main-footer">

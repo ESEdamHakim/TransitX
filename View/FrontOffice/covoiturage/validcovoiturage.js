@@ -33,9 +33,9 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
     const createRideForm = document.querySelector(".create-ride-form");
   
     createRideForm.addEventListener("submit", function (e) {
-      // Prevent form submission initially
       e.preventDefault();
-  
+      
+
       // Clear previous error messages
       document.querySelectorAll(".error-message").forEach((span) => {
         span.textContent = "";
@@ -48,8 +48,8 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
       const tempsDepart = document.getElementById("ride-time").value.trim();
       const placesDispo = parseInt(document.getElementById("seats").value);
       const prix = parseFloat(document.getElementById("price-per-seat").value);
-      const accepteColis = document.getElementById("accept-parcels").value.trim();
-      const colisComplet = document.getElementById("full-parcels").value.trim();
+      const accepteColis = document.getElementById("accept-parcels-unique").value.trim();
+      const colisComplet = document.getElementById("full-parcels-unique").value.trim();
       const details = document.getElementById("ride-details").value.trim();
   
       let hasError = false;
@@ -130,6 +130,7 @@ document.querySelector('.mobile-menu-btn').addEventListener('click', function() 
   
       // If no errors, submit the form
       if (!hasError) {
+        
         createRideForm.submit();
       }
     });
