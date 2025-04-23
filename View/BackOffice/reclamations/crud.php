@@ -317,8 +317,6 @@ $list = $ReclamationC->listReclamation();
               <option value="colis">Colis</option>
               <option value="covoiturage">Covoiturage</option>
             </select>
-          </div>
-          <div class="filter-actions">
             <button class="btn primary">Appliquer</button>
             <button class="btn secondary">Réinitialiser</button>
           </div>

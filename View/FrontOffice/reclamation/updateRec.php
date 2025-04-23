@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form class="reclamation-form" method="POST">
                     <div class="form-group">
                         <label for="objet">Objet de la réclamation:</label>
-                        <select name="objet" id="objet" required>
+                        <select name="objet" id="objet">
                             <option value="Retard" <?php if ($reclamation['objet'] == 'Retard')
                                 echo 'selected'; ?>>Retard
                             </option>
@@ -138,11 +138,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             value="<?php echo htmlspecialchars($reclamation['id_covoit']); ?>">
                     </div>
 
-                    <input type="hidden" name="statut" id="statut" value="<?php echo htmlspecialchars($reclamation['statut']); ?>">
+                    <input type="hidden" name="statut" id="statut"
+                        value="<?php echo htmlspecialchars($reclamation['statut']); ?>">
 
                     <div class="form-group">
                         <label for="description">Description détaillée:</label>
-                        <textarea name="description" id="description" rows="5" required
+                        <textarea name="description" id="description" rows="5"
                             placeholder="Décrivez votre problème ici..."><?php echo htmlspecialchars($reclamation['description']); ?></textarea>
                     </div>
 
@@ -309,6 +310,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.querySelector('.dashboard-btn').style.display = 'inline-flex';
         document.querySelector('.logout-btn').style.display = 'inline-flex';
     </script>
+    <script src="assets/js/recValidation.js"></script>
 </body>
 
 </html>

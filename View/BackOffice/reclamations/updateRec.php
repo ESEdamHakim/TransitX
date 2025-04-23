@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="container">
                     <div class="section-header">
                         <br>
-                        <h2>Modifier une réclamation</h2>
+                        <h1>Modifier une réclamation</h1>
                         <p>Modifiez les informations ci-dessous</p>
                     </div>
 
@@ -160,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                 <div class="form-group">
                                     <label for="objet">Objet de la réclamation</label>
-                                    <select name="objet" id="objet" required>
+                                    <select name="objet" id="objet">
                                         <option value="">-- Sélectionner un objet --</option>
                                         <option value="Retard" <?php if ($reclamation['objet'] == 'Retard')
                                             echo 'selected'; ?>>Retard</option>
@@ -195,13 +195,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="form-group">
                                     <label for="description">Description détaillée</label>
                                     <textarea name="description" id="description" rows="5"
-                                        placeholder="Expliquez votre situation..."
-                                        required><?php echo htmlspecialchars($reclamation['description']); ?></textarea>
+                                        placeholder="Expliquez votre situation..."><?php echo htmlspecialchars($reclamation['description']); ?></textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="statut">Statut</label>
-                                    <select name="statut" id="statut" required>
+                                    <select name="statut" id="statut">
                                         <option value="">-- Sélectionner un statut --</option>
                                         <option value="En attente" <?php if ($reclamation['statut'] == 'En attente')
                                             echo 'selected'; ?>>En attente</option>
@@ -218,7 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     value="<?php echo htmlspecialchars($reclamation['id_rec']); ?>">
 
                                 <div class="form-actions">
-                                    <a href="RecList.php" class="btn btn-secondary">
+                                    <a href="crud.php" class="btn btn-secondary">
                                         Annuler <i class="fas fa-times"></i>
                                     </a>
                                     <button type="submit" class="btn btn-primary">
@@ -253,6 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         });
     </script>
+    <script src="assets/js/recValidation.js"></script>
 </body>
 
 </html>

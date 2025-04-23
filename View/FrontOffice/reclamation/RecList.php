@@ -350,10 +350,10 @@ $list = $ReclamationC->listReclamation();
                 <ul>
                     <li><a href="../index.php">Accueil</a></li>
                     <li><a href="../bus/index.php">Bus</a></li>
-                    <li class="active"><a href="index.php">Colis</a></li>
+                    <li><a href="index.php">Colis</a></li>
                     <li><a href="../covoiturage/index.php">Covoiturage</a></li>
                     <li><a href="../blog/index.php">Blog</a></li>
-                    <li><a href="../reclamation/index.php">Réclamation</a></li>
+                    <li class="active"><a href="../reclamation/index.php">Réclamation</a></li>
                 </ul>
             </nav>
             <div class="header-right">

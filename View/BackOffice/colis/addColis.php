@@ -57,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/colis.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
@@ -260,8 +261,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <main class="main-content">
       <section>
         <div class="container">
-          <div class="header-left">
-            <h2>Ajouter un Colis</h2>
+          <div class="section-header">
+            <h1>Ajouter un Colis</h1>
             <p>Remplissez le formulaire ci-dessous</p>
           </div>
           <div class="colis-form-container">
@@ -312,11 +313,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <input type="hidden" name="prix" id="prix">
               </br>
               <div class="form-actions text-center">
-                <a href="crud.php" class="btn secondary">
+                <a href="crud.php" class="btn btn-secondary">
                   Annuler
                   <i class="fas fa-times"></i>
                 </a>
-                <button type="submit" class="btn primary">
+                <button type="submit" class="btn btn-primary">
                   Ajouter Colis
                   <i class="fas fa-plus"></i>
                 </button>
@@ -334,6 +335,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
                 </p>
               </div>
+              <div id="map-warning" class="map-warning" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
             </div>
           </div>
         </div>
@@ -345,62 +347,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <!-- Replace with your actual API key -->
   <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
   <script>
-    let map;
-    let pickupMarker = null;
-    let deliveryMarker = null;
-    let currentLocationMarker = null; // Marker for current location
-    let clickStep = 0;
+  let map;
+  let pickupMarker = null;
+  let deliveryMarker = null;
+  let currentLocationMarker = null; // Marker for current location
+  let clickStep = 0;
 
-    function initMap() {
-      const defaultLocation = { lat: 36.8980431, lng: 10.1888733 }; // Default location (Tunis)
+  function initMap() {
+    const defaultLocation = { lat: 36.8980431, lng: 10.1888733 }; // Default location (Tunis)
 
-      // Initialize map with default location first
-      map = new google.maps.Map(document.getElementById("gmap_canvas"), {
-        center: defaultLocation,
-        zoom: 13,
-      });
+    // Initialize map with default location first
+    map = new google.maps.Map(document.getElementById("gmap_canvas"), {
+      center: defaultLocation,
+      zoom: 13,
+    });
 
-      // Add marker for the default location
-      new google.maps.Marker({
-        position: defaultLocation,
-        map: map,
-        title: "Default Location",
-      });
+    // Add marker for the default location
+    new google.maps.Marker({
+      position: defaultLocation,
+      map: map,
+      title: "Default Location",
+    });
 
-      // Handle map clicks for setting pickup and delivery locations
-      map.addListener("click", function (event) {
-        const clickedLocation = event.latLng;
+    // Handle map clicks for setting pickup and delivery locations
+    map.addListener("click", function (event) {
+      const clickedLocation = event.latLng;
 
-        if (clickStep === 0) {
-          if (pickupMarker) pickupMarker.setMap(null); // Remove old pickup marker
-          pickupMarker = new google.maps.Marker({
-            position: clickedLocation,
-            map: map,
-            label: "A", // Pickup
-          });
+      const warningBox = document.getElementById("map-warning");
 
-          document.getElementById("latitude_ram").value = clickedLocation.lat();
-          document.getElementById("longitude_ram").value = clickedLocation.lng();
-          clickStep = 1;
-          alert("Pickup location set. Now click to choose the delivery location.");
-        } else if (clickStep === 1) {
-          if (deliveryMarker) deliveryMarker.setMap(null); // Remove old delivery marker
-          deliveryMarker = new google.maps.Marker({
-            position: clickedLocation,
-            map: map,
-            label: "B", // Delivery
-          });
+      if (clickStep === 0) {
+        if (pickupMarker) pickupMarker.setMap(null); // Remove old pickup marker
+        pickupMarker = new google.maps.Marker({
+          position: clickedLocation,
+          map: map,
+          label: "A", // Pickup
+        });
 
-          document.getElementById("latitude_dest").value = clickedLocation.lat();
-          document.getElementById("longitude_dest").value = clickedLocation.lng();
-          clickStep = 0;
-          alert("Delivery location set.");
-        }
-      });
-    }
+        document.getElementById("latitude_ram").value = clickedLocation.lat();
+        document.getElementById("longitude_ram").value = clickedLocation.lng();
+        clickStep = 1;
 
-    window.onload = initMap;
-  </script>
+        // Show inline message instead of alert
+        warningBox.textContent = "📍 Pickup location set. Now click to choose the delivery location.";
+        warningBox.classList.add("text-warning");
+      } else if (clickStep === 1) {
+        if (deliveryMarker) deliveryMarker.setMap(null); // Remove old delivery marker
+        deliveryMarker = new google.maps.Marker({
+          position: clickedLocation,
+          map: map,
+          label: "B", // Delivery
+        });
+
+        document.getElementById("latitude_dest").value = clickedLocation.lat();
+        document.getElementById("longitude_dest").value = clickedLocation.lng();
+        clickStep = 0;
+
+        // Show inline message instead of alert
+        warningBox.textContent = "✅ Delivery location set.";
+        warningBox.classList.remove("text-warning");
+        warningBox.classList.add("text-success");
+      }
+    });
+  }
+
+  window.onload = initMap;
+</script>
 
   <script>
     // Sidebar Toggle

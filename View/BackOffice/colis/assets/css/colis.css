@@ -13,6 +13,13 @@ main {
   padding: 2rem;
 }
 
+.input-error {
+  display: block;
+  color: #dc3545; /* Red color for error */
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
 .colis-hero {
   height: 50vh;
   background-image: linear-gradient(rgba(233, 245, 238, 0.9), rgba(241, 247, 245 ,0.9)),

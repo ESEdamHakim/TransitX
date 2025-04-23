@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container">
           <div class="section-header">
             <br>
-            <h2>Nouvelle Réclamation</h2>
+            <h1>Nouvelle Réclamation</h1>
             <p>Merci de nous faire part de votre problème via le formulaire ci-dessous.</p>
           </div>
 
@@ -177,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="form-group">
                   <label for="statut">Statut</label>
-                  <select name="statut" id="statut" required>
+                  <select name="statut" id="statut">
                     <option value="">-- Sélectionner un statut --</option>
                     <option value="En attente">En attente</option>
                     <option value="En cours de traitement">En cours de traitement</option>
@@ -187,8 +187,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="form-actions">
+                  <a href="crud.php" class="btn btn-secondary">
+                    Annuler <i class="fas fa-times"></i>
+                  </a>
                   <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-paper-plane"></i> Soumettre la réclamation
+                    <i class="fas fa-paper-plane"></i> Ajouter
                   </button>
                 </div>
             </form>
@@ -218,6 +221,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       });
     });
   </script>
+  <script src="assets/js/recValidation.js"></script>
 </body>
 
 </html>

@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-row">
                   <div class="form-group">
                     <label for="complaint-type">Objet de la réclamation</label>
-                    <select id="complaint-type" name="objet" required>
+                    <select id="complaint-type" name="objet">
                       <option value="">Sélectionner</option>
                       <option value="Retard">Retard</option>
                       <option value="Annulation">Annulation</option>
@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                   <label for="incident-date">Date de l'incident</label>
-                  <input type="date" name="date_rec" id="incident-date" required>
+                  <input type="date" name="date_rec" id="incident-date">
                 </div>
                 <div class="form-group">
                   <label for="id_covoit">ID Covoiturage</label>
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                   <label for="description">Description détaillée</label>
-                  <textarea name="description" id="description" rows="5" required
+                  <textarea name="description" id="description" rows="5"
                     placeholder="Veuillez décrire votre problème en détail..."></textarea>
                 </div>
                 <input type="hidden" name="statut" id="statut" value="En attente">
@@ -349,6 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     document.querySelector('.dashboard-btn').style.display = 'inline-flex';
     document.querySelector('.logout-btn').style.display = 'inline-flex';
   </script>
+  <script src="assets/js/recValidation.js"></script>
 </body>
 
 </html>
