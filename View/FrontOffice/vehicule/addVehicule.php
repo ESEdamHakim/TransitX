@@ -12,7 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modele = filter_input(INPUT_POST, 'modele', FILTER_SANITIZE_STRING);
     $confort = filter_input(INPUT_POST, 'confort', FILTER_SANITIZE_STRING);
     $photoVehicule = $_FILES['photo_vehicule']['name'];
-
+    
+     // Debugging: Echo each attribute
+     echo "Type de Véhicule: " . ($typeVehicule ?: "Non soumis") . "<br>";
+     echo "Matricule: " . ($matricule ?: "Non soumis") . "<br>";
+     echo "Nombre de Places: " . ($nbPlaces ?: "Non soumis") . "<br>";
+     echo "Couleur: " . ($couleur ?: "Non soumis") . "<br>";
+     echo "Marque: " . ($marque ?: "Non soumis") . "<br>";
+     echo "Modèle: " . ($modele ?: "Non soumis") . "<br>";
+     echo "Confort: " . ($confort ?: "Non soumis") . "<br>";
+     echo "Photo du Véhicule: " . ($photoVehicule ?: "Non soumis") . "<br>";
     // Validate required fields
     if (empty($matricule) || empty($typeVehicule) || empty($nbPlaces) || empty($couleur) || empty($marque) || empty($modele) || empty($confort)) {
         echo "Erreur : Tous les champs sont obligatoires.";

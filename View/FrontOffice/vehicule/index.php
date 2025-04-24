@@ -74,7 +74,13 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="type-vehicule">Type de Véhicule</label>
-                            <input type="text" id="type-vehicule" name="type_vehicule" placeholder="Type de véhicule ">
+                            <select id="type-vehicule" name="type_vehicule" class="form-control">
+                                <option value="">-- Sélectionnez un type --</option>
+                                <option value="Voiture">Voiture</option>
+                                <option value="Moto">Moto</option>
+                                <option value="Camion">Camion</option>
+                                <option value="Vélo">Vélo</option>
+                            </select>
                             <span id="type-vehicule-error" class="error-message"></span>
                         </div>
                         <div class="form-group">
@@ -110,18 +116,16 @@
                     </div>
                     <div class="form-group">
     <label for="confort">Confort</label>
-    <select id="confort" class="form-control">
+    <select id="confort" name="confort" class="form-control">
         <option value="">-- Sélectionnez une option --</option>
-        <option value="Vitres teintées (fumées)">Vitres teintées (fumées).</option>
-        <option value="Toit ouvrant / panoramique">Toit ouvrant / panoramique.</option>
-        <option value="Sièges chauffants">Sièges chauffants.</option>
-        <option value="Chargeurs USB intégrés.">Chargeurs USB intégrés.</option>
+        <option value="Vitres teintées (fumées)">Vitres teintées (fumées)</option>
+        <option value="Toit ouvrant / panoramique">Toit ouvrant / panoramique</option>
+        <option value="Sièges chauffants">Sièges chauffants</option>
+        <option value="Chargeurs USB intégrés">Chargeurs USB intégrés</option>
         <option value="Climatisation">Climatisation</option>
         <option value="other">Autre...</option>
     </select>
-    <textarea id="custom-confort" name="custom_confort"
-        placeholder=" complétez l'option sélectionnée" class="form-control"
-        style="margin-top: 10px;"></textarea>
+    <textarea id="custom-confort" name="custom_confort" placeholder="Complétez l'option sélectionnée" class="form-control" style="margin-top: 10px;" disabled></textarea>
     <span id="confort-error" class="error-message"></span>
 </div>
                     <div class="form-group">
