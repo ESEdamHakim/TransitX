@@ -118,14 +118,16 @@
     <label for="confort">Confort</label>
     <select id="confort" name="confort" class="form-control">
         <option value="">-- Sélectionnez une option --</option>
-        <option value="Vitres teintées (fumées)">Vitres teintées (fumées)</option>
-        <option value="Toit ouvrant / panoramique">Toit ouvrant / panoramique</option>
-        <option value="Sièges chauffants">Sièges chauffants</option>
-        <option value="Chargeurs USB intégrés">Chargeurs USB intégrés</option>
-        <option value="Climatisation">Climatisation</option>
+        <option value="Vitres teintées (fumées)">Vitres teintées (fumées).</option>
+        <option value="Toit ouvrant / panoramique">Toit ouvrant / panoramique.</option>
+        <option value="Sièges chauffants">Sièges chauffants.</option>
+        <option value="Chargeurs USB intégrés.">Chargeurs USB intégrés.</option>
+        <option value="Climatisation">Climatisation.</option>
         <option value="other">Autre...</option>
     </select>
-    <textarea id="custom-confort" name="custom_confort" placeholder="Complétez l'option sélectionnée" class="form-control" style="margin-top: 10px;" disabled></textarea>
+    <textarea id="custom-confort" name="custom_confort"
+        placeholder=" complétez l'option sélectionnée" class="form-control"
+        style="margin-top: 10px;"></textarea>
     <span id="confort-error" class="error-message"></span>
 </div>
                     <div class="form-group">
@@ -198,6 +200,9 @@
                 <p>&copy; 2025 TransitX. Tous droits réservés.</p>
             </div>
         </div>
+        <script src="validAddVehicule.js"></script>
+        <script src="validDeleteVehicule.js"></script>
+        <script src="validEditVehicule.js"></script>
     </footer>
 </body>
 
