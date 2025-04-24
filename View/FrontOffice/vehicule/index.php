@@ -60,7 +60,7 @@
                     <h2>Vos voitures</h2>
                 </div>
                 <div class="route-cards">
-                    <!--?php include 'displaycovoiturage.php'; ?-->
+                    <?php include 'displayVehicule.php'; ?>
                 </div>
             </div>
         </section>
@@ -131,6 +131,8 @@
                     </button>
                 </form>
                 <script src="validAddVehicule.js"></script>
+                <script src="validDeleteVehicule.js"></script>
+                <script src="validEditVehicule.js"></script>
             </div>
         </section>
     </main>
