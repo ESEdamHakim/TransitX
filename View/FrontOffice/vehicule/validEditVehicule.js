@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const marque = this.getAttribute("data-marque");
             const modele = this.getAttribute("data-modele");
             const confort = this.getAttribute("data-confort");
+            const photoVehicule = this.getAttribute("data-photo");
 
             // Populate the modal fields
             document.getElementById("id_vehicule").value = idVehicule;
@@ -25,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("ride-marque").value = marque;
             document.getElementById("ride-modele").value = modele;
             document.getElementById("ride-confort").value = confort || ""; // Populate confort field
-
+            document.getElementById("existing-photo").value = photoVehicule;
             // Open the modal
             modal.style.display = "block";
         });

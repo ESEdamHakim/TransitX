@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $confort = $_POST['confort'];
     $id_user = 1; // Hardcoded user ID for testing
 
-    // Handle photo upload
+    // Handle photo upload or retain the existing photo
     $photo_vehicule = null;
     if (isset($_FILES['photo_vehicule']) && $_FILES['photo_vehicule']['error'] === UPLOAD_ERR_OK) {
         $photoTmpPath = $_FILES['photo_vehicule']['tmp_name'];
@@ -28,6 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo "Erreur : Échec du téléchargement de la photo.";
             exit;
         }
+    } else {
+        // Retain the existing photo if no new photo is uploaded
+        $vehiculeController = new VehiculeC();
+        $existingVehicule = $vehiculeController->getVehiculeById($id_vehicule);
+        $photo_vehicule = $existingVehicule['photo_vehicule'];
     }
 
     // Create a Vehicule object and set its properties

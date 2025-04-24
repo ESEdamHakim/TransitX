@@ -72,7 +72,8 @@
                 <div class="modal-body">
                     <form id="ride-form" method="POST" action="updateVehicule.php" enctype="multipart/form-data">
                         <input type="hidden" id="id_vehicule" name="id_vehicule">
-
+                        <input type="hidden" id="existing-photo" name="existing_photo">
+                        
                         <div class="form-group">
                             <label for="ride-matricule">Matricule</label>
                             <input type="text" id="ride-matricule" name="matricule" required>
