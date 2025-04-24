@@ -197,6 +197,12 @@
                 <span>Blog</span>
               </a>
             </li>
+            <li>
+              <a href="vehicule/crud.php">
+                <i class="fas fa-car"></i>
+                <span>Véhicules</span>
+              </a>
+            </li>
           </ul>
         </nav>
       </div>
