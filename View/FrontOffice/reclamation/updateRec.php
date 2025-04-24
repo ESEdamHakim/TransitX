@@ -310,7 +310,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.querySelector('.dashboard-btn').style.display = 'inline-flex';
         document.querySelector('.logout-btn').style.display = 'inline-flex';
     </script>
-    <script src="assets/js/recValidation.js"></script>
+    <script src="assets/js/UpdateRecValidation.js"></script>
 </body>
 
 </html>

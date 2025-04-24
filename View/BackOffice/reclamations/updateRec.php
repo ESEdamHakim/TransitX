@@ -23,6 +23,10 @@ if (!$reclamation) {
     die("Reclamation not found");
 }
 
+// Fetch clients and covoiturages for dropdowns
+$covoiturages = $ReclamationC->getAllCovoiturages();
+$clients = $ReclamationC->getAllClients();
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
@@ -42,13 +46,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TransitX - Ajouter une Réclamation</title>
+    <title>TransitX - Modifier une Réclamation</title>
 
     <!-- CSS Imports -->
     <link rel="stylesheet" href="assets/css/reclamation.css">
@@ -153,9 +158,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <h3 class="form-title">Détails de la réclamation</h3>
 
                                 <div class="form-group">
-                                    <label for="id_client">ID Client</label>
-                                    <input type="number" name="id_client" id="id_client"
-                                        value="<?php echo htmlspecialchars($reclamation['id_client']); ?>">
+                                    <label for="id_client">Client</label>
+                                    <select name="id_client" id="id_client">
+                                        <option value="">-- Sélectionner un client --</option>
+                                        <?php
+                                        foreach ($clients as $client) {
+                                            $selected = ($client['id_client'] == $reclamation['id_client']) ? 'selected' : '';
+                                            echo "<option value='{$client['id_client']}' $selected>{$client['nom']} {$client['prenom']} (ID: {$client['id_user']})</option>";
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
@@ -185,10 +197,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
 
                                     <div class="form-group half">
-                                        <label for="id_covoit">ID du Covoiturage</label>
-                                        <input type="number" name="id_covoit" id="id_covoit" min="1"
-                                            placeholder="Entrez l’ID"
-                                            value="<?php echo htmlspecialchars($reclamation['id_covoit']); ?>">
+                                        <label for="id_covoit">Covoiturage</label>
+                                        <select name="id_covoit" id="id_covoit">
+                                            <option value="">-- Sélectionner un covoiturage --</option>
+                                            <?php
+                                            foreach ($covoiturages as $covoit) {
+                                                $selected = ($covoit['id'] == $reclamation['id_covoit']) ? 'selected' : '';
+                                                echo "<option value='{$covoit['id']}' $selected>{$covoit['lieu_depart']} → {$covoit['lieu_arrivee']} (ID: {$covoit['id_covoit']})</option>";
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
 

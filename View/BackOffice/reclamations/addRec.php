@@ -1,6 +1,12 @@
 <?php
 require_once '../../../Controller/ReclamationController.php';
 
+$ReclamationC = new ReclamationController();
+
+// Always load dropdown data
+$covoiturages = $ReclamationC->getAllCovoiturages();
+$clients = $ReclamationC->getAllClients();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (
     isset(
@@ -12,7 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_POST['id_covoit']
   )
   ) {
-    $ReclamationC = new ReclamationController();
     $ReclamationC->addReclamation(
       $_POST['id_client'],
       $_POST['id_covoit'],
@@ -140,8 +145,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h3 class="form-title">Détails de la réclamation</h3>
 
                 <div class="form-group">
-                  <label for="id_client">ID Client</label>
-                  <input type="number" name="id_client" id="id_client">
+                  <label for="id_client">Client :</label>
+                  <select name="id_client" id="id_client" >
+                    <option value="">-- Sélectionner un client --</option>
+                    <?php foreach ($clients as $client): ?>
+                      <option value="<?= $client['id_user'] ?>">
+                        <?= $client['nom'] ?>   <?= $client['prenom'] ?> (ID: <?= $client['id_user'] ?>)
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
                 </div>
 
                 <div class="form-group">
@@ -162,10 +174,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="incident-date">Date de l'incident</label>
                     <input type="date" name="date_rec" id="incident-date">
                   </div>
-
-                  <div class="form-group half">
-                    <label for="id_covoit">ID du Covoiturage</label>
-                    <input type="number" name="id_covoit" id="id_covoit" min="1" placeholder="Entrez l’ID">
+                  <div class="form-group">
+                    <label for="id_covoit">Covoiturage :</label>
+                    <select name="id_covoit" id="id_covoit" >
+                      <option value="">-- Sélectionner un covoiturage --</option>
+                      <?php foreach ($covoiturages as $cov): ?>
+                        <option value="<?= $cov['id_covoit'] ?>">
+                          <?= $cov['lieu_depart'] ?> → <?= $cov['lieu_arrivee'] ?> (ID: <?= $cov['id_covoit'] ?>)
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
                   </div>
                 </div>
 

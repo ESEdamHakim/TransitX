@@ -3,10 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
   
     forms.forEach(form => {
       form.addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevent form submission until all checks pass
         let isValid = true;
         let firstInvalidInput = null;
   
-        // Remove old error messages
+        // Remove old error messages and reset shaking effect
         form.querySelectorAll('.error-message').forEach(el => el.remove());
         form.querySelectorAll('.shake').forEach(el => el.classList.remove('shake'));
   
@@ -58,6 +59,12 @@ document.addEventListener('DOMContentLoaded', function () {
           showError(description, "Veuillez ajouter une description.");
         }
   
+        // If form is invalid after immediate checks, focus on first invalid input and prevent submit
+        if (!isValid) {
+          firstInvalidInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          return; // Stop form submission here
+        }
+  
         // Asynchronous check for id_covoit existence (Foreign Key check)
         if (idCovoit && idCovoit.value.trim() !== '') {
           fetch(`fk_check.php?id_covoit=${encodeURIComponent(idCovoit.value.trim())}`)
@@ -65,13 +72,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .then((result) => {
               if (!result.exists) {
                 showError(idCovoit, result.errorMessage || "L'ID du covoiturage n'existe pas.");
+                firstInvalidInput.scrollIntoView({ behavior: "smooth", block: "center" });
               } else {
                 // Only submit the form if it's valid
-                if (isValid) {
-                  form.submit();  // Submit the form manually after validation
-                } else {
-                  firstInvalidInput.scrollIntoView({ behavior: "smooth", block: "center" });
-                }
+                form.submit();  // Submit the form manually after validation
               }
             })
             .catch((error) => {
@@ -81,16 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         } else {
           // If no ID covoiturage, just submit the form
-          if (isValid) {
-            form.submit();
-          } else {
-            firstInvalidInput.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        }
-  
-        // Prevent form submission if validation fails
-        if (!isValid) {
-          e.preventDefault();
+          form.submit();
         }
       });
     });

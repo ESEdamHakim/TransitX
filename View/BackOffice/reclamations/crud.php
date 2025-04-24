@@ -3,6 +3,8 @@ require_once __DIR__ . '/../../../Controller/ReclamationController.php';
 
 $ReclamationC = new ReclamationController();
 $list = $ReclamationC->listReclamation();
+$covoiturages = $ReclamationC->getAllCovoiturages();
+$clients = $ReclamationC->getAllClients();
 ?>
 
 <!DOCTYPE html>
@@ -349,13 +351,25 @@ $list = $ReclamationC->listReclamation();
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($list as $rec): ?>
+                  <?php
+                  foreach ($list as $rec):
+                    // Fetching client details based on id_client
+                    $client = $ReclamationC->getClientById($rec['id_client']);
+                    // Fetching covoiturage details based on id_covoit
+                    $covoit = $ReclamationC->getCovoiturageById($rec['id_covoit']);
+                    ?>
                     <tr>
                       <td><?= $rec['id_rec'] ?></td>
-                      <td><?= htmlspecialchars($rec['id_client']) ?></td>
+                      <td>
+                        <?= htmlspecialchars($client['nom']) ?>   <?= htmlspecialchars($client['prenom']) ?> (ID:
+                        <?= htmlspecialchars($client['id_user']) ?>)
+                      </td>
                       <td><?= htmlspecialchars($rec['objet']) ?></td>
                       <td><?= htmlspecialchars($rec['date_rec']) ?></td>
-                      <td><?= htmlspecialchars($rec['id_covoit']) ?></td>
+                      <td>
+                        <?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
+                        (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
+                      </td>
                       <td><?= htmlspecialchars($rec['description']) ?></td>
                       <td><?= htmlspecialchars($rec['statut']) ?></td>
                       <td class="actions">
@@ -377,7 +391,6 @@ $list = $ReclamationC->listReclamation();
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
-
               </table>
             </div>
           </div>
