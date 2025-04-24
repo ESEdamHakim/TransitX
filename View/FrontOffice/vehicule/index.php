@@ -109,17 +109,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="confort">Confort</label>
-                        <select id="confort" name="confort" class="form-control">
-                            <option value="">-- Sélectionnez une option --</option>
-                            <option value="Vitres teintées (fumées)">Vitres teintées (fumées)</option>
-                            <option value="Toit ouvrant / panoramique">Toit ouvrant / panoramique</option>
-                            <option value="Sièges chauffants">Sièges chauffants</option>
-                            <option value="Chargeurs USB intégrés">Chargeurs USB intégrés</option>
-                            <option value="Climatisation">Climatisation</option>
-                        </select>
-                        <span id="confort-error" class="error-message"></span>
-                    </div>
+    <label for="confort">Confort</label>
+    <select id="confort" class="form-control">
+        <option value="">-- Sélectionnez une option --</option>
+        <option value="Vitres teintées (fumées)">Vitres teintées (fumées).</option>
+        <option value="Toit ouvrant / panoramique">Toit ouvrant / panoramique.</option>
+        <option value="Sièges chauffants">Sièges chauffants.</option>
+        <option value="Chargeurs USB intégrés.">Chargeurs USB intégrés.</option>
+        <option value="Climatisation">Climatisation</option>
+        <option value="other">Autre...</option>
+    </select>
+    <textarea id="custom-confort" name="custom_confort"
+        placeholder=" complétez l'option sélectionnée" class="form-control"
+        style="margin-top: 10px;"></textarea>
+    <span id="confort-error" class="error-message"></span>
+</div>
                     <div class="form-group">
                         <label for="photo-vehicule">Ajouter une Photo :</label>
                         <input type="file" id="photo-vehicule" name="photo_vehicule" accept="image/*">

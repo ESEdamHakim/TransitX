@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("ride-color").value = couleur;
             document.getElementById("ride-marque").value = marque;
             document.getElementById("ride-modele").value = modele;
-            document.getElementById("ride-confort").value = confort;
+            document.getElementById("ride-confort").value = confort || ""; // Populate confort field
 
             // Open the modal
             modal.style.display = "block";
@@ -66,6 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!matriculeEdit) {
             document.getElementById("ride-matricule-error").textContent = "Veuillez entrer le matricule.";
             hasError = true;
+        } else if (matriculeEdit === "0") {
+            document.getElementById("ride-matricule-error").textContent = "Le matricule ne peut pas être égal à 0.";
+            hasError = true;
         }
 
         if (!typeEdit) {
@@ -91,10 +94,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!modeleEdit) {
             document.getElementById("ride-modele-error").textContent = "Veuillez entrer le modèle.";
             hasError = true;
+        } else if (marqueEdit === modeleEdit) {
+            document.getElementById("ride-modele-error").textContent = "La marque et le modèle ne peuvent pas être identiques.";
+            hasError = true;
         }
 
-        if (!confortEdit) {
-            document.getElementById("ride-confort-error").textContent = "Veuillez entrer le confort.";
+        // Validate confort field length
+        if (confortEdit.length > 100) {
+            document.getElementById("ride-confort-error").textContent = "Le confort ne peut pas dépasser 100 caractères.";
             hasError = true;
         }
 
