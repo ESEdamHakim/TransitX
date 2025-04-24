@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 
+</html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,104 +42,154 @@
             </div>
         </div>
     </header>
-
     <main>
-        <section class="vehicule-hero">
+        <section class="covoiturage-hero">
             <div class="hero-content">
-                <h1>Gestion des Véhicules</h1>
-                <p>Ajoutez, modifiez ou supprimez vos véhicules pour les trajets de covoiturage.</p>
+                <h1>Véhicule</h1>
+                <p>Partagez vos trajets, économisez de l'argent et réduisez votre empreinte carbone.</p>
                 <div class="hero-buttons">
-                    <a href="#add-vehicule" class="btn btn-primary">Ajouter un véhicule</a>
-                    <a href="#list-vehicules" class="btn btn-outline">Voir mes véhicules</a>
+                    <a href="#create-ride" class="btn btn-outline">Ajouter votre voiture</a>
                 </div>
             </div>
         </section>
-        <!-- Add more sections for vehicle management -->
-        <section class="user-vehicles">
+        <!--affichage-->
+        <section class="popular-routes">
             <div class="container">
                 <div class="section-header">
-                    <span class="badge">Vos Véhicules</span>
-                    <h2>Vos Véhicules</h2>
-                    <p>Voici les véhicules que vous avez ajoutés.</p>
+                    <span class="badge">Voitures</span>
+                    <h2>Vos voitures</h2>
                 </div>
-                <div class="vehicle-cards">
+                <div class="route-cards">
+                    <!--?php include 'displaycovoiturage.php'; ?-->
                 </div>
             </div>
         </section>
-
-        <section id="add-vehicle" class="add-vehicle-section">
-    <div class="container">
-        <div class="section-header">
-            <h2>Ajouter un Véhicule</h2>
-        </div>
-        <form class="add-vehicle-form" method="POST" enctype="multipart/form-data"> <!--novalidate-->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="matricule">Matricule</label>
-                    <input type="text" id="matricule" name="matricule" placeholder="Numéro de matricule">
-                    <span id="matricule-error" class="error-message"></span>
+        <!--ajout-->
+        <section id="create-ride" class="create-ride-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Ajouter une voiture</h2>
                 </div>
-                <div class="form-group">
-                    <label for="type-vehicule">Type de Véhicule</label>
-                    <input type="text" id="type-vehicule" name="type_vehicule" placeholder="Type de véhicule (ex: Voiture)">
-                    <span id="type-vehicule-error" class="error-message"></span>
-                </div>
+                <form action="addVehicule.php" method="POST" enctype="multipart/form-data" class="create-ride-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="type-vehicule">Type de Véhicule</label>
+                            <input type="text" id="type-vehicule" name="type_vehicule" placeholder="Type de véhicule ">
+                            <span id="type-vehicule-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="matricule">Matricule</label>
+                            <input type="text" id="matricule" name="matricule" placeholder="Numéro de matricule">
+                            <span id="matricule-error" class="error-message"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nb-places">Nombre de Places</label>
+                            <input type="number" id="nb-places" name="nb_places"
+                                placeholder="Nombre de places disponibles">
+                            <span id="nb-places-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="couleur">Couleur</label>
+                            <input type="text" id="couleur" name="couleur" placeholder="Couleur du véhicule">
+                            <span id="couleur-error" class="error-message"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="marque">Marque</label>
+                            <input type="text" id="marque" name="marque" placeholder="Marque du véhicule">
+                            <span id="marque-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="modele">Modèle</label>
+                            <input type="text" id="modele" name="modele" placeholder="Modèle du véhicule">
+                            <span id="modele-error" class="error-message"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confort">Confort</label>
+                        <select id="confort" name="confort" class="form-control">
+                            <option value="">-- Sélectionnez une option --</option>
+                            <option value="Vitres teintées (fumées)">Vitres teintées (fumées)</option>
+                            <option value="Toit ouvrant / panoramique">Toit ouvrant / panoramique</option>
+                            <option value="Sièges chauffants">Sièges chauffants</option>
+                            <option value="Chargeurs USB intégrés">Chargeurs USB intégrés</option>
+                            <option value="Climatisation">Climatisation</option>
+                        </select>
+                        <span id="confort-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="photo-vehicule">Ajouter une Photo :</label>
+                        <input type="file" id="photo-vehicule" name="photo_vehicule" accept="image/*">
+                        <span class="error-message" id="photo-vehicule-error"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        Ajouter le Véhicule
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <script src="validAddVehicule.js"></script>
             </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="nb-places">Nombre de Places</label>
-                    <input type="number" id="nb-places" name="nb_places" placeholder="Nombre de places disponibles">
-                    <span id="nb-places-error" class="error-message"></span>
-                </div>
-                <div class="form-group">
-                    <label for="couleur">Couleur</label>
-                    <input type="text" id="couleur" name="couleur" placeholder="Couleur du véhicule">
-                    <span id="couleur-error" class="error-message"></span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="marque">Marque</label>
-                    <input type="text" id="marque" name="marque" placeholder="Marque du véhicule">
-                    <span id="marque-error" class="error-message"></span>
-                </div>
-                <div class="form-group">
-                    <label for="modele">Modèle</label>
-                    <input type="text" id="modele" name="modele" placeholder="Modèle du véhicule">
-                    <span id="modele-error" class="error-message"></span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="confort">Confort</label>
-                    <select id="confort" name="confort">
-                        <option value="">-- Sélectionnez une option --</option>
-                        <option value="Basique">Basique</option>
-                        <option value="Confortable">Confortable</option>
-                        <option value="Luxe">Luxe</option>
-                    </select>
-                    <span id="confort-error" class="error-message"></span>
-                </div>
-                <div class="form-group">
-                    <label for="photo-vehicule">Photo du Véhicule</label>
-                    <input type="file" id="photo-vehicule" name="photo_vehicule">
-                    <span id="photo-vehicule-error" class="error-message"></span>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                Ajouter le Véhicule
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </form>
-    </div>
-</section>
+        </section>
     </main>
-
     <footer class="main-footer">
         <div class="container">
-            <p>&copy; 2025 TransitX. Tous droits réservés.</p>
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <img src="../../assets/images/logo.png" alt="TransitX Logo" class="footer-logo-img">
+                    <span>TransitX</span>
+                </div>
+                <div class="footer-slogan">
+                    <p>Move Green, Live Clean</p>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-middle">
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="../bus/index.php">Bus</a></li>
+                        <li><a href="index.php">Covoiturage</a></li>
+                        <li><a href="../colis/index.php">Colis</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>À propos</h4>
+                    <ul>
+                        <li><a href="../about.php">Notre mission</a></li>
+                        <li><a href="../blog/index.php">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Avenue Habib Bourguiba, Tunis</li>
+                        <li><i class="fas fa-phone"></i> +216 71 123 456</li>
+                        <li><i class="fas fa-envelope"></i> contact@transitx.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TransitX. Tous droits réservés.</p>
+            </div>
         </div>
     </footer>
 </body>
+
 
 </html>
