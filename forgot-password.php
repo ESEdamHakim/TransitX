@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <div class="auth-page">
     <div class="auth-container">
@@ -43,11 +45,12 @@
 
   <script>
     // Simple redirect
-    document.querySelector('.auth-form').addEventListener('submit', function(e) {
+    document.querySelector('.auth-form').addEventListener('submit', function (e) {
       e.preventDefault();
       alert('Un email de réinitialisation a été envoyé à votre adresse email.');
       window.location.href = 'login.php';
     });
   </script>
 </body>
+
 </html>

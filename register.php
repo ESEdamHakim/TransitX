@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <div class="auth-page">
     <div class="auth-container">
@@ -69,7 +71,8 @@
           <div class="form-options">
             <div class="remember-me">
               <input type="checkbox" id="terms">
-              <label for="terms">J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a></label>
+              <label for="terms">J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de
+                  confidentialité</a></label>
             </div>
           </div>
           <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
@@ -100,10 +103,11 @@
 
   <script>
     // Simple registration redirect
-    document.querySelector('.auth-form').addEventListener('submit', function(e) {
+    document.querySelector('.auth-form').addEventListener('submit', function (e) {
       e.preventDefault();
       window.location.href = 'login.php';
     });
   </script>
 </body>
+
 </html>
