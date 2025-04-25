@@ -1,6 +1,11 @@
 <?php
 require_once '../../../Controller/ReclamationController.php';
 
+$ReclamationC = new ReclamationController();
+
+// Always load dropdown data
+$covoiturages = $ReclamationC->getAllCovoiturages();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (
     isset(
@@ -119,9 +124,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <input type="date" name="date_rec" id="incident-date">
                 </div>
                 <div class="form-group">
-                  <label for="id_covoit">ID Covoiturage</label>
-                  <input type="number" name="id_covoit" id="id_covoit" step="1">
-                </div>
+                    <label for="id_covoit">Covoiturage :</label>
+                    <select name="id_covoit" id="id_covoit" >
+                      <option value="">-- Sélectionner un covoiturage --</option>
+                      <?php foreach ($covoiturages as $cov): ?>
+                        <option value="<?= $cov['id_covoit'] ?>">
+                          <?= $cov['lieu_depart'] ?> → <?= $cov['lieu_arrivee'] ?> (ID: <?= $cov['id_covoit'] ?>)
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+                 </div>
                 <div class="form-group">
                   <label for="description">Description détaillée</label>
                   <textarea name="description" id="description" rows="5"

@@ -23,6 +23,9 @@ if (!$reclamation) {
     die("Reclamation not found");
 }
 
+// Fetch clients and covoiturages for dropdowns
+$covoiturages = $ReclamationC->getAllCovoiturages();
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
@@ -133,9 +136,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
 
                     <div class="form-group">
-                        <label for="id_covoit">ID Covoiturage:</label>
-                        <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage"
-                            value="<?php echo htmlspecialchars($reclamation['id_covoit']); ?>">
+                        <label for="id_covoit">Covoiturage</label>
+                        <select name="id_covoit" id="id_covoit">
+                            <option value="">-- Sélectionner un covoiturage --</option>
+                            <?php
+                            foreach ($covoiturages as $covoit) {
+                                $selected = ($covoit['id_covoit'] == $reclamation['id_covoit']) ? 'selected' : '';
+                                echo "<option value='{$covoit['id_covoit']}' $selected>{$covoit['lieu_depart']} → {$covoit['lieu_arrivee']} (ID: {$covoit['id_covoit']})</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
 
                     <input type="hidden" name="statut" id="statut"
@@ -310,7 +320,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.querySelector('.dashboard-btn').style.display = 'inline-flex';
         document.querySelector('.logout-btn').style.display = 'inline-flex';
     </script>
-    <script src="assets/js/UpdateRecValidation.js"></script>
+    <script src="assets/js/recValidation.js"></script>
 </body>
 
 </html>

@@ -163,8 +163,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <option value="">-- Sélectionner un client --</option>
                                         <?php
                                         foreach ($clients as $client) {
-                                            $selected = ($client['id_client'] == $reclamation['id_client']) ? 'selected' : '';
-                                            echo "<option value='{$client['id_client']}' $selected>{$client['nom']} {$client['prenom']} (ID: {$client['id_user']})</option>";
+                                            $selected = ($client['id_user'] == $reclamation['id_client']) ? 'selected' : '';
+                                            echo "<option value='{$client['id_user']}' $selected>{$client['nom']} {$client['prenom']} (ID: {$client['id_user']})</option>";
                                         }
                                         ?>
                                     </select>
@@ -202,8 +202,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <option value="">-- Sélectionner un covoiturage --</option>
                                             <?php
                                             foreach ($covoiturages as $covoit) {
-                                                $selected = ($covoit['id'] == $reclamation['id_covoit']) ? 'selected' : '';
-                                                echo "<option value='{$covoit['id']}' $selected>{$covoit['lieu_depart']} → {$covoit['lieu_arrivee']} (ID: {$covoit['id_covoit']})</option>";
+                                                $selected = ($covoit['id_covoit'] == $reclamation['id_covoit']) ? 'selected' : '';
+                                                echo "<option value='{$covoit['id_covoit']}' $selected>{$covoit['lieu_depart']} → {$covoit['lieu_arrivee']} (ID: {$covoit['id_covoit']})</option>";
                                             }
                                             ?>
                                         </select>

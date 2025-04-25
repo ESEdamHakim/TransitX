@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       if (!idCovoit || idCovoit.value === "" || idCovoit.value === "--") {
-        showError(idCovoit, "Veuillez sélectionner un trajet.");
+        showError(idCovoit, "Veuillez sélectionner un covoiturage.");
       }
 
       if (!description || description.value.trim() === '') {

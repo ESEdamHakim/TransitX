@@ -3,6 +3,8 @@ require_once __DIR__ . '/../../../Controller/ReclamationController.php';
 
 $ReclamationC = new ReclamationController();
 $list = $ReclamationC->listReclamation();
+$covoiturages = $ReclamationC->getAllCovoiturages();
+$clients = $ReclamationC->getAllClients();
 ?>
 
 <!DOCTYPE html>
@@ -442,13 +444,19 @@ $list = $ReclamationC->listReclamation();
                         </thead>
                         <tbody>
                             <?php foreach ($list as $rec): ?>
-                                <?php if ($rec['id_client'] != 3)
+                                <?php
+                                $covoit = $ReclamationC->getCovoiturageById($rec['id_covoit']);
+                                if ($rec['id_client'] != 3)
                                     continue; ?>
                                 <tr>
                                     <td><?= $rec['id_rec'] ?></td>
                                     <td><?= htmlspecialchars($rec['objet']) ?></td>
                                     <td><?= htmlspecialchars($rec['date_rec']) ?></td>
-                                    <td><?= htmlspecialchars($rec['id_covoit']) ?></td>
+                                    <td>
+                                        <?= htmlspecialchars($covoit['lieu_depart']) ?> →
+                                        <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
+                                        (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
+                                    </td>
                                     <td><?= htmlspecialchars($rec['description']) ?></td>
                                     <td><?= htmlspecialchars($rec['statut']) ?></td>
                                     <td class="actions">
