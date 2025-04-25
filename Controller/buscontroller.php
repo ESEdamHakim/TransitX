@@ -30,7 +30,7 @@ class BusController
             $query->bindValue(':id_trajet', $bus->getIdTrajet());
             $query->bindValue(':num_bus', $bus->getNumBus());
             $query->bindValue(':capacite', $bus->getCapacite());
-            $query->bindValue(':type_bus', $bus->getTypeBus()); 
+            $query->bindValue(':type_bus', $bus->getTypeBus());
             $query->bindValue(':marque', $bus->getMarque());
             $query->bindValue(':modele', $bus->getModele());
             $query->bindValue(':date_mise_en_service', $bus->getDateMiseEnService());
@@ -60,7 +60,7 @@ class BusController
             $query->bindValue(':id_trajet', $bus->getIdTrajet());
             $query->bindValue(':num_bus', $bus->getNumBus());
             $query->bindValue(':capacite', $bus->getCapacite());
-            $query->bindValue(':type_bus', $bus->getTypeBus()); 
+            $query->bindValue(':type_bus', $bus->getTypeBus());
             $query->bindValue(':marque', $bus->getMarque());
             $query->bindValue(':modele', $bus->getModele());
             $query->bindValue(':date_mise_en_service', $bus->getDateMiseEnService());
@@ -97,5 +97,18 @@ class BusController
             die('Error: ' . $e->getMessage());
         }
     }
+    public function getAllTrajets()
+    {
+        $sql = "SELECT * FROM trajet";
+        try {
+            $query = $this->db->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            die("Erreur lors de la récupération des trajets: " . $e->getMessage());
+        }
+    }
+
+
 }
 ?>

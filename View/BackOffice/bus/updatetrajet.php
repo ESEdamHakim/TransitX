@@ -156,6 +156,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           </div>
 
           <div class="form-actions text-center">
+          <a href="crud.php" class="btn cancel" style="margin-left: 10px;">
+                  Annuler <i class="fas fa-times"></i>
+                </a>
             <button type="submit" class="btn btn-primary">
               Mettre à jour le Trajet <i class="fas fa-edit"></i>
             </button>

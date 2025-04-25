@@ -5,6 +5,7 @@ $trajetlist = $controller_trajet->listTrajets();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@ $trajetlist = $controller_trajet->listTrajets();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header class="landing-header">
     <div class="container">
@@ -81,44 +83,80 @@ $trajetlist = $controller_trajet->listTrajets();
     </section>
 
     <section class="bus-routes">
-  <div class="container">
-    <div class="section-header">
-      <span class="badge">Trajets</span>
-      <h2>Les trajets</h2>
-    </div>
-    <div class="route-cards">
-      <?php foreach ($trajetlist as $trajet): ?>
-        <div class="route-card">
-          <div class="route-info">
-            <div class="route-cities">
-              <span class="departure"><?= htmlspecialchars($trajet['place_depart']) ?></span>
-              <i class="fas fa-long-arrow-alt-right"></i>
-              <span class="arrival"><?= htmlspecialchars($trajet['place_arrivee']) ?></span>
-            </div>
-            <div class="route-details">
-              <div class="detail">
-              <i class="fas fa-clock"></i>
-              <span><?= htmlspecialchars($trajet['heure_depart']) ?></span>
-              </div> 
-              <div class="detail">
-              <i class="fas fa-hourglass-start"></i>
-                <span><?= htmlspecialchars($trajet['duree']) ?></span>
-              </div>
-              <div class="detail">
-                <i class="fas fa-road"></i>
-                <span><?= htmlspecialchars($trajet['distance_km']) ?> km</span>
-              </div>
-            </div>
-          </div>
-          <div class="route-price">
-            <span class="price"><?= htmlspecialchars($trajet['prix']) ?> TND</span>
-            <a href="#" class="btn btn-primary">Inoformations sur le bus</a>
-          </div>
+      <div class="container">
+        <div class="section-header">
+          <span class="badge">Trajets</span>
+          <h2>Les trajets</h2>
         </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
+        <div class="route-cards">
+          <?php foreach ($trajetlist as $trajet): ?>
+            <div class="route-card">
+              <div class="route-info">
+                <div class="route-cities">
+                  <span class="departure"><?= htmlspecialchars($trajet['place_depart']) ?></span>
+                  <i class="fas fa-long-arrow-alt-right"></i>
+                  <span class="arrival"><?= htmlspecialchars($trajet['place_arrivee']) ?></span>
+                </div>
+                <div class="route-details">
+                  <div class="detail">
+                    <i class="fas fa-clock"></i>
+                    <span><?= htmlspecialchars($trajet['heure_depart']) ?></span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-hourglass-start"></i>
+                    <span><?= htmlspecialchars($trajet['duree']) ?></span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-road"></i>
+                    <span><?= htmlspecialchars($trajet['distance_km']) ?> km</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="route-price">
+                <span class="price"><?= htmlspecialchars($trajet['prix']) ?> TND</span>
+                <button class="btn btn-primary toggle-info-btn" type="button"
+                  data-id="<?= $trajet['id_trajet'] ?>">Informations sur les bus</button>
+
+                <div id="bus-info-modal-<?= $trajet['id_trajet'] ?>" class="modal">
+                  <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <div class="modal-header">
+                      <h2>Informations sur les bus</h2>
+                    </div>
+                    <div class="modal-body">
+                      <?php
+                      $buses = $controller_trajet->getBusesByTrajetId($trajet['id_trajet']);
+                      if (!empty($buses)) {
+                        foreach ($buses as $bus) {
+                          ?>
+                          <div class="bus-info">
+                            <p><strong>Statut:</strong> <?= htmlspecialchars($bus['statut']) ?></p>
+                            <p><strong>Numéro de bus:</strong> <?= htmlspecialchars($bus['num_bus']) ?></p>
+                            <p><strong>Capacité:</strong> <?= htmlspecialchars($bus['capacite']) ?> personnes</p>
+                            <p><strong>Type de bus:</strong> <?= htmlspecialchars($bus['type_bus']) ?></p>
+                            <p><strong>Marque:</strong> <?= htmlspecialchars($bus['marque']) ?></p>
+                            <p><strong>Modèle:</strong> <?= htmlspecialchars($bus['modele']) ?></p>
+                            <p><strong>Date de mise en service:</strong> <?= htmlspecialchars($bus['date_mise_en_service']) ?>
+                            </p>
+                          </div>
+                          <?php
+                        }
+                      } else {
+                        echo "<p>Aucun bus associé à ce trajet.</p>";
+                      }
+                      ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </section>
+
+
 
     <section class="bus-map">
       <div class="container">
@@ -147,7 +185,8 @@ $trajetlist = $controller_trajet->listTrajets();
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
-              <p>Vous pouvez réserver un billet de bus directement sur notre site web ou via notre application mobile. Sélectionnez votre trajet, choisissez la date et l'heure, puis procédez au paiement.</p>
+              <p>Vous pouvez réserver un billet de bus directement sur notre site web ou via notre application mobile.
+                Sélectionnez votre trajet, choisissez la date et l'heure, puis procédez au paiement.</p>
             </div>
           </div>
 
@@ -157,7 +196,8 @@ $trajetlist = $controller_trajet->listTrajets();
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
-              <p>Oui, vous pouvez annuler votre billet jusqu'à 24 heures avant le départ. Des frais d'annulation peuvent s'appliquer selon les conditions de votre tarif.</p>
+              <p>Oui, vous pouvez annuler votre billet jusqu'à 24 heures avant le départ. Des frais d'annulation peuvent
+                s'appliquer selon les conditions de votre tarif.</p>
             </div>
           </div>
 
@@ -167,7 +207,8 @@ $trajetlist = $controller_trajet->listTrajets();
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
-              <p>Les petits animaux de compagnie sont autorisés s'ils sont transportés dans un sac ou une cage appropriée. Les chiens guides pour personnes malvoyantes sont toujours acceptés.</p>
+              <p>Les petits animaux de compagnie sont autorisés s'ils sont transportés dans un sac ou une cage
+                appropriée. Les chiens guides pour personnes malvoyantes sont toujours acceptés.</p>
             </div>
           </div>
         </div>
@@ -230,25 +271,8 @@ $trajetlist = $controller_trajet->listTrajets();
       </div>
     </div>
   </footer>
+  <script src="assets/js/main.js"></script>
 
-  <script>
-    // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-      document.querySelector('.main-nav').classList.toggle('active');
-    });
-
-    // FAQ toggle
-    const faqItems = document.querySelectorAll('.faq-item');
-    faqItems.forEach(item => {
-      const question = item.querySelector('.faq-question');
-      question.addEventListener('click', () => {
-        item.classList.toggle('active');
-      });
-    });
-
-    // Ensure dashboard button is visible
-    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-    document.querySelector('.logout-btn').style.display = 'inline-flex';
-  </script>
 </body>
+
 </html>

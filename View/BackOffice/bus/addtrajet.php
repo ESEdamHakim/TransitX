@@ -1,7 +1,17 @@
 <?php 
 include("../../../Controller/trajetcontroller.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (
+    $_SERVER["REQUEST_METHOD"] == "POST" &&
+    isset(
+        $_POST['place_depart'],
+        $_POST['place_arrivee'],
+        $_POST['heure_depart'],
+        $_POST['duree'],
+        $_POST['distance_km'],
+        $_POST['prix']
+    )
+) {
     $place_depart = $_POST['place_depart'];
     $place_arrivee = $_POST['place_arrivee'];
     $heure_depart = $_POST['heure_depart'];
@@ -25,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -148,6 +159,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="form-actions text-center">
+            <a href="crud.php" class="btn cancel" style="margin-left: 10px;">
+                  Annuler <i class="fas fa-times"></i>
+                </a>
               <button type="submit" class="btn btn-primary">
                 Ajouter le Trajet <i class="fas fa-plus"></i>
               </button>

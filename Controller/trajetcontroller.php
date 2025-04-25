@@ -91,5 +91,17 @@ class TrajetController
             die('Error: ' . $e->getMessage());
         }
     }
+    public function getBusesByTrajetId($id_trajet)
+    {
+        $sql = "SELECT * FROM bus WHERE id_trajet = :id_trajet"; 
+        try {
+            $query = $this->db->prepare($sql);
+            $query->bindValue(':id_trajet', $id_trajet);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC); 
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+    }
 }
 ?>

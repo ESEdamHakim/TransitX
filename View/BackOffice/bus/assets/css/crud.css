@@ -79,6 +79,25 @@
 .btn.secondary:hover {
   background-color: var(--gray-light);
 }
+.btn.cancel {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid var(--border-color);
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn.cancel:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
 
 .btn.danger {
   background-color: var(--status-cancelled);
@@ -638,4 +657,11 @@
   color: red;
   font-size: 0.9em;
   margin-top: 5px;
+}
+
+.input-error {
+  color: #d8000c;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+  display: block;
 }
