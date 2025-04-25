@@ -198,7 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <select name="statut" id="statut">
                     <option value="">-- Sélectionner un statut --</option>
                     <option value="En attente">En attente</option>
-                    <option value="En cours de traitement">En cours de traitement</option>
+                    <option value="En cours">En cours de traitement</option>
                     <option value="Résolue">Résolue</option>
                     <option value="Rejetée">Rejetée</option>
                   </select>

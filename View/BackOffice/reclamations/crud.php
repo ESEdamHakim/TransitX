@@ -28,18 +28,48 @@ $clients = $ReclamationC->getAllClients();
     }
 
     .status.pending {
-      background-color: #fff3cd;
-      color: #856404;
+      background-color: rgba(255, 193, 7, 0.2);
+      /* Darkened background */
+      color: var(--status-pending);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 600;
     }
 
     .status.in-progress {
-      background-color: #cce5ff;
-      color: #004085;
+      background-color: rgba(0, 123, 255, 0.2);
+      /* Darkened background */
+      color: var(--status-in-progress);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 600;
     }
 
     .status.resolved {
-      background-color: #d4edda;
-      color: #155724;
+      background-color: rgba(40, 167, 69, 0.2);
+      /* Darkened background */
+      color: var(--status-resolved);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .status.refused {
+      background-color: rgba(220, 53, 69, 0.2);
+      /* Darkened background */
+      color: var(--status-refused);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .status.pending:hover,
+    .status.in-progress:hover,
+    .status.resolved:hover,
+    .status.refused:hover {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      transform: scale(1.03);
+      transition: all 0.2s ease;
     }
 
     .priority {
@@ -113,6 +143,10 @@ $clients = $ReclamationC->getAllClients();
     }
 
     .stat-box.danger {
+      border-left: 4px solid #ff7f07;
+    }
+
+    .stat-box.refused {
       border-left: 4px solid #dc3545;
     }
 
@@ -271,58 +305,31 @@ $clients = $ReclamationC->getAllClients();
         <div class="dashboard-stats">
           <div class="stat-box primary">
             <div class="stat-title">Total des réclamations</div>
-            <div class="stat-value">24</div>
+            <div class="stat-value">0</div>
             <div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div>
           </div>
           <div class="stat-box success">
             <div class="stat-title">Réclamations résolues</div>
-            <div class="stat-value">14</div>
+            <div class="stat-value">0</div>
             <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
           </div>
           <div class="stat-box warning">
             <div class="stat-title">En cours</div>
-            <div class="stat-value">8</div>
+            <div class="stat-value">0</div>
             <div class="stat-icon"><i class="fas fa-spinner"></i></div>
           </div>
           <div class="stat-box danger">
             <div class="stat-title">En attente</div>
-            <div class="stat-value">2</div>
+            <div class="stat-value">0</div>
             <div class="stat-icon"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="stat-box refused">
+            <div class="stat-title">Réclamations refusées</div>
+            <div class="stat-value">0</div>
+            <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
           </div>
         </div>
 
-        <!-- Filters -->
-        <div class="complaints-filters">
-          <div class="filter-item">
-            <label for="status-filter">Statut:</label>
-            <select id="status-filter">
-              <option value="all">Tous</option>
-              <option value="pending">En attente</option>
-              <option value="in-progress">En cours</option>
-              <option value="resolved">Résolues</option>
-            </select>
-          </div>
-          <div class="filter-item">
-            <label for="priority-filter">Priorité:</label>
-            <select id="priority-filter">
-              <option value="all">Toutes</option>
-              <option value="low">Basse</option>
-              <option value="medium">Moyenne</option>
-              <option value="high">Haute</option>
-            </select>
-          </div>
-          <div class="filter-item">
-            <label for="service-filter">Service:</label>
-            <select id="service-filter">
-              <option value="all">Tous</option>
-              <option value="bus">Bus</option>
-              <option value="colis">Colis</option>
-              <option value="covoiturage">Covoiturage</option>
-            </select>
-            <button class="btn primary">Appliquer</button>
-            <button class="btn secondary">Réinitialiser</button>
-          </div>
-        </div>
 
         <div class="crud-container">
           <div class="crud-header">
@@ -331,6 +338,7 @@ $clients = $ReclamationC->getAllClients();
               <button class="tab-btn" data-tab="pending">En attente</button>
               <button class="tab-btn" data-tab="in-progress">En cours</button>
               <button class="tab-btn" data-tab="resolved">Résolues</button>
+              <button class="tab-btn" data-tab="refused">Rejetée</button>
             </div>
           </div>
 
@@ -371,7 +379,23 @@ $clients = $ReclamationC->getAllClients();
                         (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
                       </td>
                       <td><?= htmlspecialchars($rec['description']) ?></td>
-                      <td><?= htmlspecialchars($rec['statut']) ?></td>
+                      <?php
+                      $statusClassMap = [
+                        'En attente' => 'pending',
+                        'En cours' => 'in-progress',
+                        'Résolue' => 'resolved',
+                        'Rejetée' => 'refused'
+                      ];
+
+                      $statut = trim($rec['statut']);
+                      $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
+                      ?>
+                      <td>
+                        <span class="status <?= $className ?>">
+                          <?= htmlspecialchars($rec['statut']) ?>
+                        </span>
+                      </td>
+
                       <td class="actions">
                         <form method="GET" action="updateRec.php" style="display:inline;">
                           <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
@@ -397,86 +421,6 @@ $clients = $ReclamationC->getAllClients();
         </div>
       </div>
     </main>
-  </div>
-
-  <!-- Modal for Adding/Editing Complaint -->
-  <div class="modal" id="complaint-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modal-title">Ajouter une Réclamation</h2>
-        <button class="close-modal"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <form id="complaint-form">
-          <div class="form-group">
-            <label for="client-name">Nom du client</label>
-            <input type="text" id="client-name" name="client-name" required>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="client-email">Email</label>
-              <input type="email" id="client-email" name="client-email" required>
-            </div>
-            <div class="form-group">
-              <label for="client-phone">Téléphone</label>
-              <input type="tel" id="client-phone" name="client-phone">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="service-type">Service concerné</label>
-              <select id="service-type" name="service-type" required>
-                <option value="">Sélectionner</option>
-                <option value="bus">Bus</option>
-                <option value="colis">Colis</option>
-                <option value="covoiturage">Covoiturage</option>
-                <option value="autre">Autre</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="priority">Priorité</label>
-              <select id="priority" name="priority" required>
-                <option value="">Sélectionner</option>
-                <option value="low">Basse</option>
-                <option value="medium">Moyenne</option>
-                <option value="high">Haute</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="subject">Sujet</label>
-            <input type="text" id="subject" name="subject" required>
-          </div>
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" rows="4" required></textarea>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="status">Statut</label>
-              <select id="status" name="status" required>
-                <option value="">Sélectionner</option>
-                <option value="pending">En attente</option>
-                <option value="in-progress">En cours</option>
-                <option value="resolved">Résolue</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="date">Date de soumission</label>
-              <input type="date" id="date" name="date" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="response">Réponse (si applicable)</label>
-            <textarea id="response" name="response" rows="3"></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn secondary cancel-btn">Annuler</button>
-            <button type="submit" class="btn primary">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
   </div>
 
   <!-- Delete Confirmation Modal -->
@@ -569,6 +513,7 @@ $clients = $ReclamationC->getAllClients();
       deleteModal.classList.remove('active');
     });
   </script>
+  <script src="assets/js/recFilters.js"></script>
 </body>
 
 </html>

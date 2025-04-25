@@ -222,7 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <option value="">-- Sélectionner un statut --</option>
                                         <option value="En attente" <?php if ($reclamation['statut'] == 'En attente')
                                             echo 'selected'; ?>>En attente</option>
-                                        <option value="En cours de traitement" <?php if ($reclamation['statut'] == 'En cours de traitement')
+                                        <option value="En cours" <?php if ($reclamation['statut'] == 'En cours')
                                             echo 'selected'; ?>>En cours de traitement</option>
                                         <option value="Résolue" <?php if ($reclamation['statut'] == 'Résolue')
                                             echo 'selected'; ?>>Résolue</option>
