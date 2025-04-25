@@ -80,6 +80,12 @@ include 'Bdisplaycovoiturage.php';
                 <span>Blog</span>
               </a>
             </li>
+            <li>
+              <a href="../vehicule/crud.php">
+                <i class="fas fa-car"></i>
+                <span>Véhicules</span>
+              </a>
+            </li>
           </ul>
         </nav>
       </div>
@@ -242,7 +248,7 @@ include 'Bdisplaycovoiturage.php';
           </div>
           <div class="form-group">
             <label for="ride-price">Prix par place (TND)</label>
-            <input type="number" id="ride-price" name="price"  step="1">
+            <input type="number" id="ride-price" name="price" step="1">
             <span id="ride-price-error" class="error-message"></span>
           </div>
           <div class="form-group">

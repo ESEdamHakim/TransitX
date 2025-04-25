@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Open Edit Vehicle Modal
     const editButtons = document.querySelectorAll('.btn.edit');
-    editButtons.forEach(button => {
-      button.addEventListener('click', function () {
+editButtons.forEach(button => {
+    button.addEventListener('click', function () {
         const idVehicule = this.getAttribute('data-id');
         const row = this.closest('tr');
         const matricule = row.querySelector('td:nth-child(2)').textContent.trim();
@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const modele = row.querySelector('td:nth-child(7)').textContent.trim();
         const confort = row.querySelector('td:nth-child(8)').textContent.trim();
         const photoVehicule = row.querySelector('td:nth-child(9) img')?.getAttribute('src') || '';
-  
+
+        // Populate the modal fields
         document.getElementById('id_vehicule').value = idVehicule;
         document.getElementById('vehicle-matricule').value = matricule;
         document.getElementById('vehicle-type').value = typeVehicule;
@@ -63,12 +64,16 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('vehicle-brand').value = marque;
         document.getElementById('vehicle-model').value = modele;
         document.getElementById('vehicle-comfort').value = confort;
-        document.getElementById('vehicle-photo').value = photoVehicule;
-  
+
+        // Populate the existing-photo field with the current photo's name
+        const existingPhotoName = photoVehicule.split('/').pop(); // Extract the file name from the path
+        document.getElementById('existing-photo').value = existingPhotoName;
+
+        // Set the modal title and open the modal
         document.getElementById('modal-title').textContent = 'Modifier un Véhicule';
         document.getElementById('vehicle-modal').classList.add('active');
-      });
     });
+});
   
     // Handle Form Submission for Add/Edit
     const vehicleForm = document.getElementById('vehicle-form');
@@ -78,23 +83,34 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(vehicleForm);
   
       fetch('updateVehicule.php', {
-        method: 'POST',
-        body: formData,
+          method: 'POST',
+          body: formData,
       })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert(data.message); // Show success message
-            location.reload(); // Reload the page to reflect changes
-          } else {
-            alert('Erreur : ' + data.message); // Show error message
-          }
-        })
-        .catch(error => {
-          console.error('Erreur lors de la mise à jour :', error);
-          alert('Une erreur est survenue lors de la mise à jour.');
-        });
-    });
+          .then(response => {
+              // Ensure the response is valid JSON
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+          })
+          .then(data => {
+              try {
+                  if (data.success) {
+                      alert(data.message); // Show success message
+                      location.reload(); // Reload the page to reflect changes
+                  } else {
+                      alert('Erreur : ' + data.message); // Show server-side error message
+                  }
+              } catch (error) {
+                  console.error('Erreur lors du traitement de la réponse JSON :', error);
+                  alert('Une erreur est survenue lors du traitement de la réponse.');
+              }
+          })
+          .catch(error => {
+              console.error('Erreur lors de la requête :', error);
+              alert('Une erreur est survenue lors de la requête.');
+          });
+  });
   
     // Open Delete Confirmation Modal
     const deleteButtons = document.querySelectorAll('.btn.delete');

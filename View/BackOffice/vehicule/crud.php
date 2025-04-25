@@ -223,7 +223,8 @@ include 'BdisplayVehicule.php';
       <div class="modal-body">
         <form id="vehicle-form" method="POST" action="updateVehicule.php">
           <input type="hidden" id="id_vehicule" name="id_vehicule">
-
+          <input type="hidden" id="existing-photo" name="existing_photo">
+          
           <div class="form-group">
             <label for="vehicle-matricule">Matricule</label>
             <input type="text" id="vehicle-matricule" name="matricule">
@@ -260,10 +261,10 @@ include 'BdisplayVehicule.php';
             <span id="vehicle-comfort-error" class="error-message"></span>
           </div>
           <div class="form-group">
-            <label for="vehicle-photo">Photo</label>
-            <input type="text" id="vehicle-photo" name="photo_vehicule">
-            <span id="vehicle-photo-error" class="error-message"></span>
-          </div>
+        <label for="ride-photo">Photo</label>
+        <input type="file" id="ride-photo" name="photo_vehicule">
+        <span id="ride-photo-error" class="error-message"></span>
+    </div>
           <div class="form-actions">
             <button type="button" class="btn secondary cancel-btn">Annuler</button>
             <button type="submit" class="btn primary">Enregistrer</button>
