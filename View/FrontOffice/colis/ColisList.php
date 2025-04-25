@@ -13,9 +13,8 @@ $list = $ColisC->listColis();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Mes Colis</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/colis.css">
-  <link rel="stylesheet" href="../../BackOffice/bus/assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
@@ -49,43 +48,6 @@ $list = $ColisC->listColis();
   .dashboard-actions {
     display: flex;
     gap: 1rem;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px 24px;
-    border-radius: 50px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: none;
-    font-size: 16px;
-  }
-
-  .btn.primary {
-    background-color: var(--primary);
-    color: white;
-  }
-
-  .btn.primary:hover {
-    background-color: #86b391;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(151, 195, 162, 0.4);
-  }
-
-  .btn.secondary {
-    background-color: white;
-    border: 1px solid #ddd;
-    color: #333;
-  }
-
-  .btn.secondary:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   }
 
   .filters-section {
@@ -388,8 +350,8 @@ $list = $ColisC->listColis();
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline btn">Dashboard</a>
-        <a href="../../../index.php" class="btn primary">Déconnexion</a>
+        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>
@@ -406,10 +368,10 @@ $list = $ColisC->listColis();
             <p>Gérez et suivez tous vos envois de colis</p>
           </div>
           <div class="dashboard-actions">
-            <a href="index.php" class="btn primary">
+            <a href="index.php" class="btn btn-primary">
               <i class="fas fa-plus"></i> Nouveau Colis
             </a>
-            <button class="btn secondary">
+            <button class="btn btn-outline">
               <i class="fas fa-download"></i> Exporter
             </button>
           </div>
