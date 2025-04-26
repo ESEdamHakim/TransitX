@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $details = $_POST['description'];
 
     
-    $id_user = 1; 
+    $id_user = 2; 
     
     $covoit = new Covoiturage();
     $covoit->setIdCovoit($id_covoit);

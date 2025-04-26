@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/../../../Controller/vehiculeC.php';
+
+$id_user = 2; // Replace this with the actual user ID from the session
+$vehiculeController = new VehiculeC();
+$vehicules = $vehiculeController->getVehiculesByUser($id_user);
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -196,9 +203,21 @@
               <span id="ride-details-error" class="error-message"></span>
             </div>
             <div class="form-group">
-              <label for="matricule">Matricule du véhicule</label>
-              <input type="text" id="matricule" name="matricule" placeholder="Entrez le matricule de votre véhicule">
-              <span id="matricule-error" class="error-message"></span>
+              <label for="id_vehicule">Sélectionnez un véhicule</label>
+              <?php if (!empty($vehicules)): ?>
+                <select id="id_vehicule" name="id_vehicule">
+                  <option value="">-- Sélectionnez un véhicule --</option>
+                  <?php foreach ($vehicules as $vehicule): ?>
+                    <option value="<?= htmlspecialchars($vehicule['id_vehicule']) ?>">
+                      <?= htmlspecialchars($vehicule['matricule']) ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+                <span id="id-vehicule-error" class="error-message"></span>
+              <?php else: ?>
+                <p>Vous n'avez pas encore ajouté de véhicule.</p>
+                <a href="../vehicule/index.php" class="btn btn-primary">Ajouter véhicule</a>
+              <?php endif; ?>
             </div>
             <button type="submit" class="btn btn-primary">
               Publier le trajet

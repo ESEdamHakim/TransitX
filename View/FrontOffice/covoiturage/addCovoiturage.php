@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prix = filter_input(INPUT_POST, 'prix', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $tempsDepart = filter_input(INPUT_POST, 'temps_depart', FILTER_SANITIZE_STRING);
     $placesDispo = filter_input(INPUT_POST, 'places_dispo', FILTER_SANITIZE_NUMBER_INT);
-    $matricule = filter_input(INPUT_POST, 'matricule', FILTER_SANITIZE_STRING);
+    $id_vehicule = filter_input(INPUT_POST, 'id_vehicule', FILTER_SANITIZE_NUMBER_INT);
     // Convert "oui" and "non" to 1 and 0
     if ($accepteColis === 'oui') {
         $accepteColis = 1;
@@ -36,27 +36,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-    $id_user = 1;
+    $id_user = 2;
 
     // Validate the matricule and fetch the corresponding vehicle
     $vehiculeController = new VehiculeC();
-    $vehicule = $vehiculeController->getVehiculeByMatriculeAndUser($matricule, $id_user);
-
+    $vehicule = $vehiculeController->getVehiculesByUser($id_user);
     if (!$vehicule) {
         echo "Erreur : Le matricule saisi n'existe pas ou n'appartient pas à l'utilisateur.";
         exit;
     }
-
-    // Get the id_vehicule from the fetched vehicle
-    $id_vehicule = $vehicule['id_vehicule'];
 
     // Validate the number of available seats
     if (!$placesDispo || $placesDispo <= 0) {
         echo "Erreur : Le nombre de places disponibles est invalide.";
         exit;
     }
-    // Hardcoded user ID for testing
-    $id_user = 1;
+    // Validate the selected vehicle
+    if (!$id_vehicule) {
+        echo "Erreur : Veuillez sélectionner un véhicule.";
+        exit;
+    }
     // Create a new Covoiturage object
     $covoiturage = new Covoiturage(
         $dateDepart,

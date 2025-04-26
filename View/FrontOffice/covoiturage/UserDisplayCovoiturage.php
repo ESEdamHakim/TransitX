@@ -12,7 +12,7 @@
     <?php
     require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 
-    $id_user = 1;
+    $id_user = 2;
 
     $covoiturageController = new CovoiturageC();
     try {

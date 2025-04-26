@@ -178,5 +178,19 @@ public function getVehiculeByMatriculeAndUser($matricule, $id_user)
         throw new Exception('Erreur : ' . $e->getMessage());
     }
 }
+
+public function getVehiculesByUser($id_user)
+{
+    $sql = "SELECT id_vehicule, matricule FROM vehicule WHERE id_user = :id_user";
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([':id_user' => $id_user]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
 }
 ?>

@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Hardcoded user ID for testing
-    $id_user = 1;
+    $id_user = 2;
 
     // Create a new Vehicule object
     $vehicule = new Vehicule(

@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const accepteColis = document.getElementById("accept-parcels").value.trim();
         const colisComplet = document.getElementById("full-parcels").value.trim();
         const details = rideDetails.value.trim();
-        const matricule = document.getElementById("matricule").value.trim();
+        const idVehicule = document.getElementById("id_vehicule").value.trim();
         let hasError = false;
 
         // Validate required fields
@@ -106,8 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("full-parcels-error").textContent = "Veuillez indiquer si les colis sont complets.";
             hasError = true;
         }
-        if (!matricule) {
-            document.getElementById("matricule-error").textContent = "Veuillez entrer le matricule de votre véhicule.";
+        if (!idVehicule) {
+            document.getElementById("id-vehicule-error").textContent = "Veuillez sélectionner un véhicule.";
             hasError = true;
         }
         // If no errors, submit the form
