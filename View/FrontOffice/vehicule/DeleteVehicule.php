@@ -5,8 +5,8 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_vehicule'])) {
     $id_vehicule = $_POST['id_vehicule'];
-    $id_user = 1; // Hardcoded user ID for testing
-
+    //$id_user = 1; // Hardcoded user ID for testing
+    require_once __DIR__ . '/../../../configuration/appConfig.php';
     $vehiculeController = new VehiculeC();
 
     try {

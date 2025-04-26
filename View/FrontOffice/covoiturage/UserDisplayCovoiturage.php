@@ -12,8 +12,8 @@
     <?php
     require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 
-    $id_user = 2;
-
+    //$id_user = 2;
+    require_once __DIR__ . '/../../../configuration/appConfig.php';
     $covoiturageController = new CovoiturageC();
     try {
         $userCovoiturages = $covoiturageController->listUserCovoiturages($id_user);

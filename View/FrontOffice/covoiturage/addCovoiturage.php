@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-    $id_user = 2;
-
+   // $id_user = 2;
+   require_once __DIR__ . '/../../../configuration/appConfig.php';
     // Validate the matricule and fetch the corresponding vehicle
     $vehiculeController = new VehiculeC();
     $vehicule = $vehiculeController->getVehiculesByUser($id_user);

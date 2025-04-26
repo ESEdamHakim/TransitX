@@ -12,8 +12,8 @@
     <?php
     require_once __DIR__ . '/../../../Controller/vehiculeC.php';
 
-    $id_user = 1; // Hardcoded user ID for testing
-    
+    //$id_user = 1; // Hardcoded user ID for testing
+    require_once __DIR__ . '/../../../configuration/appConfig.php';
     $vehiculeController = new VehiculeC();
     try {
         $userVehicules = $vehiculeController->listUserVehicules($id_user);

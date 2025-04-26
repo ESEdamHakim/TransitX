@@ -46,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Hardcoded user ID for testing
-    $id_user = 2;
-
+    //$id_user = 2;
+    require_once __DIR__ . '/../../../configuration/appConfig.php';
     // Create a new Vehicule object
     $vehicule = new Vehicule(
         $matricule,

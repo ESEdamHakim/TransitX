@@ -7,7 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_covoit'])) {
     $id_covoit = $_POST['id_covoit'];
 
 
-    $id_user = 2;
+    //$id_user = 2;
+    require_once __DIR__ . '/../../../configuration/appConfig.php';
     $covoiturageController = new CovoiturageC();
 
     try {

@@ -17,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $details = $_POST['description'];
 
     
-    $id_user = 2; 
-    
+    //$id_user = 2; 
+    require_once __DIR__ . '/../../../configuration/appConfig.php';
     $covoit = new Covoiturage();
     $covoit->setIdCovoit($id_covoit);
     $covoit->setLieuDepart($lieu_depart);
