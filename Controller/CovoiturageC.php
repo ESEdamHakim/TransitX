@@ -171,5 +171,32 @@ class CovoiturageC
             throw new Exception('Erreur : ' . $e->getMessage());
         }
     }
+public function listUserCovoiturage()
+{
+    $sql = "SELECT 
+                covoiturage.id_covoit,
+                covoiturage.date_depart,
+                covoiturage.lieu_depart,
+                covoiturage.lieu_arrivee,
+                covoiturage.accepte_colis,
+                covoiturage.colis_complet,
+                covoiturage.details,
+                covoiturage.prix,
+                covoiturage.temps_depart,
+                covoiturage.places_dispo,
+                covoiturage.id_user,
+                users.nom AS user_name
+            FROM covoiturage
+            LEFT JOIN users ON covoiturage.id_user = users.id_user";
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
 }
 ?>

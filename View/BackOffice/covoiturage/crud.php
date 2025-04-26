@@ -170,7 +170,7 @@ include 'Bdisplaycovoiturage.php';
                       <td><?= htmlspecialchars($covoiturage['prix']) ?> TND</td>
                       <td><?= $covoiturage['accepte_colis'] ? 'Oui' : 'Non' ?></td>
                       <td><?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></td>
-                      <td><?= htmlspecialchars($covoiturage['id_user']) ?></td>
+                      <td><?= htmlspecialchars($covoiturage['user_name'] ?? 'Utilisateur inconnu') ?></td>
                       <td>
                         <button class="btn edit" data-id="<?= $covoiturage['id_covoit'] ?>"><i
                             class="fas fa-edit"></i></button>

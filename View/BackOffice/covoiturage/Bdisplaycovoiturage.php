@@ -7,7 +7,7 @@ $covoiturageController = new CovoiturageC();
 
 // Fetch the list of covoiturages
 try {
-    $covoiturages = $covoiturageController->listCovoiturages();
+    $covoiturages = $covoiturageController->listUserCovoiturage();
 } catch (Exception $e) {
     die("Erreur : " . $e->getMessage());
 }
