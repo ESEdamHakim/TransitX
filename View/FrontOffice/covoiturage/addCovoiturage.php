@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php'; // Corrected path
 require_once __DIR__ . '/../../../Model/Covoiturage.php';      // Corrected path
-
+require_once __DIR__ . '/../../../Controller/vehiculeC.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize and validate input data
     $dateDepart = filter_input(INPUT_POST, 'date_depart', FILTER_SANITIZE_STRING);
@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prix = filter_input(INPUT_POST, 'prix', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $tempsDepart = filter_input(INPUT_POST, 'temps_depart', FILTER_SANITIZE_STRING);
     $placesDispo = filter_input(INPUT_POST, 'places_dispo', FILTER_SANITIZE_NUMBER_INT);
+    $matricule = filter_input(INPUT_POST, 'matricule', FILTER_SANITIZE_STRING);
     // Convert "oui" and "non" to 1 and 0
     if ($accepteColis === 'oui') {
         $accepteColis = 1;
@@ -35,12 +36,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
+    $id_user = 1;
+
+    // Validate the matricule and fetch the corresponding vehicle
+    $vehiculeController = new VehiculeC();
+    $vehicule = $vehiculeController->getVehiculeByMatriculeAndUser($matricule, $id_user);
+
+    if (!$vehicule) {
+        echo "Erreur : Le matricule saisi n'existe pas ou n'appartient pas à l'utilisateur.";
+        exit;
+    }
+
+    // Get the id_vehicule from the fetched vehicle
+    $id_vehicule = $vehicule['id_vehicule'];
+
     // Validate the number of available seats
     if (!$placesDispo || $placesDispo <= 0) {
         echo "Erreur : Le nombre de places disponibles est invalide.";
         exit;
     }
-
     // Hardcoded user ID for testing
     $id_user = 1;
     // Create a new Covoiturage object
@@ -56,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $placesDispo
     );
     $covoiturage->setIdUser($id_user); 
+    $covoiturage->setIdVehicule($id_vehicule);
     // Call the controller to add the covoiturage
     $covoiturageController = new CovoiturageC();
     $result = $covoiturageController->addCovoiturage($covoiturage);

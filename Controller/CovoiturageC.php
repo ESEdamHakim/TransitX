@@ -20,9 +20,9 @@ class CovoiturageC
     public function addCovoiturage(Covoiturage $covoit)
     {
         $sql = "INSERT INTO covoiturage 
-                (date_depart, lieu_depart, lieu_arrivee, accepte_colis, colis_complet, details, prix, temps_depart, places_dispo, id_user) 
+                (date_depart, lieu_depart, lieu_arrivee, accepte_colis, colis_complet, details, prix, temps_depart, places_dispo, id_user,id_vehicule) 
                 VALUES 
-                (:date_depart, :lieu_depart, :lieu_arrivee, :accepte_colis, :colis_complet, :details, :prix, :temps_depart, :places_dispo, :id_user)";
+                (:date_depart, :lieu_depart, :lieu_arrivee, :accepte_colis, :colis_complet, :details, :prix, :temps_depart, :places_dispo, :id_user,:id_vehicule)";
 
         $db = config::getConnexion();
 
@@ -38,7 +38,8 @@ class CovoiturageC
                 ':prix' => $covoit->getPrix(),
                 ':temps_depart' => $covoit->getTempsDepart(),
                 ':places_dispo' => $covoit->getPlacesDispo(),
-                ':id_user' => $covoit->getIdUser()
+                ':id_user' => $covoit->getIdUser(),
+                ':id_vehicule' => $covoit->getIdVehicule()
             ]);
             return "Trajet ajouté avec succès.";
         } catch (Exception $e) {

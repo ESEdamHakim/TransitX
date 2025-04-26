@@ -195,6 +195,11 @@
                 style="margin-top: 10px;"></textarea>
               <span id="ride-details-error" class="error-message"></span>
             </div>
+            <div class="form-group">
+              <label for="matricule">Matricule du véhicule</label>
+              <input type="text" id="matricule" name="matricule" placeholder="Entrez le matricule de votre véhicule">
+              <span id="matricule-error" class="error-message"></span>
+            </div>
             <button type="submit" class="btn btn-primary">
               Publier le trajet
               <i class="fas fa-paper-plane"></i>

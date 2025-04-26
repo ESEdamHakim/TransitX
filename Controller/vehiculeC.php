@@ -161,5 +161,22 @@ class VehiculeC
             throw new Exception('Erreur : ' . $e->getMessage());
         }
     }
+   
+public function getVehiculeByMatriculeAndUser($matricule, $id_user)
+{
+    $sql = "SELECT * FROM vehicule WHERE matricule = :matricule AND id_user = :id_user";
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([
+            ':matricule' => $matricule,
+            ':id_user' => $id_user
+        ]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
 }
 ?>

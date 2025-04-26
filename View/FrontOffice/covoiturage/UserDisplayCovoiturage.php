@@ -58,10 +58,10 @@
                             data-accept-parcels="<?= $covoiturage['accepte_colis'] ?>"
                             data-full-parcels="<?= $covoiturage['colis_complet'] ?>"
                             data-description="<?= htmlspecialchars($covoiturage['details'] ?? '') ?>">
-                            <i class="fas fa-edit"></i> Modifier
+                            <i class="fas fa-edit"></i> 
                         </button>
                         <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>">
-                            <i class="fas fa-trash"></i> Supprimer
+                            <i class="fas fa-trash"></i> 
                         </button>
                     </div>
                 </div>
