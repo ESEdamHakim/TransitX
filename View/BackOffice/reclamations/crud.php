@@ -195,11 +195,6 @@ $clients = $ReclamationC->getAllClients();
     .complaints-table tr:hover {
       background-color: #f8f9fa;
     }
-
-    .action-btn {
-      width: 32px;
-      height: 32px;
-    }
   </style>
 </head>
 
@@ -334,11 +329,13 @@ $clients = $ReclamationC->getAllClients();
         <div class="crud-container">
           <div class="crud-header">
             <div class="tabs">
-              <button class="tab-btn active" data-tab="all">Toutes les Réclamations</button>
-              <button class="tab-btn" data-tab="pending">En attente</button>
-              <button class="tab-btn" data-tab="in-progress">En cours</button>
-              <button class="tab-btn" data-tab="resolved">Résolues</button>
-              <button class="tab-btn" data-tab="refused">Rejetée</button>
+              <button class="tab-btn active" data-objet="all">Toutes les Réclamations</button>
+              <button class="tab-btn" data-objet="Retard">Retard</button>
+              <button class="tab-btn" data-objet="Annulation">Annulation</button>
+              <button class="tab-btn" data-objet="Dommage">Dommage</button>
+              <button class="tab-btn" data-objet="Qualité de service">Qualité de service</button>
+              <button class="tab-btn" data-objet="Facturation">Facturation</button>
+              <button class="tab-btn" data-objet="Autre">Autre</button>
             </div>
           </div>
 
@@ -361,9 +358,8 @@ $clients = $ReclamationC->getAllClients();
                 <tbody>
                   <?php
                   foreach ($list as $rec):
-                    // Fetching client details based on id_client
+                    // Fetch client and covoiturage details
                     $client = $ReclamationC->getClientById($rec['id_client']);
-                    // Fetching covoiturage details based on id_covoit
                     $covoit = $ReclamationC->getCovoiturageById($rec['id_covoit']);
                     ?>
                     <tr>
@@ -378,7 +374,9 @@ $clients = $ReclamationC->getAllClients();
                         <?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
                         (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
                       </td>
-                      <td><?= htmlspecialchars($rec['description']) ?></td>
+                      <td>
+                        <?= strlen($rec['description']) > 50 ? htmlspecialchars(substr($rec['description'], 0, 50)) . '...' : htmlspecialchars($rec['description']) ?>
+                      </td>
                       <?php
                       $statusClassMap = [
                         'En attente' => 'pending',
@@ -397,6 +395,18 @@ $clients = $ReclamationC->getAllClients();
                       </td>
 
                       <td class="actions">
+                        <!-- View Button -->
+                        <button class="action-btn view" data-id="<?= $rec['id_rec'] ?>"
+                          data-client="<?= htmlspecialchars($client['nom']) ?> <?= htmlspecialchars($client['prenom']) ?>"
+                          data-objet="<?= htmlspecialchars($rec['objet']) ?>"
+                          data-date="<?= htmlspecialchars($rec['date_rec']) ?>"
+                          data-covoit="<?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>"
+                          data-description="<?= htmlspecialchars($rec['description']) ?>"
+                          data-statut="<?= htmlspecialchars($rec['statut']) ?>">
+                          <i class="fas fa-eye"></i>
+                        </button>
+
+                        <!-- Edit Button -->
                         <form method="GET" action="updateRec.php" style="display:inline;">
                           <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
                           <button type="submit" class="action-btn edit" title="Modifier">
@@ -404,6 +414,7 @@ $clients = $ReclamationC->getAllClients();
                           </button>
                         </form>
 
+                        <!-- Delete Button -->
                         <form method="POST" action="deleteRec.php" style="display:inline;"
                           onsubmit="return confirm('Are you sure you want to delete this reclamation?');">
                           <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
@@ -421,6 +432,20 @@ $clients = $ReclamationC->getAllClients();
         </div>
       </div>
     </main>
+  </div>
+
+  <div id="viewModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Détails de la Réclamation</h2>
+      <p><strong>Client:</strong> <span id="modal-client"></span></p>
+      <p><strong>Objet:</strong> <span id="modal-objet"></span></p>
+      <p><strong>Date:</strong> <span id="modal-date"></span></p>
+      <p><strong>Covoiturage:</strong> <span id="modal-covoit"></span></p>
+      <p><strong>Description:</strong></p>
+      <p id="modal-description"></p>
+      <p><strong>Statut:</strong> <span id="modal-statut"></span></p>
+    </div>
   </div>
 
   <!-- Delete Confirmation Modal -->
@@ -461,26 +486,9 @@ $clients = $ReclamationC->getAllClients();
     });
 
     // Modal Functions
-    const complaintModal = document.getElementById('complaint-modal');
     const deleteModal = document.getElementById('delete-modal');
     const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
 
-    // Open Add Complaint Modal
-    document.getElementById('add-complaint-btn').addEventListener('click', function () {
-      document.getElementById('modal-title').textContent = 'Ajouter une Réclamation';
-      document.getElementById('complaint-form').reset();
-      complaintModal.classList.add('active');
-    });
-
-    // Open Edit Complaint Modal
-    const editButtons = document.querySelectorAll('.edit');
-    editButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        document.getElementById('modal-title').textContent = 'Modifier une Réclamation';
-        // Here you would populate the form with the complaint data
-        complaintModal.classList.add('active');
-      });
-    });
 
     // Open Delete Confirmation Modal
     const deleteButtons = document.querySelectorAll('.delete');
@@ -488,22 +496,6 @@ $clients = $ReclamationC->getAllClients();
       button.addEventListener('click', function () {
         deleteModal.classList.add('active');
       });
-    });
-
-    // Close Modals
-    closeButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        complaintModal.classList.remove('active');
-        deleteModal.classList.remove('active');
-      });
-    });
-
-    // Form Submit Handler (would normally use AJAX)
-    document.getElementById('complaint-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      // Here you would send the form data to the server
-      alert('Réclamation enregistrée avec succès!');
-      complaintModal.classList.remove('active');
     });
 
     // Delete Confirmation Handler

@@ -1,90 +1,139 @@
-// Function to update stats based on the table data
+// Function to update stats based on status
 function updateStats() {
-    // Select all table rows
-    const rows = document.querySelectorAll('.complaints-table tbody tr');
-  
-    // Initialize counters
-    let totalCount = 0;
-    let resolvedCount = 0;
-    let inProgressCount = 0;
-    let pendingCount = 0;
-    let refusedCount = 0;
-  
-    // Loop through each row and count the statuses
-    rows.forEach(row => {
-      totalCount++;
-  
-      // Get the status of the current row
-      const statusElement = row.querySelector('.status');
-      const statusClass = statusElement ? statusElement.classList.value : '';
-  
-      // Increment the counters based on the status class
-      if (statusClass.includes('resolved')) {
-        resolvedCount++;
-      } else if (statusClass.includes('in-progress')) {
-        inProgressCount++;
-      } else if (statusClass.includes('pending')) {
-        pendingCount++;
-      } else if (statusClass.includes('refused')) {
-        refusedCount++;
-      }
-    });
-  
-    // Update the stat values in the dashboard
-    document.querySelector('.stat-box.primary .stat-value').textContent = totalCount;
-    document.querySelector('.stat-box.success .stat-value').textContent = resolvedCount;
-    document.querySelector('.stat-box.warning .stat-value').textContent = inProgressCount;
-    document.querySelector('.stat-box.danger .stat-value').textContent = pendingCount;
-    document.querySelector('.stat-box.refused .stat-value').textContent = refusedCount;
-  }
-  
-  // Call updateStats when the page loads
-  document.addEventListener('DOMContentLoaded', function() {
-    updateStats(); // Initial update when page loads
+  const rows = document.querySelectorAll('.complaints-table tbody tr');
+
+  let totalCount = 0;
+  let resolvedCount = 0;
+  let inProgressCount = 0;
+  let pendingCount = 0;
+  let refusedCount = 0;
+
+  rows.forEach(row => {
+    totalCount++;
+    const statusElement = row.querySelector('.status');
+    const statusClass = statusElement ? statusElement.classList.value : '';
+
+    // Count based on status
+    if (statusClass.includes('resolved')) {
+      resolvedCount++;
+    } else if (statusClass.includes('in-progress')) {
+      inProgressCount++;
+    } else if (statusClass.includes('pending')) {
+      pendingCount++;
+    } else if (statusClass.includes('refused')) {
+      refusedCount++;
+    }
   });
-  
-  // Call updateStats whenever the tab filter changes
-  document.querySelectorAll('.tab-btn').forEach(button => {
-    button.addEventListener('click', function () {
-      const status = this.dataset.tab;
-  
-      // Set active tab
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      this.classList.add('active');
-  
-      // Call the filterRows function to filter table rows based on the selected tab
-      filterRows(status);
+
+  // Update stats boxes
+  document.querySelector('.stat-box.primary .stat-value').textContent = totalCount;
+  document.querySelector('.stat-box.success .stat-value').textContent = resolvedCount;
+  document.querySelector('.stat-box.warning .stat-value').textContent = inProgressCount;
+  document.querySelector('.stat-box.danger .stat-value').textContent = pendingCount;
+  document.querySelector('.stat-box.refused .stat-value').textContent = refusedCount;
+}
+
+// Filter rows based on selected "objet"
+function filterRows(selectedObjet) {
+  const rows = document.querySelectorAll('.complaints-table tbody tr');
+
+  rows.forEach(row => {
+    const objetCell = row.querySelector('td:nth-child(3)'); // Assuming "Objet" is the 3rd column
+
+    if (!objetCell) {
+      row.style.display = 'none';
+      return;
+    }
+
+    const objet = objetCell.textContent.trim();
+    // Show or hide based on selected "objet"
+    if (selectedObjet === 'all' || objet === selectedObjet) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+// On page load
+document.addEventListener('DOMContentLoaded', function () {
+  updateStats(); // Initialize stats based on status
+  setupModalHandlers(); // Setup modal opening handlers
+});
+
+// Handle tab click for filtering by "objet"
+document.querySelectorAll('.tab-btn').forEach(button => {
+  button.addEventListener('click', function () {
+    const objet = this.dataset.objet;
+
+    // Set active tab
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    this.classList.add('active');
+
+    // Filter rows and update stats
+    filterRows(objet);
+    updateStats();
+  });
+});
+
+// Handle view button click to open the modal
+document.querySelectorAll('.action-btn.view').forEach(button => {
+  button.addEventListener('click', function() {
+    const modal = document.getElementById('viewModal');
+    // Fill modal fields with data attributes
+    document.getElementById('modal-client').innerText = this.getAttribute('data-client');
+    document.getElementById('modal-objet').innerText = this.getAttribute('data-objet');
+    document.getElementById('modal-date').innerText = this.getAttribute('data-date');
+    document.getElementById('modal-covoit').innerText = this.getAttribute('data-covoit');
+    document.getElementById('modal-description').innerText = this.getAttribute('data-description');
+    document.getElementById('modal-statut').innerText = this.getAttribute('data-statut');
+    modal.style.display = 'block';
+  });
+});
+
+// Close modal functionality
+document.querySelector('.close-modal').addEventListener('click', function() {
+  this.closest('.modal').style.display = 'none';
+});
+
+// Setup modal opening and closing when clicking view buttons
+function setupModalHandlers() {
+  const viewButtons = document.querySelectorAll('.action-btn.view');
+
+  // Modal click handlers
+  viewButtons.forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const modal = document.getElementById('viewModal');
       
-      // Update stats after the table is filtered
-      updateStats();
+      // Fill modal with data from button's dataset
+      document.getElementById('modal-client').textContent = this.dataset.client;
+      document.getElementById('modal-objet').textContent = this.dataset.objet;
+      document.getElementById('modal-date').textContent = this.dataset.date;
+      document.getElementById('modal-covoit').textContent = this.dataset.covoit;
+      document.getElementById('modal-description').textContent = this.dataset.description;
+      document.getElementById('modal-statut').textContent = this.dataset.statut;
+
+      // Display the modal
+      modal.classList.add('active');
     });
   });
-  
-  function filterRows(status) {
-    // Select all table rows
-    const rows = document.querySelectorAll('.complaints-table tbody tr');
-  
-    // Loop through each row
-    rows.forEach(row => {
-      // Get the status of the current row (the class name assigned in PHP)
-      const rowStatus = row.querySelector('.status');
-  
-      // If the row has no status, hide it
-      if (!rowStatus) {
-        row.style.display = 'none';
-        return;
-      }
-  
-      // Extract the status class from the row's status cell
-      const statusClass = rowStatus.classList.value.match(/status (\w+)/);
-      const currentStatus = statusClass ? statusClass[1] : '';
-  
-      // Show or hide rows based on the selected filter
-      if (status === 'all' || currentStatus === status.toLowerCase()) {
-        row.style.display = '';  // Show row
-      } else {
-        row.style.display = 'none';  // Hide row
-      }
+
+  // Close modal when clicking the close button
+  const closeModalButton = document.querySelector('.close-modal');
+  if (closeModalButton) {
+    closeModalButton.addEventListener('click', function () {
+      document.getElementById('viewModal').classList.remove('active');
     });
   }
-  
+
+  // Close modal when clicking outside
+  window.addEventListener('click', function (e) {
+    const modal = document.getElementById('viewModal');
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+}
