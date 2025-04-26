@@ -15,187 +15,10 @@ $clients = $ReclamationC->getAllClients();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Gestion des Réclamations</title>
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/reclamation.css">
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    .status {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
 
-    .status.pending {
-      background-color: rgba(255, 193, 7, 0.2);
-      /* Darkened background */
-      color: var(--status-pending);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-
-    .status.in-progress {
-      background-color: rgba(0, 123, 255, 0.2);
-      /* Darkened background */
-      color: var(--status-in-progress);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-
-    .status.resolved {
-      background-color: rgba(40, 167, 69, 0.2);
-      /* Darkened background */
-      color: var(--status-resolved);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-
-    .status.refused {
-      background-color: rgba(220, 53, 69, 0.2);
-      /* Darkened background */
-      color: var(--status-refused);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-
-    .status.pending:hover,
-    .status.in-progress:hover,
-    .status.resolved:hover,
-    .status.refused:hover {
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-      transform: scale(1.03);
-      transition: all 0.2s ease;
-    }
-
-    .priority {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .priority.low {
-      background-color: #e2e3e5;
-      color: #383d41;
-    }
-
-    .priority.medium {
-      background-color: #fff3cd;
-      color: #856404;
-    }
-
-    .priority.high {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-
-    .dashboard-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .stat-box {
-      background-color: #fff;
-      border-radius: 8px;
-      padding: 1.25rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .stat-box .stat-title {
-      font-size: 0.9rem;
-      color: #6c757d;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-box .stat-value {
-      font-size: 1.75rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-box .stat-icon {
-      align-self: flex-end;
-      margin-top: -2.5rem;
-      font-size: 1.5rem;
-      opacity: 0.2;
-    }
-
-    .stat-box.primary {
-      border-left: 4px solid #1f4f65;
-    }
-
-    .stat-box.success {
-      border-left: 4px solid #28a745;
-    }
-
-    .stat-box.warning {
-      border-left: 4px solid #ffc107;
-    }
-
-    .stat-box.danger {
-      border-left: 4px solid #ff7f07;
-    }
-
-    .stat-box.refused {
-      border-left: 4px solid #dc3545;
-    }
-
-    .complaints-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      background-color: #f8f9fa;
-      padding: 1rem;
-      border-radius: 8px;
-    }
-
-    .filter-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .filter-item label {
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    .filter-item select,
-    .filter-item input {
-      padding: 0.5rem;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-    }
-
-    .filter-actions {
-      margin-left: auto;
-    }
-
-    .complaints-table th,
-    .complaints-table td {
-      padding: 0.75rem 1rem;
-    }
-
-    .complaints-table th {
-      background-color: #f8f9fa;
-      font-weight: 600;
-    }
-
-    .complaints-table tr:hover {
-      background-color: #f8f9fa;
-    }
-  </style>
 </head>
 
 <body>
@@ -434,10 +257,14 @@ $clients = $ReclamationC->getAllClients();
     </main>
   </div>
 
-  <div id="viewModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
+  <!-- View Modal -->
+<div id="viewModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
       <h2>Détails de la Réclamation</h2>
+      <button class="close-modal"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
       <p><strong>Client:</strong> <span id="modal-client"></span></p>
       <p><strong>Objet:</strong> <span id="modal-objet"></span></p>
       <p><strong>Date:</strong> <span id="modal-date"></span></p>
@@ -447,6 +274,8 @@ $clients = $ReclamationC->getAllClients();
       <p><strong>Statut:</strong> <span id="modal-statut"></span></p>
     </div>
   </div>
+</div>
+
 
   <!-- Delete Confirmation Modal -->
   <div class="modal" id="delete-modal">

@@ -87,7 +87,7 @@ document.querySelectorAll('.action-btn.view').forEach(button => {
     document.getElementById('modal-covoit').innerText = this.getAttribute('data-covoit');
     document.getElementById('modal-description').innerText = this.getAttribute('data-description');
     document.getElementById('modal-statut').innerText = this.getAttribute('data-statut');
-    modal.style.display = 'block';
+    modal.classList.add('active'); // Open the modal by adding the 'active' class
   });
 });
 
