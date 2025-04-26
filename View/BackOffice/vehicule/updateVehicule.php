@@ -5,6 +5,8 @@ require_once '../../../Model/vehicule.php';
 
 session_start(); // Start the session to access user data
 
+header('Content-Type: application/json'); // Ensure the response is JSON
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve form data
     $id_vehicule = $_POST['id_vehicule'];
@@ -26,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (move_uploaded_file($photoTmpPath, $uploadDir . $photoName)) {
             $photo_vehicule = $photoName;
         } else {
-            echo "Erreur : Échec du téléchargement de la photo.";
+            echo json_encode(['success' => false, 'message' => 'Erreur : Échec du téléchargement de la photo.']);
             exit;
         }
     } elseif (!empty($_POST['existing_photo'])) {
@@ -34,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $photo_vehicule = $_POST['existing_photo'];
     } else {
         // No photo provided (new or existing)
-        echo "Erreur : Aucune photo fournie.";
+        echo json_encode(['success' => false, 'message' => 'Erreur : Aucune photo fournie.']);
         exit;
     }
 
@@ -57,16 +59,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Pass null for id_user and true for isAdmin
         $vehiculeController->updateVehicule($vehicule, null, true);
 
-        // Redirect to the display page with a success message
-        header('Location: index.php?success=update');
         // Return a success response
         echo json_encode(['success' => true, 'message' => 'Véhicule mis à jour avec succès.']);
         exit;
     } catch (Exception $e) {
-        echo "Erreur lors de la mise à jour : " . $e->getMessage();
+        // Return an error response
+        echo json_encode(['success' => false, 'message' => 'Erreur lors de la mise à jour : ' . $e->getMessage()]);
+        exit;
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Erreur lors de la mise à jour : ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Requête invalide.']);
     exit;
 }
 ?>

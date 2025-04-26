@@ -94,16 +94,11 @@ editButtons.forEach(button => {
               return response.json();
           })
           .then(data => {
-              try {
-                  if (data.success) {
-                      alert(data.message); // Show success message
-                      location.reload(); // Reload the page to reflect changes
-                  } else {
-                      alert('Erreur : ' + data.message); // Show server-side error message
-                  }
-              } catch (error) {
-                  console.error('Erreur lors du traitement de la réponse JSON :', error);
-                  alert('Une erreur est survenue lors du traitement de la réponse.');
+              if (data.success) {
+                  alert(data.message); // Show success message
+                  location.reload(); // Reload the page to reflect changes
+              } else {
+                  alert('Erreur : ' + data.message); // Show server-side error message
               }
           })
           .catch(error => {
