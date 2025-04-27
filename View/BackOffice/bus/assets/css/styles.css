@@ -98,7 +98,7 @@
 
 /* Buses Table */
 .buses-table-container {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
   overflow-x: auto;
 }
 
@@ -110,7 +110,7 @@
 
 .buses-table th,
 .buses-table td {
-  padding: 0.75rem;
+  padding: 1rem;
   text-align: left;
   border-bottom: 1px solid var(--gray-light);
 }
@@ -381,11 +381,4 @@
   .stats-cards {
     grid-template-columns: 1fr;
   }
-}
-
-.input-error {
-  color: #d8000c;
-  font-size: 0.85rem;
-  margin-top: 0.2rem;
-  display: block;
 }
