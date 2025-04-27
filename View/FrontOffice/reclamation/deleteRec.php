@@ -1,12 +1,25 @@
 <?php
 require_once __DIR__ . '/../../../Controller/ReclamationController.php';
 
-if (isset($_POST['id_rec'])) {
+// Ensure the request is a POST and 'id_rec' is provided
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['id_rec'])) {
+    $id_rec = (int)$_POST['id_rec']; // Cast to int for security
+
     $RecC = new ReclamationController();
-    $RecC->deleteReclamation($_POST['id_rec']);
-    header('Location: RecList.php');
-    exit();
+    
+    try {
+        $RecC->deleteReclamation($id_rec);
+        // After successful deletion, redirect
+        header('Location: RecList.php?success=1');
+        exit();
+    } catch (Exception $e) {
+        // Handle errors gracefully
+        header('Location: RecList.php?error=' . urlencode($e->getMessage()));
+        exit();
+    }
 } else {
-    echo "Reclamation ID not provided.";
+    // Invalid access or missing ID
+    header('Location: RecList.php?error=missing_id');
+    exit();
 }
 ?>

@@ -134,15 +134,6 @@ $clients = $ReclamationC->getAllClients();
         white-space: nowrap;
     }
 
-    .tab.active {
-        color: var(--primary);
-        border-bottom-color: var(--primary);
-    }
-
-    .tab:hover {
-        color: var(--primary);
-    }
-
     .tab .count {
         display: inline-block;
         background-color: #f1f1f1;
@@ -156,104 +147,6 @@ $clients = $ReclamationC->getAllClients();
     .tab.active .count {
         background-color: var(--primary);
         color: white;
-    }
-
-    .colis-table-container {
-        background-color: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .colis-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .colis-table th {
-        background-color: #f8f9fa;
-        color: #333;
-        font-weight: 600;
-        text-align: left;
-        padding: 1rem;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .colis-table td {
-        padding: 1rem;
-        border-bottom: 1px solid #f1f1f1;
-        color: #333;
-    }
-
-    .colis-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .colis-table tr:hover {
-        background-color: #f8f9fa;
-    }
-
-    .status {
-        display: inline-block;
-        padding: 0.4rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-    }
-
-    .status.pending {
-        background-color: rgba(255, 193, 7, 0.1);
-        color: #ffc107;
-    }
-
-    .status.in-transit {
-        background-color: rgba(23, 162, 184, 0.1);
-        color: #17a2b8;
-    }
-
-    .status.delivered {
-        background-color: rgba(40, 167, 69, 0.1);
-        color: #28a745;
-    }
-
-    .status.cancelled {
-        background-color: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-    }
-
-    .actions {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .action-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #666;
-        transition: all 0.3s;
-        background-color: transparent;
-    }
-
-    .action-btn:hover {
-        background-color: #f1f1f1;
-    }
-
-    .action-btn.view:hover {
-        color: var(--secondary);
-    }
-
-    .action-btn.edit:hover {
-        color: var(--primary);
-    }
-
-    .action-btn.delete:hover {
-        color: #dc3545;
     }
 
     .empty-state {
@@ -286,16 +179,6 @@ $clients = $ReclamationC->getAllClients();
 
         .filters-content {
             grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .colis-table-container {
-            overflow-x: auto;
-        }
-
-        .colis-table {
-            min-width: 800px;
         }
     }
 </style>
@@ -357,12 +240,15 @@ $clients = $ReclamationC->getAllClients();
                     </div>
                     <div class="filters-content">
                         <div class="filter-group">
-                            <label for="status-filter">Statut</label>
-                            <select id="status-filter">
-                                <option value="all">Tous les statuts</option>
-                                <option value="en_cours">En cours</option>
-                                <option value="traitee">Traitée</option>
-                                <option value="rejettee">Rejetée</option>
+                            <label for="objet-filter">Objet</label>
+                            <select id="objet-filter">
+                                <option value="all">Toutes les Réclamations</option>
+                                <option value="en_cours">Retard</option>
+                                <option value="traitee">Annulation</option>
+                                <option value="rejettee">Dommage</option>
+                                <option value="en_cours">Qualité de service</option>
+                                <option value="traitee">Facturation</option>
+                                <option value="rejettee">Autre</option>
                             </select>
                         </div>
                         <div class="filter-group">
@@ -371,11 +257,7 @@ $clients = $ReclamationC->getAllClients();
                         </div>
                         <div class="filter-group">
                             <label for="search-filter">Recherche</label>
-                            <input type="text" id="search-filter" placeholder="ID réclamation, objet...">
-                        </div>
-                        <div class="filter-group">
-                            <label for="search-filter">Recherche</label>
-                            <input type="text" id="search-filter" placeholder="ID, destinataire...">
+                            <input type="text" id="search-filter" placeholder="ID Covoiturage">
                         </div>
                     </div>
                     <div class="filter-actions">
@@ -385,66 +267,76 @@ $clients = $ReclamationC->getAllClients();
                 </div>
 
                 <div class="tabs-container">
-                    <div class="tab active">Tous <span class="count">12</span></div>
-                    <div class="tab">En attente <span class="count">3</span></div>
-                    <div class="tab">En transit <span class="count">5</span></div>
-                    <div class="tab">Livrés <span class="count">4</span></div>
+                    <div class="tab active">Tous <span class="count">0</span></div>
+                    <div class="tab">Refusée <span class="count">0</span></div>
+                    <div class="tab">En attente <span class="count">0</span></div>
+                    <div class="tab">En cours <span class="count">0</span></div>
+                    <div class="tab">Résolue <span class="count">0</span></div>
                 </div>
 
-                <div style="overflow-x: auto; max-width: 100%;">
-                    <table class="colis-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Objet</th>
-                                <th>Date</th>
-                                <th>Covoiturage</th>
-                                <th>Description</th>
-                                <th>Statut</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($list as $rec): ?>
-                                <?php
-                                $covoit = $ReclamationC->getCovoiturageById($rec['id_covoit']);
-                                if ($rec['id_client'] != 3)
-                                    continue; ?>
+                <div class="rec-container table-view active">
+                    <div class="rec-table-container">
+                        <table class="rec-table">
+                            <thead>
                                 <tr>
-                                    <td><?= $rec['id_rec'] ?></td>
-                                    <td><?= htmlspecialchars($rec['objet']) ?></td>
-                                    <td><?= htmlspecialchars($rec['date_rec']) ?></td>
-                                    <td>
-                                        <?= htmlspecialchars($covoit['lieu_depart']) ?> →
-                                        <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
-                                        (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
-                                    </td>
-                                    <td><?= htmlspecialchars($rec['description']) ?></td>
-                                    <td><?= htmlspecialchars($rec['statut']) ?></td>
-                                    <td class="actions">
-                                        <form method="GET" action="updateRec.php" style="display:inline;">
-                                            <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
-                                            <button type="submit" class="action-btn edit" title="Modifier">
-                                                <i class="fas fa-edit"></i>
+                                    <th>ID</th>
+                                    <th>Objet</th>
+                                    <th>Date</th>
+                                    <th>Covoiturage</th>
+                                    <th>Description</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($list as $rec): ?>
+                                    <?php
+                                    $covoit = $ReclamationC->getCovoiturageById($rec['id_covoit']);
+                                    if ($rec['id_client'] != 3)
+                                        continue; ?>
+                                    <tr>
+                                        <td><?= $rec['id_rec'] ?></td>
+                                        <td><?= htmlspecialchars($rec['objet']) ?></td>
+                                        <td><?= htmlspecialchars($rec['date_rec']) ?></td>
+                                        <td>
+                                            <?= htmlspecialchars($covoit['lieu_depart']) ?> →
+                                            <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
+                                            (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
+                                        </td>
+                                        <td>
+                                            <?= strlen($rec['description']) > 50 ? htmlspecialchars(substr($rec['description'], 0, 50)) . '...' : htmlspecialchars($rec['description']) ?>
+                                        </td>
+                                        <td><?= htmlspecialchars($rec['statut']) ?></td>
+                                        <td class="actions">
+                                            <!-- View Button -->
+                                            <button class="action-btn view" data-id="<?= $rec['id_rec'] ?>"
+                                                data-client="<?= htmlspecialchars($client['nom']) ?> <?= htmlspecialchars($client['prenom']) ?>"
+                                                data-objet="<?= htmlspecialchars($rec['objet']) ?>"
+                                                data-date="<?= htmlspecialchars($rec['date_rec']) ?>"
+                                                data-covoit="<?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>"
+                                                data-description="<?= htmlspecialchars($rec['description']) ?>"
+                                                data-statut="<?= htmlspecialchars($rec['statut']) ?>">
+                                                <i class="fas fa-eye"></i>
                                             </button>
-                                        </form>
 
-                                        <form method="POST" action="deleteRec.php" style="display:inline;"
-                                            onsubmit="return confirm('Are you sure you want to delete this reclamation?');">
-                                            <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
-                                            <button type="submit" class="action-btn delete" title="Supprimer">
+                                            <form method="GET" action="updateRec.php" style="display:inline;">
+                                                <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
+                                                <button type="submit" class="action-btn edit" title="Modifier">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                            </form>
+
+                                            <button type="button" class="action-btn delete open-delete-modal"
+                                                title="Supprimer" data-id="<?= htmlspecialchars($rec['id_rec']) ?>">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-
-                    </table>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-
-
             </div>
         </section>
     </main>
@@ -504,29 +396,68 @@ $clients = $ReclamationC->getAllClients();
             </div>
         </div>
     </footer>
+    <!-- View Modal -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Détails de la Réclamation</h2>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Objet:</strong> <span id="modal-objet"></span></p>
+                <p><strong>Date:</strong> <span id="modal-date"></span></p>
+                <p><strong>Covoiturage:</strong> <span id="modal-covoit"></span></p>
+                <p><strong>Description:</strong></p>
+                <p id="modal-description"></p>
+                <p><strong>Statut:</strong> <span id="modal-statut"></span></p>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        // Filters toggle
-        document.querySelector('.filters-toggle').addEventListener('click', function () {
-            const filtersContent = document.querySelector('.filters-content');
-            const filterActions = document.querySelector('.filter-actions');
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="delete-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirmer la suppression</h2>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cette réclamation ? Cette action est irréversible.</p>
+                <div class="form-actions">
+                    <button type="button" class="btn secondary cancel-btn">Annuler</button>
+                    <button type="button" class="btn danger" id="confirm-delete-btn">Supprimer</button>
+                </div>
+            </div>
+        </div>
 
-            if (filtersContent.style.display === 'none' || filtersContent.style.display === '') {
-                filtersContent.style.display = 'grid';
-                filterActions.style.display = 'flex';
-                this.innerHTML = '<i class="fas fa-times"></i> Masquer les filtres';
-            } else {
-                filtersContent.style.display = 'none';
-                filterActions.style.display = 'none';
-                this.innerHTML = '<i class="fas fa-sliders-h"></i> Afficher les filtres';
-            }
-        });
+        <!-- Hidden Delete Form -->
+        <form method="POST" action="deleteRec.php" style="display:none;" id="delete-form">
+            <input type="hidden" name="id_rec" id="delete-id">
+        </form>
 
-        // Initially hide filters
-        document.querySelector('.filters-content').style.display = 'none';
-        document.querySelector('.filter-actions').style.display = 'none';
+        <script>
+            // Filters toggle
+            document.querySelector('.filters-toggle').addEventListener('click', function () {
+                const filtersContent = document.querySelector('.filters-content');
+                const filterActions = document.querySelector('.filter-actions');
 
-    </script>
+                if (filtersContent.style.display === 'none' || filtersContent.style.display === '') {
+                    filtersContent.style.display = 'grid';
+                    filterActions.style.display = 'flex';
+                    this.innerHTML = '<i class="fas fa-times"></i> Masquer les filtres';
+                } else {
+                    filtersContent.style.display = 'none';
+                    filterActions.style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-sliders-h"></i> Afficher les filtres';
+                }
+            });
+
+            // Initially hide filters
+            document.querySelector('.filters-content').style.display = 'none';
+            document.querySelector('.filter-actions').style.display = 'none';
+
+        </script>
+        <script src="assets/js/recFilters.js"></script>
 </body>
 
 </html>
