@@ -236,15 +236,12 @@ $clients = $ReclamationC->getAllClients();
                             <i class="fas fa-edit"></i>
                           </button>
                         </form>
-
-                        <!-- Delete Button -->
-                        <form method="POST" action="deleteRec.php" style="display:inline;"
-                          onsubmit="return confirm('Are you sure you want to delete this reclamation?');">
-                          <input type="hidden" name="id_rec" value="<?= $rec['id_rec'] ?>">
-                          <button type="submit" class="action-btn delete" title="Supprimer">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </form>
+                        <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
+                          data-id="<?= htmlspecialchars($rec['id_rec']) ?>"
+                          data-nom="<?= htmlspecialchars($client['nom']) ?>"
+                          data-prenom="<?= htmlspecialchars($client['prenom']) ?>">
+                          <i class="fas fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -258,24 +255,23 @@ $clients = $ReclamationC->getAllClients();
   </div>
 
   <!-- View Modal -->
-<div id="viewModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Détails de la Réclamation</h2>
-      <button class="close-modal"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="modal-body">
-      <p><strong>Client:</strong> <span id="modal-client"></span></p>
-      <p><strong>Objet:</strong> <span id="modal-objet"></span></p>
-      <p><strong>Date:</strong> <span id="modal-date"></span></p>
-      <p><strong>Covoiturage:</strong> <span id="modal-covoit"></span></p>
-      <p><strong>Description:</strong></p>
-      <p id="modal-description"></p>
-      <p><strong>Statut:</strong> <span id="modal-statut"></span></p>
+  <div id="viewModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Détails de la Réclamation</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Client:</strong> <span id="modal-client"></span></p>
+        <p><strong>Objet:</strong> <span id="modal-objet"></span></p>
+        <p><strong>Date:</strong> <span id="modal-date"></span></p>
+        <p><strong>Covoiturage:</strong> <span id="modal-covoit"></span></p>
+        <p><strong>Description:</strong></p>
+        <p id="modal-description"></p>
+        <p><strong>Statut:</strong> <span id="modal-statut"></span></p>
+      </div>
     </div>
   </div>
-</div>
-
 
   <!-- Delete Confirmation Modal -->
   <div class="modal" id="delete-modal">
@@ -294,6 +290,10 @@ $clients = $ReclamationC->getAllClients();
     </div>
   </div>
 
+  <!-- Hidden Delete Form -->
+  <form method="POST" action="deleteRec.php" style="display:none;" id="delete-form">
+    <input type="hidden" name="id_rec" id="delete-id">
+  </form>
   <script>
     // Sidebar Toggle
     document.querySelector('.sidebar-toggle').addEventListener('click', function () {
@@ -312,26 +312,6 @@ $clients = $ReclamationC->getAllClients();
         const tabName = this.getAttribute('data-tab');
         console.log(`Switching to tab: ${tabName}`);
       });
-    });
-
-    // Modal Functions
-    const deleteModal = document.getElementById('delete-modal');
-    const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
-
-
-    // Open Delete Confirmation Modal
-    const deleteButtons = document.querySelectorAll('.delete');
-    deleteButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        deleteModal.classList.add('active');
-      });
-    });
-
-    // Delete Confirmation Handler
-    document.getElementById('confirm-delete-btn').addEventListener('click', function () {
-      // Here you would send a delete request to the server
-      alert('Réclamation supprimée avec succès!');
-      deleteModal.classList.remove('active');
     });
   </script>
   <script src="assets/js/recFilters.js"></script>

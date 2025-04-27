@@ -1,3 +1,25 @@
+function searchClient() {
+  const searchInput = document.querySelector('.search-bar input').value.toLowerCase(); // Get the search query
+  const rows = document.querySelectorAll('.complaints-table tbody tr'); // Get all the table rows
+
+  rows.forEach(row => {
+    const clientNameCell = row.querySelector('td:nth-child(2)'); // Assuming "Client" name is in the 2nd column (adjust as needed)
+    if (!clientNameCell) return;
+
+    const clientName = clientNameCell.textContent.toLowerCase(); // Get the client name in lowercase for case-insensitive comparison
+
+    // Show row if search matches the client name
+    if (clientName.includes(searchInput)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+// Attach event listener to the search input field to trigger search on input
+document.querySelector('.search-bar input').addEventListener('input', searchClient);
+
 // Function to update stats based on status
 function updateStats() {
   const rows = document.querySelectorAll('.complaints-table tbody tr');
@@ -138,3 +160,55 @@ function setupModalHandlers() {
     }
   });
 }
+// Setup Delete Button click to open the confirmation modal
+document.querySelectorAll('.action-btn.delete').forEach(button => {
+  button.addEventListener('click', function () {
+    const recId = this.dataset.id;            
+    const clientNom = this.dataset.nom || '';  
+    const clientPrenom = this.dataset.prenom || '';
+    const fullName = `${clientNom} ${clientPrenom}`.trim();
+
+    // Set hidden input for delete form
+    const deleteFormIdInput = document.getElementById('delete-id');
+    if (deleteFormIdInput) {
+      deleteFormIdInput.value = recId;
+    }
+
+    // Update modal text
+    const modalBodyText = document.querySelector('#delete-modal .modal-body p');
+    if (modalBodyText) {
+      modalBodyText.textContent = `Êtes-vous sûr de vouloir supprimer la réclamation de ${fullName} ? Cette action est irréversible.`;
+    }
+
+    // Show modal
+    const deleteModal = document.getElementById('delete-modal');
+    if (deleteModal) {
+      deleteModal.classList.add('active');
+    }
+  });
+});
+
+// Close modal when clicking on close button or cancel
+document.querySelectorAll('.close-modal, .cancel-btn').forEach(button => {
+  button.addEventListener('click', function () {
+    const modal = this.closest('.modal');
+    if (modal) {
+      modal.classList.remove('active');
+    }
+  });
+});
+
+// Confirm delete = Submit the hidden form
+document.getElementById('confirm-delete-btn').addEventListener('click', function () {
+  const deleteForm = document.getElementById('delete-form');
+  if (deleteForm) {
+    deleteForm.submit();
+  }
+});
+document.getElementById('confirm-delete-btn').addEventListener('click', function () {
+  this.disabled = true; // disable to avoid double-click
+  const deleteForm = document.getElementById('delete-form');
+  if (deleteForm) {
+    deleteForm.submit();
+  }
+});
