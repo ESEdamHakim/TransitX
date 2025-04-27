@@ -5,6 +5,11 @@ if (isset($_GET['id_commentaire']) && isset($_GET['id_article'])) {
     $id = intval($_GET['id_commentaire']);
     $id_article = intval($_GET['id_article']);
 
+    // Supprimer les réponses associées à ce commentaire
+    $deleteRepliesStmt = $pdo->prepare("DELETE FROM commentaire WHERE id_parent = ?");
+    $deleteRepliesStmt->execute([$id]);
+
+    // Ensuite, supprimer le commentaire principal
     $stmt = $pdo->prepare("DELETE FROM commentaire WHERE id_commentaire = ?");
     $stmt->execute([$id]);
 
@@ -14,4 +19,5 @@ if (isset($_GET['id_commentaire']) && isset($_GET['id_article'])) {
 } else {
     echo "Paramètres manquants.";
 }
+
 ?>

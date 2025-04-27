@@ -13,6 +13,8 @@ if (isset($_GET['id'])) {
             $contenu = $_POST['contenu'];
             $date_publication = $_POST['date_publication'];
             $photo = $_FILES['photo'];
+            $auteur = $_POST['auteur'];
+
 
             if ($photo['error'] == 0) {
                 $photo_name = time() . '_' . basename($photo['name']);
@@ -22,7 +24,7 @@ if (isset($_GET['id'])) {
                 $photo_name = $offer['photo'];
             }
 
-            $updatedOffer = new Article($titre, $contenu, $date_publication, $photo_name, $id_article);
+            $updatedOffer = new Article($titre, $contenu, $date_publication, $photo_name, $auteur, $id_article);
             $articc->updatearticle($updatedOffer);
 
             header("Location: crud.php");
@@ -234,6 +236,9 @@ if (isset($_GET['id'])) {
 
                 <label for="date_publication">Date de publication:</label>
                 <input type="date" name="date_publication" id="date_publication" class="input-field" value="<?= htmlspecialchars($offer['date_publication']) ?>" required>
+ 
+                <label for="auteur">auteur:</label>
+                <input type="text" name="auteur" id="auteur" class="input-field" value="<?= htmlspecialchars($offer['auteur']) ?>" required>
 
                 <label>Photo actuelle:</label>
                 <div class="image-preview">

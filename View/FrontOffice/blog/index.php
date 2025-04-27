@@ -42,7 +42,14 @@
     .post-info {
       padding: 20px;
     }
-
+    .author {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 14px;
+  color: #666;
+  font-weight: bold;
+}
     .post-info h3 {
       font-size: 20px;
       color: #1f4f65;
@@ -84,10 +91,11 @@
     .content {
       text-align: center;
     }
+
   </style>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+   document.addEventListener('DOMContentLoaded', function() {
   fetch('/TransitX-main/Controller/FrontOffice/get_articles.php')
     .then(response => response.json())
     .then(articles => {
@@ -99,13 +107,29 @@
         const post = document.createElement('article');
         post.className = 'blog-post';
         post.innerHTML = `
-<img src="/TransitX-main/uploads/${article.photo}" alt="Image de ${article.titre}" />
-          <div class="post-info">
-            <h3>${article.titre}</h3>
-            <p>${article.contenu.substring(0, 100)}...</p>
-            <a href="blog-detail.php?id=${article.id_article}" class="btn-primary">Lire la suite</a>
-          </div>
-        `;
+  <div class="blog-post">
+    <!-- Image de l'article en haut -->
+    <img src="/TransitX-main/uploads/${article.photo}" alt="Image de ${article.titre}" />
+    <div class="post-info">
+      <!-- Afficher l'auteur avec l'icône en haut à droite -->
+      <p class="author">
+        <i class="fas ${article.auteur_icon}"></i> ${article.auteur}
+      </p>
+      <h3>${article.titre}</h3>
+      <p>${article.contenu.substring(0, 100)}...</p>
+      <p>
+        <a href="blog-detail.php?id=${article.id_article}" class="btn-primary">Lire la suite</a>
+      </p>
+      <!-- Ajout du nombre de commentaires avec icône sous le bouton "Lire la suite" -->
+      <p>
+        <a href="blog-detail.php?id=${article.id_article}#comments" class="comment-link">
+          <i class="fas fa-comment-dots"></i> ${article.nb_commentaires} commentaire${article.nb_commentaires > 1 ? 's' : ''}
+        </a>
+      </p>
+    </div>
+  </div>
+`;
+
         container.appendChild(post);
       });
     })
@@ -117,6 +141,7 @@
 
   </script>
 </head>
+
 <body>
 
   <header class="landing-header">
