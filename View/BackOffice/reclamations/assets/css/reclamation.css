@@ -141,7 +141,11 @@
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
+  white-space: nowrap; /* Prevent text from wrapping to the next line */
+  overflow: hidden;    /* Hide overflow text if it doesn't fit */
+  text-overflow: ellipsis; /* Optional: Adds "..." if text is too long */
 }
+
 
 .status.pending {
   background-color: rgba(255, 193, 7, 0.2);

@@ -93,7 +93,8 @@ document.querySelectorAll('.action-btn.view').forEach(button => {
 
 // Close modal functionality
 document.querySelector('.close-modal').addEventListener('click', function() {
-  this.closest('.modal').style.display = 'none';
+  const modal = document.getElementById('viewModal');
+  modal.classList.remove('active'); // Close modal by removing the 'active' class
 });
 
 // Setup modal opening and closing when clicking view buttons
