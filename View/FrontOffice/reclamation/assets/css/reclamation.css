@@ -134,7 +134,7 @@
 .rec-table {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 15px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -173,16 +173,16 @@
   background-color: #f8f9fa;
 }
 
-.rec-table th:first-child,
-.rec-table td:first-child {
+/* Rounded top corners of the header */
+.rec-table th:first-child {
   border-top-left-radius: 15px;
 }
 
-.rec-table th:last-child,
-.rec-table td:last-child {
+.rec-table th:last-child {
   border-top-right-radius: 15px;
 }
 
+/* Rounded bottom corners of the table body */
 .rec-table tr:last-child td:first-child {
   border-bottom-left-radius: 15px;
 }
