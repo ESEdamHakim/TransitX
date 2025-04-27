@@ -8,7 +8,7 @@ class CovoiturageC
     // List all covoiturages
     public function listCovoiturages()
     {
-        $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, accepte_colis, colis_complet, details, prix, temps_depart, places_dispo, id_user
+        $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, accepte_colis, colis_complet, details, prix, temps_depart, places_dispo, id_user,id_vehicule
                 FROM covoiturage";
         $db = config::getConnexion();
         $query = $db->prepare($sql);
@@ -195,6 +195,20 @@ public function listUserCovoiturage()
         $query = $db->prepare($sql);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
+public function getVehiculeIdByCovoiturageId($id_covoiturage)
+{
+    $sql = "SELECT id_vehicule FROM covoiturage WHERE id_covoit = :id_covoiturage"; // Use id_covoit
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([':id_covoiturage' => $id_covoiturage]);
+        $result = $query->fetch();
+        return $result['id_vehicule'] ?? null; // Return the id_vehicule or null if not found
     } catch (Exception $e) {
         throw new Exception('Erreur : ' . $e->getMessage());
     }
