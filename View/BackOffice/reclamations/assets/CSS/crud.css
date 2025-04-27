@@ -139,6 +139,7 @@
 .btn.danger:hover {
   background-color: #b71c1c; /* Deep red on hover */
   transform: translateY(-2px); /* Subtle lift effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Secondary Cancel Button */
@@ -157,9 +158,10 @@
   border-color: #999;
   color: #ffffff;
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
 }
 
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 
 .crud-container {
   background-color: white;
