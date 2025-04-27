@@ -224,6 +224,7 @@ ul {
   overflow: hidden;
   background-color: #fff;
   transition: box-shadow 0.3s ease;
+
 }
 
 .search-bar:hover {
@@ -278,6 +279,10 @@ ul {
   outline: none;
   box-shadow: 0 0 8px rgba(31, 79, 101, 0.6);
   /* Stronger blue glow effect on focus */
+}
+.search-bar input::placeholder {
+  font-size: 15px; /* Smaller placeholder text */
+  color: #888; /* Slightly lighter color for the placeholder */
 }
 
 .notification-btn {

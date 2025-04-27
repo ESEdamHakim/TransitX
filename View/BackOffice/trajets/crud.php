@@ -31,8 +31,8 @@ $trajetlist = $trajetController->listTrajets();
         </div>
         <div class="header-right">
           <div class="search-bar">
-            <input type="text" placeholder="Rechercher un trajet..." aria-label="Rechercher un trajet">
-            <button><i class="fas fa-search"></i></button>
+          <input type="text" placeholder="Rechercher un trajet par destination" aria-label="Rechercher un trajet">
+          <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
             <a href="addtrajet.php" class="btn primary"><i class="fas fa-plus"></i> Ajouter un Trajet</a>
