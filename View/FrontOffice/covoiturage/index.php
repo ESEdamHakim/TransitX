@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../../configuration/appConfig.php';
 //$id_user = 2; // Replace this with the actual user ID from the session
 $vehiculeController = new VehiculeC();
 $vehicules = $vehiculeController->getVehiculesByUser($id_user);
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -68,33 +69,30 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
           <p>Recherchez parmi les trajets disponibles proposés par notre communauté.</p>
         </div>
         <div class="search-container">
-          <form class="search-form">
+          <form class="search-form" action="index.php" method="POST">
             <div class="form-group">
               <label for="departure">Départ</label>
               <input type="text" id="departure" placeholder="Ville de départ">
             </div>
             <div class="form-group">
               <label for="destination">Destination</label>
-              <input type="text" id="destination" placeholder="Ville d'arrivée">
+              <input type="text" id="destination" name="destination" placeholder="Ville d'arrivée">
             </div>
             <div class="form-group">
               <label for="date">Date</label>
-              <input type="date" id="date">
-            </div>
-            <div class="form-group">
-              <label for="passengers">Voyageurs</label>
-              <select id="passengers">
-                <option value="1">1 voyageur</option>
-                <option value="2">2 voyageurs</option>
-                <option value="3">3 voyageurs</option>
-                <option value="4">4 voyageurs</option>
-              </select>
+              <input type="date" id="date" name="date">
             </div>
             <button type="submit" class="btn btn-primary">
               Rechercher
               <i class="fas fa-search"></i>
             </button>
           </form>
+        </div>
+        <!-- Include search results dynamically -->
+        <div class="route-cards">
+          <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
+            <?php include 'searchCovoiturage.php'; ?>
+          <?php endif; ?>
         </div>
       </div>
     </section>

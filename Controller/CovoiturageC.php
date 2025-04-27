@@ -213,5 +213,36 @@ public function getVehiculeIdByCovoiturageId($id_covoiturage)
         throw new Exception('Erreur : ' . $e->getMessage());
     }
 }
+
+public function searchCovoiturages($departure, $destination, $date)
+{
+    $sql = "SELECT * FROM covoiturage WHERE 1=1";
+    $params = [];
+
+    if (!empty($departure)) {
+        $sql .= " AND lieu_depart LIKE :departure";
+        $params[':departure'] = '%' . $departure . '%';
+    }
+
+    if (!empty($destination)) {
+        $sql .= " AND lieu_arrivee LIKE :destination";
+        $params[':destination'] = '%' . $destination . '%';
+    }
+
+    if (!empty($date)) {
+        $sql .= " AND date_depart = :date";
+        $params[':date'] = $date;
+    }
+
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute($params);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
 }
 ?>
