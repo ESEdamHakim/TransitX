@@ -116,11 +116,9 @@ include 'Bdisplaycovoiturage.php';
             <input type="text" placeholder="Rechercher un trajet...">
             <button><i class="fas fa-search"></i></button>
           </div>
-          <div class="actions">
-            <button class="btn primary" id="add-covoiturage-btn">
-              <i class="fas fa-plus"></i> Ajouter un Trajet
-            </button>
-          </div>
+          <button id="add-covoiturage-btn" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Ajouter un Trajet
+          </button>
         </div>
       </header>
 
@@ -129,9 +127,8 @@ include 'Bdisplaycovoiturage.php';
           <div class="crud-header">
             <div class="tabs">
               <button class="tab-btn active" data-tab="all">Tous les Trajets</button>
-              <button class="tab-btn" data-tab="active">Actifs</button>
-              <button class="tab-btn" data-tab="pending">En attente</button>
-              <button class="tab-btn" data-tab="completed">Terminés</button>
+              <button class="tab-btn" data-tab="active">Récents</button>
+              <button class="tab-btn" data-tab="pending">Anciens</button>
             </div>
             <div class="view-options">
               <button class="view-btn active" data-view="table"><i class="fas fa-list"></i></button>
@@ -182,6 +179,9 @@ include 'Bdisplaycovoiturage.php';
                 </tbody>
               </table>
             </div>
+            <script src="search.js"></script>
+            <script src="Recent.js"></script>
+            <script src="Ancien.js"></script>
             <div class="pagination">
               <button class="pagination-btn prev"><i class="fas fa-chevron-left"></i></button>
               <button class="pagination-btn active">1</button>
