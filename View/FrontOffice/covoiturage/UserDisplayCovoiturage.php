@@ -58,11 +58,15 @@
                             data-accept-parcels="<?= $covoiturage['accepte_colis'] ?>"
                             data-full-parcels="<?= $covoiturage['colis_complet'] ?>"
                             data-description="<?= htmlspecialchars($covoiturage['details'] ?? '') ?>">
-                            <i class="fas fa-edit"></i> 
+                            <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>">
-                            <i class="fas fa-trash"></i> 
+                            <i class="fas fa-trash"></i>
                         </button>
+                        <!--a href="../vehicule/index.php?id_vehicule=<?= htmlspecialchars($covoiturage['id_vehicule']) ?>"
+                            class="btn btn-primary">
+                            Modifier Vehicule
+                        </a-->
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -79,7 +83,7 @@
                     <button class="close-modal"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="modal-body">
-                <form id="ride-form" method="POST" action="UserUpdateCovoiturage.php">
+                    <form id="ride-form" method="POST" action="UserUpdateCovoiturage.php">
                         <input type="hidden" id="id_covoit" name="id_covoit">
 
                         <div class="form-group">
