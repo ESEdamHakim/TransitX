@@ -1,10 +1,4 @@
-// Sidebar toggle
-document.querySelector('.sidebar-toggle').addEventListener('click', () => {
-    document.querySelector('.sidebar').classList.toggle('collapsed');
-    document.querySelector('.main-content').classList.toggle('expanded');
-  });
-  
-  // Tabs Filtering
+// Tabs Filtering
   document.querySelectorAll('.tab-btn').forEach(button => {
     button.addEventListener('click', () => {
       const filter = button.dataset.tab;
@@ -31,12 +25,4 @@ document.querySelector('.sidebar-toggle').addEventListener('click', () => {
     });
   });
   
-  // Trajet Search
-  document.querySelector('.header-right .search-bar:nth-of-type(2) input').addEventListener('input', function() {
-    const searchTerm = this.value.toLowerCase();
-    document.querySelectorAll('.dashboard-content .crud-container > .buses-table-container:nth-of-type(2) tbody tr').forEach(row => {
-      const rowText = row.innerText.toLowerCase();
-      row.style.display = rowText.includes(searchTerm) ? '' : 'none';
-    });
-  });
   
