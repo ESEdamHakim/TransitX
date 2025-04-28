@@ -17,6 +17,10 @@
   --warning: #ffc107;
   --danger: #dc3545;
   --info: #17a2b8;
+  --status-pending: #e0a800;
+  --status-in-progress: #007bff;
+  --status-resolved: #28a745;
+  --status-refused: #dc3545;
 }
 
 * {

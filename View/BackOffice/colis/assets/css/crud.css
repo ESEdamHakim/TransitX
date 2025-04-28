@@ -1,3 +1,4 @@
+
 /* CRUD Styles for Colis Module */
 .dashboard-header {
   display: flex;
@@ -21,27 +22,6 @@
   display: flex;
   gap: 1rem;
   align-items: center;
-}
-
-.search-bar {
-  display: flex;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.search-bar input {
-  padding: 0.8rem 1rem;
-  border: none;
-  width: 250px;
-}
-
-.search-bar button {
-  background-color:#f1f1f1;
-  color: #1f4f65;
-  border: none;
-  padding: 0 1rem;
-  cursor: pointer;
 }
 
 .actions {
@@ -111,15 +91,21 @@
 
 .tab-btn {
   padding: 0.5rem 1rem;
-  border: none;
   background: none;
-  cursor: pointer;
+  border: none;
+  font-size: 1.1rem;
   font-weight: 500;
   color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
   border-radius: 20px;
-  transition: all 0.3s ease;
 }
 
+.tab-btn.active,
+.tab-btn:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
 .tab-btn:hover {
   background-color: var(--gray-light);
 }
@@ -536,15 +522,6 @@
     width: 100%;
     flex-direction: column;
   }
-
-  .search-bar {
-    width: 100%;
-  }
-
-  .search-bar input {
-    width: 100%;
-  }
-
   .actions {
     width: 100%;
     justify-content: flex-end;
@@ -572,3 +549,115 @@
     grid-template-columns: 1fr;
   }
 }
+
+.search-bar {
+  display: flex;
+  border: 1px solid #ddd; /* Lighter border color */
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: box-shadow 0.3s ease;
+}
+
+.search-bar:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+.search-bar input {
+  padding: 0.8rem 1rem;
+  border: none;
+  width: 250px;
+  font-size: 1rem;
+  color: #333; /* Dark text color */
+  background-color: #f9f9f9; /* Light grey background for contrast */
+  border-radius: 12px 0 0 12px; /* Rounded left corners */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-bar input:focus {
+  outline: none; /* Remove default focus outline */
+  background-color: #e0e0e0; /* Slightly darker background on focus */
+}
+
+.search-bar button {
+  background-color: #1f4f65; /* Deep blue color for the button */
+  color: #fff; /* White text for contrast */
+  border: none;
+  padding: 0.8rem 1.5rem; /* Larger padding for a more balanced look */
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(31, 79, 101, 0.3); /* Softer blue shadow to match the button */
+}
+
+.search-bar button:hover {
+  background-color: #1a4055; /* Slightly darker blue on hover */
+  transform: scale(1.05); /* Slight scale-up effect on hover */
+}
+
+.search-bar button:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(31, 79, 101, 0.6); /* Stronger blue glow effect on focus */
+}
+
+@media (max-width: 600px) {
+  .search-bar {
+    width: 100%;
+    max-width: 100%; /* Ensure full width on small screens */
+  }
+
+  .search-bar input {
+    width: 70%; /* Input takes more space on mobile */
+  }
+
+  .search-bar button {
+    width: 30%; /* Button takes less space on mobile */
+  }
+}
+
+.status {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap; /* Prevent text from wrapping to the next line */
+  overflow: hidden;    /* Hide overflow text if it doesn't fit */
+  text-overflow: ellipsis; /* Optional: Adds "..." if text is too long */
+}
+
+.status.pending {
+  background-color: rgba(255, 193, 7, 0.2);
+  /* Darkened background */
+  color: var(--status-pending);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status.in-progress {
+  background-color: rgba(0, 123, 255, 0.2);
+  /* Darkened background */
+  color: var(--status-in-progress);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status.resolved {
+  background-color: rgba(40, 167, 69, 0.2);
+  /* Darkened background */
+  color: var(--status-resolved);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status.pending:hover,
+.status.in-progress:hover,
+.status.resolved:hover {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transform: scale(1.03);
+  transition: all 0.2s ease;
+}
+

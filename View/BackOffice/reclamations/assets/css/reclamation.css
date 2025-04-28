@@ -251,22 +251,35 @@
   border-bottom: 1px solid var(--gray);
 }
 
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .tab-btn {
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 1rem;
   background: none;
   border: none;
-  border-bottom: 3px solid transparent;
   font-size: 1.1rem;
   font-weight: 500;
   color: #666;
   cursor: pointer;
   transition: all 0.3s;
+  border-radius: 20px;
 }
 
 .tab-btn.active,
 .tab-btn:hover {
   color: var(--primary);
   border-bottom-color: var(--primary);
+}
+.tab-btn:hover {
+  background-color: var(--gray-light);
+}
+
+.tab-btn.active {
+  background-color: var(--primary);
+  color: white;
 }
 
 .tab-content {

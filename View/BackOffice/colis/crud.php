@@ -15,123 +15,6 @@ $list = $ColisC->listColis();
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    .status {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .status.pending {
-      background-color: #fff3cd;
-      color: #856404;
-    }
-
-    .status.in-transit {
-      background-color: #cce5ff;
-      color: #004085;
-    }
-
-    .status.delivered {
-      background-color: #d4edda;
-      color: #155724;
-    }
-
-    .status.cancelled {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-
-    .dashboard-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .stat-box {
-      background-color: #fff;
-      border-radius: 8px;
-      padding: 1.25rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .stat-box .stat-title {
-      font-size: 0.9rem;
-      color: #6c757d;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-box .stat-value {
-      font-size: 1.75rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-box .stat-icon {
-      align-self: flex-end;
-      margin-top: -2.5rem;
-      font-size: 1.5rem;
-      opacity: 0.2;
-    }
-
-    .stat-box.primary {
-      border-left: 4px solid #1f4f65;
-    }
-
-    .stat-box.success {
-      border-left: 4px solid #28a745;
-    }
-
-    .stat-box.warning {
-      border-left: 4px solid #ffc107;
-    }
-
-    .stat-box.danger {
-      border-left: 4px solid #dc3545;
-    }
-
-    .colis-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      background-color: #f8f9fa;
-      padding: 1rem;
-      border-radius: 8px;
-    }
-
-    .filter-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .filter-item label {
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    .filter-item select,
-    .filter-item input {
-      padding: 0.5rem;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-    }
-
-    .filter-actions {
-      margin-left: auto;
-    }
-
-    .action-btn {
-      width: 32px;
-      height: 32px;
-    }
-  </style>
 </head>
 
 <body>
@@ -305,7 +188,7 @@ $list = $ColisC->listColis();
                     <th>ID</th>
                     <th>Client</th>
                     <th>Covoit</th>
-                    <th>Date.d'envoi</th>
+                    <th>Date d'envoi</th>
                     <th>Dimensions (L × l × H)</th>
                     <th>Poids</th>
                     <th>Lieu Ram</th>
@@ -330,7 +213,21 @@ $list = $ColisC->listColis();
                       <td><?= number_format($colis['poids'], 2) ?> kg</td>
                       <td><?= htmlspecialchars($colis['lieu_ram']) ?></td>
                       <td><?= htmlspecialchars($colis['lieu_dest']) ?></td>
-                      <td><?= htmlspecialchars($colis['statut']) ?></td>
+                      <?php
+                      $statusClassMap = [
+                        'en attente' => 'pending',
+                        'en transit' => 'in-progress',
+                        'livré' => 'resolved'
+                      ];
+
+                      $statut = trim($colis['statut']);
+                      $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
+                      ?>
+                        <td>
+                        <span class="status <?= $className ?>">
+                          <?= htmlspecialchars($colis['statut']) ?>
+                        </span>
+                      </td>
                       <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
                       <td class="actions">
                         <form method="GET" action="updateColis.php" style="display:inline;">

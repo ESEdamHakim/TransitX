@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Ajouter un Colis</title>
 
-  <!-- CSS Imports -->
+  <!-- css Imports -->
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="../../assets/css/styles.css">
@@ -166,21 +166,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       border: 1px solid #ced4da;
       border-radius: 4px;
     }
-
-    .parcels-table th,
-    .parcels-table td {
-      padding: 0.75rem 1rem;
-    }
-
-    .parcels-table th {
-      background-color: #f8f9fa;
-      font-weight: 600;
-    }
-
-    .parcels-table tr:hover {
-      background-color: #f8f9fa;
-    }
-
     .action-btn {
       width: 32px;
       height: 32px;

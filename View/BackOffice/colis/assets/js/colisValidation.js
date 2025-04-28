@@ -1,8 +1,7 @@
-
+// map-setup.js
 let map;
 let pickupMarker = null;
 let deliveryMarker = null;
-let geocoder;
 let clickStep = 0;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -84,8 +83,6 @@ function initMap() {
     zoom: 13,
   });
 
-  geocoder = new google.maps.Geocoder();
-
   new google.maps.Marker({
     position: defaultLocation,
     map: map,
@@ -107,7 +104,7 @@ function initMap() {
       document.getElementById("latitude_ram").value = clickedLocation.lat();
       document.getElementById("longitude_ram").value = clickedLocation.lng();
 
-      geocodeLatLng(clickedLocation, "lieu_ram");
+      getCityFromCoordinates(clickedLocation.lat(), clickedLocation.lng(), "lieu_ram");
 
       clickStep = 1;
       warningBox.textContent = "📍 Pickup location set. Now click to choose the delivery location.";
@@ -124,7 +121,7 @@ function initMap() {
       document.getElementById("latitude_dest").value = clickedLocation.lat();
       document.getElementById("longitude_dest").value = clickedLocation.lng();
 
-      geocodeLatLng(clickedLocation, "lieu_dest");
+      getCityFromCoordinates(clickedLocation.lat(), clickedLocation.lng(), "lieu_dest");
 
       clickStep = 0;
       warningBox.textContent = "✅ Delivery location set.";
@@ -134,49 +131,30 @@ function initMap() {
   });
 }
 
-function geocodeLatLng(latlng, inputId) {
-  const geocoder = new google.maps.Geocoder();
-  geocoder.geocode({ location: latlng }, (results, status) => {
-    const targetField = document.getElementById(inputId);
+// New function replacing old geocoder
+async function getCityFromCoordinates(lat, lon, targetFieldId) {
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=fr`;
 
-    if (status === "OK") {
-      if (results[0]) {
-        targetField.value = results[0].formatted_address;
-      } else {
-        console.error("Aucune adresse trouvée pour cette position.");
-        targetField.value = "Adresse non trouvée";
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'TransitX/1.0 (your-email@example.com)' // update your email here
       }
-    } else {
-      switch (status) {
-        case "ZERO_RESULTS":
-          console.error("Aucun résultat trouvé pour cette position.");
-          targetField.value = "Aucune adresse correspondante.";
-          break;
-        case "OVER_QUERY_LIMIT":
-          console.error("Limite de requêtes API dépassée.");
-          targetField.value = "Limite de requêtes dépassée.";
-          break;
-        case "REQUEST_DENIED":
-          console.error("La demande a été rejetée (probablement à cause de la clé API).");
-          targetField.value = "Accès refusé à l'API.";
-          break;
-        case "INVALID_REQUEST":
-          console.error("Requête invalide.");
-          targetField.value = "Requête invalide.";
-          break;
-        case "UNKNOWN_ERROR":
-          console.error("Erreur inconnue lors du géocodage.");
-          targetField.value = "Erreur inconnue.";
-          break;
-        default:
-          console.error("Erreur de géocodage: " + status);
-          targetField.value = "Erreur de géocodage.";
-          break;
-      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Nominatim API error: ' + response.statusText);
     }
-  });
-}
 
+    const data = await response.json();
+    let city = data.address.city || data.address.town || data.address.village || data.address.hamlet || "Ville non trouvée";
+
+    document.getElementById(targetFieldId).value = city;
+  } catch (error) {
+    console.error('Erreur lors du géocodage inversé:', error);
+    document.getElementById(targetFieldId).value = "Erreur géocodage";
+  }
+}
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const earthRadius = 6371;
@@ -243,5 +221,3 @@ function clearAllErrors() {
     mapWarning.textContent = "";
   }
 }
-
-

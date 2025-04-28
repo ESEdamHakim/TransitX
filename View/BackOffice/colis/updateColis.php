@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Ajouter un Colis</title>
 
-  <!-- CSS Imports -->
+  <!-- css Imports -->
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="../../assets/css/styles.css">
