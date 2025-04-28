@@ -138,7 +138,7 @@ async function getCityFromCoordinates(lat, lon, targetFieldId) {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'TransitX/1.0 (your-email@example.com)' // update your email here
+        'User-Agent': 'TransitX/1.0 (hakimyessine72@gmail.com)' // update your email here
       }
     });
 
