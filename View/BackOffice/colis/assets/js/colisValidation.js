@@ -1,9 +1,16 @@
+
+let map;
+let pickupMarker = null;
+let deliveryMarker = null;
+let geocoder;
+let clickStep = 0;
+
 document.addEventListener('DOMContentLoaded', function () {
-  const colisForms = document.querySelectorAll(".colis-form"); // <-- added '.'
+  const colisForms = document.querySelectorAll(".colis-form");
 
   colisForms.forEach(form => {
     form.addEventListener("submit", function (e) {
-      clearAllErrors(); // Clear any previous errors
+      clearAllErrors(); // Clear previous errors
 
       const idClient = document.getElementById("id_client")?.value.trim();
       const idCovoit = document.getElementById("id_covoit")?.value || null;
@@ -20,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       let hasError = false;
 
-      // Validation logic
       if (!idClient || idClient === "--") {
         showError("id_client", "Veuillez sélectionner un client.");
         hasError = true;
@@ -35,10 +41,11 @@ document.addEventListener('DOMContentLoaded', function () {
         isNaN(hauteur) || hauteur < 1
       ) {
         const dimensionsError = document.getElementById("dimensions-error");
-        dimensionsError.innerHTML = '<div class="error-message" style="color: red; font-size: 0.85em;">❗ Les dimensions sont incorrectes. Chaque dimension doit être un nombre supérieur à 0.</div>';
+        if (dimensionsError) {
+          dimensionsError.innerHTML = '<div class="error-message" style="color: red; font-size: 0.85em;">❗ Les dimensions sont incorrectes. Chaque dimension doit être un nombre supérieur à 0.</div>';
+        }
         hasError = true;
-      }      
-      
+      }
       if (isNaN(poids) || poids < 0.1) {
         showError("poids", "Poids doit être supérieur à 0.");
         hasError = true;
@@ -52,9 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
         hasError = true;
       }
 
-      // Prevent form submission if errors exist
       if (hasError) {
-        e.preventDefault();
+        e.preventDefault(); // Stop form submission
         return;
       }
 
@@ -63,76 +69,179 @@ document.addEventListener('DOMContentLoaded', function () {
       const price = calculatePrice(poids, distance);
       console.log(`✅ Price calculated: ${price} DT`);
 
-      document.getElementById("prix").value = price; // Set calculated price in the form
-      // No need to manually submit, form submits normally
+      document.getElementById("prix").value = price;
     });
   });
 
-  // Helper function to calculate distance using Haversine formula
-  function calculateDistance(lat1, lon1, lat2, lon2) {
-    const earthRadius = 6371; // Radius of Earth in kilometers
-    const dLat = deg2rad(lat2 - lat1);
-    const dLon = deg2rad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) ** 2 +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) ** 2;
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return earthRadius * c;
-  }
-
-  // Helper function to convert degrees to radians
-  function deg2rad(deg) {
-    return deg * (Math.PI / 180);
-  }
-
-  // Helper function to calculate price based on weight and distance
-  function calculatePrice(weight, distance) {
-    if (weight < 1) {
-      if (distance < 10) return 5;
-      if (distance <= 30) return 8;
-      return 12;
-    } else if (weight <= 5) {
-      if (distance < 10) return 8;
-      if (distance <= 30) return 12;
-      return 18;
-    } else if (weight <= 10) {
-      if (distance < 10) return 12;
-      if (distance <= 30) return 18;
-      return 25;
-    } else {
-      if (distance < 10) return 15;
-      if (distance <= 30) return 22;
-      return 30;
-    }
-  }
-
-  // Helper functions to show and clear errors
-  function showError(fieldId, message) {
-    const field = document.getElementById(fieldId);
-    if (field) {
-      const existingError = field.parentNode.querySelector(".error-message");
-      if (existingError) existingError.remove();
-
-      const error = document.createElement('div');
-      error.className = 'error-message';
-      error.style.color = 'red';
-      error.style.fontSize = '0.85em';
-      error.textContent = message;
-
-      field.parentNode.appendChild(error);
-      field.classList.add('shake'); // optional animation
-    }
-  }
-
-  function clearAllErrors() {
-    document.querySelectorAll(".error-message").forEach(el => el.remove());
-    document.querySelectorAll(".shake").forEach(el => el.classList.remove("shake"));
-    
-    // Clear dimensions-specific error if exists
-    const dimensionsError = document.getElementById("dimensions-error");
-    if (dimensionsError) {
-      dimensionsError.innerHTML = "";
-    }
-  }
-  
 });
+
+// Google Maps needs initMap to be global
+function initMap() {
+  const defaultLocation = { lat: 36.8980431, lng: 10.1888733 }; // Tunis
+
+  map = new google.maps.Map(document.getElementById("gmap_canvas"), {
+    center: defaultLocation,
+    zoom: 13,
+  });
+
+  geocoder = new google.maps.Geocoder();
+
+  new google.maps.Marker({
+    position: defaultLocation,
+    map: map,
+    title: "Default Location",
+  });
+
+  map.addListener("click", function (event) {
+    const clickedLocation = event.latLng;
+    const warningBox = document.getElementById("map-warning");
+
+    if (clickStep === 0) {
+      if (pickupMarker) pickupMarker.setMap(null);
+      pickupMarker = new google.maps.Marker({
+        position: clickedLocation,
+        map: map,
+        label: "A",
+      });
+
+      document.getElementById("latitude_ram").value = clickedLocation.lat();
+      document.getElementById("longitude_ram").value = clickedLocation.lng();
+
+      geocodeLatLng(clickedLocation, "lieu_ram");
+
+      clickStep = 1;
+      warningBox.textContent = "📍 Pickup location set. Now click to choose the delivery location.";
+      warningBox.classList.add("text-warning");
+      warningBox.classList.remove("text-success");
+    } else if (clickStep === 1) {
+      if (deliveryMarker) deliveryMarker.setMap(null);
+      deliveryMarker = new google.maps.Marker({
+        position: clickedLocation,
+        map: map,
+        label: "B",
+      });
+
+      document.getElementById("latitude_dest").value = clickedLocation.lat();
+      document.getElementById("longitude_dest").value = clickedLocation.lng();
+
+      geocodeLatLng(clickedLocation, "lieu_dest");
+
+      clickStep = 0;
+      warningBox.textContent = "✅ Delivery location set.";
+      warningBox.classList.remove("text-warning");
+      warningBox.classList.add("text-success");
+    }
+  });
+}
+
+function geocodeLatLng(latlng, inputId) {
+  const geocoder = new google.maps.Geocoder();
+  geocoder.geocode({ location: latlng }, (results, status) => {
+    const targetField = document.getElementById(inputId);
+
+    if (status === "OK") {
+      if (results[0]) {
+        targetField.value = results[0].formatted_address;
+      } else {
+        console.error("Aucune adresse trouvée pour cette position.");
+        targetField.value = "Adresse non trouvée";
+      }
+    } else {
+      switch (status) {
+        case "ZERO_RESULTS":
+          console.error("Aucun résultat trouvé pour cette position.");
+          targetField.value = "Aucune adresse correspondante.";
+          break;
+        case "OVER_QUERY_LIMIT":
+          console.error("Limite de requêtes API dépassée.");
+          targetField.value = "Limite de requêtes dépassée.";
+          break;
+        case "REQUEST_DENIED":
+          console.error("La demande a été rejetée (probablement à cause de la clé API).");
+          targetField.value = "Accès refusé à l'API.";
+          break;
+        case "INVALID_REQUEST":
+          console.error("Requête invalide.");
+          targetField.value = "Requête invalide.";
+          break;
+        case "UNKNOWN_ERROR":
+          console.error("Erreur inconnue lors du géocodage.");
+          targetField.value = "Erreur inconnue.";
+          break;
+        default:
+          console.error("Erreur de géocodage: " + status);
+          targetField.value = "Erreur de géocodage.";
+          break;
+      }
+    }
+  });
+}
+
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  const earthRadius = 6371;
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return earthRadius * c;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+function calculatePrice(weight, distance) {
+  if (weight < 1) {
+    if (distance < 10) return 5;
+    if (distance <= 30) return 8;
+    return 12;
+  } else if (weight <= 5) {
+    if (distance < 10) return 8;
+    if (distance <= 30) return 12;
+    return 18;
+  } else if (weight <= 10) {
+    if (distance < 10) return 12;
+    if (distance <= 30) return 18;
+    return 25;
+  } else {
+    if (distance < 10) return 15;
+    if (distance <= 30) return 22;
+    return 30;
+  }
+}
+
+function showError(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  if (field) {
+    const existingError = field.parentNode.querySelector(".error-message");
+    if (existingError) existingError.remove();
+
+    const error = document.createElement('div');
+    error.className = 'error-message';
+    error.style.color = 'red';
+    error.style.fontSize = '0.85em';
+    error.textContent = message;
+
+    field.parentNode.appendChild(error);
+    field.classList.add('shake');
+  }
+}
+
+function clearAllErrors() {
+  document.querySelectorAll(".error-message").forEach(el => el.remove());
+  document.querySelectorAll(".shake").forEach(el => el.classList.remove("shake"));
+
+  const dimensionsError = document.getElementById("dimensions-error");
+  if (dimensionsError) {
+    dimensionsError.innerHTML = "";
+  }
+  const mapWarning = document.getElementById("map-warning");
+  if (mapWarning) {
+    mapWarning.textContent = "";
+  }
+}
+
+
