@@ -68,11 +68,10 @@ $trajetlist = $trajetController->listTrajets();
                           <input type="hidden" name="id_trajet" value="<?= htmlspecialchars($trajet['id_trajet']) ?>">
                           <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
                         </form>
-                        <form method="GET" action="deletetrajet.php" style="display:inline;"
-                          onsubmit="return confirm('Êtes-vous sûr ?');">
-                          <input type="hidden" name="id_trajet" value="<?= htmlspecialchars($trajet['id_trajet']) ?>">
-                          <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
-                        </form>
+                        <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
+                          data-id="<?= htmlspecialchars($trajet['id_trajet']) ?>">
+                          <i class="fas fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -83,6 +82,25 @@ $trajetlist = $trajetController->listTrajets();
         </div>
     </main>
   </div>
+  <div class="modal" id="delete-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirmer la suppression</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer ce bus ? Cette action est irréversible.</p>
+        <div class="form-actions">
+          <button type="button" class="btn secondary cancel-btn">Annuler</button>
+          <button type="button" class="btn danger" id="confirm-delete-btn">Supprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Delete Form -->
+    <form method="POST" action="deletetrajet.php" style="display:none;" id="delete-form">
+      <input type="hidden" name="id_trajet" id="delete-id">
+    </form>  
   <script src="assets/js/main.js"></script>
 </body>
 

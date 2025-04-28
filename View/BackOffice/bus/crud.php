@@ -113,9 +113,9 @@ $buslist = $busController->listBuses();
     </div>
 
     <!-- Hidden Delete Form -->
-    <form method="POST" action="deleteRec.php" style="display:none;" id="delete-form">
-      <input type="hidden" name="id_rec" id="delete-id">
-    </form>
+    <form method="POST" action="deletebus.php" style="display:none;" id="delete-form">
+      <input type="hidden" name="id_bus" id="delete-id">
+    </form>   
     <script src="assets/js/main.js"></script>
 </body>
 
