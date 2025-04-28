@@ -144,34 +144,29 @@ class ColisController
             die('Error: ' . $e->getMessage());
         }
     }
-
-    // Check if the client exists
-    public function clientExists($id_client)
+    public function getAllClients()
     {
-        $sql = "SELECT COUNT(*) FROM users WHERE id_user = :id_client"; // Replace 'users' if necessary
+        $sql = "SELECT id_user, nom, prenom FROM users"; // Adjust table name if needed
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
-            $query->bindValue(':id_client', $id_client);
             $query->execute();
-            return $query->fetchColumn() > 0;
+            return $query->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            die('Error checking client: ' . $e->getMessage());
+            die('Error fetching clients: ' . $e->getMessage());
         }
     }
-
-    // Check if the covoiturage exists
-    public function covoiturageExists($id_covoit)
+    public function getClientById($id_user)
     {
-        $sql = "SELECT COUNT(*) FROM covoiturage WHERE id_covoit = :id_covoit";
+        $sql = "SELECT id_user, nom, prenom FROM users WHERE id_user = :id_user";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
-            $query->bindValue(':id_covoit', $id_covoit);
+            $query->bindValue(':id_user', $id_user);
             $query->execute();
-            return $query->fetchColumn() > 0;
+            return $query->fetch(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            die('Error checking covoiturage: ' . $e->getMessage());
+            die('Error fetching client: ' . $e->getMessage());
         }
     }
 }

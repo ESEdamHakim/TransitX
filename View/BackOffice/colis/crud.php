@@ -126,7 +126,7 @@ $list = $ColisC->listColis();
     .filter-actions {
       margin-left: auto;
     }
-    
+
     .action-btn {
       width: 32px;
       height: 32px;
@@ -308,10 +308,8 @@ $list = $ColisC->listColis();
                     <th>Date.d'envoi</th>
                     <th>Dimensions (L × l × H)</th>
                     <th>Poids</th>
-                    <th>Latitude Ram</th>
-                    <th>Longitude Ram</th>
-                    <th>Latitude Dest</th>
-                    <th>Longitude Dest</th>
+                    <th>Lieu Ram</th>
+                    <th>Lieu Dest</th>
                     <th>Statut</th>
                     <th>Prix</th>
                     <th>Actions</th>
@@ -330,10 +328,8 @@ $list = $ColisC->listColis();
                         <?= number_format($colis['hauteur'], 2) ?> cm
                       </td>
                       <td><?= number_format($colis['poids'], 2) ?> kg</td>
-                      <td><?= htmlspecialchars($colis['latitude_ram']) ?></td>
-                      <td><?= htmlspecialchars($colis['longitude_ram']) ?></td>
-                      <td><?= htmlspecialchars($colis['latitude_dest']) ?></td>
-                      <td><?= htmlspecialchars($colis['longitude_dest']) ?></td>
+                      <td><?= htmlspecialchars($colis['lieu_ram']) ?></td>
+                      <td><?= htmlspecialchars($colis['lieu_dest']) ?></td>
                       <td><?= htmlspecialchars($colis['statut']) ?></td>
                       <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
                       <td class="actions">

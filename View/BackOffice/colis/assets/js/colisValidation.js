@@ -1,7 +1,9 @@
 let formReady = false;
 
+const colisForm = document.getElementById("colisForm"); // Select form
+
 colisForm.addEventListener("submit", function (e) {
-  if (!formReady) e.preventDefault(); // block default submit only the first time
+  if (!formReady) e.preventDefault(); // block default submit if not ready yet
   clearAllErrors();
 
   const idClient = document.getElementById("id_client").value.trim();
@@ -48,37 +50,37 @@ colisForm.addEventListener("submit", function (e) {
     hasError = true;
   }
 
-  if (hasError) return;
+  if (hasError) {
+    return; // stop here if any error
+  }
 
-  const url = idCovoit
-    ? `../../../Model/Ajax/FKCheck.php?id_client=${idClient}&id_covoit=${idCovoit}`
-    : `../../../Model/Ajax/FKCheck.php?id_client=${idClient}`;
-
-    fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      clearError("id_client");
-      clearError("id_covoit");
-  
-      if (!data.clientExists) {
-        showError("id_client", data.errorMessage);
-        return;
-      }
-  
-      if (!data.covoitExists) {
-        showError("id_covoit", data.errorMessage);
-        return;
-      }
-  
-      const distance = calculateDistance(latRam, lonRam, latDest, lonDest);
-      const price = calculatePrice(poids, distance);
-      document.getElementById("prix").value = price;
-  
-      colisForm.submit();
-    })
-    .catch(error => {
-      console.error("Erreur serveur:", error);
-    });
-  
-
+  // ✅ No errors found: allow submit
+  formReady = true;
+  colisForm.submit();
 });
+
+// ⬇️ Correct helper functions outside the event listener:
+
+function showError(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  if (field) {
+    // remove previous error message if any
+    const existingError = field.parentNode.querySelector(".error-message");
+    if (existingError) existingError.remove();
+
+    const error = document.createElement('div');
+    error.className = 'error-message';
+    error.style.color = 'red';
+    error.style.fontSize = '0.85em';
+    error.textContent = message;
+
+    field.parentNode.appendChild(error);
+
+    field.classList.add('shake'); // optional if you have animation
+  }
+}
+
+function clearAllErrors() {
+  document.querySelectorAll(".error-message").forEach(el => el.remove());
+  document.querySelectorAll(".shake").forEach(el => el.classList.remove("shake"));
+}
