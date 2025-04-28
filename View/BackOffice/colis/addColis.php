@@ -2,7 +2,7 @@
 require_once '../../../Controller/ColisController.php';
 
 $ColisC = new ColisController();
-$clients = $ColisC ->getAllClients();
+$clients = $ColisC->getAllClients();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (
@@ -274,17 +274,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
           <div class="colis-form-container">
             <form class="colis-form" method="POST">
-            <div class="form-group">
-                  <label for="id_client">Client :</label>
-                  <select name="id_client" id="id_client" style="border: 1px solid #dddddd; border-radius: 5px; padding: 8px;" >
-                    <option value="">-- Sélectionner un client --</option>
-                    <?php foreach ($clients as $client): ?>
-                      <option value="<?= $client['id_user'] ?>">
-                        <?= $client['nom'] ?>   <?= $client['prenom'] ?> (ID: <?= $client['id_user'] ?>)
-                      </option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
+              <div class="form-group">
+                <label for="id_client">Client :</label>
+                <select name="id_client" id="id_client"
+                  style="border: 1px solid #dddddd; border-radius: 5px; padding: 8px;">
+                  <option value="">-- Sélectionner un client --</option>
+                  <?php foreach ($clients as $client): ?>
+                    <option value="<?= $client['id_user'] ?>">
+                      <?= $client['nom'] ?>   <?= $client['prenom'] ?> (ID: <?= $client['id_user'] ?>)
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
 
               <input type="hidden" name="id_covoit" id="id_covoit" value="">
 
@@ -312,6 +313,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <span>×</span>
                     <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
                   </div>
+                  <!-- Place to show error for dimensions -->
+                  <div id="dimensions-error" class="error-message-container"></div>
                 </div>
 
                 <div class="form-group">
@@ -329,7 +332,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <input type="hidden" name="prix" id="prix">
               </br>
               <div class="form-actions text-center">
-                <a href="crud.php" class="btn btn-secondary">
+                <a href="crud.php" class="btn btn-outline">
                   Annuler
                   <i class="fas fa-times"></i>
                 </a>
@@ -358,6 +361,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </section>
     </main>
   </div>
+  <script src="assets/js/colisValidation.js"></script>
 
 
   <!-- Replace with your actual API key -->
@@ -483,7 +487,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       });
     });
   </script>
-  <script src="assets/js/colisValidation.js"></script>
 </body>
 
 </html>

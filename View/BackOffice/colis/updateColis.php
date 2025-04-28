@@ -344,11 +344,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <input type="hidden" name="prix" id="prix" value="<?php echo htmlspecialchars($colis['prix']); ?>">
               </br>
               <div class="form-actions text-center">
-                <a href="crud.php" class="btn secondary">
+                <a href="crud.php" class="btn btn-outline">
                   Annuler
                   <i class="fas fa-times"></i>
                 </a>
-                <button type="submit" class="btn primary">
+                <button type="submit" class="btn btn-primary">
                   Mettre à jour
                   <i class="fas fa-sync-alt"></i>
                 </button>
