@@ -73,16 +73,6 @@ class ColisController
         $db = config::getConnexion();
 
         try {
-            // Validate foreign key for client
-            if (!$this->clientExists($id_client)) {
-                throw new Exception("Client with ID $id_client does not exist.");
-            }
-
-            // Validate covoiturage existence if id_covoit is not NULL
-            if ($id_covoit !== null && !$this->covoiturageExists($id_covoit)) {
-                throw new Exception("Covoiturage with ID $id_covoit does not exist.");
-            }
-
             $sql = "UPDATE colis SET 
                 id_client = :id_client,
                 id_covoit = :id_covoit,
