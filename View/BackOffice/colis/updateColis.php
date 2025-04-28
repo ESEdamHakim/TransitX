@@ -2,6 +2,7 @@
 require_once '../../../Controller/ColisController.php';
 
 $ColisC = new ColisController();
+$clients = $ColisC->getAllClients();
 
 // Check if an ID is provided in the URL
 if (!isset($_GET['id_colis'])) {
@@ -38,6 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_POST['largeur'],
     $_POST['hauteur'],
     $_POST['poids'],
+    $_POST['lieu_ram'],
+    $_POST['lieu_dest'],
     $_POST['latitude_ram'],
     $_POST['longitude_ram'],
     $_POST['latitude_dest'],
@@ -57,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TransitX - Ajouter un Colis</title>
+  <title>TransitX - Modifier un Colis</title>
 
   <!-- css Imports -->
   <link rel="stylesheet" href="assets/css/crud.css">
@@ -68,124 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
-  <!-- Custom Styles -->
-  <style>
-    .status {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .status.pending {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .status.in-transit {
-      background: #cce5ff;
-      color: #004085;
-    }
-
-    .status.delivered {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .status.cancelled {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .dashboard-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .stat-box {
-      background: #fff;
-      border-radius: 8px;
-      padding: 1.25rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .stat-box .stat-title {
-      font-size: 0.9rem;
-      color: #6c757d;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-box .stat-value {
-      font-size: 1.75rem;
-      font-weight: 600;
-    }
-
-    .stat-box .stat-icon {
-      align-self: flex-end;
-      margin-top: -2.5rem;
-      font-size: 1.5rem;
-      opacity: 0.2;
-    }
-
-    .stat-box.primary {
-      border-left: 4px solid #1f4f65;
-    }
-
-    .stat-box.success {
-      border-left: 4px solid #28a745;
-    }
-
-    .stat-box.warning {
-      border-left: 4px solid #ffc107;
-    }
-
-    .stat-box.danger {
-      border-left: 4px solid #dc3545;
-    }
-
-    .colis-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      background-color: #f8f9fa;
-      padding: 1rem;
-      border-radius: 8px;
-    }
-
-    .filter-item label {
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    .filter-item input,
-    .filter-item select {
-      padding: 0.5rem;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-    }
-
-    .parcels-table th,
-    .parcels-table td {
-      padding: 0.75rem 1rem;
-    }
-
-    .parcels-table th {
-      background-color: #f8f9fa;
-      font-weight: 600;
-    }
-
-    .parcels-table tr:hover {
-      background-color: #f8f9fa;
-    }
-
-    .action-btn {
-      width: 32px;
-      height: 32px;
-    }
-  </style>
 </head>
 
 <body style="margin: 0; padding: 0;">
@@ -276,17 +161,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="colis-form-container">
             <form class="colis-form" method="POST">
               <div class="form-group">
-                <label for="id_client">ID Client:</label>
-                <input type="number" name="id_client" id="id_client" required placeholder="Entrez l'ID du client"
-                  value="<?php echo htmlspecialchars($colis['id_client']); ?>">
+                <label for="id_client">Client :</label>
+                <select name="id_client" id="id_client"
+                  style="border: 1px solid #dddddd; border-radius: 5px; padding: 8px;">
+                  <option value="">-- Sélectionner un client --</option>
+                  <?php foreach ($clients as $client): ?>
+                    <option value="<?= $client['id_user'] ?>" <?php if ($colis['id_client'] == $client['id_user'])
+                        echo 'selected'; ?>>
+                      <?= htmlspecialchars($client['nom']) ?>   <?= htmlspecialchars($client['prenom']) ?> (ID:
+                      <?= $client['id_user'] ?>)
+                    </option>
+                  <?php endforeach; ?>
+                </select>
               </div>
 
-              <div class="form-group">
-                <label for="id_covoit">ID Covoiturage:
-                  <input type="number" name="id_covoit" id="id_covoit" placeholder="Entrez l'ID du covoiturage"
-                    value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
-                </label>
-              </div>
+              <!-- Hidden covoit ID field -->
+              <input type="hidden" name="id_covoit" id="id_covoit"
+                value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
 
               <div class="form-group">
                 <label for="date_colis">Date d'envoi:</label>
@@ -304,11 +195,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo 'selected'; ?>>En transit
                   </option>
                   <option value="livré" <?php if ($colis['statut'] == 'livré')
-                    echo 'selected'; ?>>
-                    Livré</option>
+                    echo 'selected'; ?>>Livré</option>
                 </select>
               </div>
-
 
               <div class="form-row">
                 <div class="form-group">
@@ -323,16 +212,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1"
                       value="<?php echo htmlspecialchars($colis['hauteur']); ?>">
                   </div>
+                  <!-- Place to show error for dimensions -->
+                  <div id="dimensions-error" class="error-message-container"></div>
                 </div>
 
                 <div class="form-group">
-                  <label for="poids">Poids (kg):</label>
+                  <label for="poids">Poids (kg)</label>
                   <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1"
                     value="<?php echo htmlspecialchars($colis['poids']); ?>">
                 </div>
               </div>
 
-              <!-- Hidden fields for coordinates and price -->
+              <!-- Hidden fields for map coordinates and price -->
+              <input type="hidden" name="lieu_ram" id="lieu_ram" value="<?php echo htmlspecialchars($colis['lieu_ram']); ?>">
+              <input type="hidden" name="lieu_dest" id="lieu_dest" value="<?php echo htmlspecialchars($colis['lieu_dest']); ?>">
               <input type="hidden" name="latitude_ram" id="latitude_ram"
                 value="<?php echo htmlspecialchars($colis['latitude_ram']); ?>">
               <input type="hidden" name="longitude_ram" id="longitude_ram"
@@ -342,6 +235,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <input type="hidden" name="longitude_dest" id="longitude_dest"
                 value="<?php echo htmlspecialchars($colis['longitude_dest']); ?>">
               <input type="hidden" name="prix" id="prix" value="<?php echo htmlspecialchars($colis['prix']); ?>">
+
               </br>
               <div class="form-actions text-center">
                 <a href="crud.php" class="btn btn-outline">
@@ -355,10 +249,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </form>
 
-            <!-- Map Container -->
             <div class="map-container">
               <h3>Localisation</h3>
-              <div id="gmap_canvas" style="height: 400px; width: 100%;"></div>
+              <div id="gmap_canvas" style="height: 400px; width: 400px;"></div>
               <div class="map-info">
                 <p>
                   <i class="fas fa-info-circle"></i>
@@ -375,72 +268,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
       </section>
     </main>
-
   </div>
 
-
+  <script src="assets/js/colisValidation.js"></script>
   <!-- Replace with your actual API key -->
-  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-  <script>
-    let map;
-    let pickupMarker = null;
-    let deliveryMarker = null;
-    let currentLocationMarker = null; // Marker for current location
-    let clickStep = 0;
-
-    function initMap() {
-      const defaultLocation = {
-        lat: 36.8980431,
-        lng: 10.1888733
-      }; // Default location (Tunis)
-
-      // Initialize map with default location first
-      map = new google.maps.Map(document.getElementById("gmap_canvas"), {
-        center: defaultLocation,
-        zoom: 13,
-      });
-
-      // Add marker for the default location
-      new google.maps.Marker({
-        position: defaultLocation,
-        map: map,
-        title: "Default Location",
-      });
-
-      // Handle map clicks for setting pickup and delivery locations
-      map.addListener("click", function (event) {
-        const clickedLocation = event.latLng;
-
-        if (clickStep === 0) {
-          if (pickupMarker) pickupMarker.setMap(null); // Remove old pickup marker
-          pickupMarker = new google.maps.Marker({
-            position: clickedLocation,
-            map: map,
-            label: "A", // Pickup
-          });
-
-          document.getElementById("latitude_ram").value = clickedLocation.lat();
-          document.getElementById("longitude_ram").value = clickedLocation.lng();
-          clickStep = 1;
-          alert("Pickup location set. Now click to choose the delivery location.");
-        } else if (clickStep === 1) {
-          if (deliveryMarker) deliveryMarker.setMap(null); // Remove old delivery marker
-          deliveryMarker = new google.maps.Marker({
-            position: clickedLocation,
-            map: map,
-            label: "B", // Delivery
-          });
-
-          document.getElementById("latitude_dest").value = clickedLocation.lat();
-          document.getElementById("longitude_dest").value = clickedLocation.lng();
-          clickStep = 0;
-          alert("Delivery location set.");
-        }
-      });
-    }
-
-    window.onload = initMap;
-  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&callback=initMap"
+    async defer></script>
 
   <script>
     // Sidebar Toggle

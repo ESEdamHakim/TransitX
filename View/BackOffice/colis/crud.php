@@ -164,7 +164,9 @@ $list = $ColisC->listColis();
               <option value="sfax">Sfax</option>
               <option value="monastir">Monastir</option>
             </select>
+            <span> </span>
             <button class="btn primary">Appliquer</button>
+            <span> </span>
             <button class="btn secondary">Réinitialiser</button>
           </div>
         </div>

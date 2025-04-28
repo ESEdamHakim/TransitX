@@ -68,109 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
-  <!-- Custom Styles -->
-  <style>
-    .status {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .status.pending {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .status.in-transit {
-      background: #cce5ff;
-      color: #004085;
-    }
-
-    .status.delivered {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .status.cancelled {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .dashboard-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .stat-box {
-      background: #fff;
-      border-radius: 8px;
-      padding: 1.25rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .stat-box .stat-title {
-      font-size: 0.9rem;
-      color: #6c757d;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-box .stat-value {
-      font-size: 1.75rem;
-      font-weight: 600;
-    }
-
-    .stat-box .stat-icon {
-      align-self: flex-end;
-      margin-top: -2.5rem;
-      font-size: 1.5rem;
-      opacity: 0.2;
-    }
-
-    .stat-box.primary {
-      border-left: 4px solid #1f4f65;
-    }
-
-    .stat-box.success {
-      border-left: 4px solid #28a745;
-    }
-
-    .stat-box.warning {
-      border-left: 4px solid #ffc107;
-    }
-
-    .stat-box.danger {
-      border-left: 4px solid #dc3545;
-    }
-
-    .colis-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      background-color: #f8f9fa;
-      padding: 1rem;
-      border-radius: 8px;
-    }
-
-    .filter-item label {
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    .filter-item input,
-    .filter-item select {
-      padding: 0.5rem;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-    }
-    .action-btn {
-      width: 32px;
-      height: 32px;
-    }
-  </style>
 </head>
 
 <body style="margin: 0; padding: 0;">
@@ -330,7 +227,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="map-container">
               <h3>Localisation</h3>
-              <div id="gmap_canvas" style="height: 400px; width: 100%;"></div>
+              <div id="gmap_canvas" style="height: 400px; width: 400px;"></div>
               <div class="map-info">
                 <p>
                   <i class="fas fa-info-circle"></i>
@@ -346,9 +243,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </section>
     </main>
   </div>
+  
   <script src="assets/js/colisValidation.js"></script>
   <!-- Replace with your actual API key -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&callback=initMap" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&callback=initMap"
+    async defer></script>
 
   <script>
     // Sidebar Toggle

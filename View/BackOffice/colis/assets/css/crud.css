@@ -636,7 +636,7 @@
 }
 
 .status.in-progress {
-  background-color: rgba(0, 123, 255, 0.2);
+  background-color: #d1ecf1;
   /* Darkened background */
   color: var(--status-in-progress);
   padding: 0.3rem 0.8rem;
