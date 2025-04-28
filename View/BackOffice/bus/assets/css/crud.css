@@ -167,30 +167,6 @@
   padding: 1.5rem;
 }
 
-.complaints-table-container {
-  overflow-x: auto;
-}
-
-.complaints-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.complaints-table th,
-.complaints-table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.complaints-table th {
-  font-weight: 500;
-  color: #666;
-}
-
-.complaints-table tbody tr:hover {
-  background-color: var(--gray-light);
-}
 
 .status {
   display: inline-block;

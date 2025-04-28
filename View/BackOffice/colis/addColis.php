@@ -4,19 +4,21 @@ require_once '../../../Controller/ColisController.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (
     isset(
-    $_POST['id_client'],
-    $_POST['statut'],
-    $_POST['date_colis'],
-    $_POST['longueur'],
-    $_POST['largeur'],
-    $_POST['hauteur'],
-    $_POST['poids'],
-    $_POST['latitude_ram'],
-    $_POST['longitude_ram'],
-    $_POST['latitude_dest'],
-    $_POST['longitude_dest'],
-    $_POST['prix']
-  )
+      $_POST['id_client'],
+      $_POST['statut'],
+      $_POST['date_colis'],
+      $_POST['longueur'],
+      $_POST['largeur'],
+      $_POST['hauteur'],
+      $_POST['poids'],
+      $_POST['lieu_ram'],   
+      $_POST['lieu_dest'],    
+      $_POST['latitude_ram'],
+      $_POST['longitude_ram'],
+      $_POST['latitude_dest'],
+      $_POST['longitude_dest'],
+      $_POST['prix']
+    )
   ) {
     $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
 
@@ -30,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $_POST['largeur'],
       $_POST['hauteur'],
       $_POST['poids'],
+      $_POST['lieu_ram'],     
+      $_POST['lieu_dest'],    
       $_POST['latitude_ram'],
       $_POST['longitude_ram'],
       $_POST['latitude_dest'],
@@ -43,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">

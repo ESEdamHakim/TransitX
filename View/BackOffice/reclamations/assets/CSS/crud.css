@@ -243,28 +243,6 @@
   overflow-x: auto;
 }
 
-.parcels-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.parcels-table th,
-.parcels-table td {
-  padding: 0.9rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.parcels-table th {
-  font-weight: 500;
-  color: #666;
-}
-
-.parcels-table tbody tr:hover {
-  background-color: var(--gray-light);
-}
-
 .status {
   display: inline-block;
   padding: 0.4rem 0.8rem;

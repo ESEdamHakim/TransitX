@@ -126,21 +126,7 @@ $list = $ColisC->listColis();
     .filter-actions {
       margin-left: auto;
     }
-
-    .parcels-table th,
-    .parcels-table td {
-      padding: 0.75rem 1rem;
-    }
-
-    .parcels-table th {
-      background-color: #f8f9fa;
-      font-weight: 600;
-    }
-
-    .parcels-table tr:hover {
-      background-color: #f8f9fa;
-    }
-
+    
     .action-btn {
       width: 32px;
       height: 32px;

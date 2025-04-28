@@ -197,7 +197,7 @@ $clients = $ReclamationC->getAllClients();
                 <ul>
                     <li><a href="../index.php">Accueil</a></li>
                     <li><a href="../bus/index.php">Bus</a></li>
-                    <li><a href="index.php">Colis</a></li>
+                    <li><a href="../colis/index.php">Colis</a></li>
                     <li><a href="../covoiturage/index.php">Covoiturage</a></li>
                     <li><a href="../blog/index.php">Blog</a></li>
                     <li class="active"><a href="../reclamation/index.php">Réclamation</a></li>
@@ -306,7 +306,22 @@ $clients = $ReclamationC->getAllClients();
                                         <td>
                                             <?= strlen($rec['description']) > 50 ? htmlspecialchars(substr($rec['description'], 0, 50)) . '...' : htmlspecialchars($rec['description']) ?>
                                         </td>
-                                        <td><?= htmlspecialchars($rec['statut']) ?></td>
+                                        <?php
+                                        $statusClassMap = [
+                                            'En attente' => 'pending',
+                                            'En cours' => 'in-progress',
+                                            'Résolue' => 'resolved',
+                                            'Rejetée' => 'refused'
+                                        ];
+
+                                        $statut = trim($rec['statut']);
+                                        $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
+                                        ?>
+                                        <td>
+                                            <span class="status <?= $className ?>">
+                                                <?= htmlspecialchars($rec['statut']) ?>
+                                            </span>
+                                        </td>
                                         <td class="actions">
                                             <!-- View Button -->
                                             <button class="action-btn view" data-id="<?= $rec['id_rec'] ?>"

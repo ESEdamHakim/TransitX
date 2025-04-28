@@ -1,4 +1,4 @@
-<?php
+<?php 
 // ColisController.php
 require_once __DIR__ . '/../config.php';
 
@@ -17,7 +17,7 @@ class ColisController
     }
 
     // Add a new colis
-    public function addColis($id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)
+    public function addColis($id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $lieu_ram, $lieu_dest, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)
     {
         $db = config::getConnexion();
 
@@ -25,11 +25,13 @@ class ColisController
             $sql = "INSERT INTO colis (
                     id_client, id_covoit, statut, date_colis, 
                     longueur, largeur, hauteur, poids, 
+                    lieu_ram, lieu_dest,
                     latitude_ram, longitude_ram, 
                     latitude_dest, longitude_dest, prix
                 ) VALUES (
                     :id_client, :id_covoit, :statut, :date_colis, 
                     :longueur, :largeur, :hauteur, :poids, 
+                    :lieu_ram, :lieu_dest,
                     :latitude_ram, :longitude_ram, 
                     :latitude_dest, :longitude_dest, :prix
                 )";
@@ -49,6 +51,8 @@ class ColisController
             $query->bindValue(':largeur', $largeur);
             $query->bindValue(':hauteur', $hauteur);
             $query->bindValue(':poids', $poids);
+            $query->bindValue(':lieu_ram', $lieu_ram);
+            $query->bindValue(':lieu_dest', $lieu_dest);
             $query->bindValue(':latitude_ram', $latitude_ram);
             $query->bindValue(':longitude_ram', $longitude_ram);
             $query->bindValue(':latitude_dest', $latitude_dest);
@@ -64,7 +68,7 @@ class ColisController
     }
 
     // Update an existing colis
-    public function updateColis($id_colis, $id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)
+    public function updateColis($id_colis, $id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $lieu_ram, $lieu_dest, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)
     {
         $db = config::getConnexion();
 
@@ -79,7 +83,6 @@ class ColisController
                 throw new Exception("Covoiturage with ID $id_covoit does not exist.");
             }
 
-            // Prepare SQL query with the possibility of id_covoit being NULL
             $sql = "UPDATE colis SET 
                 id_client = :id_client,
                 id_covoit = :id_covoit,
@@ -89,6 +92,8 @@ class ColisController
                 largeur = :largeur,
                 hauteur = :hauteur,
                 poids = :poids,
+                lieu_ram = :lieu_ram,
+                lieu_dest = :lieu_dest,
                 latitude_ram = :latitude_ram,
                 longitude_ram = :longitude_ram,
                 latitude_dest = :latitude_dest,
@@ -100,11 +105,10 @@ class ColisController
             $query->bindValue(':id_colis', $id_colis);
             $query->bindValue(':id_client', $id_client);
 
-            // Bind id_covoit properly, check if it's NULL and use PDO::PARAM_NULL for it
             if ($id_covoit === null) {
-                $query->bindValue(':id_covoit', null, PDO::PARAM_NULL);  // This ensures NULL is allowed
+                $query->bindValue(':id_covoit', null, PDO::PARAM_NULL);
             } else {
-                $query->bindValue(':id_covoit', $id_covoit, PDO::PARAM_INT);  // Regular binding for non-NULL value
+                $query->bindValue(':id_covoit', $id_covoit, PDO::PARAM_INT);
             }
 
             $query->bindValue(':statut', $statut);
@@ -113,6 +117,8 @@ class ColisController
             $query->bindValue(':largeur', $largeur);
             $query->bindValue(':hauteur', $hauteur);
             $query->bindValue(':poids', $poids);
+            $query->bindValue(':lieu_ram', $lieu_ram);
+            $query->bindValue(':lieu_dest', $lieu_dest);
             $query->bindValue(':latitude_ram', $latitude_ram);
             $query->bindValue(':longitude_ram', $longitude_ram);
             $query->bindValue(':latitude_dest', $latitude_dest);
@@ -124,7 +130,6 @@ class ColisController
             die('Error: ' . $e->getMessage());
         }
     }
-
 
     // Delete a colis
     public function deleteColis($id_colis)
@@ -143,7 +148,7 @@ class ColisController
     // Check if the client exists
     public function clientExists($id_client)
     {
-        $sql = "SELECT COUNT(*) FROM users WHERE id_user = :id_client"; // Replace users if needed
+        $sql = "SELECT COUNT(*) FROM users WHERE id_user = :id_client"; // Replace 'users' if necessary
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);

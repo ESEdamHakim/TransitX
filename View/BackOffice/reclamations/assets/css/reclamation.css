@@ -135,6 +135,11 @@
 .complaints-table tr:hover {
   background-color: #f8f9fa;
 }
+
+.complaints-tablee th:nth-child(4),
+.complaints-table td:nth-child(4){
+  width: 130px;
+}
 .status {
   display: inline-block;
   padding: 0.4rem 0.8rem;

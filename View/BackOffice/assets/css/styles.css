@@ -481,28 +481,6 @@ ul {
   color: #999;
 }
 
-/* Parcels Table */
-.parcels-table-container {
-  overflow-x: auto;
-}
-
-.parcels-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.parcels-table th,
-.parcels-table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid var(--gray-light);
-}
-
-.parcels-table th {
-  font-weight: 600;
-  color: var(--secondary-1);
-}
-
 .status {
   display: inline-block;
   padding: 0.3rem 0.8rem;
