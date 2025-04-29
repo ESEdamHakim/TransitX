@@ -216,6 +216,7 @@ public function getVehiculeIdByCovoiturageId($id_covoiturage)
     }
 }
 
+
 public function searchCovoiturages($departure, $destination, $date)
 {
     $sql = "SELECT * FROM covoiturage WHERE 1=1";
@@ -240,6 +241,8 @@ public function searchCovoiturages($departure, $destination, $date)
 
     try {
         $query = $db->prepare($sql);
+
+
         $query->execute($params);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {

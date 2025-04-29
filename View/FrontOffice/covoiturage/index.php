@@ -69,10 +69,10 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
           <p>Recherchez parmi les trajets disponibles proposés par notre communauté.</p>
         </div>
         <div class="search-container">
-          <form class="search-form" action="index.php" method="POST">
+          <form class="search-form" action="index.php" method="GET">
             <div class="form-group">
               <label for="departure">Départ</label>
-              <input type="text" id="departure" placeholder="Ville de départ">
+              <input type="text" id="departure" name="departure" placeholder="Ville de départ">
             </div>
             <div class="form-group">
               <label for="destination">Destination</label>
@@ -90,7 +90,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         </div>
         <!-- Include search results dynamically -->
         <div class="route-cards">
-          <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
+          <?php if ($_SERVER['REQUEST_METHOD'] === 'GET' && (isset($_GET['departure']) || isset($_GET['destination']) || isset($_GET['date']))): ?>
             <?php include 'searchCovoiturage.php'; ?>
           <?php endif; ?>
         </div>

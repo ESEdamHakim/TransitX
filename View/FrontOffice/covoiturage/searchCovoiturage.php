@@ -4,10 +4,10 @@ require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 $covoiturageController = new CovoiturageC();
 $results = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $departure = filter_input(INPUT_POST, 'departure', FILTER_SANITIZE_STRING);
-    $destination = filter_input(INPUT_POST, 'destination', FILTER_SANITIZE_STRING);
-    $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && (isset($_GET['departure']) || isset($_GET['destination']) || isset($_GET['date']))) {
+    $departure = filter_input(INPUT_GET, 'departure', FILTER_SANITIZE_STRING);
+    $destination = filter_input(INPUT_GET, 'destination', FILTER_SANITIZE_STRING);
+    $date = filter_input(INPUT_GET, 'date', FILTER_SANITIZE_STRING);
 
     try {
         // Fetch search results
@@ -77,15 +77,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 <script src="voirvehicule.js"></script>
 <script>
+   
     document.addEventListener("DOMContentLoaded", () => {
         const closeButton = document.getElementById("close-search-results");
-        const routeCardsContainer = document.querySelector(".route-cards-container");
+    const searchForm = document.querySelector(".search-form");
 
-        if (closeButton && routeCardsContainer) {
-            closeButton.addEventListener("click", () => {
-                // Hide the route-cards-container
-                routeCardsContainer.style.display = "none";
-            });
-        }
-    });
+    if (closeButton) {
+        closeButton.addEventListener("click", () => {
+            // Reset the search form
+            if (searchForm) {
+                searchForm.reset();
+            }
+
+            // Clear the search results by reloading the page without query parameters
+            window.location.href = window.location.pathname;
+        });
+    }
+});
+
 </script>
