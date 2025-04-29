@@ -68,7 +68,7 @@ class ColisController
     public function updateColis($id_colis, $id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $lieu_ram, $lieu_dest, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)
     {
         $db = config::getConnexion();
-    
+
         try {
             $sql = "UPDATE colis SET 
                 id_client = :id_client,
@@ -87,18 +87,18 @@ class ColisController
                 longitude_dest = :longitude_dest,
                 prix = :prix
                 WHERE id_colis = :id_colis";
-    
+
             $query = $db->prepare($sql);
             $query->bindValue(':id_colis', $id_colis);
             $query->bindValue(':id_client', $id_client);
-    
+
             // Handle NULL for id_covoit
             if ($id_covoit === null) {
                 $query->bindValue(':id_covoit', null, PDO::PARAM_NULL);
             } else {
                 $query->bindValue(':id_covoit', $id_covoit, PDO::PARAM_INT);
             }
-    
+
             $query->bindValue(':statut', $statut);
             $query->bindValue(':date_colis', $date_colis);
             $query->bindValue(':longueur', $longueur);
@@ -112,13 +112,13 @@ class ColisController
             $query->bindValue(':latitude_dest', $latitude_dest);
             $query->bindValue(':longitude_dest', $longitude_dest);
             $query->bindValue(':prix', $prix);
-    
+
             $query->execute();
             return true;
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
         }
-    }    
+    }
 
     // Delete a colis
     public function deleteColis($id_colis)
@@ -185,5 +185,30 @@ class ColisController
             die('Error fetching covoiturage: ' . $e->getMessage());
         }
     }
+    public function getUserById($id_user)
+    {
+        $db = config::getConnexion(); // Get database connection
+
+        try {
+            // Prepare SQL query to get user details by user ID
+            $sql = "SELECT * FROM users WHERE id_user = :id_user";
+            $query = $db->prepare($sql);
+
+            // Bind the ID parameter to the SQL query
+            $query->bindValue(':id_user', $id_user, PDO::PARAM_INT);
+
+            // Execute the query
+            $query->execute();
+
+            // Fetch the user data
+            $user = $query->fetch(PDO::FETCH_ASSOC);
+
+            // Return the user details if found, or null if not found
+            return $user ? $user : null;
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage()); // Handle any potential errors
+        }
+    }
+
 }
 ?>

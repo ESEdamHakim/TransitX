@@ -3,6 +3,8 @@ require_once __DIR__ . '/../../../Controller/ColisController.php';
 
 $ColisC = new ColisController();
 $list = $ColisC->listColis();
+$covoiturages = $ColisC->getAllCovoiturages();
+$clients = $ColisC->getAllClients();
 ?>
 
 <!DOCTYPE html>
@@ -296,7 +298,12 @@ $list = $ColisC->listColis();
         <section class="bus-routes">
           <div class="container">
             <div class="route-cards">
-              <?php foreach ($list as $colis): ?>
+              <?php foreach ($list as $colis): 
+                $covoit = null;
+
+                    if (!empty($colis['id_covoit'])) {
+                      $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
+                    }?>
                 <?php if ($colis['id_client'] != 3)
                   continue; ?>
                 <div class="route-card">
@@ -308,6 +315,15 @@ $list = $ColisC->listColis();
                     </div>
 
                     <div class="route-details">
+                      <div class="detail">
+                        <i class="fas fa-user"></i>
+                        <?php if ($covoit): ?>
+                          <?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
+                          (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
+                        <?php else: ?>
+                          <em>Aucun covoiturage</em>
+                        <?php endif; ?>
+                      </div>
                       <div class="detail">
                         <i class="fas fa-box"></i>
                         <span>
