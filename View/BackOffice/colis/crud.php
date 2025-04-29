@@ -3,6 +3,8 @@ require_once __DIR__ . '/../../../Controller/ColisController.php';
 
 $ColisC = new ColisController();
 $list = $ColisC->listColis();
+$covoiturages = $ColisC->getAllCovoiturages();
+$clients = $ColisC->getAllClients();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -201,11 +203,28 @@ $list = $ColisC->listColis();
                   </tr>
                 </thead>
                 <tbody>
-                  <?php foreach ($list as $colis): ?>
+                  <?php foreach ($list as $colis):
+                    $client = $ColisC->getClientById($colis['id_client']);
+                    $covoit = null;
+
+                    if (!empty($colis['id_covoit'])) {
+                      $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
+                    }
+                    ?>
                     <tr>
                       <td><?= $colis['id_colis'] ?></td>
-                      <td><?= htmlspecialchars($colis['id_client']) ?></td>
-                      <td><?= htmlspecialchars($colis['id_covoit']) ?></td>
+                      <td>
+                        <?= htmlspecialchars($client['nom']) ?>   <?= htmlspecialchars($client['prenom']) ?> (ID:
+                        <?= htmlspecialchars($client['id_user']) ?>)
+                      </td>
+                      <td>
+                        <?php if ($covoit): ?>
+                          <?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
+                          (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
+                        <?php else: ?>
+                          <em>Aucun covoiturage</em>
+                        <?php endif; ?>
+                      </td>
                       <td><?= htmlspecialchars($colis['date_colis']) ?></td>
                       <td>
                         <?= number_format($colis['longueur'], 2) ?> ×
@@ -247,7 +266,6 @@ $list = $ColisC->listColis();
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
-
               </table>
             </div>
           </div>
