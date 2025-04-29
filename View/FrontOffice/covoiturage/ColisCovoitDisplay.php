@@ -72,10 +72,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="route-cards">
     <?php if (!empty($covoiturages)): ?>
         <?php foreach ($covoiturages as $covoiturage): ?>
-            <?php if ($covoiturage['date_depart'] >= $currentDate): ?>
+            <?php
+            if (
+                $covoiturage['date_depart'] == $colis['date_colis'] &&
+                $covoiturage['lieu_depart'] == $colis['lieu_ram'] &&
+                $covoiturage['lieu_arrivee'] == $colis['lieu_dest']
+            ):
+                ?>
                 <div class="route-card">
                     <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
-                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
+                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
+                    </h3>
                     <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                     <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                     <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
