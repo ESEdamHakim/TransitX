@@ -1,6 +1,8 @@
 <?php
 require_once '../../../Controller/ColisController.php';
 
+$ColisC = new ColisController();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (
     isset(
@@ -11,6 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_POST['largeur'],
     $_POST['hauteur'],
     $_POST['poids'],
+    $_POST['lieu_ram'],
+    $_POST['lieu_dest'],
     $_POST['latitude_ram'],
     $_POST['longitude_ram'],
     $_POST['latitude_dest'],
@@ -20,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   ) {
     $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
 
-    $ColisC = new ColisController();
     $ColisC->addColis(
       $_POST['id_client'],
       $id_covoit,
@@ -30,6 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $_POST['largeur'],
       $_POST['hauteur'],
       $_POST['poids'],
+      $_POST['lieu_ram'],
+      $_POST['lieu_dest'],
       $_POST['latitude_ram'],
       $_POST['longitude_ram'],
       $_POST['latitude_dest'],
@@ -154,14 +159,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <p>Remplissez le formulaire ci-dessous pour calculer le prix de votre envoi.</p>
         </div>
 
-        <script src="assets/js/colisValidation.js"></script>
         <div class="colis-form-container">
           <form class="colis-form" method="POST">
             <input type="hidden" name="id_client" id="id_client" value="3">
 
             <input type="hidden" name="id_covoit" id="id_covoit" value="">
             <br>
-
 
             <div class="form-group">
               <label for="date_colis">Date d'envoi</label>
@@ -170,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
             <input type="hidden" name="statut" id="statut" value="en attente">
 
-            <div class="form-row">
+
               <div class="form-group">
                 <label for="dimensions">Dimensions (cm)</label>
                 <div class="dimensions-inputs">
@@ -180,6 +183,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <span>×</span>
                   <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
                 </div>
+                <!-- Place to show error for dimensions -->
+                <div id="dimensions-error" class="error-message-container"></div>
               </div>
               <br>
               <div class="form-group">
@@ -188,9 +193,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
 
               <br>
-            </div>
-
+              
             <br>
+            <input type="hidden" name="lieu_ram" id="lieu_ram">
+            <input type="hidden" name="lieu_dest" id="lieu_dest">
             <input type="hidden" name="latitude_ram" id="latitude_ram">
             <input type="hidden" name="longitude_ram" id="longitude_ram">
             <input type="hidden" name="latitude_dest" id="latitude_dest">
@@ -223,70 +229,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </span>
               </p>
             </div>
-
-
-
-            <!-- Replace with your actual API key -->
-            <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-            <script>
-              let map;
-              let pickupMarker = null;
-              let deliveryMarker = null;
-              let currentLocationMarker = null; // Marker for current location
-              let clickStep = 0;
-
-              function initMap() {
-                const defaultLocation = { lat: 36.8980431, lng: 10.1888733 }; // Default location (Tunis)
-
-                // Initialize map with default location first
-                map = new google.maps.Map(document.getElementById("gmap_canvas"), {
-                  center: defaultLocation,
-                  zoom: 13,
-                });
-
-                // Add marker for the default location
-                new google.maps.Marker({
-                  position: defaultLocation,
-                  map: map,
-                  title: "Default Location",
-                });
-
-                // Handle map clicks for setting pickup and delivery locations
-                map.addListener("click", function (event) {
-                  const clickedLocation = event.latLng;
-
-                  if (clickStep === 0) {
-                    if (pickupMarker) pickupMarker.setMap(null); // Remove old pickup marker
-                    pickupMarker = new google.maps.Marker({
-                      position: clickedLocation,
-                      map: map,
-                      label: "A", // Pickup
-                    });
-
-                    document.getElementById("latitude_ram").value = clickedLocation.lat();
-                    document.getElementById("longitude_ram").value = clickedLocation.lng();
-                    clickStep = 1;
-                    alert("Pickup location set. Now click to choose the delivery location.");
-                  } else if (clickStep === 1) {
-                    if (deliveryMarker) deliveryMarker.setMap(null); // Remove old delivery marker
-                    deliveryMarker = new google.maps.Marker({
-                      position: clickedLocation,
-                      map: map,
-                      label: "B", // Delivery
-                    });
-
-                    document.getElementById("latitude_dest").value = clickedLocation.lat();
-                    document.getElementById("longitude_dest").value = clickedLocation.lng();
-                    clickStep = 0;
-                    alert("Delivery location set.");
-                  }
-                });
-              }
-
-              window.onload = initMap;
-            </script>
-
-
+            <div id="map-warning" class="map-warning" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
           </div>
         </div>
       </div>
@@ -483,5 +426,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </footer>
 </body>
+<script src="assets/js/colisValidation.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&callback=initMap" async
+  defer></script>
 
 </html>

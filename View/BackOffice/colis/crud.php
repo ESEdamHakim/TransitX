@@ -225,7 +225,7 @@ $list = $ColisC->listColis();
                       $statut = trim($colis['statut']);
                       $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
                       ?>
-                        <td>
+                      <td>
                         <span class="status <?= $className ?>">
                           <?= htmlspecialchars($colis['statut']) ?>
                         </span>
@@ -239,13 +239,10 @@ $list = $ColisC->listColis();
                           </button>
                         </form>
 
-                        <form method="POST" action="deleteColis.php" style="display:inline;"
-                          onsubmit="return confirm('Are you sure you want to delete this colis?');">
-                          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-                          <button type="submit" class="action-btn delete" title="Supprimer">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </form>
+                        <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
+                          data-id="<?= htmlspecialchars($colis['id_colis']) ?>">
+                          <i class="fas fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -276,6 +273,12 @@ $list = $ColisC->listColis();
     </div>
   </div>
 
+  <!-- Hidden Delete Form -->
+  <form method="POST" action="deleteColis.php" style="display:none;" id="delete-form">
+    <input type="hidden" name="id_colis" id="delete-id">
+  </form>
+
+
   <script>
     // Sidebar Toggle
     document.querySelector('.sidebar-toggle').addEventListener('click', function () {
@@ -295,60 +298,8 @@ $list = $ColisC->listColis();
         console.log(`Switching to tab: ${tabName}`);
       });
     });
-
-    // Modal Functions
-    const colisModal = document.getElementById('colis-modal');
-    const deleteModal = document.getElementById('delete-modal');
-    const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
-
-    // Open Add Colis Modal
-    document.getElementById('add-colis-btn').addEventListener('click', function () {
-      document.getElementById('modal-title').textContent = 'Ajouter un Colis';
-      document.getElementById('colis-form').reset();
-      colisModal.classList.add('active');
-    });
-
-    // Open Edit Colis Modal
-    const editButtons = document.querySelectorAll('.edit');
-    editButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        document.getElementById('modal-title').textContent = 'Modifier un Colis';
-        // Here you would populate the form with the colis data
-        colisModal.classList.add('active');
-      });
-    });
-
-    // Open Delete Confirmation Modal
-    const deleteButtons = document.querySelectorAll('.delete');
-    deleteButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        deleteModal.classList.add('active');
-      });
-    });
-
-    // Close Modals
-    closeButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        colisModal.classList.remove('active');
-        deleteModal.classList.remove('active');
-      });
-    });
-
-    // Form Submit Handler (would normally use AJAX)
-    document.getElementById('colis-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      // Here you would send the form data to the server
-      alert('Colis enregistré avec succès!');
-      colisModal.classList.remove('active');
-    });
-
-    // Delete Confirmation Handler
-    document.getElementById('confirm-delete-btn').addEventListener('click', function () {
-      // Here you would send a delete request to the server
-      alert('Colis supprimé avec succès!');
-      deleteModal.classList.remove('active');
-    });
   </script>
+   <script src="assets/js/colisValidation.js"></script>
 </body>
 
 </html>

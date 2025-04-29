@@ -228,12 +228,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="map-container">
               <h3>Localisation</h3>
               <div id="gmap_canvas" style="height: 400px; width: 400px;"></div>
-              <div class="map-info">
-                <p>
-                  <i class="fas fa-info-circle"></i>
-                  <strong>Instructions:</strong><br>
-                  <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
-                  <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
+              <div class="map-info"
+                style="background-color: #f9f9f9; border-radius: 6px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 400px; margin: 5px auto;">
+                <p style="font-size: 14px; color: #333; line-height: 1.3; margin: 0;">
+                  <i class="fas fa-info-circle" style="color: #86b391; margin-right: 6px;"></i>
+                  <span style="font-weight: 600; color: #555;">Instructions:</span>
+                  <br>
+                  <span>
+                    <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
+                    <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
+                  </span>
                 </p>
               </div>
               <div id="map-warning" class="map-warning" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
@@ -243,7 +247,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </section>
     </main>
   </div>
-  
+
   <script src="assets/js/colisValidation.js"></script>
   <!-- Replace with your actual API key -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&callback=initMap"
