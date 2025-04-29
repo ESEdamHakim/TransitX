@@ -1,0 +1,458 @@
+/* Covoiturage Module Specific Styles */
+
+.covoiturage-hero {
+  height: 50vh;
+  background-image: linear-gradient(rgba(233, 245, 238, 0.9), rgba(241, 247, 245 ,0.9));
+    /*url("/placeholder.svg?height=800&width=1600");*/
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+.covoiturage-hero .hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.covoiturage-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.covoiturage-hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* Search Section */
+.search-section {
+  padding: 3rem 5%;
+  background-color: var(--gray-light);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--secondary-1);
+}
+
+.search-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--secondary-1);
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.8rem;
+  border: 1px solid var(--gray);
+  border-radius: 4px;
+}
+
+.search-form button {
+  grid-column: 1 / -1;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+/* Popular Routes */
+.popular-routes {
+  padding: 5rem 5%;
+}
+
+.popular-routes h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--secondary-1);
+}
+
+.route-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.route-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.route-cities {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.departure,
+.arrival {
+  color: var(--secondary-1);
+}
+
+.route-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.departure-date,
+.available-seats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.departure-date i,
+.available-seats i {
+  color: var(--primary);
+}
+
+.price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.driver-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.driver-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.driver-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.driver-rating i {
+  color: var(--highlight);
+}
+
+/* Create Ride Section */
+.create-ride-section {
+  padding: 5rem 5%;
+  background-color: var(--gray-light);
+}
+
+.create-ride-section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--secondary-1);
+}
+
+.create-ride-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.create-ride-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.create-ride-form button {
+  margin-top: 1rem;
+}
+
+/* How It Works */
+.how-it-works {
+  padding: 5rem 5%;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  margin-bottom: 3rem;
+  color: var(--secondary-1);
+}
+
+.steps-container {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.step {
+  flex: 1;
+  max-width: 300px;
+}
+
+.step-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.step h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--secondary-1);
+}
+
+.step p {
+  color: #666;
+}
+
+/* Benefits */
+.benefits {
+  padding: 5rem 5%;
+  background-color: var(--gray-light);
+  text-align: center;
+}
+
+.benefits h2 {
+  margin-bottom: 3rem;
+  color: var(--secondary-1);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.benefit-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.benefit-card:hover {
+  transform: translateY(-10px);
+}
+
+.benefit-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.benefit-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--secondary-1);
+}
+
+.benefit-card p {
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .route-card {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .driver-info {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .route-card .btn {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    justify-self: end;
+  }
+
+  .steps-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .covoiturage-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .route-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 1rem;
+  }
+
+  .route-details {
+    grid-row: 2 / 3;
+  }
+
+  .driver-info {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .route-card .btn {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .search-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+  display: block;
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%; /* Adjust width for smaller screens */
+  max-width: 500px; /* Limit the maximum width */
+  max-height: 90vh; /* Limit the height to 90% of the viewport */
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  margin-top: 10px;
+}
+
+.form-actions {
+  position: sticky; /* Keep buttons visible at the bottom */
+  bottom: 0;
+  background-color: #fff;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.vehicule-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  z-index: 1000;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%; /* Adjust the width */
+  max-width: 600px; /* Set a maximum width */
+  overflow-y: auto; /* Add scrolling if content overflows */
+  max-height: 90%; /* Prevent the modal from exceeding the viewport height */
+}
+
+.vehicule-modal-content {
+  text-align: center;
+}
+
+.vehicule-modal img {
+  max-width: 100%; /* Ensure the image fits within the modal */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 15px;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
