@@ -86,48 +86,10 @@
   color: var(--primary);
 }
 
-.colis-table-container {
-  overflow-x: auto;
-}
-
-.colis-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.colis-table td,.colis-table th {
-  padding: 0.9rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.parcels-table th {
-  font-weight: 500;
-  color: #666;
-}
-
-.colis-table thead  {
-  background-color:#ffffff;
-}
-
-.colis-table tbody tr:hover {
-  background-color: var(--gray-light);
-}
-
 .colis-table .actions {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
-}
-
-.colis-table .btn {
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  border: none;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .colis-table .btn.edit {

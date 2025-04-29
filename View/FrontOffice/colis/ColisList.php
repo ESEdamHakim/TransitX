@@ -156,7 +156,7 @@ $list = $ColisC->listColis();
     color: white;
   }
 
-  .actions {
+  .action {
     display: flex;
     gap: 0.5rem;
   }
@@ -326,27 +326,39 @@ $list = $ColisC->listColis();
                       </div>
                       <div class="detail">
                         <i class="fas fa-info-circle"></i>
-                        <span> <?= htmlspecialchars($colis['statut']) ?></span>
+                        <?php
+                        $statusClassMap = [
+                          'en attente' => 'pending',
+                          'en transit' => 'in-progress',
+                          'livré' => 'resolved'
+                        ];
+
+                        $statut = trim($colis['statut']);
+                        $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
+                        ?>
+                        <td>
+                          <span class="status <?= $className ?>">
+                            <?= htmlspecialchars($colis['statut']) ?>
+                          </span>
+                        </td>
                       </div>
                     </div>
                   </div>
 
                   <div class="route-price">
                     <span class="price"><?= htmlspecialchars($colis['prix']) ?> DT</span>
-
-                    <div class="actions" style="margin-top: 10px;">
+                    <div class="action" style="margin-top: 10px; display: flex; gap: 5px;">
                       <form method="GET" action="updateColis.php" style="display:inline;">
                         <input type="hidden" name="id_colis" value="<?= htmlspecialchars($colis['id_colis']) ?>">
-                        <button type="submit" class="btn btn-primary" title="Modifier">
-                          <i class="fas fa-edit"></i> Modifier
+                        <button type="submit" class="action-btn edit" title="Modifier">
+                          <i class="fas fa-edit"></i>
                         </button>
                       </form>
-                      <button type="button" class="btn btn-danger open-delete-modal"
-                        data-id="<?= htmlspecialchars($colis['id_colis']) ?>">
-                        <i class="fas fa-trash"></i> Supprimer
+                      <button type="button" class="action-btn delete open-delete-modal"
+                        data-id="<?= htmlspecialchars($colis['id_colis']) ?>" title="Supprimer">
+                        <i class="fas fa-trash"></i>
                       </button>
                     </div>
-
                   </div>
                 </div>
               <?php endforeach; ?>
