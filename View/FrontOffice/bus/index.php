@@ -60,18 +60,18 @@ $trajetlist = $controller_trajet->listTrajets();
           <h2>Trouvez votre trajet</h2>
         </div>
         <div class="search-container">
-          <form class="search-form">
-            <div class="form-group">
-              <label for="departure">Départ</label>
-              <input type="text" id="departure" placeholder="Place de départ">
-            </div>
+          <form class="search-form" id="searchForm">
             <div class="form-group">
               <label for="arrival">Arrivée</label>
               <input type="text" id="arrival" placeholder="Place d'arrivée">
             </div>
             <div class="form-group">
-              <label for="heure de départ">heure de départ</label>
-              <input type="heure_départ_rech" id="heure_départ_rech" placeholder="HH:MM">
+              <label for="start-time">Heure de début</label>
+              <input type="time" id="start-time" placeholder="HH:MM">
+            </div>
+            <div class="form-group">
+              <label for="end-time">Heure de fin</label>
+              <input type="time" id="end-time" placeholder="HH:MM">
             </div>
             <button type="submit" class="btn btn-primary">
               Rechercher

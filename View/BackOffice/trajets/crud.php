@@ -31,55 +31,73 @@ $trajetlist = $trajetController->listTrajets();
         </div>
         <div class="header-right">
           <div class="search-bar">
-          <input type="text" placeholder="Rechercher un trajet par destination" aria-label="Rechercher un trajet">
-          <button><i class="fas fa-search"></i></button>
+            <input type="text" placeholder="Rechercher un trajet par destination" aria-label="Rechercher un trajet">
+            <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
             <a href="addtrajet.php" class="btn primary"><i class="fas fa-plus"></i> Ajouter un Trajet</a>
           </div>
         </div>
       </header>
-
       <div class="dashboard-content">
-        <div class="crud-container">
-          <div class="view-container table-view active">
-            <div class="buses-table-container">
-              <table class="buses-table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Départ</th>
-                    <th>Arrivée</th>
-                    <th>Heure</th>
-                    <th>Durée</th>
-                    <th>Distance (km)</th>
-                    <th>Prix (TND)</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php foreach ($trajetlist as $trajet): ?>
-                    <tr>
-                      <?php foreach (['id_trajet', 'place_depart', 'place_arrivee', 'heure_depart', 'duree', 'distance_km', 'prix'] as $field): ?>
-                        <td><?= htmlspecialchars($trajet[$field]) ?></td>
-                      <?php endforeach; ?>
-                      <td class="actions">
-                        <form method="GET" action="updatetrajet.php" style="display:inline;">
-                          <input type="hidden" name="id_trajet" value="<?= htmlspecialchars($trajet['id_trajet']) ?>">
-                          <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
-                        </form>
-                        <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
-                          data-id="<?= htmlspecialchars($trajet['id_trajet']) ?>">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  <?php endforeach; ?>
-                </tbody>
-              </table>
-            </div>
+        <div class="statistics-container">
+          <div class="stat-card total-trajets">
+            <h3><i class="fas fa-road icon"></i> Total Trajets</h3>
+            <p id="total-trajets">0</p>
+          </div>
+          <div class="stat-card average-duration">
+            <h3><i class="fas fa-clock icon"></i> Durée Moyenne</h3>
+            <p id="average-duration">0</p>
+          </div>
+          <div class="stat-card average-price">
+            <h3><i class="fas fa-money-bill-wave icon"></i> Prix Moyen (TND)</h3>
+            <p id="average-price">0</p>
+          </div>
+          <div class="stat-card average-distance">
+            <h3><i class="fas fa-ruler icon"></i> Distance Moyenne (km)</h3>
+            <p id="average-distance">0</p>
           </div>
         </div>
+      </div>
+      <div class="crud-container">
+        <div class="view-container table-view active">
+          <div class="buses-table-container">
+            <table class="buses-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Départ</th>
+                  <th>Arrivée</th>
+                  <th>Heure</th>
+                  <th>Durée</th>
+                  <th>Distance (km)</th>
+                  <th>Prix (TND)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($trajetlist as $trajet): ?>
+                  <tr>
+                    <?php foreach (['id_trajet', 'place_depart', 'place_arrivee', 'heure_depart', 'duree', 'distance_km', 'prix'] as $field): ?>
+                      <td><?= htmlspecialchars($trajet[$field]) ?></td>
+                    <?php endforeach; ?>
+                    <td class="actions">
+                      <form method="GET" action="updatetrajet.php" style="display:inline;">
+                        <input type="hidden" name="id_trajet" value="<?= htmlspecialchars($trajet['id_trajet']) ?>">
+                        <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
+                      </form>
+                      <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
+                        data-id="<?= htmlspecialchars($trajet['id_trajet']) ?>">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
   <div class="modal" id="delete-modal">
@@ -100,8 +118,8 @@ $trajetlist = $trajetController->listTrajets();
     <!-- Hidden Delete Form -->
     <form method="POST" action="deletetrajet.php" style="display:none;" id="delete-form">
       <input type="hidden" name="id_trajet" id="delete-id">
-    </form>  
-  <script src="assets/js/main.js"></script>
+    </form>
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>

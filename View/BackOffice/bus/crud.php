@@ -38,6 +38,24 @@ $buslist = $busController->listBuses();
       </header>
 
       <div class="dashboard-content">
+        <!-- Stats Overview -->
+        <div class="dashboard-stats">
+          <div class="stat-box standard">
+            <div class="stat-title">Bus Standard</div>
+            <div class="stat-value" id="standardCount">0</div>
+            <div class="stat-icon"><i class="fas fa-bus"></i></div>
+          </div>
+          <div class="stat-box tourisme">
+            <div class="stat-title">Bus Tourisme</div>
+            <div class="stat-value" id="tourismeCount">0</div>
+            <div class="stat-icon"><i class="fas fa-bus-alt"></i></div>
+          </div>
+          <div class="stat-box scolaire">
+            <div class="stat-title">Bus Scolaire</div>
+            <div class="stat-value" id="scolaireCount">0</div>
+            <div class="stat-icon"><i class="fas fa-school"></i></div>
+          </div>
+        </div>
         <div class="crud-container">
           <!-- Tabs -->
           <div class="crud-header">
@@ -115,7 +133,7 @@ $buslist = $busController->listBuses();
     <!-- Hidden Delete Form -->
     <form method="POST" action="deletebus.php" style="display:none;" id="delete-form">
       <input type="hidden" name="id_bus" id="delete-id">
-    </form>   
+    </form>
     <script src="assets/js/main.js"></script>
 </body>
 

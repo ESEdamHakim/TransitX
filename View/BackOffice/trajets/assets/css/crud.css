@@ -1,14 +1,4 @@
 /* CRUD Styles for Reclamations Module */
-
-:root {
-  --status-actif: #28a745;
-  /* Green */
-  --status-maintenance: #ffc107;
-  /* Yellow/orange */
-  --status-inactif: #6c757d;
-  /* Gray */
-}
-
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -202,37 +192,28 @@
   background-color: var(--gray-light);
 }
 
-.status {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
+.statusactif {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: var(--status-actif);
+  padding: 0.3rem 0.8rem;
   border-radius: 20px;
-  font-size: 0.8rem;
   font-weight: 500;
 }
 
-.statusactif {
-  background-color: rgba(40, 167, 69, 0.2);
-  color: var(--status-resolved);
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-weight: 600;
-}
-
 .statusmaintenance {
-  background-color: rgba(0, 123, 255, 0.2);
-  color: var(--status-in-progress);
+  background-color: #d1ecf1; 
+  color: var(--status-maintenance);
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .statusinactif {
   background-color: rgba(220, 53, 69, 0.2);
-  /* Darkened background */
-  color: var(--status-refused);
+  color: var(--status-inactif);
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 
@@ -718,4 +699,54 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 
+}
+
+.dashboard-content {
+  padding: 1rem;
+  background-color: #f5f7fa;
+}
+
+.statistics-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: #fff;
+  padding: 0.1rem;
+  padding-left: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  flex: 1 1 250px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.stat-card .icon {
+  font-size: 1.2rem;
+  color: #8dc2e5; /* Light Blue for icons */
+}
+
+.stat-card p {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #2c3e50; /* Darker value color */
+  margin-top: 0.5rem;
+  margin: 1.5rem;
 }

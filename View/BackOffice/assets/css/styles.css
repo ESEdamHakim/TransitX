@@ -17,6 +17,9 @@
   --warning: #ffc107;
   --danger: #dc3545;
   --info: #17a2b8;
+  --status-maintenance: #17a2b8;
+  --status-actif: #28a745;
+  --status-inactif: #dc3545;
 }
 
 * {

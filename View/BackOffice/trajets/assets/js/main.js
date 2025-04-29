@@ -80,3 +80,30 @@ function initializeModalHandlers() {
 document.addEventListener('DOMContentLoaded', function() {
   initializeModalHandlers();
 });
+
+// Statistics calculation for trajets
+document.addEventListener('DOMContentLoaded', function() {
+  const rows = document.querySelectorAll('.buses-table tbody tr');
+
+  let totalTrajets = 0;
+  let totalDuration = 0;
+  let totalPrice = 0;
+
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    const duration = parseFloat(cells[4]?.textContent) || 0; 
+    const price = parseFloat(cells[6]?.textContent) || 0;
+
+    totalTrajets++;
+    totalDuration += duration;
+    totalPrice += price;
+  });
+
+  const averageDuration = totalTrajets > 0 ? (totalDuration / totalTrajets).toFixed(2) : 0;
+  const averagePrice = totalTrajets > 0 ? (totalPrice / totalTrajets).toFixed(2) : 0;
+
+  document.getElementById('total-trajets').textContent = totalTrajets;
+  document.getElementById('average-duration').textContent = averageDuration + " h";
+  document.getElementById('average-price').textContent = averagePrice + " TND";
+});
+
