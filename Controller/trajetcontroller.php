@@ -4,7 +4,7 @@ include(__DIR__ . "/../Model/trajetmodel.php");
 
 class TrajetController
 {
-    private $db;
+    public $db;
 
     public function __construct()
     {

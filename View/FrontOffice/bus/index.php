@@ -134,11 +134,19 @@ $trajetlist = $controller_trajet->listTrajets();
                             <p><strong>Statut:</strong> <?= htmlspecialchars($bus['statut']) ?></p>
                             <p><strong>Numéro de bus:</strong> <?= htmlspecialchars($bus['num_bus']) ?></p>
                             <p><strong>Capacité:</strong> <?= htmlspecialchars($bus['capacite']) ?> personnes</p>
+                            <p><strong>Places disponibles:</strong> <?= htmlspecialchars($bus['nbplacesdispo']) ?> personnes
+                            </p>
                             <p><strong>Type de bus:</strong> <?= htmlspecialchars($bus['type_bus']) ?></p>
                             <p><strong>Marque:</strong> <?= htmlspecialchars($bus['marque']) ?></p>
                             <p><strong>Modèle:</strong> <?= htmlspecialchars($bus['modele']) ?></p>
                             <p><strong>Date de mise en service:</strong> <?= htmlspecialchars($bus['date_mise_en_service']) ?>
                             </p>
+
+                            <!-- Add the Reserve button here -->
+                            <form method="POST" action="reserver_bus.php" style="margin-top: 10px;">
+                              <input type="hidden" name="id_bus" value="<?= htmlspecialchars($bus['id_bus']) ?>">
+                              <button type="submit" class="btn btn-primary reserver-btn">Réserver ce bus</button>
+                            </form>
                           </div>
                           <?php
                         }
@@ -147,6 +155,7 @@ $trajetlist = $controller_trajet->listTrajets();
                       }
                       ?>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -155,8 +164,6 @@ $trajetlist = $controller_trajet->listTrajets();
         </div>
       </div>
     </section>
-
-
 
     <section class="bus-map">
       <div class="container">

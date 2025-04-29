@@ -410,6 +410,8 @@
 
 .route-card .toggle-info-btn {
   background-color: var(--primary);
+  display: flex;
+  transition: var(--transition);
   color: #fff;
   padding: 10px 20px;
   border-radius: 8px;
@@ -420,5 +422,23 @@
 }
 
 .route-card .toggle-info-btn:hover {
-  background-color: var(--primary-dark);
+  background-color: var(--primary);
+
+}
+.route-card .reserver-btn {
+  background-color: var(--primary);
+  display: flex;
+  transition: var(--transition);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.route-card .reserver-btn:hover {
+  background-color: var(--primary);
+
 }

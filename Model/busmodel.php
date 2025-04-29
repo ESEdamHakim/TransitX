@@ -10,7 +10,7 @@ class Bus
     private $modele;
     private $date_mise_en_service;
     private $statut;
-
+    private $nbplacesdispo; 
     public function __construct($id_trajet, $num_bus, $capacite, $type_bus, $marque, $modele, $date_mise_en_service, $statut, $id_bus = null)
     {
         $this->id_bus = $id_bus;
@@ -22,6 +22,7 @@ class Bus
         $this->modele = $modele;
         $this->date_mise_en_service = $date_mise_en_service;
         $this->statut = $statut;
+        $this->nbplacesdispo = $capacite; 
     }
 
     // Getters
@@ -61,6 +62,10 @@ class Bus
     {
         return $this->statut;
     }
+    public function getNbPlacesDispo()
+    {
+        return $this->nbplacesdispo;
+    }
 
     // Setters
     public function setIdBus($id_bus)
@@ -78,6 +83,7 @@ class Bus
     public function setCapacite($capacite)
     {
         $this->capacite = $capacite;
+        $this->nbplacesdispo = $capacite;
     }
     public function setTypeBus($type_bus)
     {
@@ -98,6 +104,10 @@ class Bus
     public function setStatut($statut)
     {
         $this->statut = $statut;
+    }
+    public function setNbPlacesDispo($nbplacesdispo)
+    {
+        $this->nbplacesdispo = $nbplacesdispo;
     }
 }
 ?>

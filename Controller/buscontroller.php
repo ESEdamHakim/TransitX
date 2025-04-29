@@ -23,8 +23,10 @@ class BusController
 
     public function addBus(Bus $bus)
     {
-        $sql = "INSERT INTO bus (id_trajet, num_bus, capacite, type_bus, marque, modele, date_mise_en_service, statut) 
-                VALUES (:id_trajet, :num_bus, :capacite, :type_bus, :marque, :modele, :date_mise_en_service, :statut)";
+        $bus->setNbPlacesDispo($bus->getCapacite());
+
+        $sql = "INSERT INTO bus (id_trajet, num_bus, capacite, type_bus, marque, modele, date_mise_en_service, statut, nbplacesdispo) 
+                VALUES (:id_trajet, :num_bus, :capacite, :type_bus, :marque, :modele, :date_mise_en_service, :statut, :nbplacesdispo)";
         try {
             $query = $this->db->prepare($sql);
             $query->bindValue(':id_trajet', $bus->getIdTrajet());
@@ -35,6 +37,7 @@ class BusController
             $query->bindValue(':modele', $bus->getModele());
             $query->bindValue(':date_mise_en_service', $bus->getDateMiseEnService());
             $query->bindValue(':statut', $bus->getStatut());
+            $query->bindValue(':nbplacesdispo', $bus->getNbPlacesDispo());
             $query->execute();
             return true;
         } catch (Exception $e) {
