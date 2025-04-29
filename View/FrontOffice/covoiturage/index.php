@@ -101,8 +101,8 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       <div class="container">
         <div class="section-header">
           <span class="badge">Trajets</span>
-          <h2>Trajets populaires</h2>
-          <p>Découvrez les trajets les plus demandés par notre communauté.</p>
+          <h2>Trajets </h2>
+          <p>Découvrez les trajets proposés par notre communauté.</p>
         </div>
         <div class="route-cards">
           <?php include 'displaycovoiturage.php'; ?>
@@ -113,8 +113,8 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       <div class="container">
         <div class="section-header">
           <span class="badge">Vos Trajets</span>
-          <h2>Vos Trajets Populaires</h2>
-          <p>Voici les trajets que vous avez ajoutés.</p>
+          <h2>Vos Trajets </h2>
+          <p>Voici les trajets que vous avez ajoutés récemment.</p>
         </div>
         <div class="route-cards">
           <?php include 'UserDisplayCovoiturage.php'; ?>
