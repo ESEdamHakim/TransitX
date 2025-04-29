@@ -17,6 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Handle "Voir Véhicule" button clicks
     document.querySelectorAll(".voir-vehicule-btn").forEach((button) => {
         button.addEventListener("click", () => {
+            // Close any other open modals
+            document.querySelectorAll('.modal, .vehicule-modal').forEach((modal) => {
+                modal.style.display = 'none';
+            });
+
             const idCovoiturage = button.getAttribute("data-id-covoiturage");
 
             // Fetch vehicle details via AJAX
@@ -30,6 +35,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         document.getElementById("vehicule-matricule").textContent = data.vehicule.matricule;
                         document.getElementById("vehicule-couleur").textContent = data.vehicule.couleur;
                         document.getElementById("vehicule-places").textContent = data.vehicule.places;
+
+                        // Set the vehicle photo
+                        const photoElement = document.getElementById("vehicule-photo");
+                        if (photoElement) {
+                            photoElement.src = data.vehicule.photo_vehicule || '/XTransitX/uploads/default-image.jpg'; // Use a default image if none is provided
+                        } else {
+                            console.error("Element with id 'vehicule-photo' not found in the DOM.");
+                        }
 
                         // Show the modal
                         modal.style.display = "block";

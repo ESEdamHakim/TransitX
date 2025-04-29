@@ -12,6 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const createRideForm = document.querySelector(".create-ride-form");
     const detailsOptions = document.getElementById("details-options");
     const rideDetails = document.getElementById("ride-details");
+    // Add event listener for id_vehicule change
+    document.getElementById("id_vehicule").addEventListener("change", function () {
+        console.log("Selected idVehicule:", this.value);
+    });
 
     // Update the details field when an option is selected
     detailsOptions.addEventListener("change", function () {
@@ -45,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const colisComplet = document.getElementById("full-parcels").value.trim();
         const details = rideDetails.value.trim();
         const idVehicule = document.getElementById("id_vehicule").value.trim();
+        console.log("idVehicule:", idVehicule);
         let hasError = false;
 
         // Validate required fields
@@ -106,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("full-parcels-error").textContent = "Veuillez indiquer si les colis sont complets.";
             hasError = true;
         }
+        
         if (!idVehicule) {
             document.getElementById("id-vehicule-error").textContent = "Veuillez sélectionner un véhicule.";
             hasError = true;

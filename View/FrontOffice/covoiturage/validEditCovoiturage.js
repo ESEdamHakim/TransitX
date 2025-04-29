@@ -3,11 +3,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("ride-modal");
     const closeModalButton = document.querySelector(".close-modal");
     const cancelButton = document.querySelector(".cancel-btn");
+    const editForm = document.querySelector("#edit-ride-form"); // Use the updated ID
+    const vehiculeDropdown = document.getElementById("id_vehicule_edit"); // Dropdown for vehicles
 
     // Handle Edit Button Click
     editButtons.forEach((button) => {
         button.addEventListener("click", function () {
+            console.log("Edit button clicked:", this); // Debugging line
             const idCovoit = this.getAttribute("data-id");
+            console.log("Covoiturage ID:", idCovoit); // Debugging line
+
             const departure = this.getAttribute("data-departure");
             const destination = this.getAttribute("data-destination");
             const date = this.getAttribute("data-date");
@@ -17,9 +22,21 @@ document.addEventListener("DOMContentLoaded", () => {
             const acceptParcels = this.getAttribute("data-accept-parcels");
             const fullParcels = this.getAttribute("data-full-parcels");
             const description = this.getAttribute("data-description");
+            const idVehicule = this.getAttribute("data-id-vehicule");
 
             // Populate the modal fields
-            document.getElementById("id_covoit").value = idCovoit;
+            document.getElementById("id_vehicule_edit").value = idVehicule;
+
+            let idInput = document.getElementById("id_covoit_edit"); // Use a unique ID
+            if (!idInput) {
+                idInput = document.createElement("input");
+                idInput.type = "hidden";
+                idInput.id = "id_covoit_edit";
+                idInput.name = "id_covoit";
+                document.getElementById("edit-ride-form").appendChild(idInput);
+            }
+            idInput.value = idCovoit;
+
             document.getElementById("ride-departure").value = departure;
             document.getElementById("ride-destination").value = destination;
             document.getElementById("ride-date-edit").value = date;
@@ -32,9 +49,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Open the modal
             modal.style.display = "block";
+            console.log("Modal opened"); // Debugging line
         });
     });
+    vehiculeDropdown.addEventListener("change", function () {
+        const selectedVehiculeId = this.value;
+        console.log("Selected Vehicule ID:", selectedVehiculeId); // Debugging line
 
+        // Update the hidden input or any other field that needs the selected id_vehicule
+        document.getElementById("id_vehicule_edit").value = selectedVehiculeId;
+    });
     // Close Modal
     closeModalButton.addEventListener("click", () => {
         modal.style.display = "none";
@@ -45,8 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Edit Form Validation
-    const editForm = document.querySelector("#ride-form");
-
     editForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -61,7 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const detailsEdit = document.getElementById("ride-description").value.trim();
         const seatsEdit = document.getElementById("ride-seats").value.trim();
         const priceEdit = document.getElementById("ride-price").value.trim();
-
+        const idVehicule = document.getElementById("id_vehicule_edit").value.trim();
+        console.log("Submitting with Vehicule ID:", idVehicule);
         let hasError = false;
 
         // Validate required fields
@@ -102,7 +125,11 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("ride-price-error").textContent = "Le prix par place doit être supérieur à zéro.";
             hasError = true;
         }
-
+        // Validate required fields
+        if (!idVehicule) {
+            document.getElementById("id-vehicule-error-edit").textContent = "Veuillez sélectionner un véhicule.";
+            return;
+        }
         // If no errors, submit the form
         if (!hasError) {
             editForm.submit();

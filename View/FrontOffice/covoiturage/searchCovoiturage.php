@@ -63,11 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<!-- Modal Structure -->
-<div id="vehicule-modal" class="modal" style="display: none;">
-    <div class="modal-content">
+<div id="vehicule-modal" class="vehicule-modal">
+    <div class="vehicule-modal-content">
         <span class="close-modal">&times;</span>
-        <h2>Détails du Véhicule</h2>
+        <h2 class="vehicule-modal-title">Détails du Véhicule</h2>
+        <img id="vehicule-photo" src="" alt="Photo du véhicule" />
         <p><strong>Marque:</strong> <span id="vehicule-marque"></span></p>
         <p><strong>Modèle:</strong> <span id="vehicule-modele"></span></p>
         <p><strong>Matricule:</strong> <span id="vehicule-matricule"></span></p>

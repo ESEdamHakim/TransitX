@@ -116,7 +116,8 @@ class CovoiturageC
                             details = :details,
                             prix = :prix,
                             temps_depart = :temps_depart,
-                            places_dispo = :places_dispo
+                            places_dispo = :places_dispo,
+                            id_vehicule = :id_vehicule
                         WHERE id_covoit = :id AND id_user = :id_user";
                 $query = $db->prepare($sql);
                 $query->execute([
@@ -130,6 +131,7 @@ class CovoiturageC
                     ':prix' => $covoit->getPrix(),
                     ':temps_depart' => $covoit->getTempsDepart(),
                     ':places_dispo' => $covoit->getPlacesDispo(),
+                    ':id_vehicule' => $covoit->getIdVehicule(),
                     ':id_user' => $id_user // Ensure only the owner can update
                 ]);
             }

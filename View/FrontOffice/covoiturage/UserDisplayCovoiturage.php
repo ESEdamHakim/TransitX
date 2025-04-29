@@ -9,19 +9,27 @@
 </head>
 
 <body>
-    <?php
-    require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
+<?php
+require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 
-    //$id_user = 2;
-    require_once __DIR__ . '/../../../configuration/appConfig.php';
-    $covoiturageController = new CovoiturageC();
-    try {
-        $userCovoiturages = $covoiturageController->listUserCovoiturages($id_user);
-    } catch (Exception $e) {
-        echo "Erreur : " . $e->getMessage();
-        exit;
-    }
-    ?>
+$covoiturageController = new CovoiturageC();
+
+try {
+    $userCovoiturages = $covoiturageController->listUserCovoiturages($id_user);
+
+    // Get the current date
+    $currentDate = date('Y-m-d');
+
+    // Filter covoiturages to include only recent or future dates
+    $userCovoiturages = array_filter($userCovoiturages, function ($covoiturage) use ($currentDate) {
+        return $covoiturage['date_depart'] >= $currentDate;
+    });
+} catch (Exception $e) {
+    echo "Erreur : " . $e->getMessage();
+    exit;
+}
+?>
 
     <div class="user-route-cards">
         <h2>Vos Trajets Populaires</h2>
@@ -57,7 +65,8 @@
                             data-price="<?= htmlspecialchars($covoiturage['prix']) ?>"
                             data-accept-parcels="<?= $covoiturage['accepte_colis'] ?>"
                             data-full-parcels="<?= $covoiturage['colis_complet'] ?>"
-                            data-description="<?= htmlspecialchars($covoiturage['details'] ?? '') ?>">
+                            data-description="<?= htmlspecialchars($covoiturage['details'] ?? '') ?>"
+                            data-id-vehicule="<?= htmlspecialchars($covoiturage['id_vehicule'] ?? '') ?>">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>">
@@ -83,7 +92,7 @@
                     <button class="close-modal"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="modal-body">
-                    <form id="ride-form" method="POST" action="UserUpdateCovoiturage.php">
+                    <form id="edit-ride-form" method="POST" action="UserUpdateCovoiturage.php">
                         <input type="hidden" id="id_covoit" name="id_covoit">
 
                         <div class="form-group">
@@ -136,6 +145,23 @@
                             <label for="ride-description">Description</label>
                             <textarea id="ride-description" name="description" rows="3"></textarea>
                             <span id="ride-description-error" class="error-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_vehicule_edit">Sélectionnez un véhicule</label>
+                            <?php if (!empty($vehicules)): ?>
+                                <select id="id_vehicule_edit" name="id_vehicule">
+                                    <option value="">-- Sélectionnez un véhicule --</option>
+                                    <?php foreach ($vehicules as $vehicule): ?>
+                                        <option value="<?= htmlspecialchars($vehicule['id_vehicule']) ?>">
+                                            <?= htmlspecialchars($vehicule['matricule']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <span id="id-vehicule-error-edit" class="error-message"></span>
+                            <?php else: ?>
+                                <p>Vous n'avez pas encore ajouté de véhicule.</p>
+                                <a href="../vehicule/index.php" class="btn btn-primary">Ajouter véhicule</a>
+                            <?php endif; ?>
                         </div>
                         <div class="form-actions">
                             <button type="button" class="btn secondary cancel-btn">Annuler</button>

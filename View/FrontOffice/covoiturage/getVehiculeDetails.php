@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
 require_once __DIR__ . '/../../../Controller/covoiturageC.php';
 
@@ -20,6 +21,11 @@ if (isset($_GET['id_covoiturage'])) {
                 $vehicule = $vehiculeController->getVehiculeById($id_vehicule);
 
                 if ($vehicule) {
+                    // Add the directory path to the photo_vehicule field
+                    $vehicule['photo_vehicule'] = !empty($vehicule['photo_vehicule'])
+                        ? '/XTransitX/uploads/' . $vehicule['photo_vehicule']
+                        : null;// Use null if no photo is available
+
                     echo json_encode(['success' => true, 'vehicule' => $vehicule]);
                 } else {
                     echo json_encode(['success' => false, 'message' => 'Véhicule introuvable.']);

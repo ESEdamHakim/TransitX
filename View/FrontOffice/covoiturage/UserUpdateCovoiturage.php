@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $accepte_colis = $_POST['accept_parcels'] === 'oui' ? 1 : 0;
     $colis_complet = $_POST['full_parcels'] === 'oui' ? 1 : 0;
     $details = $_POST['description'];
-
+    $id_vehicule = $_POST['id_vehicule'];
     
     //$id_user = 2; 
     require_once __DIR__ . '/../../../configuration/appConfig.php';
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $covoit->setAccepteColis($accepte_colis);
     $covoit->setColisComplet($colis_complet);
     $covoit->setDetails($details);
-
+    $covoit->setIdVehicule($id_vehicule);
     
     $covoiturageC = new CovoiturageC();
 
