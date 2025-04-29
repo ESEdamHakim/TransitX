@@ -7,7 +7,7 @@ $vehiculeController = new VehiculeC();
 
 // Fetch the list of vehicles
 try {
-    $vehicules = $vehiculeController->listVehicules();
+    $vehicules = $vehiculeController->listVehicules2();
 } catch (Exception $e) {
     die("Erreur : " . $e->getMessage());
 }

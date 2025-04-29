@@ -192,5 +192,33 @@ public function getVehiculesByUser($id_user)
         throw new Exception('Erreur : ' . $e->getMessage());
     }
 }
+
+public function listVehicules2()
+{
+    $sql = "SELECT 
+                vehicule.id_vehicule,
+                vehicule.matricule,
+                vehicule.type_vehicule,
+                vehicule.nb_places,
+                vehicule.couleur,
+                vehicule.marque,
+                vehicule.modele,
+                vehicule.confort,
+                vehicule.photo_vehicule,
+                vehicule.id_user,
+                users.nom AS user_name
+            FROM vehicule
+            LEFT JOIN users ON vehicule.id_user = users.id_user";
+
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
 }
 ?>

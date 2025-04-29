@@ -116,11 +116,9 @@ include 'BdisplayVehicule.php';
             <input type="text" placeholder="Rechercher un véhicule...">
             <button><i class="fas fa-search"></i></button>
           </div>
-          <div class="actions">
-            <button class="btn primary" id="add-vehicule-btn">
-              <i class="fas fa-plus"></i> Ajouter un Véhicule
-            </button>
-          </div>
+          <button id="add-vehicule-btn" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Ajouter un Véhicule
+          </button>
         </div>
       </header>
 
@@ -169,23 +167,28 @@ include 'BdisplayVehicule.php';
                       <td><?= htmlspecialchars($vehicule['marque']) ?></td>
                       <td><?= htmlspecialchars($vehicule['modele']) ?></td>
                       <td><?= htmlspecialchars($vehicule['confort']) ?></td>
+                    
                       <td>
                         <?php if (!empty($vehicule['photo_vehicule'])): ?>
-                          <img src="../../../uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>" alt="Photo du véhicule" width="50">
+                          <img src="../../../uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>"
+                            alt="Photo du véhicule" width="50">
                         <?php else: ?>
                           Pas de photo
                         <?php endif; ?>
                       </td>
-                      <td><?= htmlspecialchars($vehicule['id_user']) ?></td>
+                      <td><?= htmlspecialchars($vehicule['user_name'] ?? 'Utilisateur inconnu') ?></td>
                       <td>
-                        <button class="btn edit" data-id="<?= $vehicule['id_vehicule'] ?>"><i class="fas fa-edit"></i></button>
-                        <button class="btn delete" data-id="<?= $vehicule['id_vehicule'] ?>"><i class="fas fa-trash"></i></button>
+                        <button class="btn edit" data-id="<?= $vehicule['id_vehicule'] ?>"><i
+                            class="fas fa-edit"></i></button>
+                        <button class="btn delete" data-id="<?= $vehicule['id_vehicule'] ?>"><i
+                            class="fas fa-trash"></i></button>
                       </td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
+            <script src="searchvehicule.js"></script>
             <div class="pagination">
               <button class="pagination-btn prev"><i class="fas fa-chevron-left"></i></button>
               <button class="pagination-btn active">1</button>
@@ -224,8 +227,9 @@ include 'BdisplayVehicule.php';
         <form id="vehicle-form" method="POST" action="updateVehicule.php">
           <input type="hidden" id="id_vehicule" name="id_vehicule">
           <input type="hidden" id="existing-photo" name="existing_photo">
-          
+
           <div class="form-group">
+
             <label for="vehicle-matricule">Matricule</label>
             <input type="text" id="vehicle-matricule" name="matricule">
             <span id="vehicle-matricule-error" class="error-message"></span>
@@ -261,10 +265,10 @@ include 'BdisplayVehicule.php';
             <span id="vehicle-comfort-error" class="error-message"></span>
           </div>
           <div class="form-group">
-        <label for="ride-photo">Photo</label>
-        <input type="file" id="ride-photo" name="photo_vehicule">
-        <span id="ride-photo-error" class="error-message"></span>
-    </div>
+            <label for="ride-photo">Photo</label>
+            <input type="file" id="ride-photo" name="photo_vehicule">
+            <span id="ride-photo-error" class="error-message"></span>
+          </div>
           <div class="form-actions">
             <button type="button" class="btn secondary cancel-btn">Annuler</button>
             <button type="submit" class="btn primary">Enregistrer</button>
