@@ -262,13 +262,15 @@ $clients = $ReclamationC->getAllClients();
         <button class="close-modal"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
-        <p><strong>Client:</strong> <span id="modal-client"></span></p>
-        <p><strong>Objet:</strong> <span id="modal-objet"></span></p>
-        <p><strong>Date:</strong> <span id="modal-date"></span></p>
-        <p><strong>Covoiturage:</strong> <span id="modal-covoit"></span></p>
-        <p><strong>Description:</strong></p>
-        <p id="modal-description"></p>
-        <p><strong>Statut:</strong> <span id="modal-statut"></span></p>
+        <div class="bus-info">
+          <p><strong>Client:</strong> <span id="modal-client"></span></p>
+          <p><strong>Objet:</strong> <span id="modal-objet"></span></p>
+          <p><strong>Date:</strong> <span id="modal-date"></span></p>
+          <p><strong>Covoiturage:</strong> <span id="modal-covoit"></span></p>
+          <p><strong>Description:</strong></p>
+          <p id="modal-description"></p>
+          <p><strong>Statut:</strong> <span id="modal-statut"></span></p>
+        </div>
       </div>
     </div>
   </div>

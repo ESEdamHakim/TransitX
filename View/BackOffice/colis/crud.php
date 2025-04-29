@@ -299,7 +299,7 @@ $list = $ColisC->listColis();
       });
     });
   </script>
-   <script src="assets/js/colisValidation.js"></script>
+  <script src="assets/js/colisValidation.js"></script>
 </body>
 
 </html>

@@ -156,133 +156,9 @@ $list = $ColisC->listColis();
     color: white;
   }
 
-  .colis-table-container {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  }
-
-  .colis-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .colis-table th {
-    background-color: #f8f9fa;
-    color: #333;
-    font-weight: 600;
-    text-align: left;
-    padding: 1rem;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .colis-table td {
-    padding: 1rem;
-    border-bottom: 1px solid #f1f1f1;
-    color: #333;
-  }
-
-  .colis-table tr:last-child td {
-    border-bottom: none;
-  }
-
-  .colis-table tr:hover {
-    background-color: #f8f9fa;
-  }
-
-  .status {
-    display: inline-block;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-
-  .status.pending {
-    background-color: rgba(255, 193, 7, 0.1);
-    color: #ffc107;
-  }
-
-  .status.in-transit {
-    background-color: rgba(23, 162, 184, 0.1);
-    color: #17a2b8;
-  }
-
-  .status.delivered {
-    background-color: rgba(40, 167, 69, 0.1);
-    color: #28a745;
-  }
-
-  .status.cancelled {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: #dc3545;
-  }
-
   .actions {
     display: flex;
     gap: 0.5rem;
-  }
-
-  .action-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-    transition: all 0.3s;
-    background-color: transparent;
-  }
-
-  .action-btn:hover {
-    background-color: #f1f1f1;
-  }
-
-  .action-btn.view:hover {
-    color: var(--secondary);
-  }
-
-  .action-btn.edit:hover {
-    color: var(--primary);
-  }
-
-  .action-btn.delete:hover {
-    color: #dc3545;
-  }
-
-  .pagination {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 2rem;
-  }
-
-  .pagination-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    background-color: white;
-    color: #666;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .pagination-btn.active {
-    background-color: var(--primary);
-    color: white;
-    border-color: var(--primary);
-  }
-
-  .pagination-btn:hover:not(.active) {
-    background-color: #f8f9fa;
   }
 
   .empty-state {
@@ -315,16 +191,6 @@ $list = $ColisC->listColis();
 
     .filters-content {
       grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .colis-table-container {
-      overflow-x: auto;
-    }
-
-    .colis-table {
-      min-width: 800px;
     }
   }
 </style>

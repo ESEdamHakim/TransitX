@@ -224,8 +224,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
 
               <!-- Hidden fields for map coordinates and price -->
-              <input type="hidden" name="lieu_ram" id="lieu_ram" value="<?php echo htmlspecialchars($colis['lieu_ram']); ?>">
-              <input type="hidden" name="lieu_dest" id="lieu_dest" value="<?php echo htmlspecialchars($colis['lieu_dest']); ?>">
+              <input type="hidden" name="lieu_ram" id="lieu_ram"
+                value="<?php echo htmlspecialchars($colis['lieu_ram']); ?>">
+              <input type="hidden" name="lieu_dest" id="lieu_dest"
+                value="<?php echo htmlspecialchars($colis['lieu_dest']); ?>">
               <input type="hidden" name="latitude_ram" id="latitude_ram"
                 value="<?php echo htmlspecialchars($colis['latitude_ram']); ?>">
               <input type="hidden" name="longitude_ram" id="longitude_ram"
@@ -251,19 +253,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="map-container">
               <h3>Localisation</h3>
-              <div id="gmap_canvas" style="height: 400px; width: 400px;"></div>
-              <div class="map-info">
-                <p>
-                  <i class="fas fa-info-circle"></i>
-                  <strong>Instructions :</strong><br>
-                  <strong>1:</strong> Cliquez sur la carte pour sélectionner l’adresse de
-                  <strong>ramassage</strong><br>
-                  <strong>2:</strong> Cliquez encore pour définir l’adresse de
-                  <strong>livraison</strong>.
+              <div id="gmap_canvas" style="height: 400px; width: 400px;">
+                <!-- La carte Google Maps s'affichera ici -->
+              </div>
+              <div class="map-info"
+                style="background-color: #f9f9f9; border-radius: 6px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 400px; margin: 5px auto;">
+                <p style="font-size: 14px; color: #333; line-height: 1.3; margin: 0;">
+                  <i class="fas fa-info-circle" style="color: #86b391; margin-right: 6px;"></i>
+                  <span style="font-weight: 600; color: #555;">Instructions:</span>
+                  <br>
+                  <span>
+                    <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
+                    <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
+                  </span>
                 </p>
               </div>
+              <div id="map-warning" class="map-warning" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
             </div>
-
           </div>
         </div>
       </section>
