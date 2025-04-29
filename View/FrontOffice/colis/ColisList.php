@@ -293,69 +293,66 @@ $list = $ColisC->listColis();
           <div class="tab">Livrés <span class="count">4</span></div>
         </div>
 
-        <div style="overflow-x: auto; max-width: 100%;">
-          <table class="colis-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Covoit</th>
-                <th>Date.d'envoi</th>
-                <th>Dimensions (L × l × H)</th>
-                <th>Poids</th>
-                <th>Latitude Ram</th>
-                <th>Longitude Ram</th>
-                <th>Latitude Dest</th>
-                <th>Longitude Dest</th>
-                <th>Statut</th>
-                <th>Prix</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+        <section class="bus-routes">
+          <div class="container">
+            <div class="route-cards">
               <?php foreach ($list as $colis): ?>
                 <?php if ($colis['id_client'] != 3)
                   continue; ?>
-                <tr>
-                  <td><?= $colis['id_colis'] ?></td>
-                  <td><?= htmlspecialchars($colis['id_covoit']) ?></td>
-                  <td><?= htmlspecialchars($colis['date_colis']) ?></td>
-                  <td>
-                    <?= number_format($colis['longueur'], 2) ?> ×
-                    <?= number_format($colis['largeur'], 2) ?> ×
-                    <?= number_format($colis['hauteur'], 2) ?> cm
-                  </td>
-                  <td><?= number_format($colis['poids'], 2) ?> kg</td>
-                  <td><?= htmlspecialchars($colis['latitude_ram']) ?></td>
-                  <td><?= htmlspecialchars($colis['longitude_ram']) ?></td>
-                  <td><?= htmlspecialchars($colis['latitude_dest']) ?></td>
-                  <td><?= htmlspecialchars($colis['longitude_dest']) ?></td>
-                  <td><?= htmlspecialchars($colis['statut']) ?></td>
-                  <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
-                  <td class="actions">
-                    <form method="GET" action="updateColis.php" style="display:inline;">
-                      <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-                      <button type="submit" class="action-btn edit" title="Modifier">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </form>
+                <div class="route-card">
+                  <div class="route-info">
+                    <div class="route-cities">
+                      <span class="departure"><?= htmlspecialchars($colis['lieu_ram']) ?></span>
+                      <i class="fas fa-long-arrow-alt-right"></i>
+                      <span class="arrival"><?= htmlspecialchars($colis['lieu_dest']) ?></span>
+                    </div>
 
-                    <form method="POST" action="deleteColis.php" style="display:inline;"
-                      onsubmit="return confirm('Are you sure you want to delete this colis?');">
-                      <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-                      <button type="submit" class="action-btn delete" title="Supprimer">
-                        <i class="fas fa-trash"></i>
+                    <div class="route-details">
+                      <div class="detail">
+                        <i class="fas fa-box"></i>
+                        <span>
+                          L: <?= number_format($colis['longueur'], 2) ?> ×
+                          l: <?= number_format($colis['largeur'], 2) ?> ×
+                          H: <?= number_format($colis['hauteur'], 2) ?> cm
+                        </span>
+                      </div>
+                      <div class="detail">
+                        <i class="fas fa-weight-hanging"></i>
+                        <span> <?= number_format($colis['poids'], 2) ?> kg</span>
+                      </div>
+                      <div class="detail">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span> <?= htmlspecialchars($colis['date_colis']) ?></span>
+                      </div>
+                      <div class="detail">
+                        <i class="fas fa-info-circle"></i>
+                        <span> <?= htmlspecialchars($colis['statut']) ?></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="route-price">
+                    <span class="price"><?= htmlspecialchars($colis['prix']) ?> DT</span>
+
+                    <div class="actions" style="margin-top: 10px;">
+                      <form method="GET" action="updateColis.php" style="display:inline;">
+                        <input type="hidden" name="id_colis" value="<?= htmlspecialchars($colis['id_colis']) ?>">
+                        <button type="submit" class="btn btn-primary" title="Modifier">
+                          <i class="fas fa-edit"></i> Modifier
+                        </button>
+                      </form>
+                      <button type="button" class="btn btn-danger open-delete-modal"
+                        data-id="<?= htmlspecialchars($colis['id_colis']) ?>">
+                        <i class="fas fa-trash"></i> Supprimer
                       </button>
-                    </form>
-                  </td>
-                </tr>
+                    </div>
+
+                  </div>
+                </div>
               <?php endforeach; ?>
-            </tbody>
-
-          </table>
-        </div>
-
-
-      </div>
+            </div>
+          </div>
+        </section>
     </section>
   </main>
 
@@ -415,6 +412,29 @@ $list = $ColisC->listColis();
     </div>
   </footer>
 
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" id="delete-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirmer la suppression</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer ce colis ? Cette action est irréversible.</p>
+        <div class="form-actions">
+          <button type="button" class="btn secondary cancel-btn">Annuler</button>
+          <button type="button" class="btn danger" id="confirm-delete-btn">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Delete Form -->
+  <form method="POST" action="deleteColis.php" style="display:none;" id="delete-form">
+    <input type="hidden" name="id_colis" id="delete-id">
+  </form>
+
+  <script src="assets/js/colisValidation.js"></script>
   <script>
     // Filters toggle
     document.querySelector('.filters-toggle').addEventListener('click', function () {

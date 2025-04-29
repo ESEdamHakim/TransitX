@@ -11,6 +11,81 @@
   text-align: center;
 }
 
+.bus-routes {
+  padding: 5rem 5%;
+}
+
+.bus-routes h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--secondary-1);
+}
+
+.route-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.route-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.route-info {
+  flex: 1;
+}
+
+.route-cities {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.departure,
+.arrival {
+  color: var(--secondary-1);
+}
+
+.route-details {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.detail i {
+  color: var(--primary);
+}
+
+.route-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
 .colis-table-container {
   overflow-x: auto;
 }
@@ -521,3 +596,4 @@
     grid-template-columns: 1fr;
   }
 }
+
