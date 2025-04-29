@@ -392,6 +392,8 @@
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+    gap: 10px; /* or 15px, adjust as you like */
+
 }
 
 /* Tracking Form */

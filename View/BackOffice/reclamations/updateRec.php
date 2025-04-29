@@ -235,7 +235,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     value="<?php echo htmlspecialchars($reclamation['id_rec']); ?>">
 
                                 <div class="form-actions">
-                                    <a href="crud.php" class="btn btn-secondary">
+                                    <a href="crud.php" class="btn btn-outline">
                                         Annuler <i class="fas fa-times"></i>
                                     </a>
                                     <button type="submit" class="btn btn-primary">
