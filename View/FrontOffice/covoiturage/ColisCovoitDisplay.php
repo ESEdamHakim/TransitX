@@ -1,7 +1,10 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
+require_once __DIR__ . '/../../../Controller/ColisController.php';
 
 $covoiturageController = new CovoiturageC();
+$ColisC = new ColisController();
+
 try {
     // Fetch the list of covoiturages
     $covoiturages = $covoiturageController->listCovoiturages();
@@ -10,12 +13,8 @@ try {
     exit;
 }
 
-// Get the current date
+// Get current date
 $currentDate = date('Y-m-d');
-
-require_once '../../../Controller/ColisController.php';
-
-$ColisC = new ColisController();
 
 // Check if an ID is provided in the URL
 if (!isset($_GET['id_colis'])) {
@@ -25,7 +24,7 @@ if (!isset($_GET['id_colis'])) {
 $id_colis = $_GET['id_colis'];
 $colis = null;
 
-// Fetch the existing colis details
+// Fetch the existing colis
 $list = $ColisC->listColis();
 foreach ($list as $c) {
     if ($c['id_colis'] == $id_colis) {
@@ -40,38 +39,43 @@ if (!$colis) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
+    if (isset($_POST['id_covoit'])) {
+        $id_covoit = $_POST['id_covoit'];
 
-    $ColisC->updateColis(
-        $id_colis,
-        $_POST['id_client'],
-        $id_covoit,
-        $_POST['statut'],
-        $_POST['date_colis'],
-        $_POST['longueur'],
-        $_POST['largeur'],
-        $_POST['hauteur'],
-        $_POST['poids'],
-        $_POST['lieu_ram'],
-        $_POST['lieu_dest'],
-        $_POST['latitude_ram'],
-        $_POST['longitude_ram'],
-        $_POST['latitude_dest'],
-        $_POST['longitude_dest'],
-        $_POST['prix']
-    );
+        // Update colis with the selected covoiturage
+        $ColisC->updateColis(
+            $colis['id_colis'],
+            $colis['id_client'],
+            $id_covoit, // updated covoit
+            $colis['statut'],
+            $colis['date_colis'],
+            $colis['longueur'],
+            $colis['largeur'],
+            $colis['hauteur'],
+            $colis['poids'],
+            $colis['lieu_ram'],
+            $colis['lieu_dest'],
+            $colis['latitude_ram'],
+            $colis['longitude_ram'],
+            $colis['latitude_dest'],
+            $colis['longitude_dest'],
+            $colis['prix']
+        );
 
-    header("Location: ../colis/ColisList.php"); // Redirect to the colis list
-    exit();
+        // Redirect after successful update
+        header("Location: ../colis/ColisList.php?success=1");
+        exit();
+    }
 }
 ?>
 
 <div class="route-cards">
     <?php if (!empty($covoiturages)): ?>
         <?php foreach ($covoiturages as $covoiturage): ?>
-            <?php if ($covoiturage['date_depart'] >= $currentDate): // Only display future or recent covoiturages ?>
+            <?php if ($covoiturage['date_depart'] >= $currentDate): ?>
                 <div class="route-card">
-                    <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
+                    <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
+                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
                     <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                     <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                     <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
@@ -102,23 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <!-- Form to select this covoiturage -->
                     <form method="POST" style="text-align: right; margin-top: 10px;">
-                        <!-- Hidden inputs with existing colis data -->
                         <input type="hidden" name="id_covoit" value="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">
-                        <input type="hidden" name="id_client" value="<?= htmlspecialchars($colis['id_client']) ?>">
-                        <input type="hidden" name="statut" value="<?= htmlspecialchars($colis['statut']) ?>">
-                        <input type="hidden" name="date_colis" value="<?= htmlspecialchars($colis['date_colis']) ?>">
-                        <input type="hidden" name="longueur" value="<?= htmlspecialchars($colis['longueur']) ?>">
-                        <input type="hidden" name="largeur" value="<?= htmlspecialchars($colis['largeur']) ?>">
-                        <input type="hidden" name="hauteur" value="<?= htmlspecialchars($colis['hauteur']) ?>">
-                        <input type="hidden" name="poids" value="<?= htmlspecialchars($colis['poids']) ?>">
-                        <input type="hidden" name="lieu_ram" value="<?= htmlspecialchars($colis['lieu_ram']) ?>">
-                        <input type="hidden" name="lieu_dest" value="<?= htmlspecialchars($colis['lieu_dest']) ?>">
-                        <input type="hidden" name="latitude_ram" value="<?= htmlspecialchars($colis['latitude_ram']) ?>">
-                        <input type="hidden" name="longitude_ram" value="<?= htmlspecialchars($colis['longitude_ram']) ?>">
-                        <input type="hidden" name="latitude_dest" value="<?= htmlspecialchars($colis['latitude_dest']) ?>">
-                        <input type="hidden" name="longitude_dest" value="<?= htmlspecialchars($colis['longitude_dest']) ?>">
-                        <input type="hidden" name="prix" value="<?= htmlspecialchars($colis['prix']) ?>">
-
+                        <input type="hidden" name="id_colis" value="<?= htmlspecialchars($id_colis) ?>"> <!-- Pass id_colis -->
                         <button type="submit" class="btn btn-primary">Sélectionner</button>
                     </form>
                 </div>
@@ -127,26 +116,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php endif; ?>
 </div>
 
-<!-- Modal Structure (placed OUTSIDE the foreach loop!) -->
-<div id="vehicule-modal" class="vehicule-modal">
-    <div class="vehicule-modal-content">
-        <span class="close-modal">&times;</span>
-        <h2 class="vehicule-modal-title">Détails du Véhicule</h2>
-        <img id="vehicule-photo" src="" alt="Photo du véhicule" />
-        <p><strong>Marque:</strong> <span id="vehicule-marque"></span></p>
-        <p><strong>Modèle:</strong> <span id="vehicule-modele"></span></p>
-        <p><strong>Matricule:</strong> <span id="vehicule-matricule"></span></p>
-        <p><strong>Couleur:</strong> <span id="vehicule-couleur"></span></p>
-        <p><strong>Nombre de places:</strong> <span id="vehicule-places"></span></p>
-    </div>
-</div>
-
 <script>
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', function() {
-        this.querySelector('button[type="submit"]').disabled = true;
+    // Disable the submit button after clicking to avoid double submit
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function () {
+            this.querySelector('button[type="submit"]').disabled = true;
+        });
     });
-});
 </script>
 
 <script src="voirvehicule.js"></script>

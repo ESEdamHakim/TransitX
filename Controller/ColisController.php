@@ -17,55 +17,52 @@ class ColisController
     }
 
     // Add a new colis
-    public function addColis($id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $lieu_ram, $lieu_dest, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)
-    {
-        $db = config::getConnexion();
+    // Add a new colis and return the inserted ID
+public function addColis($id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $lieu_ram, $lieu_dest, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)
+{
+    $db = config::getConnexion();
 
-        try {
-            $sql = "INSERT INTO colis (
-                    id_client, id_covoit, statut, date_colis, 
-                    longueur, largeur, hauteur, poids, 
-                    lieu_ram, lieu_dest,
-                    latitude_ram, longitude_ram, 
-                    latitude_dest, longitude_dest, prix
-                ) VALUES (
-                    :id_client, :id_covoit, :statut, :date_colis, 
-                    :longueur, :largeur, :hauteur, :poids, 
-                    :lieu_ram, :lieu_dest,
-                    :latitude_ram, :longitude_ram, 
-                    :latitude_dest, :longitude_dest, :prix
-                )";
+    try {
+        $sql = "INSERT INTO colis (
+                id_client, id_covoit, statut, date_colis, 
+                longueur, largeur, hauteur, poids, 
+                lieu_ram, lieu_dest,
+                latitude_ram, longitude_ram, 
+                latitude_dest, longitude_dest, prix
+            ) VALUES (
+                :id_client, :id_covoit, :statut, :date_colis, 
+                :longueur, :largeur, :hauteur, :poids, 
+                :lieu_ram, :lieu_dest,
+                :latitude_ram, :longitude_ram, 
+                :latitude_dest, :longitude_dest, :prix
+            )";
 
-            $query = $db->prepare($sql);
-            $query->bindValue(':id_client', $id_client, PDO::PARAM_INT);
+        $query = $db->prepare($sql);
+        $query->bindValue(':id_client', $id_client, PDO::PARAM_INT);
+        $query->bindValue(':id_covoit', $id_covoit ?? null, $id_covoit === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $query->bindValue(':statut', $statut);
+        $query->bindValue(':date_colis', $date_colis);
+        $query->bindValue(':longueur', $longueur);
+        $query->bindValue(':largeur', $largeur);
+        $query->bindValue(':hauteur', $hauteur);
+        $query->bindValue(':poids', $poids);
+        $query->bindValue(':lieu_ram', $lieu_ram);
+        $query->bindValue(':lieu_dest', $lieu_dest);
+        $query->bindValue(':latitude_ram', $latitude_ram);
+        $query->bindValue(':longitude_ram', $longitude_ram);
+        $query->bindValue(':latitude_dest', $latitude_dest);
+        $query->bindValue(':longitude_dest', $longitude_dest);
+        $query->bindValue(':prix', $prix);
 
-            if ($id_covoit === null) {
-                $query->bindValue(':id_covoit', null, PDO::PARAM_NULL);
-            } else {
-                $query->bindValue(':id_covoit', $id_covoit, PDO::PARAM_INT);
-            }
+        $query->execute();
 
-            $query->bindValue(':statut', $statut);
-            $query->bindValue(':date_colis', $date_colis);
-            $query->bindValue(':longueur', $longueur);
-            $query->bindValue(':largeur', $largeur);
-            $query->bindValue(':hauteur', $hauteur);
-            $query->bindValue(':poids', $poids);
-            $query->bindValue(':lieu_ram', $lieu_ram);
-            $query->bindValue(':lieu_dest', $lieu_dest);
-            $query->bindValue(':latitude_ram', $latitude_ram);
-            $query->bindValue(':longitude_ram', $longitude_ram);
-            $query->bindValue(':latitude_dest', $latitude_dest);
-            $query->bindValue(':longitude_dest', $longitude_dest);
-            $query->bindValue(':prix', $prix);
+        // ✅ Return the last inserted ID
+        return $db->lastInsertId();
 
-            $query->execute();
-
-            return ['success' => true];
-        } catch (Exception $e) {
-            return ['success' => false, 'error' => 'Erreur SQL: ' . $e->getMessage()];
-        }
+    } catch (Exception $e) {
+        die('Erreur SQL: ' . $e->getMessage());
     }
+}
 
     // Update an existing colis
     public function updateColis($id_colis, $id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $lieu_ram, $lieu_dest, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)

@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   ) {
     $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
 
-    $ColisC->addColis(
+    $id_colis = $ColisC->addColis(
       $_POST['id_client'],
       $id_covoit,
       $_POST['statut'],
@@ -41,7 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $_POST['longitude_dest'],
       $_POST['prix']
     );
-    header("Location: ColisList.php");
+
+    // Use $id_colis in your redirect
+    header("Location: ../covoiturage/ColisCovoitList.php?id_colis=$id_colis");
+
     exit();
   } else {
     echo "Erreur : tous les champs obligatoires ne sont pas remplis.";
@@ -174,26 +177,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="hidden" name="statut" id="statut" value="en attente">
 
 
-              <div class="form-group">
-                <label for="dimensions">Dimensions (cm)</label>
-                <div class="dimensions-inputs">
-                  <input type="number" name="longueur" id="longueur" placeholder="L" step="1">
-                  <span>×</span>
-                  <input type="number" name="largeur" id="largeur" placeholder="l" step="1">
-                  <span>×</span>
-                  <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
-                </div>
-                <!-- Place to show error for dimensions -->
-                <div id="dimensions-error" class="error-message-container"></div>
+            <div class="form-group">
+              <label for="dimensions">Dimensions (cm)</label>
+              <div class="dimensions-inputs">
+                <input type="number" name="longueur" id="longueur" placeholder="L" step="1">
+                <span>×</span>
+                <input type="number" name="largeur" id="largeur" placeholder="l" step="1">
+                <span>×</span>
+                <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
               </div>
-              <br>
-              <div class="form-group">
-                <label for="poids">Poids (kg)</label>
-                <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1">
-              </div>
+              <!-- Place to show error for dimensions -->
+              <div id="dimensions-error" class="error-message-container"></div>
+            </div>
+            <br>
+            <div class="form-group">
+              <label for="poids">Poids (kg)</label>
+              <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1">
+            </div>
 
-              <br>
-              
+            <br>
+
             <br>
             <input type="hidden" name="lieu_ram" id="lieu_ram">
             <input type="hidden" name="lieu_dest" id="lieu_dest">
