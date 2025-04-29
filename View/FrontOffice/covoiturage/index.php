@@ -1,5 +1,14 @@
+<?php
+require_once __DIR__ . '/../../../Controller/vehiculeC.php';
+require_once __DIR__ . '/../../../configuration/appConfig.php';
+//$id_user = 2; // Replace this with the actual user ID from the session
+$vehiculeController = new VehiculeC();
+$vehicules = $vehiculeController->getVehiculesByUser($id_user);
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +18,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header class="landing-header">
     <div class="container">
@@ -26,6 +36,7 @@
           <li class="active"><a href="index.php">Covoiturage</a></li>
           <li><a href="../blog/index.php">Blog</a></li>
           <li><a href="../reclamation/index.php">Réclamation</a></li>
+          <li><a href="../vehicule/index.php">Véhicule</a></li>
         </ul>
       </nav>
       <div class="header-right">
@@ -49,7 +60,7 @@
         </div>
       </div>
     </section>
-
+    <!--for the search bar-->
     <section id="search-rides" class="search-section">
       <div class="container">
         <div class="section-header">
@@ -58,33 +69,30 @@
           <p>Recherchez parmi les trajets disponibles proposés par notre communauté.</p>
         </div>
         <div class="search-container">
-          <form class="search-form">
+          <form class="search-form" action="index.php" method="GET">
             <div class="form-group">
               <label for="departure">Départ</label>
-              <input type="text" id="departure" placeholder="Ville de départ">
+              <input type="text" id="departure" name="departure" placeholder="Ville de départ">
             </div>
             <div class="form-group">
               <label for="destination">Destination</label>
-              <input type="text" id="destination" placeholder="Ville d'arrivée">
+              <input type="text" id="destination" name="destination" placeholder="Ville d'arrivée">
             </div>
             <div class="form-group">
               <label for="date">Date</label>
-              <input type="date" id="date">
-            </div>
-            <div class="form-group">
-              <label for="passengers">Voyageurs</label>
-              <select id="passengers">
-                <option value="1">1 voyageur</option>
-                <option value="2">2 voyageurs</option>
-                <option value="3">3 voyageurs</option>
-                <option value="4">4 voyageurs</option>
-              </select>
+              <input type="date" id="date" name="date">
             </div>
             <button type="submit" class="btn btn-primary">
               Rechercher
               <i class="fas fa-search"></i>
             </button>
           </form>
+        </div>
+        <!-- Include search results dynamically -->
+        <div class="route-cards">
+          <?php if ($_SERVER['REQUEST_METHOD'] === 'GET' && (isset($_GET['departure']) || isset($_GET['destination']) || isset($_GET['date']))): ?>
+            <?php include 'searchCovoiturage.php'; ?>
+          <?php endif; ?>
         </div>
       </div>
     </section>
@@ -93,237 +101,201 @@
       <div class="container">
         <div class="section-header">
           <span class="badge">Trajets</span>
-          <h2>Trajets populaires</h2>
-          <p>Découvrez les trajets les plus demandés par notre communauté.</p>
+          <h2>Trajets </h2>
+          <p>Découvrez les trajets proposés par notre communauté.</p>
         </div>
         <div class="route-cards">
-          <div class="route-card">
-            <div class="route-cities">
-              <span class="departure">Tunis</span>
-              <i class="fas fa-arrow-right"></i>
-              <span class="arrival">Sousse</span>
-            </div>
-            <div class="route-details">
-              <div class="departure-date">
-                <i class="fas fa-calendar"></i>
-                <span>Aujourd'hui, 18h00</span>
-              </div>
-              <div class="available-seats">
-                <i class="fas fa-users"></i>
-                <span>3 places disponibles</span>
-              </div>
-              <div class="price">20 TND</div>
-            </div>
-            <div class="driver-info">
-              <img src="../../assets/images/placeholder-user.png" alt="Driver" class="driver-img">
-              <div class="driver-rating">
-                <i class="fas fa-star"></i>
-                <span>4.8</span>
-              </div>
-            </div>
-            <a href="#" class="btn btn-primary">Réserver</a>
-          </div>
-
-          <div class="route-card">
-            <div class="route-cities">
-              <span class="departure">Sousse</span>
-              <i class="fas fa-arrow-right"></i>
-              <span class="arrival">Sfax</span>
-            </div>
-            <div class="route-details">
-              <div class="departure-date">
-                <i class="fas fa-calendar"></i>
-                <span>Demain, 10h30</span>
-              </div>
-              <div class="available-seats">
-                <i class="fas fa-users"></i>
-                <span>2 places disponibles</span>
-              </div>
-              <div class="price">15 TND</div>
-            </div>
-            <div class="driver-info">
-              <img src="../../assets/images/placeholder-user.png" alt="Driver" class="driver-img">
-              <div class="driver-rating">
-                <i class="fas fa-star"></i>
-                <span>4.6</span>
-              </div>
-            </div>
-            <a href="#" class="btn btn-primary">Réserver</a>
-          </div>
-
-          <div class="route-card">
-            <div class="route-cities">
-              <span class="departure">Hammamet</span>
-              <i class="fas fa-arrow-right"></i>
-              <span class="arrival">Monastir</span>
-            </div>
-            <div class="route-details">
-              <div class="departure-date">
-                <i class="fas fa-calendar"></i>
-                <span>Après-demain, 14h00</span>
-              </div>
-              <div class="available-seats">
-                <i class="fas fa-users"></i>
-                <span>1 place disponible</span>
-              </div>
-              <div class="price">12 TND</div>
-            </div>
-            <div class="driver-info">
-              <img src="../../assets/images/placeholder-user.png" alt="Driver" class="driver-img">
-              <div class="driver-rating">
-                <i class="fas fa-star"></i>
-                <span>4.9</span>
-              </div>
-            </div>
-            <a href="#" class="btn btn-primary">Réserver</a>
-          </div>
+          <?php include 'displaycovoiturage.php'; ?>
         </div>
       </div>
     </section>
-
-    <section id="create-ride" class="create-ride-section">
+    <section class="user-routes">
       <div class="container">
         <div class="section-header">
-          <span class="badge">Proposer</span>
-          <h2>Proposer un trajet</h2>
-          <p>Partagez votre trajet et contribuez à une mobilité plus durable.</p>
+          <span class="badge">Vos Trajets</span>
+          <h2>Vos Trajets </h2>
+          <p>Voici les trajets que vous avez ajoutés récemment.</p>
         </div>
-        <div class="service-item">
-          <div class="service-content">
-            <form class="create-ride-form">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="start-point">Point de départ</label>
-                  <input type="text" id="start-point" placeholder="Ville de départ">
-                </div>
-                <div class="form-group">
-                  <label for="end-point">Destination</label>
-                  <input type="text" id="end-point" placeholder="Ville d'arrivée">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="ride-date">Date</label>
-                  <input type="date" id="ride-date">
-                </div>
-                <div class="form-group">
-                  <label for="ride-time">Heure</label>
-                  <input type="time" id="ride-time">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="seats">Places disponibles</label>
-                  <select id="seats">
-                    <option value="1">1 place</option>
-                    <option value="2">2 places</option>
-                    <option value="3">3 places</option>
-                    <option value="4">4 places</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="price-per-seat">Prix par place (TND)</label>
-                  <input type="number" id="price-per-seat" min="1" step="1">
-                </div>
+        <div class="route-cards">
+          <?php include 'UserDisplayCovoiturage.php'; ?>
+        </div>
+      </div>
+      <section id="create-ride" class="create-ride-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Proposer un trajet</h2>
+          </div>
+          <form class="create-ride-form" action="addCovoiturage.php" method="POST"> <!--novalidate-->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="start-point">Point de départ</label>
+                <input type="text" id="start-point" name="lieu_depart" placeholder="Ville de départ">
+                <span id="start-point-error" class="error-message"></span>
               </div>
               <div class="form-group">
-                <label for="vehicle">Véhicule</label>
-                <select id="vehicle">
-                  <option value="">Sélectionner un véhicule</option>
-                  <option value="car">Voiture</option>
-                  <option value="van">Minivan</option>
-                  <option value="moto">Moto</option>
+                <label for="end-point">Destination</label>
+                <input type="text" id="end-point" name="lieu_arrivee" placeholder="Ville d'arrivée">
+                <span id="end-point-error" class="error-message"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ride-date-create">Date</label>
+                <input type="date" id="ride-date-create" name="date_depart">
+                <span id="ride-date-create-error" class="error-message"></span>
+              </div>
+              <div class="form-group">
+                <label for="ride-time-create">Heure</label>
+                <input type="time" id="ride-time-create" name="temps_depart">
+                <span id="ride-time-create-error" class="error-message"></span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="seats">Places disponibles</label>
+                <select id="seats" name="places_dispo">
+                  <option value="1">1 place</option>
+                  <option value="2">2 places</option>
+                  <option value="3">3 places</option>
+                  <option value="4">4 places</option>
                 </select>
+                <span id="seats-error" class="error-message"></span>
               </div>
               <div class="form-group">
-                <label for="ride-details">Détails supplémentaires</label>
-                <textarea id="ride-details" rows="3" placeholder="Précisez les détails de votre trajet (arrêts, bagages autorisés, etc.)"></textarea>
+                <label for="price-per-seat">Prix par place (TND)</label>
+                <input type="number" id="price-per-seat" name="prix" step="1">
+                <span id="price-error" class="error-message"></span>
               </div>
-              <button type="submit" class="btn btn-primary">
-                Publier le trajet
-                <i class="fas fa-paper-plane"></i>
-              </button>
-            </form>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="accept-parcels">Accepte les colis</label>
+                <select id="accept-parcels" name="accepte_colis">
+                  <option value="oui">Oui</option>
+                  <option value="non">Non</option>
+                </select>
+                <span id="accept-parcels-error" class="error-message"></span>
+              </div>
+              <div class="form-group">
+                <label for="full-parcels">Colis complet</label>
+                <select id="full-parcels" name="colis_complet">
+                  <option value="oui">Oui</option>
+                  <option value="non">Non</option>
+                </select>
+                <span id="full-parcels-error" class="error-message"></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ride-details">Détails supplémentaires</label>
+              <select id="details-options" class="form-control">
+                <option value="">-- Sélectionnez une option --</option>
+                <option value="Bagages légers uniquement.">Bagages légers uniquement.</option>
+                <option value="Trajet non-fumeur.">Trajet non-fumeur.</option>
+                <option value="Merci d’être ponctuel.">Merci d’être ponctuel.</option>
+                <option value="Pas de retard accepté.">Pas de retard accepté.</option>
+                <option value="other">Autre...</option>
+              </select>
+              <textarea id="ride-details" name="details"
+                placeholder="Ajoutez des détails ou complétez l'option sélectionnée" class="form-control"
+                style="margin-top: 10px;"></textarea>
+              <span id="ride-details-error" class="error-message"></span>
+            </div>
+            <div class="form-group">
+              <label for="id_vehicule">Sélectionnez un véhicule</label>
+              <?php if (!empty($vehicules)): ?>
+                <select id="id_vehicule" name="id_vehicule">
+                  <option value="">-- Sélectionnez un véhicule --</option>
+                  <?php foreach ($vehicules as $vehicule): ?>
+                    <option value="<?= htmlspecialchars($vehicule['id_vehicule']) ?>">
+                      <?= htmlspecialchars($vehicule['matricule']) ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+                <span id="id-vehicule-error" class="error-message"></span>
+              <?php else: ?>
+                <p>Vous n'avez pas encore ajouté de véhicule.</p>
+                <a href="../vehicule/index.php" class="btn btn-primary">Ajouter véhicule</a>
+              <?php endif; ?>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Publier le trajet
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </section>
+      <section class="how-it-works">
+        <div class="container">
+          <div class="section-header">
+            <span class="badge">Fonctionnement</span>
+            <h2>Comment ça marche</h2>
+            <p>Découvrez comment fonctionne notre service de covoiturage en 3 étapes simples.</p>
           </div>
-          <div class="service-image">
-            <img src="../../assets/images/covoiturage-service.jpg" alt="Proposer un covoiturage">
+          <div class="steps-container">
+            <div class="step">
+              <div class="step-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <h3>Recherchez</h3>
+              <p>Trouvez un trajet qui correspond à vos besoins en quelques clics.</p>
+            </div>
+            <div class="step">
+              <div class="step-icon">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+              <h3>Réservez</h3>
+              <p>Réservez votre place et payez en ligne en toute sécurité.</p>
+            </div>
+            <div class="step">
+              <div class="step-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <h3>Voyagez</h3>
+              <p>Rejoignez votre conducteur au point de rendez-vous et profitez du trajet.</p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="how-it-works">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Fonctionnement</span>
-          <h2>Comment ça marche</h2>
-          <p>Découvrez comment fonctionne notre service de covoiturage en 3 étapes simples.</p>
-        </div>
-        <div class="steps-container">
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-search"></i>
-            </div>
-            <h3>Recherchez</h3>
-            <p>Trouvez un trajet qui correspond à vos besoins en quelques clics.</p>
+      <section class="benefits">
+        <div class="container">
+          <div class="section-header">
+            <span class="badge">Avantages</span>
+            <h2>Avantages du Covoiturage</h2>
+            <p>Découvrez pourquoi le covoiturage est bénéfique pour vous et pour l'environnement.</p>
           </div>
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-calendar-check"></i>
+          <div class="benefits-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-leaf"></i>
+              </div>
+              <h3>Écologique</h3>
+              <p>Réduisez votre empreinte carbone en partageant un véhicule plutôt que de conduire seul.</p>
             </div>
-            <h3>Réservez</h3>
-            <p>Réservez votre place et payez en ligne en toute sécurité.</p>
-          </div>
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-car"></i>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-euro-sign"></i>
+              </div>
+              <h3>Économique</h3>
+              <p>Partagez les frais de transport et économisez sur vos déplacements quotidiens.</p>
             </div>
-            <h3>Voyagez</h3>
-            <p>Rejoignez votre conducteur au point de rendez-vous et profitez du trajet.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="benefits">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Avantages</span>
-          <h2>Avantages du Covoiturage</h2>
-          <p>Découvrez pourquoi le covoiturage est bénéfique pour vous et pour l'environnement.</p>
-        </div>
-        <div class="benefits-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-leaf"></i>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3>Social</h3>
+              <p>Rencontrez de nouvelles personnes et rendez vos trajets plus agréables.</p>
             </div>
-            <h3>Écologique</h3>
-            <p>Réduisez votre empreinte carbone en partageant un véhicule plutôt que de conduire seul.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-euro-sign"></i>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-road"></i>
+              </div>
+              <h3>Moins de Trafic</h3>
+              <p>Contribuez à réduire la congestion routière dans votre ville.</p>
             </div>
-            <h3>Économique</h3>
-            <p>Partagez les frais de transport et économisez sur vos déplacements quotidiens.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-users"></i>
-            </div>
-            <h3>Social</h3>
-            <p>Rencontrez de nouvelles personnes et rendez vos trajets plus agréables.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-road"></i>
-            </div>
-            <h3>Moins de Trafic</h3>
-            <p>Contribuez à réduire la congestion routière dans votre ville.</p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
   </main>
 
   <footer class="main-footer">
@@ -382,15 +354,9 @@
     </div>
   </footer>
 
-  <script>
-    // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-      document.querySelector('.main-nav').classList.toggle('active');
-    });
-
-    // Ensure dashboard button is visible
-    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-    document.querySelector('.logout-btn').style.display = 'inline-flex';
-  </script>
+  <script src="validAddCovoiturage.js"></script>
+  <script src="validEditCovoiturage.js"></script>
+  <script src="validDeleteCovoiturage.js"></script>
 </body>
+
 </html>
