@@ -1,16 +1,20 @@
-// Trajet Search 
-document.querySelector('.header-right .search-bar:nth-of-type(1) input').addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase();
+// Trajet Search
+document.addEventListener('DOMContentLoaded', function () {
+  const searchInput = document.querySelector('.header-right .search-bar input');
 
-  // Select all rows from the table (1st buses-table-container)
-  document.querySelectorAll('.dashboard-content .crud-container .buses-table-container tbody tr').forEach(row => {
-    // Get the third column, which corresponds to place_arrivee
-    const placeArriveeCell = row.querySelector('td:nth-child(3)');
-    const placeArriveeText = placeArriveeCell ? placeArriveeCell.innerText.toLowerCase() : '';
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      const searchTerm = this.value.toLowerCase();
 
-    // If the place_arrivee text matches the search term, display the row, otherwise hide it
-    row.style.display = placeArriveeText.includes(searchTerm) ? '' : 'none';
-  });
+      document.querySelectorAll('.buses-table-container tbody tr').forEach(row => {
+        const arrivalCell = row.querySelector('td:nth-child(3)');
+        const arrivalText = arrivalCell ? arrivalCell.textContent.toLowerCase() : '';
+
+        // Show/hide row based on whether arrival includes search term
+        row.style.display = arrivalText.includes(searchTerm) ? '' : 'none';
+      });
+    });
+  }
 });
 
 
@@ -82,28 +86,32 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Statistics calculation for trajets
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const rows = document.querySelectorAll('.buses-table tbody tr');
 
   let totalTrajets = 0;
   let totalDuration = 0;
   let totalPrice = 0;
+  let totalDistance = 0;
 
   rows.forEach(row => {
     const cells = row.querySelectorAll('td');
     const duration = parseFloat(cells[4]?.textContent) || 0; 
+    const distance = parseFloat(cells[5]?.textContent) || 0; 
     const price = parseFloat(cells[6]?.textContent) || 0;
 
     totalTrajets++;
     totalDuration += duration;
+    totalDistance += distance;
     totalPrice += price;
   });
 
   const averageDuration = totalTrajets > 0 ? (totalDuration / totalTrajets).toFixed(2) : 0;
+  const averageDistance = totalTrajets > 0 ? (totalDistance / totalTrajets).toFixed(2) : 0;
   const averagePrice = totalTrajets > 0 ? (totalPrice / totalTrajets).toFixed(2) : 0;
 
   document.getElementById('total-trajets').textContent = totalTrajets;
   document.getElementById('average-duration').textContent = averageDuration + " h";
+  document.getElementById('average-distance').textContent = averageDistance + " km";
   document.getElementById('average-price').textContent = averagePrice + " TND";
 });
-

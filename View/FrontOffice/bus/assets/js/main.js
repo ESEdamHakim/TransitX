@@ -19,12 +19,15 @@ document.querySelector('.logout-btn').style.display = 'inline-flex';
 document.addEventListener('DOMContentLoaded', function () {
   // Toggle bus extra info (if using div-based extra info instead of modal)
   const infoButtons = document.querySelectorAll('.toggle-info-btn');
-
+  
   infoButtons.forEach(button => {
     button.addEventListener('click', function () {
       const trajetId = this.getAttribute('data-id');
       const modal = document.getElementById('bus-info-modal-' + trajetId);
-      if (modal) modal.style.display = 'block';
+
+      if (modal) {
+        modal.classList.add('show'); // Show modal with class
+      }
     });
   });
 
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
   closeButtons.forEach(button => {
     button.addEventListener('click', function () {
       const modal = this.closest('.modal');
-      modal.style.display = 'none';
+      modal.classList.remove('show'); // Close modal by removing class
     });
   });
 
@@ -41,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('click', function (event) {
     document.querySelectorAll('.modal').forEach(modal => {
       if (event.target === modal) {
-        modal.style.display = 'none';
+        modal.classList.remove('show'); // Close modal by removing class
       }
     });
   });
@@ -93,5 +96,3 @@ document.getElementById('searchForm').addEventListener('submit', function (e) {
     card.style.display = show ? '' : 'none';
   });
 });
-
-

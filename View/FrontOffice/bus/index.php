@@ -145,7 +145,7 @@ $trajetlist = $controller_trajet->listTrajets();
                             <!-- Add the Reserve button here -->
                             <form method="POST" action="reserver_bus.php" style="margin-top: 10px;">
                               <input type="hidden" name="id_bus" value="<?= htmlspecialchars($bus['id_bus']) ?>">
-                              <button type="submit" class="btn btn-primary reserver-btn">Réserver ce bus</button>
+                              <button type="submit" class="reserver-btn">Réserver ce bus</button>
                             </form>
                           </div>
                           <?php
