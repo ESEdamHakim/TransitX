@@ -428,9 +428,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </footer>
+  <script src="assets/js/colisValidation.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v6.9/mapsJavaScriptAPI.js"></script>
 </body>
-<script src="assets/js/colisValidation.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&callback=initMap" async
-  defer></script>
 
 </html>
