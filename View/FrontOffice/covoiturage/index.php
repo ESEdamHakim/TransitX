@@ -57,6 +57,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         <div class="hero-buttons">
           <a href="#search-rides" class="btn btn-primary">Rechercher un trajet</a>
           <a href="#create-ride" class="btn btn-outline">Proposer un trajet</a>
+          <a href="weatherindex.php" class="btn btn-outline">Voir météo</a>
         </div>
       </div>
     </section>
