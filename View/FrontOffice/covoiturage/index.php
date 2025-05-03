@@ -17,6 +17,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/weatherstyles.css">
 </head>
 
 <body>
@@ -57,7 +58,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         <div class="hero-buttons">
           <a href="#search-rides" class="btn btn-primary">Rechercher un trajet</a>
           <a href="#create-ride" class="btn btn-outline">Proposer un trajet</a>
-          <a href="weatherindex.php" class="btn btn-outline">Voir météo</a>
+          <a href="javascript:void(0)" id="openWeatherModal" class="btn btn-outline">Voir météo</a>
         </div>
       </div>
     </section>
@@ -354,10 +355,47 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       </div>
     </div>
   </footer>
-
+<!-- Weather Modal -->
+<div id="weatherModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="card">
+    <div class="current-date" style="margin-bottom: 10px; font-size: 16px; color: #555;"></div> 
+      <div class="search">
+        <input type="text" placeholder="Enter city name" spellcheck="false">
+        <button><img src="./weather-app-img/images/search.png"></button>
+      </div>
+      <div class="error">
+        <p>Invalid City Name</p>
+      </div>
+      <div class="weather">
+        <img src="./weather-app-img/images/clear.png" class="weather-icon">
+        <h1 class="temp">22°C</h1>
+        <h2 class="city">Sydney</h2>
+        <div class="detail">
+          <div class="col">
+            <img src="./weather-app-img/images/humidity.png">
+            <div>
+              <p class="humidity">15%</p>
+              <p>Humidity</p>
+            </div>
+          </div>
+          <div class="col">
+            <img src="./weather-app-img/images/wind.png">
+            <div>
+              <p class="speed">10km/h</p>
+              <p>Wind Speed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   <script src="validAddCovoiturage.js"></script>
   <script src="validEditCovoiturage.js"></script>
   <script src="validDeleteCovoiturage.js"></script>
+  <script src="meteo.js"></script>
 </body>
 
 </html>
