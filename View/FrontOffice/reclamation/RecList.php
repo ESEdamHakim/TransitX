@@ -476,9 +476,6 @@ $clients = $ReclamationC->getAllClients();
         </script>
         <script src="assets/js/recModals.js"></script>
         <script src="assets/js/recFilters.js"></script>
-        <script src="assets/js/recPDF.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/plugins/autoTable/autoTable.min.js"></script>
 </body>
 
 </html>
