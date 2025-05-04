@@ -198,13 +198,21 @@ $clients = $ColisC->getAllClients();
                 <tbody>
                   <?php foreach ($list as $colis):
                     $client = $ColisC->getClientById($colis['id_client']);
-                    $covoit = !empty($colis['id_covoit']) ? $ColisC->getCovoiturageById($colis['id_covoit']) : null;
+                    $covoit = null;
+                    $client2 = null;
 
+                    // Fetch covoiturage and client only if id_covoit is not empty
+                    if (!empty($colis['id_covoit'])) {
+                      $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
+
+                      if ($covoit && isset($covoit['id_user'])) {
+                        $client2 = $ColisC->getClientById($covoit['id_user']);
+                      }
+                    }
                     $statusClassMap = [
                       'en attente' => 'pending',
                       'en transit' => 'in-progress',
                       'livré' => 'resolved',
-                      'annulé' => 'cancelled'
                     ];
 
                     $statut = trim($colis['statut']);
@@ -223,10 +231,10 @@ $clients = $ColisC->getAllClients();
 
                       <td>
                         <?php if ($covoit): ?>
-                          <?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
-                          <small class="muted">(ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)</small>
+                          <?= htmlspecialchars($client2['nom']) ?>     <?= htmlspecialchars($client2['prenom']) ?>
+                          <small class="muted">(ID: <?= htmlspecialchars($client2['id_user']) ?>)</small>
                         <?php else: ?>
-                          <em class="text-muted">Aucun covoiturage</em>
+                          <em>Aucun covoiturage</em>
                         <?php endif; ?>
                       </td>
 
