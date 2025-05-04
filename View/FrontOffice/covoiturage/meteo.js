@@ -2,17 +2,10 @@
 const modal = document.getElementById("weatherModal");
 const openModalBtn = document.getElementById("openWeatherModal");
 const closeModalBtn = document.querySelector(".close");
-function displayCurrentDate() {
-    const dateElement = document.querySelector(".current-date");
-    const now = new Date();
-    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
-    const formattedDate = now.toLocaleDateString("fr-FR", options); // Format date in French
-    dateElement.innerHTML = formattedDate;
-  }
+
 // Open the modal
 openModalBtn.addEventListener("click", () => {
   modal.style.display = "block";
-  displayCurrentDate();
 });
 
 // Close the modal
@@ -27,48 +20,100 @@ window.addEventListener("click", (event) => {
   }
 });
 
-// Weather API handling
+// Select DOM elements
 const weatherIcon = document.querySelector(".weather-icon");
 const bgColor = document.querySelector(".card");
-const searchcity = document.querySelector(".search input");
-const searchbtn = document.querySelector(".search button");
+const cityInput = document.querySelector("#cityInput");
+const dateInput = document.querySelector("#dateInput");
+const searchBtn = document.querySelector("#searchBtn");
+const errorElement = document.querySelector(".error");
+const weatherElement = document.querySelector(".weather");
 const apiKey = "8aab6949191302a6a18a11e8f68d5acf";
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+const forecastApiUrl = "https://api.openweathermap.org/data/2.5/forecast?units=metric&q=";
 
-async function checkWeather(city) {
-  const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
-  if (response.status == 404) {
-    document.querySelector(".error").style.display = "block";
-    document.querySelector(".weather").style.display = "none";
-  } else {
+// Function to fetch and display weather data
+async function checkWeather(city, selectedDate) {
+  try {
+    // Fetch forecast data from the API
+    const response = await fetch(forecastApiUrl + city + `&appid=${apiKey}`);
+    if (response.status === 404) {
+      showError("Ville introuvable. Veuillez entrer une ville valide.");
+      return;
+    }
+
     const data = await response.json();
 
-    document.querySelector(".city").innerHTML = data.name;
-    document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
-    document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
-    document.querySelector(".speed").innerHTML = Math.round(data.wind.speed) + "km/h";
+    // Filter forecast data for the selected date
+    const forecast = data.list.filter((item) => {
+      const forecastDate = new Date(item.dt_txt).toISOString().split("T")[0];
+      return forecastDate === selectedDate;
+    });
 
-    if (data.weather[0].main == "Clouds") {
-      weatherIcon.src = "./weather-app-img/images/clouds.png";
-      bgColor.style.background = "linear-gradient(135deg,#98dbf0,#00a9cc)";
-    } else if (data.weather[0].main == "Clear") {
-      weatherIcon.src = "./weather-app-img/images/clear.png";
-      bgColor.style.background = "linear-gradient(135deg,#01d2fd,#00a9cc)";
-    } else if (data.weather[0].main == "Rain") {
-      weatherIcon.src = "./weather-app-img/images/rain.png";
-      bgColor.style.background = "linear-gradient(135deg,005392,#00365d)";
-    } else if (data.weather[0].main == "Drizzle") {
-      weatherIcon.src = "./weather-app-img/images/drizzle.png";
-      bgColor.style.background = "linear-gradient(135deg,#8fc4e0,#93b4c6)";
-    } else if (data.weather[0].main == "Mist") {
-      weatherIcon.src = "./weather-app-img/images/mist.png";
-      bgColor.style.background = "linear-gradient(135deg,#c5ddea,#d0dfe8)";
+    if (forecast.length > 0) {
+      // Use the first forecast entry for the selected date
+      const weatherData = forecast[0];
+
+      // Update weather details in the modal
+      document.querySelector(".city").innerHTML = data.city.name;
+      document.querySelector(".temp").innerHTML = Math.round(weatherData.main.temp) + "°C";
+      document.querySelector(".humidity").innerHTML = weatherData.main.humidity + "%";
+      document.querySelector(".speed").innerHTML = Math.round(weatherData.wind.speed) + "km/h";
+
+      // Update weather icon and background color based on weather conditions
+      const weatherCondition = weatherData.weather[0].main;
+      updateWeatherAppearance(weatherCondition);
+
+      // Hide error and show weather details
+      errorElement.style.display = "none";
+      weatherElement.style.display = "block";
+    } else {
+      // No forecast data available for the selected date
+      showError(" Aucune donnée météo disponible pour la date sélectionnée.");
     }
-    document.querySelector(".error").style.display = "none";
-    document.querySelector(".weather").style.display = "block";
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+    showError("An error occurred while fetching weather data. Please try again.");
   }
 }
 
-searchbtn.addEventListener("click", () => {
-  checkWeather(searchcity.value);
+// Function to update weather appearance (icon and background)
+function updateWeatherAppearance(condition) {
+  if (condition === "Clouds") {
+    weatherIcon.src = "./weather-app-img/images/clouds.png";
+    bgColor.style.background = "linear-gradient(135deg,#98dbf0,#00a9cc)";
+  } else if (condition === "Clear") {
+    weatherIcon.src = "./weather-app-img/images/clear.png";
+    bgColor.style.background = "linear-gradient(135deg,#01d2fd,#00a9cc)";
+  } else if (condition === "Rain") {
+    weatherIcon.src = "./weather-app-img/images/rain.png";
+    bgColor.style.background = "linear-gradient(135deg,005392,#00365d)";
+  } else if (condition === "Drizzle") {
+    weatherIcon.src = "./weather-app-img/images/drizzle.png";
+    bgColor.style.background = "linear-gradient(135deg,#8fc4e0,#93b4c6)";
+  } else if (condition === "Mist") {
+    weatherIcon.src = "./weather-app-img/images/mist.png";
+    bgColor.style.background = "linear-gradient(135deg,#c5ddea,#d0dfe8)";
+  } else {
+    weatherIcon.src = "./weather-app-img/images/default.png";
+    bgColor.style.background = "linear-gradient(135deg,#d3d3d3,#a9a9a9)";
+  }
+}
+
+// Function to show error messages
+function showError(message) {
+  errorElement.style.display = "block";
+  errorElement.textContent = message;
+  weatherElement.style.display = "none";
+}
+
+// Event listener for the search button
+searchBtn.addEventListener("click", () => {
+  const city = cityInput.value.trim();
+  const selectedDate = dateInput.value;
+
+  if (city && selectedDate) {
+    checkWeather(city, selectedDate);
+  } else {
+    showError("Veuillez entrer une ville et sélectionner une date.");
+  }
 });

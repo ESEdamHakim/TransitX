@@ -360,13 +360,14 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <div class="modal-content">
     <span class="close">&times;</span>
     <div class="card">
-    <div class="current-date" style="margin-bottom: 10px; font-size: 16px; color: #555;"></div> 
+      <div class="current-date" style="margin-bottom: 10px; font-size: 16px; color: #555;"></div>
       <div class="search">
-        <input type="text" placeholder="Enter city name" spellcheck="false">
-        <button><img src="./weather-app-img/images/search.png"></button>
+        <input type="text" id="cityInput" placeholder="Enter city name" spellcheck="false">
+        <input type="date" id="dateInput" style="margin-left: 10px;">
+        <button id="searchBtn"><img src="./weather-app-img/images/search.png"></button>
       </div>
       <div class="error">
-        <p>Invalid City Name</p>
+        <p>Invalid City Name or Date</p>
       </div>
       <div class="weather">
         <img src="./weather-app-img/images/clear.png" class="weather-icon">
