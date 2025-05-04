@@ -6,17 +6,14 @@ $covoiturageController = new CovoiturageC();
 $ColisC = new ColisController();
 
 try {
-    // Fetch the list of covoiturages
     $covoiturages = $covoiturageController->listCovoiturages();
 } catch (Exception $e) {
     echo "Erreur : " . $e->getMessage();
     exit;
 }
 
-// Get current date
 $currentDate = date('Y-m-d');
 
-// Check if an ID is provided in the URL
 if (!isset($_GET['id_colis'])) {
     die("Invalid Request");
 }
@@ -24,7 +21,6 @@ if (!isset($_GET['id_colis'])) {
 $id_colis = $_GET['id_colis'];
 $colis = null;
 
-// Fetch the existing colis
 $list = $ColisC->listColis();
 foreach ($list as $c) {
     if ($c['id_colis'] == $id_colis) {
@@ -37,16 +33,14 @@ if (!$colis) {
     die("Colis not found");
 }
 
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['id_covoit'])) {
         $id_covoit = $_POST['id_covoit'];
 
-        // Update colis with the selected covoiturage
         $ColisC->updateColis(
             $colis['id_colis'],
             $colis['id_client'],
-            $id_covoit, // updated covoit
+            $id_covoit,
             $colis['statut'],
             $colis['date_colis'],
             $colis['longueur'],
@@ -62,7 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $colis['prix']
         );
 
-        // Redirect after successful update
         header("Location: ../colis/ColisList.php?success=1");
         exit();
     }
@@ -73,7 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php
     $matchingCovoiturages = [];
 
-    // Filter covoiturages that match the colis criteria
     foreach ($covoiturages as $covoiturage) {
         if (
             $covoiturage['date_depart'] == $colis['date_colis'] &&
@@ -84,24 +76,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ) {
             $matchingCovoiturages[] = $covoiturage;
         }
-    }    
+    }
     ?>
 
     <?php if (count($covoiturages) === 0): ?>
-        <!-- Case 1: Table is empty -->
         <div class="empty-table" style="text-align: center; margin-top: 30px;">
             <h4>Il n'y a actuellement aucun covoiturage enregistré.</h4>
             <p>Ajoutez un nouveau covoiturage pour commencer à livrer les colis.</p>
-            <a href="../covoiturage/addCovoiturage.php" class="btn btn-success">Créer un covoiturage</a>
+            <a href="addCovoiturage.php" class="btn btn-success">Créer un covoiturage</a>
         </div>
 
     <?php elseif (!empty($matchingCovoiturages)): ?>
-        <!-- Case 2: Matching covoiturages exist -->
+        <div style="text-align: center; margin: 30px 0;">
+  <p style="font-size: 1.25rem; color: #333333; font-weight: 500;">
+    Explorez les covoiturages disponibles correspondant au trajet de votre colis.
+  </p>
+</div>
         <?php foreach ($matchingCovoiturages as $covoiturage): ?>
             <div class="route-card">
-                <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
-                    <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
-                </h3>
+                <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
                 <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                 <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                 <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
@@ -139,18 +132,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endforeach; ?>
 
     <?php else: ?>
-        <!-- Case 3: Covoiturages exist but none match -->
+        <!-- No exact match found, show suggestions -->
         <div class="no-results" style="text-align: center; margin-top: 30px;">
-            <h4>Aucun covoiturage trouvé pour ce colis à cette date et trajet.</h4>
+            <h4>Aucun covoiturage trouvé pour ce colis à cette date et trajet exact</h4>
             <br>
-            <p></p>
-            <a href="../colis/ColisList.php" class="btn btn-primary">Mes Colis</a>
+            <p>Voici quelques suggestions avec un départ proche et la même ville de départ</p>
         </div>
+
+        <?php
+        $suggestedCovoiturages = [];
+        foreach ($covoiturages as $covoiturage) {
+            $dateDiff = abs(strtotime($covoiturage['date_depart']) - strtotime($colis['date_colis']));
+            $daysDiff = $dateDiff / (60 * 60 * 24);
+
+            if (
+                $covoiturage['lieu_depart'] == $colis['lieu_ram'] &&
+                $daysDiff <= 3 &&
+                $covoiturage['accepte_colis'] == 1 &&
+                $covoiturage['colis_complet'] == 0
+            ) {
+                $suggestedCovoiturages[] = $covoiturage;
+            }
+        }
+
+        if (!empty($suggestedCovoiturages)):
+            foreach ($suggestedCovoiturages as $covoiturage): ?>
+                <div class="route-card">
+                    <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
+                    <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
+                    <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
+                    <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
+                    <p><strong>Prix:</strong> <?= htmlspecialchars($covoiturage['prix']) ?> TND</p>
+                    <p><strong>Colis:</strong> <?= $covoiturage['accepte_colis'] == 1 ? 'Colis acceptés.' : 'Colis non acceptés.' ?></p>
+                    <p><strong>Détails:</strong> <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
+
+                    <?php if (!empty($covoiturage['id_vehicule'])): ?>
+                        <button class="btn btn-primary voir-vehicule-btn" type="button"
+                            data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">
+                            Voir Véhicule
+                        </button>
+                    <?php else: ?>
+                        <button class="btn btn-secondary" disabled>
+                            Véhicule non disponible
+                        </button>
+                    <?php endif; ?>
+
+                    <form method="POST" style="text-align: right; margin-top: 10px;">
+                        <input type="hidden" name="id_covoit" value="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">
+                        <input type="hidden" name="id_colis" value="<?= htmlspecialchars($id_colis) ?>">
+                        <button type="submit" class="btn btn-primary">Sélectionner</button>
+                    </form>
+                </div>
+            <?php endforeach;
+        else: ?>
+            <div style="text-align:center;">
+                <p>Aucune suggestion disponible pour le moment.</p>
+                <form method="GET" action="../colis/updateColis.php" style="display:inline;">
+                    <input type="hidden" name="id_colis" value="<?= htmlspecialchars($colis['id_colis']) ?>">
+                    <button type="submit" class="btn btn-primary">Modifier Colis</button>
+                </form>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 
 <script>
-    // Disable the submit button after clicking to avoid double submit
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', function () {
             this.querySelector('button[type="submit"]').disabled = true;

@@ -54,7 +54,6 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);*/
         <div class="section-header">
           <span class="badge">Covoiturages</span>
           <h2>Choisir un covoiturage</h2>
-          <p>Explorez les covoiturages adaptés au trajet de votre colis.</p>
         </div>
         <div class="route-cards">
           <?php include 'ColisCovoitDisplay.php'; ?>
