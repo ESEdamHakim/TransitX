@@ -318,6 +318,7 @@ $clients = $ColisC->getAllClients();
     });
   </script>
   <script src="assets/js/colisValidation.js"></script>
+  <script src="assets/js/colisDelete.js"></script>
 </body>
 
 </html>

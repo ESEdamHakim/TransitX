@@ -464,6 +464,7 @@ $clients = $ColisC->getAllClients();
   </form>
 
   <script src="assets/js/colisValidation.js"></script>
+  <script src="assets/js/colisDelete.js"></script>
   <script>
     // Filters toggle
     document.querySelector('.filters-toggle').addEventListener('click', function () {
