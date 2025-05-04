@@ -11,6 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contenu = $_POST['contenu'];
     $date_publication = $_POST['date_publication'];
     $auteur = $_POST['auteur'];
+    $categorie = $_POST['categorie'];
+    $tags = $_POST['tags'];
+
 
     $photoName = null;
 
@@ -22,18 +25,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Créer l'article
-    $article = new Article($titre, $contenu, $date_publication, $photoName, $auteur);
+    $article = new Article($titre, $contenu, $date_publication, $photoName, $auteur, $categorie, $tags);
     $articleC = new ArticleC();
     $articleC->addarticle($article);
 
     // Récupérer le titre de l'article
     $titre_article = $article->getTitre();
 
-    // Liste des emails des abonnés (ici tu les as codés en dur, à adapter)
-    $emails = [
-        'feirouz.lajnef@gmail.com',
-        'autre.email@example.com',
-    ];
+    // Connexion à la base de données pour récupérer les emails des abonnés (id_user hardcodés)
+    require_once __DIR__ . '/../../../config.php'; // Chemin relatif
+    $pdo = config::getConnexion();  // Récupérer l'instance de PDO via la méthode statique
+
+    // Récupérer les emails des utilisateurs abonnés (hardcodés par id_user)
+    $stmt = $pdo->prepare("SELECT email FROM user WHERE is_subscribed = 1 AND email IS NOT NULL");
+    $stmt->execute();
+    $emails = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
     // Créer une instance de PHPMailer
     $mail = new PHPMailer(true);

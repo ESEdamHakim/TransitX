@@ -2,7 +2,7 @@
 $pdo = new PDO("mysql:host=localhost;dbname=transitx", "root", "");
 
 $id = intval($_GET['id']);
-$action = $_GET['action']; // 'like' ou 'dislike'
+$action = $_GET['action']; 
 
 if ($action == 'like') {
     $stmt = $pdo->prepare("UPDATE commentaire SET nb_likes = nb_likes + 1 WHERE id_commentaire = ?");

@@ -2,8 +2,6 @@
 $pdo = new PDO("mysql:host=localhost;dbname=transitx", "root", "");
 
 $id = intval($_GET['id']);
-
-// Récupération du commentaire
 $stmt = $pdo->prepare("SELECT * FROM commentaire WHERE id_commentaire = ?");
 $stmt->execute([$id]);
 $commentaire = $stmt->fetch();

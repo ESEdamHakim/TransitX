@@ -14,6 +14,8 @@ if (isset($_GET['id'])) {
             $date_publication = $_POST['date_publication'];
             $photo = $_FILES['photo'];
             $auteur = $_POST['auteur'];
+            $categorie = $_POST['categorie'];
+            $tags = $_POST['tags'];
 
 
             if ($photo['error'] == 0) {
@@ -24,7 +26,7 @@ if (isset($_GET['id'])) {
                 $photo_name = $offer['photo'];
             }
 
-            $updatedOffer = new Article($titre, $contenu, $date_publication, $photo_name, $auteur, $id_article);
+            $updatedOffer = new Article($titre, $contenu, $date_publication, $photo_name, $auteur, $categorie, $tags, $id_article);
             $articc->updatearticle($updatedOffer);
 
             header("Location: crud.php");
@@ -239,7 +241,16 @@ if (isset($_GET['id'])) {
  
                 <label for="auteur">auteur:</label>
                 <input type="text" name="auteur" id="auteur" class="input-field" value="<?= htmlspecialchars($offer['auteur']) ?>" required>
-
+ 
+                <label for="categorie">Catégorie :</label>
+<select name="categorie" id="categorie" class="input-field" required>
+    <option value="Conseils de voyage" <?= $offer['categorie'] === 'Conseils de voyage' ? 'selected' : '' ?>>Conseils de voyage</option>
+    <option value="Sécurité" <?= $offer['categorie'] === 'Sécurité' ? 'selected' : '' ?>>Sécurité</option>
+    <option value="Économie et écologie" <?= $offer['categorie'] === 'Économie et écologie' ? 'selected' : '' ?>>Économie et écologies</option>
+    <option value="Autre" <?= $offer['categorie'] === 'Autre' ? 'selected' : '' ?>>Autre</option>
+</select>
+<label>Tags (séparés par des virgules) :</label>
+            <input type="text" name="tags" id="tags" class="input-field" value="<?= htmlspecialchars($offer['tags']) ?>" placeholder="Exemple : Mobilité, Innovation, Écologie">
                 <label>Photo actuelle:</label>
                 <div class="image-preview">
                     <?php if (!empty($offer['photo'])): ?>

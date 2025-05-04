@@ -9,7 +9,6 @@ if (isset($_GET['id_commentaire'])) {
         $stmt = $pdo->prepare("DELETE FROM commentaire WHERE id_commentaire = ?");
         $stmt->execute([$id]);
 
-        // Redirection vers le backoffice
         header("Location: ../../../View/BackOffice/blog/searchArticles.php");
         exit;
     } catch (Exception $e) {

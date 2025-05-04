@@ -4,16 +4,57 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../../Controller/BackOffice/ArticleC.php';
 
-$articc = new ArticleC();
+$articleC = new ArticleC();
 
-if (isset($_GET['sort']) && $_GET['sort'] === 'date_asc') {
-    $list = $articc->listarticleSortedByDate('ASC');
-} elseif (isset($_GET['sort']) && $_GET['sort'] === 'date_desc') {
-    $list = $articc->listarticleSortedByDate('DESC');
-} else {
-    $list = $articc->listarticle(); // Affiche tout par défaut, sans tri
+// Traitement du tri par date
+$order = 'DESC'; // valeur par défaut
+if (isset($_GET['sort'])) {
+    if ($_GET['sort'] === 'date_asc') {
+        $order = 'ASC';
+    } elseif ($_GET['sort'] === 'date_desc') {
+        $order = 'DESC';
+    }
 }
-$topArticles = $articc->getMostCommentedArticles();
+$categoryStats = $articleC->getArticleCountByCategory();
+$categories = [];
+$counts = [];
+
+foreach ($categoryStats as $stat) {
+    $categories[] = $stat['categorie'];
+    $counts[] = $stat['count'];
+}
+function getCategoryColor($categorie) {
+  switch (strtolower(trim($categorie))) {
+    case 'conseils de voyage': return '#2ecc71';
+    case 'sécurité': return '#f1c40f';
+    case 'Économie et écologie': return '#e74c3c';
+    default: return '#1f4f65';
+  }
+}
+
+function getCategoryIcon($categorie) {
+  switch (strtolower($categorie)) {
+    case 'économie':
+      return 'fas fa-chart-line';
+    case 'écologie':
+      return 'fas fa-leaf';
+    case 'politique':
+      return 'fas fa-balance-scale';
+    case 'technologie':
+      return 'fas fa-microchip';
+    case 'santé':
+      return 'fas fa-heartbeat';
+    default:
+      return 'fas fa-newspaper'; // icône générique
+  }
+}
+$categorie = $_GET['categorie'] ?? null;
+$auteur = $_GET['auteur'] ?? null;
+
+// Liste des articles triés par date, catégorie et auteur
+$list = $articleC->listarticleFilteredByCategoryAndAuthor($order, $categorie, $auteur);
+// Articles les plus commentés
+$topArticles = $articleC->getMostCommentedArticles();
 
 ?>
 
@@ -28,26 +69,25 @@ $topArticles = $articc->getMostCommentedArticles();
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
   <style>
-    /* Conteneur de la barre de recherche */
 .search-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 350px; /* Ajustez la largeur selon vos préférences */
+  width: 350px; 
   padding: 8px 12px;
   border-radius: 30px;
-  background-color: #f1f1f1; /* Fond doux pour la barre */
+  background-color: #f1f1f1; 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
 }
 
 .search-bar:hover {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Ombre plus marquée au survol */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
 }
 
-/* Champ de saisie */
 .search-bar input {
   flex-grow: 1;
   border: none;
@@ -70,7 +110,6 @@ $topArticles = $articc->getMostCommentedArticles();
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
-/* Bouton de recherche */
 .search-bar button {
   background-color:#1f4f65;
   border: none;
@@ -86,7 +125,6 @@ $topArticles = $articc->getMostCommentedArticles();
   font-size: 18px;
 }
 
-/* Effet au survol du bouton */
 .search-bar button:hover {
   background-color: #0056b3;
   transform: scale(1.1);
@@ -111,55 +149,53 @@ $topArticles = $articc->getMostCommentedArticles();
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
     }
     .buses-table thead {
-  background-color: #1f4f65; /* Couleur de fond de l'en-tête */
+  background-color: #1f4f65; 
   color: #fff;
 }
 
 .buses-table tr:hover {
-  background-color: transparent; /* Ne change pas de couleur au survol */
+  background-color: transparent; 
 }
     .buses-table th, .buses-table td {
       padding: 12px 15px;
       text-align: left;
       border-bottom: 1px solid #eee;
     }
-    /* Design du bouton "Afficher les commentaires" */
 form button {
-  padding: 10px 25px; /* Espace interne du bouton */
-  background-color: #1f4f65; /* Couleur de fond verte */
-  color: white; /* Couleur du texte */
-  border: none; /* Enlever la bordure */
-  border-radius: 8px; /* Coins arrondis */
-  font-size: 16px; /* Taille du texte */
-  cursor: pointer; /* Curseur en forme de main au survol */
-  transition: background-color 0.3s, transform 0.2s; /* Animation au survol */
+  padding: 10px 25px; 
+  background-color: #1f4f65; 
+  color: white; 
+  border: none; 
+  border-radius: 8px; 
+  font-size: 16px; 
+  cursor: pointer; 
+  transition: background-color 0.3s, transform 0.2s; 
 }
 
 form button:hover {
-  background-color:rgb(45, 124, 160); /* Couleur de fond en survol */
-  transform: scale(1.05); /* Agrandir légèrement le bouton */
+  background-color:rgb(45, 124, 160); 
+  transform: scale(1.05); 
 }
 
 form button:focus {
-  outline: none; /* Supprimer la bordure bleue de focus */
+  outline: none; 
 }
 
 form button:active {
-  background-color:rgb(120, 137, 145); /* Couleur encore plus foncée lorsque le bouton est cliqué */
+  background-color:rgb(120, 137, 145); 
 }
 
-    /* Modifier le conteneur du formulaire pour qu'il soit aligné à gauche */
 .select-article-container {
   display: flex;
   flex-direction: column;
-  width: 100%; /* S'assurer qu'il occupe toute la largeur */
-  margin-bottom: 20px; /* Un peu d'espacement sous le formulaire */
+  width: 100%; 
+  margin-bottom: 20px; 
 }
 
 .select-article-container label {
   font-size: 16px;
   color: #1f4f65;
-  margin-bottom: 8px; /* Espacement entre le label et le champ */
+  margin-bottom: 8px; 
 }
 
 .select-article-container select {
@@ -169,8 +205,8 @@ form button:active {
   border-radius: 8px;
   margin-bottom: 12px;
   background-color: #f9f9f9;
-  width: 100%; /* S'assurer qu'il occupe toute la largeur */
-  max-width: 400px; /* Largeur max pour le select */
+  width: 100%;
+  max-width: 400px; 
 }
 
 .select-article-container button {
@@ -188,7 +224,6 @@ form button:active {
   background-color: #0056b3;
 }
 
-/* Pour garantir que tout soit aligné à gauche */
 .form-section {
   margin: 20px;
   padding: 20px;
@@ -226,23 +261,149 @@ form button:active {
       text-decoration: underline;
     }
     .statsChart {
-  max-width: 400px; /* Ajustez la largeur maximum ici */
-  max-height: 400px; /* Ajustez la hauteur maximum ici */
-  width: 100%; /* Permet au graphique de s'adapter à la largeur de son conteneur */
-  height: auto; /* Permet au graphique de conserver son aspect ratio */
+  max-width: 400px; 
+  max-height: 400px; 
+  width: 100%; 
+  height: auto; 
 }
 #showStatsBtn {
-  background: none; /* Pas de fond */
-  border: none; /* Pas de bordure */
-  cursor: pointer; /* Curseur en main */
-  font-size: 30px; /* Taille de l'icône (ajustez selon vos besoins) */
-  color: #007bff; /* Couleur de l'icône (changez pour la couleur souhaitée) */
-  transition: color 0.2s; /* Effet de transition pour le changement de couleur */
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  font-size: 30px; 
+  color: #007bff; 
+  transition: color 0.2s; 
 }
 
 #showStatsBtn:hover {
-  color: #0056b3; /* Couleur au survol (ajustez comme désiré) */
+  color: #0056b3; 
 }
+
+.filtre-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 100%; /* Passe de 480px à 100% */
+    margin: 40px 0 40px 20px;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .input-group label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .input-group select,
+  .input-group input {
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .input-group select:focus,
+  .input-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  .input-wrapper i {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: #007bff;
+    font-size: 16px;
+  }
+
+  .submit-group {
+    display: flex;
+    justify-content: center;
+  }
+
+  .submit-group button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .submit-group button:hover {
+    background-color: #0056b3;
+  }
+
+  .submit-group button i {
+    font-size: 18px;
+  }
+  .category-stats-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.category-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  min-width: 200px;
+  flex: 1;
+  max-width: 240px;
+  border-left: 5px solid var(--accent-color, #1f4f65);
+  transition: transform 0.2s;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-text h4 {
+  margin: 0;
+  color: #5f6b7a;
+  font-size: 14px;
+}
+
+.card-text .count {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 5px 0 0 0;
+}
+
+.card-icon {
+  font-size: 24px;
+  color: #ccc;
+}
+
   </style>
 </head>
 <body>
@@ -302,12 +463,52 @@ form button:active {
 </form>
 
       </header>
-<!-- Formulaire de recherche d'articles -->
+      <div class="category-stats-container" style="margin-left: 40px;">
+  <?php foreach ($categoryStats as $stat): ?>
+    <div class="category-card" style="--accent-color: <?= getCategoryColor($stat['categorie']) ?>;">
+      <div class="card-content">
+        <div class="card-text">
+          <h4><?= htmlspecialchars($stat['categorie']) ?></h4>
+          <p class="count"><?= htmlspecialchars($stat['count']) ?></p>
+        </div>
+        <div class="card-icon">
+        <i class="<?= getCategoryIcon($stat['categorie']) ?>"></i>
+        </div>
+      </div>
+    </div>
+  <?php endforeach; ?>
+</div>
 
 
 
 
-      <!-- Formulaire d'ajout -->
+
+<script>
+  const ctx = document.getElementById('categoryChart').getContext('2d');
+  const categoryChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: <?php echo json_encode($categories); ?>,
+      datasets: [{
+        label: 'Nombre d\'articles',
+        data: <?php echo json_encode($counts); ?>,
+        backgroundColor: '#1f4f65',
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1
+          }
+        }
+      }
+    }
+  });
+</script>
       <section class="form-section">
         <h2>Ajouter un Article</h2>
         <form id="articleForm" action="addarticle.php" method="POST" enctype="multipart/form-data" class="form-container" onsubmit="return validateForm();">
@@ -332,10 +533,28 @@ form button:active {
               <span class="error-message" id="date-error"></span>
             </div>
             <div class="form-group">
+  <label for="categorie">Catégorie :</label>
+  <select id="categorie" name="categorie" class="form-input" required>
+    <option value="">-- Sélectionnez une catégorie --</option>
+    <option value="Conseils de voyage">Conseils de voyage</option>
+    <option value="Sécurité">Sécurité</option>
+    <option value="Économie et écologie">Économie et écologie</option>
+    <option value="Autre">Autre</option>
+
+  </select>
+  <span class="error-message" id="categorie-error"></span>
+</div>
+
+            <div class="form-group">
               <label for="auteur">auteur :</label>
               <input type="text" id="auteur" name="auteur" class="form-input" />
               <span class="error-message" id="auteur-error"></span>
             </div>
+            <div class="form-group">
+    <label for="tags">Tags (séparés par des virgules) :</label>
+    <input type="text" id="tags" name="tags" class="form-input" placeholder="Exemple : Mobilité, Innovation" />
+    <span class="error-message" id="tags-error"></span>
+</div>
             <div class="form-group">
               <label for="photo">Photo :</label>
               <input type="file" id="photo" name="photo" accept="image/*" class="form-input" />
@@ -346,12 +565,11 @@ form button:active {
           <button type="submit" class="btn">Ajouter</button>
         </form>
         
-        <!-- Formulaire de recherche d'articles -->
+
         <form action="searchArticles.php" method="GET">
   <label for="article">Choisir un article :</label>
   <select name="article" id="article">
     <?php
-    // Connexion à la base de données pour récupérer tous les articles
     try {
       $pdo = new PDO('mysql:host=localhost;dbname=transitx', 'root', '');
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -360,8 +578,6 @@ form button:active {
     } catch (PDOException $e) {
       echo 'Erreur de connexion à la base de données : ' . $e->getMessage();
     }
-
-    // Affichage des articles dans un menu déroulant
     foreach ($articles as $article) {
         echo "<option value='" . $article['id_article'] . "'>" . $article['titre'] . "</option>";
     }
@@ -370,7 +586,31 @@ form button:active {
   <button type="submit">Afficher les commentaires</button>
 </form>
 
-
+<form method="get" action="" class="filtre-form">
+  <div class="input-group">
+    <label for="categorie">Catégorie :</label>
+    <select name="categorie" id="categorie">
+      <option value="">Toutes</option>
+      <option value="Conseils de voyage">Conseils de voyage</option>
+      <option value="Sécurité">Sécurité</option>
+      <option value="Économie et écologie">Économie et écologie</option>
+    </select>
+  </div>
+  
+  <div class="input-group">
+    <label for="auteur">Auteur :</label>
+    <div class="input-wrapper">
+      <input type="text" name="auteur" id="auteur" placeholder="Filtrer par auteur" />
+      <i class="fas fa-user"></i> <!-- Icone de recherche -->
+    </div>
+  </div>
+  
+  <div class="submit-group">
+    <button type="submit">
+      <i class="fas fa-filter"></i> Filtrer
+    </button>
+  </div>
+</form>
 <!-- Bouton pour afficher les statistiques -->
 <div style="margin-top: 20px; padding: 20px; border-radius: 16px; background: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); max-width: 480px;">
   <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -392,11 +632,8 @@ form button:active {
 
 <script>
   document.getElementById("showStatsBtn").addEventListener("click", function() {
-    // Afficher les statistiques (le graphique)
     document.getElementById("statsContainer").style.display = "block";
-    
-    // Appeler la méthode pour afficher les statistiques
-    displayStats();
+        displayStats();
   });
 
   function displayStats() {
@@ -413,7 +650,7 @@ form button:active {
     // Création du graphique
     const ctx = document.getElementById("statsChart").getContext("2d");
     const chart = new Chart(ctx, {
-      type: 'pie', // Choix du graphique circulaire (pie chart)
+      type: 'pie', 
       data: {
         labels: labels,
         datasets: [{
@@ -460,7 +697,8 @@ form button:active {
     <i class="fa-solid fa-arrow-down-wide-short"></i>
   </a>
 </th>
-
+<th>categorie</th>
+<th>tags</th>
               <th>Photo</th>
               <th>Actions</th>
             </tr>
@@ -474,6 +712,9 @@ form button:active {
                 <td><?= htmlspecialchars($offer['auteur']); ?></td>
 
                 <td><?= htmlspecialchars($offer['date_publication']); ?></td>
+                <td><?= htmlspecialchars($offer['categorie'] ?? '') ?></td>
+                <td><?= htmlspecialchars($offer['tags'] ?? '') ?></td>
+
 
                 <td>
                   <?php if (!empty($offer['photo'])): ?>
@@ -483,13 +724,22 @@ form button:active {
                   <?php endif; ?>
                 </td>
                 <td class="actions">
-                  <a href="updatearticle.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn edit" title="Modifier">
-                    <i class="fas fa-edit"></i>
-                  </a>
-                  <a href="deletearticle.php?id_article=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn delete" title="Supprimer">
-                  <i class="fas fa-trash-alt"></i>
-                  </a>
-                </td>
+  <a href="updatearticle.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn edit" title="Modifier">
+    <i class="fas fa-edit"></i>
+  </a>
+  <a href="deletearticle.php?id_article=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn delete" title="Supprimer">
+    <i class="fas fa-trash-alt"></i>
+  </a>
+  <!-- Bouton Générer le résumé -->
+  <a href="generate_summary.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn" title="Générer le résumé">
+    <i class="fas fa-file-alt"></i> 
+  </a>
+   <!-- Nouveau lien pour exporter en PDF -->
+   <a href="export_pdf.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn" title="Exporter en PDF">
+    <i class="fas fa-file-pdf"></i> 
+  </a>
+</td>
+
               </tr>
             <?php } ?>
           </tbody>
@@ -523,6 +773,11 @@ form button:active {
         document.getElementById("date-error").textContent = "La date de publication est requise.";
         valid = false;
       }
+      const categorie = document.getElementById("categorie").value;
+if (categorie === "") {
+  document.getElementById("categorie-error").textContent = "La catégorie est requise.";
+  valid = false;
+}
 
       // Validation de la photo
       const photo = document.getElementById("photo").value;
@@ -535,7 +790,18 @@ form button:active {
         document.getElementById("auteur-error").textContent = "L'auteur est requis.";
         valid = false;
       }
+      const tags = document.getElementById("tags").value;
+const tagsPattern = /^#\w+(?:,\s*#\w+)*$/; // Expression régulière pour valider les tags
 
+if (tags === "") {
+    document.getElementById("tags-error").textContent = "Les tags sont requis.";
+    valid = false;
+} else if (!tagsPattern.test(tags)) {
+    document.getElementById("tags-error").textContent = "Les tags doivent commencer par un '#' et être séparés par des virgules.";
+    valid = false;
+} else {
+    document.getElementById("tags-error").textContent = ""; // Si valide, on supprime le message d'erreur
+}
       return valid;
     }
   </script>

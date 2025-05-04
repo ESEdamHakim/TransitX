@@ -6,12 +6,10 @@ if (isset($_GET['article'])) {
         $pdo = new PDO('mysql:host=localhost;dbname=transitx', 'root', '');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // On récupère l'article sélectionné
         $stmtArticle = $pdo->prepare("SELECT * FROM article WHERE id_article = ?");
         $stmtArticle->execute([$id_article]);
         $article = $stmtArticle->fetch(PDO::FETCH_ASSOC);
 
-        // On récupère les commentaires liés à cet article
         $stmtCommentaires = $pdo->prepare("SELECT * FROM commentaire WHERE id_article = ?");
         $stmtCommentaires->execute([$id_article]);
         $commentaires = $stmtCommentaires->fetchAll(PDO::FETCH_ASSOC);
@@ -157,8 +155,6 @@ if (isset($_GET['article'])) {
       <?php else: ?>
         <p class="no-comments">Aucun commentaire pour cet article.</p>
       <?php endif; ?>
-
-
     <?php else: ?>
       <p>Aucun article sélectionné.</p>
     <?php endif; ?>

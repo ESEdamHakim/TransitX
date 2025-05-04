@@ -91,6 +91,8 @@ if (isset($_GET['searchTerm']) && !empty($_GET['searchTerm'])) {
                     <th>titre</th>
                     <th>contenu</th>
                     <th>date_publication</th>
+                    <th>categorie</th>
+                    <th>tags</th>
                     <th>photo</th>
                     <th>Actions</th>  
                 </tr>
@@ -107,6 +109,10 @@ if (isset($_GET['searchTerm']) && !empty($_GET['searchTerm'])) {
                             <td><?= htmlspecialchars($offer['titre']); ?></td>
                             <td><?= htmlspecialchars($offer['contenu']); ?></td>
                             <td><?= htmlspecialchars($offer['date_publication']); ?></td>
+                            <td><?= htmlspecialchars($offer['categorie']); ?></td>
+                            <td><?= htmlspecialchars($offer['tags']); ?></td>
+
+
                             <td>
                                 <?php if (!empty($offer['photo'])): ?>
                                     <img src="../../../uploads/<?= htmlspecialchars($offer['photo']); ?>" alt="Photo Article" style="width: 80px;">

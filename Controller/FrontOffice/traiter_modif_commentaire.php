@@ -13,8 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("UPDATE commentaire SET contenu_commentaire = ? WHERE id_commentaire = ?");
     $stmt->execute([$contenu, $id]);
 
-    // Redirection vers l'article (tu peux aussi récupérer l'id_article au besoin)
-    $id_article = $_POST['id_article']; // Récupération de l'ID de l'article pour la redirection
+    $id_article = $_POST['id_article']; 
     header("Location: /TransitX-main/View/FrontOffice/blog/blog-detail.php?id=$id_article");
     exit;
     
