@@ -123,22 +123,22 @@ $clients = $ColisC->getAllClients();
         <div class="dashboard-stats">
           <div class="stat-box primary">
             <div class="stat-title">Total des colis</div>
-            <div class="stat-value">128</div>
+            <div class="stat-value">0</div>
             <div class="stat-icon"><i class="fas fa-box"></i></div>
           </div>
           <div class="stat-box success">
             <div class="stat-title">Colis livrés</div>
-            <div class="stat-value">76</div>
+            <div class="stat-value">0</div>
             <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
           </div>
           <div class="stat-box warning">
             <div class="stat-title">En transit</div>
-            <div class="stat-value">42</div>
+            <div class="stat-value">0</div>
             <div class="stat-icon"><i class="fas fa-truck"></i></div>
           </div>
           <div class="stat-box danger">
             <div class="stat-title">En attente</div>
-            <div class="stat-value">10</div>
+            <div class="stat-value">0</div>
             <div class="stat-icon"><i class="fas fa-clock"></i></div>
           </div>
         </div>
@@ -150,9 +150,8 @@ $clients = $ColisC->getAllClients();
             <select id="status-filter">
               <option value="all">Tous</option>
               <option value="pending">En attente</option>
-              <option value="in-transit">En transit</option>
-              <option value="delivered">Livrés</option>
-              <option value="cancelled">Annulés</option>
+              <option value="in-progress">En transit</option>
+              <option value="resolved">Livrés</option>
             </select>
           </div>
           <div class="filter-item">
@@ -160,19 +159,19 @@ $clients = $ColisC->getAllClients();
             <input type="date" id="date-filter">
           </div>
           <div class="filter-item">
-              <label for="search-filter">Recherche</label>
-              <input type="text" id="search-filter" placeholder="ID covoiturage">
-            </div>
-            <div class="filter-item">
-              <label for="price-sort">Tri par prix</label>
-              <select id="price-sort">
-                <option value="none">Aucun tri</option>
-                <option value="asc">Prix croissant</option>
-                <option value="desc">Prix décroissant</option>
-              </select>
-            </div>
-          <button class="btn primary">Appliquer</button>
-          <button class="btn secondary">Réinitialiser</button>
+            <label for="search-filter">Recherche</label>
+            <input type="text" id="search-filter" placeholder="ID covoiturage">
+          </div>
+          <div class="filter-item">
+            <label for="price-sort">Tri par prix</label>
+            <select id="price-sort">
+              <option value="none">Aucun tri</option>
+              <option value="asc">Prix croissant</option>
+              <option value="desc">Prix décroissant</option>
+            </select>
+          </div>
+          <button id="apply-filters" class="btn primary">Appliquer</button>
+          <button id="reset-filters" class="btn secondary">Réinitialiser</button>
         </div>
 
         <div class="crud-container">
@@ -180,8 +179,8 @@ $clients = $ColisC->getAllClients();
             <div class="tabs">
               <button class="tab-btn active" data-tab="all">Tous les Colis</button>
               <button class="tab-btn" data-tab="pending">En attente</button>
-              <button class="tab-btn" data-tab="transit">En transit</button>
-              <button class="tab-btn" data-tab="delivered">Livrés</button>
+              <button class="tab-btn" data-tab="in-progress">En transit</button>
+              <button class="tab-btn" data-tab="resolved">Livrés</button>
             </div>
           </div>
 
@@ -207,60 +206,68 @@ $clients = $ColisC->getAllClients();
                 <tbody>
                   <?php foreach ($list as $colis):
                     $client = $ColisC->getClientById($colis['id_client']);
-                    $covoit = null;
+                    $covoit = !empty($colis['id_covoit']) ? $ColisC->getCovoiturageById($colis['id_covoit']) : null;
 
-                    if (!empty($colis['id_covoit'])) {
-                      $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
-                    }
+                    $statusClassMap = [
+                      'en attente' => 'pending',
+                      'en transit' => 'in-progress',
+                      'livré' => 'resolved',
+                      'annulé' => 'cancelled'
+                    ];
+
+                    $statut = trim($colis['statut']);
+                    $className = $statusClassMap[$statut] ?? 'default';
                     ?>
-                    <tr>
+                    <tr class="parcel-row" data-status="<?= $className ?>"
+                      data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
+                      data-price="<?= htmlspecialchars($colis['prix']) ?>"
+                      data-covoit-id="<?= $covoit ? htmlspecialchars($covoit['id_covoit']) : '' ?>">
+
                       <td><?= $colis['id_colis'] ?></td>
+
                       <td>
-                        <?= htmlspecialchars($client['nom']) ?>   <?= htmlspecialchars($client['prenom']) ?> (ID:
-                        <?= htmlspecialchars($client['id_user']) ?>)
+                        <?= htmlspecialchars($client['nom']) ?>   <?= htmlspecialchars($client['prenom']) ?>
+                        <small class="muted">(ID: <?= htmlspecialchars($client['id_user']) ?>)</small>
                       </td>
+
                       <td>
                         <?php if ($covoit): ?>
                           <?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
-                          (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
+                          <small class="muted">(ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)</small>
                         <?php else: ?>
-                          <em>Aucun covoiturage</em>
+                          <em class="text-muted">Aucun covoiturage</em>
                         <?php endif; ?>
                       </td>
+
                       <td><?= htmlspecialchars($colis['date_colis']) ?></td>
+
                       <td>
                         <?= number_format($colis['longueur'], 2) ?> ×
                         <?= number_format($colis['largeur'], 2) ?> ×
                         <?= number_format($colis['hauteur'], 2) ?> cm
                       </td>
+
                       <td><?= number_format($colis['poids'], 2) ?> kg</td>
                       <td><?= htmlspecialchars($colis['lieu_ram']) ?></td>
                       <td><?= htmlspecialchars($colis['lieu_dest']) ?></td>
-                      <?php
-                      $statusClassMap = [
-                        'en attente' => 'pending',
-                        'en transit' => 'in-progress',
-                        'livré' => 'resolved'
-                      ];
 
-                      $statut = trim($colis['statut']);
-                      $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
-                      ?>
                       <td>
                         <span class="status <?= $className ?>">
                           <?= htmlspecialchars($colis['statut']) ?>
                         </span>
                       </td>
-                      <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
+
+                      <td><?= number_format($colis['prix'], 2) ?> DT</td>
+
                       <td class="actions">
-                        <form method="GET" action="updateColis.php" style="display:inline;">
+                        <form method="GET" action="updateColis.php" class="inline-form">
                           <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-                          <button type="submit" class="action-btn edit" title="Modifier">
+                          <button type="submit" class="action-btn edit" title="Modifier le colis">
                             <i class="fas fa-edit"></i>
                           </button>
                         </form>
 
-                        <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
+                        <button type="button" class="action-btn delete open-delete-modal" title="Supprimer le colis"
                           data-id="<?= htmlspecialchars($colis['id_colis']) ?>">
                           <i class="fas fa-trash"></i>
                         </button>
@@ -319,8 +326,9 @@ $clients = $ColisC->getAllClients();
       });
     });
   </script>
-  <script src="assets/js/colisValidation.js"></script>
   <script src="assets/js/colisDelete.js"></script>
+  <script src="assets/js/colisFilters.js" defer></script>
+
 </body>
 
 </html>
