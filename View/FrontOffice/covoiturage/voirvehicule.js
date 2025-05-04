@@ -3,9 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModal = document.querySelector(".close-modal");
 
     // Close the modal when the close button is clicked
-    closeModal.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
+    if (closeModal) {
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    } else {
+        console.error("Close button not found in the DOM.");
+    }
 
     // Close the modal when clicking outside of it
     window.addEventListener("click", (event) => {
@@ -17,18 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // Handle "Voir Véhicule" button clicks
     document.querySelectorAll(".voir-vehicule-btn").forEach((button) => {
         button.addEventListener("click", () => {
-            // Close any other open modals
-            document.querySelectorAll('.modal, .vehicule-modal').forEach((modal) => {
-                modal.style.display = 'none';
-            });
+            console.log("Voir Véhicule button clicked"); // Debugging log
 
             const idCovoiturage = button.getAttribute("data-id-covoiturage");
+            console.log(`Covoiturage ID: ${idCovoiturage}`); // Debugging log
 
             // Fetch vehicle details via AJAX
             fetch(`getVehiculeDetails.php?id_covoiturage=${idCovoiturage}`)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
+                        console.log("Vehicle details fetched successfully:", data); // Debugging log
+
                         // Populate modal with vehicle details
                         document.getElementById("vehicule-marque").textContent = data.vehicule.marque;
                         document.getElementById("vehicule-modele").textContent = data.vehicule.modele;

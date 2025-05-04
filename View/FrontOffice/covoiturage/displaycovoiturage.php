@@ -12,6 +12,31 @@ try {
 
 // Get the current date
 $currentDate = date('Y-m-d');
+
+// Function to check if the weather is bad
+function isBadWeather($city)
+{
+    $apiKey = "8aab6949191302a6a18a11e8f68d5acf";
+    $apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=" . urlencode($city) . "&appid=" . $apiKey;
+
+    $response = file_get_contents($apiUrl);
+    if ($response === false) {
+        return false; // Assume weather is not bad if API call fails
+    }
+
+    $data = json_decode($response, true);
+    if (isset($data['main']['temp'], $data['weather'][0]['main'])) {
+        $temperature = $data['main']['temp'];
+        $condition = $data['weather'][0]['main'];
+
+        // Define bad weather conditions
+        if ($temperature > 25 || $condition === "Rain" || $condition === "Drizzle" || $condition === "Thunderstorm") {
+            return true;
+        }
+    }
+
+    return false;
+}
 ?>
 
 <div class="route-cards">
@@ -19,6 +44,25 @@ $currentDate = date('Y-m-d');
         <?php foreach ($covoiturages as $covoiturage): ?>
             <?php if ($covoiturage['date_depart'] >= $currentDate): // Only display future or recent covoiturages ?>
                 <div class="route-card">
+                    <div class="top-buttons">
+                        <!-- Add Voir Météo Button if bad weather -->
+                        <?php if (isBadWeather($covoiturage['lieu_arrivee'])): ?>
+                            <button class="weather-icon-btn"
+                                data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
+                                data-date="<?= htmlspecialchars($covoiturage['date_depart']) ?>">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </button>
+                        <?php endif; ?>
+
+                        <!-- Add Voir Véhicule Button -->
+                        <?php if (!empty($covoiturage['id_vehicule'])): ?>
+                            <button class="voir-vehicule-btn"
+                                data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">
+                                <i class="fa-solid fa-car" style="color: #63E6BE;"></i>
+                            </button>
+                        <?php endif; ?>
+                    </div>
+
                     <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
                         <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
                     </h3>
@@ -38,22 +82,6 @@ $currentDate = date('Y-m-d');
                         ?>
                     </p>
                     <p><strong>Détails:</strong> <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
-                    <?php if (!empty($covoiturage['id_vehicule'])): ?>
-                        <button class="btn btn-primary voir-vehicule-btn"
-                            data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">
-                            Voir Véhicule
-                        </button>
-                    <?php else: ?>
-                        <button class="btn btn-secondary" disabled>
-                            Véhicule non disponible
-                        </button>
-                    <?php endif; ?>
-                    <!-- Add Voir Météo Button -->
-            <button class="btn btn-info voir-meteo-btn"
-                data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
-                data-date="<?= htmlspecialchars($covoiturage['date_depart']) ?>">
-                Voir Météo
-            </button>
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>
@@ -78,35 +106,35 @@ $currentDate = date('Y-m-d');
 </div>
 <!-- Weather Modal -->
 <div id="weatherModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <div class="card">
-    <div class="error" style="display: none; color: red; text-align: center; margin-bottom: 10px;">
-        Error message will appear here
-      </div>
-      <div class="weather">
-        <img src="./weather-app-img/images/clear.png" class="weather-icon">
-        <h1 class="temp">22°C</h1>
-        <h2 class="city">Sydney</h2>
-        <div class="detail">
-          <div class="col">
-            <img src="./weather-app-img/images/humidity.png">
-            <div>
-              <p class="humidity">15%</p>
-              <p>Humidity</p>
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="card">
+            <div class="error" style="display: none; color: red; text-align: center; margin-bottom: 10px;">
+                Error message will appear here
             </div>
-          </div>
-          <div class="col">
-            <img src="./weather-app-img/images/wind.png">
-            <div>
-              <p class="speed">10km/h</p>
-              <p>Wind Speed</p>
+            <div class="weather">
+                <img src="./weather-app-img/images/clear.png" class="weather-icon">
+                <h1 class="temp">22°C</h1>
+                <h2 class="city">Sydney</h2>
+                <div class="detail">
+                    <div class="col">
+                        <img src="./weather-app-img/images/humidity.png">
+                        <div>
+                            <p class="humidity">15%</p>
+                            <p>Humidity</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <img src="./weather-app-img/images/wind.png">
+                        <div>
+                            <p class="speed">10km/h</p>
+                            <p>Wind Speed</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <script src="voirvehicule.js"></script>
