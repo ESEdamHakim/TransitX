@@ -17,6 +17,8 @@ $clients = $ColisC->getAllClients();
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -158,19 +160,20 @@ $clients = $ColisC->getAllClients();
             <input type="date" id="date-filter">
           </div>
           <div class="filter-item">
-            <label for="city-filter">Ville:</label>
-            <select id="city-filter">
-              <option value="all">Toutes</option>
-              <option value="tunis">Tunis</option>
-              <option value="sousse">Sousse</option>
-              <option value="sfax">Sfax</option>
-              <option value="monastir">Monastir</option>
-            </select>
-            <span> </span>
-            <button class="btn primary">Appliquer</button>
-            <span> </span>
-            <button class="btn secondary">Réinitialiser</button>
-          </div>
+              <label for="search-filter">Recherche</label>
+              <input type="text" id="search-filter" placeholder="ID covoiturage">
+            </div>
+            <div class="filter-item">
+              <label for="price-sort">Tri par prix</label>
+              <select id="price-sort">
+                <option value="none">Aucun tri</option>
+                <option value="asc">Prix croissant</option>
+                <option value="desc">Prix décroissant</option>
+              </select>
+            </div>
+          <button class="btn primary">Appliquer</button>
+          <span> </span>
+          <button class="btn secondary">Réinitialiser</button>
         </div>
 
         <div class="crud-container">
