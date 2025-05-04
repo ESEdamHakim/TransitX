@@ -117,5 +117,34 @@ class TrajetController
             die('Error: ' . $e->getMessage());
         }
     }
+    public function isTrajetFavori($id_trajet, $user_id) {
+        $stmt = $this->db->prepare("SELECT 1 FROM bus_favoris WHERE user_id = ? AND id_trajet = ?");
+        $stmt->execute([$user_id, $id_trajet]);
+        return $stmt->fetch() !== false;
+      }
+      public function addFavori($user_id, $id_trajet) {
+        $stmt = $this->db->prepare("INSERT IGNORE INTO bus_favoris (user_id, id_trajet) VALUES (?, ?)");
+        $stmt->execute([$user_id, $id_trajet]);
+    }
+    
+    public function removeFavori($user_id, $id_trajet) {
+        $stmt = $this->db->prepare("DELETE FROM bus_favoris WHERE user_id = ? AND id_trajet = ?");
+        $stmt->execute([$user_id, $id_trajet]);
+    }
+    public function getFavorisByUserId($user_id) {
+        $sql = "SELECT t.* 
+                FROM bus_favoris bf
+                INNER JOIN trajet t ON bf.id_trajet = t.id_trajet
+                WHERE bf.user_id = :user_id";
+    
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+      
 }
 ?>

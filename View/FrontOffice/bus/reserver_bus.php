@@ -28,7 +28,7 @@ try {
     $stmt->execute([$id_bus, $user_id]);
 
     // Update available seats
-    $stmt = $controller_trajet->db->prepare("UPDATE bus SET nbplacesdispo = nbplacesdispo - 1 WHERE id_bus = ?");
+    $stmt = $controller_trajet->db->prepare("UPDATE bus SET nbplacesdispo = nbplacesdispo - 1 WHERE id_bus = ? AND nbplacesdispo > 0");
     $stmt->execute([$id_bus]);
 
     $response['success'] = true;

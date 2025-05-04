@@ -19,7 +19,7 @@ document.querySelector('.logout-btn').style.display = 'inline-flex';
 document.addEventListener('DOMContentLoaded', function () {
   // Toggle bus extra info (if using div-based extra info instead of modal)
   const infoButtons = document.querySelectorAll('.toggle-info-btn');
-  
+
   infoButtons.forEach(button => {
     button.addEventListener('click', function () {
       const trajetId = this.getAttribute('data-id');
@@ -72,13 +72,13 @@ document.getElementById('searchForm').addEventListener('submit', function (e) {
   const endMinutes = timeToMinutes(endTime);
 
   const cards = document.querySelectorAll('.route-card');
-  
+
   cards.forEach(card => {
     const arrivalElem = card.querySelector('.arrival');
-    const timeElem = card.querySelector('.route-details .detail:first-child span'); 
+    const timeElem = card.querySelector('.route-details .detail:first-child span');
 
     const arrivalText = arrivalElem ? arrivalElem.innerText.trim().toLowerCase() : '';
-    const timeText = timeElem ? timeElem.innerText.trim().substring(0, 5) : ''; 
+    const timeText = timeElem ? timeElem.innerText.trim().substring(0, 5) : '';
 
     let show = true;
 
@@ -124,76 +124,88 @@ function closeModal(modalId) {
   }
 }
 
-function attachReserveHandlers() {
-  document.querySelectorAll('.reserver-btn').forEach(function (button) {
-    button.addEventListener('click', function (event) {
-      event.preventDefault();
-      const busId = this.getAttribute('data-bus-id');
-      const busNum = this.getAttribute('data-bus-num');
+function updateNbPlacesDispo(busId, delta) {
+  const dispoElement = document.querySelector(`.nbplacesdispo[data-bus-id="${busId}"]`);
+  if (dispoElement) {
+    const currentValue = parseInt(dispoElement.textContent);
+    if (!isNaN(currentValue)) {
+      dispoElement.textContent = currentValue + delta;
+    }
+  }
+}
 
-      fetch('reserver_bus.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `id_bus=${busId}`
-      })
+document.addEventListener('click', function (event) {
+  const target = event.target;
+
+  // Handle reservation
+  if (target.classList.contains('reserver-btn')) {
+    event.preventDefault();
+    const busId = target.getAttribute('data-bus-id');
+    const busNum = target.getAttribute('data-bus-num');
+
+    fetch('reserver_bus.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `id_bus=${busId}`
+    })
       .then(response => response.json())
       .then(data => {
         if (data.success) {
           openModal('successModal', `Votre réservation a été confirmée pour le bus ${busNum}.`, 'Réservation réussie !');
 
-          // Update button
-          this.outerHTML = `<button class="annuler-btn" data-bus-id="${busId}" data-bus-num="${busNum}">Annuler la réservation</button>`;
-          attachCancelHandlers();
-
-          // Update nbplacesdispo
-          const dispoElement = document.querySelector(`.nbplacesdispo[data-bus-id="${busId}"]`);
-          if (dispoElement) {
-            const newDispo = parseInt(dispoElement.textContent) - 1;
-            dispoElement.textContent = newDispo;
-          }
+          target.outerHTML = `<button class="annuler-btn" data-bus-id="${busId}" data-bus-num="${busNum}">Annuler la réservation</button>`;
+          updateNbPlacesDispo(busId, -1);
         } else {
           openModal('errorModal', data.message);
         }
       });
-    });
-  });
-}
+  }
 
-function attachCancelHandlers() {
-  document.querySelectorAll('.annuler-btn').forEach(function (button) {
-    button.addEventListener('click', function (event) {
-      event.preventDefault();
-      const busId = this.getAttribute('data-bus-id');
-      const busNum = this.getAttribute('data-bus-num');
+  // Handle cancellation
+  if (target.classList.contains('annuler-btn')) {
+    event.preventDefault();
+    const busId = target.getAttribute('data-bus-id');
+    const busNum = target.getAttribute('data-bus-num');
 
-      fetch('annuler_reservation.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `id_bus=${busId}`
-      })
+    fetch('annuler_reservation.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `id_bus=${busId}`
+    })
       .then(response => response.json())
       .then(data => {
         if (data.success) {
           openModal('successModal', `Votre réservation pour le bus ${busNum} a été annulée.`, 'Annulation réussie !');
 
-          // Update button
-          this.outerHTML = `<button class="reserver-btn" data-bus-id="${busId}" data-bus-num="${busNum}">Réserver ce bus</button>`;
-          attachReserveHandlers();
-
-          // Update nbplacesdispo
-          const dispoElement = document.querySelector(`.nbplacesdispo[data-bus-id="${busId}"]`);
-          if (dispoElement) {
-            const newDispo = parseInt(dispoElement.textContent) + 1;
-            dispoElement.textContent = newDispo;
-          }
+          target.outerHTML = `<button class="reserver-btn" data-bus-id="${busId}" data-bus-num="${busNum}">Réserver ce bus</button>`;
+          updateNbPlacesDispo(busId, 1);
         } else {
           openModal('errorModal', data.message);
         }
       });
+  }
+});
+
+document.querySelectorAll('.favoris-btn').forEach(button => {
+  button.addEventListener('click', function () {
+    const trajetId = this.dataset.trajetId;
+    const isFavorited = this.classList.contains('favorited');
+    const action = isFavorited ? 'remove' : 'add';
+
+    fetch('toggle_favoris.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `id_trajet=${trajetId}&action=${action}`
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        this.classList.toggle('favorited');
+      } else {
+        alert("Erreur : " + data.message);
+      }
     });
   });
-}
-
-// Initial binding
-attachReserveHandlers();
-attachCancelHandlers();
+});
