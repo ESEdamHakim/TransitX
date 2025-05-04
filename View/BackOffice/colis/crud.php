@@ -146,7 +146,7 @@ $clients = $ColisC->getAllClients();
         <!-- Filters -->
         <div class="colis-filters">
           <div class="filter-item">
-            <label for="status-filter">Statut:</label>
+            <label for="status-filter">Statut</label>
             <select id="status-filter">
               <option value="all">Tous</option>
               <option value="pending">En attente</option>
@@ -156,7 +156,7 @@ $clients = $ColisC->getAllClients();
             </select>
           </div>
           <div class="filter-item">
-            <label for="date-filter">Date:</label>
+            <label for="date-filter">Date</label>
             <input type="date" id="date-filter">
           </div>
           <div class="filter-item">
@@ -172,7 +172,6 @@ $clients = $ColisC->getAllClients();
               </select>
             </div>
           <button class="btn primary">Appliquer</button>
-          <span> </span>
           <button class="btn secondary">Réinitialiser</button>
         </div>
 
