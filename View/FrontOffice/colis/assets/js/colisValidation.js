@@ -138,6 +138,7 @@ function initMap() {
 
       clickStep = 1;
       warningBox.textContent = "📍 Pickup set. Cliquez pour définir la livraison.";
+      warningBox.style.color = "#333333";
       warningBox.classList.add("text-warning");
       warningBox.classList.remove("text-success");
     } else if (clickStep === 1) {
@@ -154,10 +155,9 @@ function initMap() {
       getCityFromCoordinates(location.lat(), location.lng(), "lieu_dest");
 
       clickStep = 0;
-      warningBox.textContent = "✅ Livraison définie.";
       warningBox.classList.remove("text-warning");
-      warningBox.classList.add("text-success");
-
+      warningBox.classList.remove("text-success");
+      warningBox.textContent = "";
       drawRoute();
     }
   }
@@ -216,6 +216,20 @@ function drawRoute() {
   directionsService.route(request, (result, status) => {
     if (status === "OK") {
       directionsRenderer.setDirections(result);
+
+      const leg = result.routes[0].legs[0];
+      const duration = leg.duration.text;
+      const distance = leg.distance.text;
+
+      const routeInfoBox = document.getElementById("route-info");
+      const timeSpan = document.getElementById("estimated-time");
+      const distanceSpan = document.getElementById("estimated-distance");
+
+      if (routeInfoBox && timeSpan && distanceSpan) {
+        timeSpan.textContent = duration;
+        distanceSpan.textContent = distance;
+        routeInfoBox.style.display = "block";
+      }
     } else {
       console.error("Erreur de direction: " + status);
     }

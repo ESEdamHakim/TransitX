@@ -227,7 +227,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="map-container">
               <h3>Localisation</h3>
-              <div id="gmap_canvas" style="height: 400px; width: 400px;"></div>
+              <div id="gmap_canvas" style="height: 400px; width: 400px;">
+                <!-- La carte Google Maps s'affichera ici -->
+              </div>
               <div class="map-info"
                 style="background-color: #f9f9f9; border-radius: 6px; padding: 8px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 400px; margin: 5px auto;">
                 <p style="font-size: 14px; color: #333; line-height: 1.3; margin: 0;">
@@ -239,6 +241,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
                   </span>
                 </p>
+              </div>
+              <!-- Route info -->
+              <div id="route-info" class="route-info"
+                style="display: none; margin: 10px auto; padding: 10px; border-radius: 6px; background-color: #eaf4ed; max-width: 400px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); font-size: 14px;">
+                <p style="margin: 0;"><strong> Temps estimé:</strong> <span id="estimated-time"></span></p>
+                <p style="margin: 0;"><strong> Distance estimée:</strong> <span id="estimated-distance"></span></p>
               </div>
               <div id="map-warning" class="map-warning" style="color: red; font-size: 0.9em; margin-top: 5px;"></div>
             </div>

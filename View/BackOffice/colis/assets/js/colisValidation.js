@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 });
+
 function initMap() {
   // Fixed "current location" (you are treating this as the always-current point)
   const currentLocation = { lat: 36.8980431, lng: 10.1888733 };
@@ -135,6 +136,7 @@ function initMap() {
 
       clickStep = 1;
       warningBox.textContent = "📍 Pickup set. Cliquez pour définir la livraison.";
+      warningBox.style.color = "#333333";
       warningBox.classList.add("text-warning");
       warningBox.classList.remove("text-success");
     } else if (clickStep === 1) {
@@ -151,10 +153,9 @@ function initMap() {
       getCityFromCoordinates(location.lat(), location.lng(), "lieu_dest");
 
       clickStep = 0;
-      warningBox.textContent = "✅ Livraison définie.";
       warningBox.classList.remove("text-warning");
-      warningBox.classList.add("text-success");
-
+      warningBox.classList.remove("text-success");
+      warningBox.textContent = "";
       drawRoute();
     }
   }
