@@ -111,6 +111,9 @@ $clients = $ReclamationC->getAllClients();
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
+          <a href="PDF.php" target="_blank" class="btn secondary">
+              <i class="fas fa-download"></i> Exporter
+            </a>
             <a href="addRec.php" class="btn primary">
               <i class="fas fa-plus"></i> Ajouter une réclamation
             </a>

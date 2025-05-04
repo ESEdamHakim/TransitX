@@ -225,9 +225,6 @@ $clients = $ReclamationC->getAllClients();
                         <a href="index.php" class="btn btn-primary">
                             <i class="fas fa-plus"></i> Nouveau réclamation
                         </a>
-                        <button id="exporter-btn" class="btn btn-outline">
-                            <i class="fas fa-download"></i> Exporter
-                        </button>
                     </div>
                 </div>
 
