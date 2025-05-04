@@ -61,38 +61,6 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);*/
         </div>
       </div>
     </section>
-    <section class="how-it-works">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Fonctionnement</span>
-          <h2>Comment ça marche</h2>
-          <p>Découvrez comment fonctionne notre service de covoiturage en 3 étapes simples.</p>
-        </div>
-        <div class="steps-container">
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-search"></i>
-            </div>
-            <h3>Recherchez</h3>
-            <p>Trouvez un trajet qui correspond à vos besoins en quelques clics.</p>
-          </div>
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-calendar-check"></i>
-            </div>
-            <h3>Réservez</h3>
-            <p>Réservez votre place et payez en ligne en toute sécurité.</p>
-          </div>
-          <div class="step">
-            <div class="step-icon">
-              <i class="fas fa-car"></i>
-            </div>
-            <h3>Voyagez</h3>
-            <p>Rejoignez votre conducteur au point de rendez-vous et profitez du trajet.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <section class="benefits">
       <div class="container">

@@ -239,9 +239,6 @@ $clients = $ColisC->getAllClients();
             <a href="index.php" class="btn btn-primary">
               <i class="fas fa-plus"></i> Nouveau Colis
             </a>
-            <button class="btn btn-outline">
-              <i class="fas fa-download"></i> Exporter
-            </button>
           </div>
         </div>
 
@@ -298,17 +295,21 @@ $clients = $ColisC->getAllClients();
             <div class="route-cards">
               <?php foreach ($list as $colis):
                 $covoit = null;
+                $client = null;
 
-                // Fetch the covoiturage data if applicable
+                // Fetch covoiturage and client only if id_covoit is not empty
                 if (!empty($colis['id_covoit'])) {
                   $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
+
+                  if ($covoit && isset($covoit['id_user'])) {
+                    $client = $ColisC->getClientById($covoit['id_user']);
+                  }
                 }
 
-                // Skip if the client is not 3 (adjust condition if needed)
+                // Skip if the client is not 3
                 if ($colis['id_client'] != 3) {
                   continue;
                 }
-
                 // Map the status to a class for styling
                 $statusClassMap = [
                   'en attente' => 'pending',
@@ -336,8 +337,8 @@ $clients = $ColisC->getAllClients();
                       <div class="detail">
                         <i class="fas fa-user"></i>
                         <?php if ($covoit): ?>
-                          <?= htmlspecialchars($covoit['lieu_depart']) ?> → <?= htmlspecialchars($covoit['lieu_arrivee']) ?>
-                          (ID: <?= htmlspecialchars($covoit['id_covoit']) ?>)
+                          <?= htmlspecialchars($client['nom']) ?>     <?= htmlspecialchars($client['prenom']) ?> (ID:
+                          <?= htmlspecialchars($client['id_user']) ?>)
                         <?php else: ?>
                           <em>Aucun covoiturage</em>
                         <?php endif; ?>

@@ -174,7 +174,7 @@ class ColisController
 
     public function getCovoiturageById($id_covoit)
     {
-        $sql = "SELECT id_covoit, lieu_depart, lieu_arrivee FROM covoiturage WHERE id_covoit = :id_covoit";
+        $sql = "SELECT id_covoit, lieu_depart, lieu_arrivee, id_user FROM covoiturage WHERE id_covoit = :id_covoit";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -185,6 +185,7 @@ class ColisController
             die('Error fetching covoiturage: ' . $e->getMessage());
         }
     }
+    
     public function getUserById($id_user)
     {
         $db = config::getConnexion(); // Get database connection
