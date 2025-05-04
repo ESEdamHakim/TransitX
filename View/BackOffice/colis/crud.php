@@ -162,14 +162,6 @@ $clients = $ColisC->getAllClients();
             <label for="search-filter">Recherche</label>
             <input type="text" id="search-filter" placeholder="ID covoiturage">
           </div>
-          <div class="filter-item">
-            <label for="price-sort">Tri par prix</label>
-            <select id="price-sort">
-              <option value="none">Aucun tri</option>
-              <option value="asc">Prix croissant</option>
-              <option value="desc">Prix décroissant</option>
-            </select>
-          </div>
           <button id="apply-filters" class="btn primary">Appliquer</button>
           <button id="reset-filters" class="btn secondary">Réinitialiser</button>
         </div>
@@ -220,7 +212,6 @@ $clients = $ColisC->getAllClients();
                     ?>
                     <tr class="parcel-row" data-status="<?= $className ?>"
                       data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
-                      data-price="<?= htmlspecialchars($colis['prix']) ?>"
                       data-covoit-id="<?= $covoit ? htmlspecialchars($covoit['id_covoit']) : '' ?>">
 
                       <td><?= $colis['id_colis'] ?></td>

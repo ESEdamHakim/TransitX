@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusFilter = document.getElementById("status-filter");
   const dateFilter = document.getElementById("date-filter");
   const searchFilter = document.getElementById("search-filter");
-  const priceSort = document.getElementById("price-sort");
   const applyBtn = document.getElementById("apply-filters");
   const resetBtn = document.getElementById("reset-filters");
   const tabButtons = document.querySelectorAll(".tab-btn");
@@ -36,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedStatus = statusFilter?.value;
     const selectedDate = dateFilter?.value;
     const searchQuery = searchFilter?.value.toLowerCase();
-    const priceDirection = priceSort?.value;
 
     let filteredParcels = Array.from(parcels).filter(parcel => {
       const parcelStatus = parcel.dataset.status;
@@ -51,13 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return true;
     });
 
-    // Sort by price
-    if (priceDirection === "asc") {
-      filteredParcels.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
-    } else if (priceDirection === "desc") {
-      filteredParcels.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
-    }
-
     // Display logic
     parcels.forEach(parcel => parcel.style.display = "none");
     filteredParcels.forEach(parcel => parcel.style.display = "table-row");
@@ -69,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
     statusFilter.value = "all";
     dateFilter.value = "";
     searchFilter.value = "";
-    priceSort.value = "none";
     filterParcels();
   }
 
