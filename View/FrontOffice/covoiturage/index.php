@@ -58,7 +58,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         <div class="hero-buttons">
           <a href="#search-rides" class="btn btn-primary">Rechercher un trajet</a>
           <a href="#create-ride" class="btn btn-outline">Proposer un trajet</a>
-          <a href="javascript:void(0)" id="openWeatherModal" class="btn btn-outline">Voir météo</a>
+          
         </div>
       </div>
     </section>
@@ -355,7 +355,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       </div>
     </div>
   </footer>
-<!-- Weather Modal -->
+<!-- Weather Modal- >
 <div id="weatherModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -392,11 +392,12 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       </div>
     </div>
   </div>
-</div>
+</div-->
   <script src="validAddCovoiturage.js"></script>
   <script src="validEditCovoiturage.js"></script>
   <script src="validDeleteCovoiturage.js"></script>
   <script src="meteo.js"></script>
+<script src="meteo-card.js"></script>
 </body>
 
 </html>

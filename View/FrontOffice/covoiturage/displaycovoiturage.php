@@ -48,6 +48,12 @@ $currentDate = date('Y-m-d');
                             Véhicule non disponible
                         </button>
                     <?php endif; ?>
+                    <!-- Add Voir Météo Button -->
+            <button class="btn btn-info voir-meteo-btn"
+                data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
+                data-date="<?= htmlspecialchars($covoiturage['date_depart']) ?>">
+                Voir Météo
+            </button>
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>
@@ -70,4 +76,37 @@ $currentDate = date('Y-m-d');
         <p><strong>Nombre de places:</strong> <span id="vehicule-places"></span></p>
     </div>
 </div>
+<!-- Weather Modal -->
+<div id="weatherModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="card">
+    <div class="error" style="display: none; color: red; text-align: center; margin-bottom: 10px;">
+        Error message will appear here
+      </div>
+      <div class="weather">
+        <img src="./weather-app-img/images/clear.png" class="weather-icon">
+        <h1 class="temp">22°C</h1>
+        <h2 class="city">Sydney</h2>
+        <div class="detail">
+          <div class="col">
+            <img src="./weather-app-img/images/humidity.png">
+            <div>
+              <p class="humidity">15%</p>
+              <p>Humidity</p>
+            </div>
+          </div>
+          <div class="col">
+            <img src="./weather-app-img/images/wind.png">
+            <div>
+              <p class="speed">10km/h</p>
+              <p>Wind Speed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="voirvehicule.js"></script>
