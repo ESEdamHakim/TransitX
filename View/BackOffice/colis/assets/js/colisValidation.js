@@ -73,88 +73,152 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 });
-
-// Google Maps needs initMap to be global
 function initMap() {
-  const defaultLocation = { lat: 36.8980431, lng: 10.1888733 }; // Tunis
+  // Fixed "current location" (you are treating this as the always-current point)
+  const currentLocation = { lat: 36.8980431, lng: 10.1888733 };
 
+  geocoder = new google.maps.Geocoder();
+  directionsRenderer = new google.maps.DirectionsRenderer();
+
+  // Initialize map with the fixed location
   map = new google.maps.Map(document.getElementById("gmap_canvas"), {
-    center: defaultLocation,
+    center: currentLocation,
     zoom: 13,
   });
 
+  directionsRenderer.setMap(map);
+
+  // Red marker at the fixed location (treated as "current location")
   new google.maps.Marker({
-    position: defaultLocation,
+    position: currentLocation,
     map: map,
-    title: "Default Location",
+    icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+    title: "Votre position par défaut"
   });
 
-  map.addListener("click", function (event) {
-    const clickedLocation = event.latLng;
+  // Automatically trigger a random click around the fixed location
+  triggerRandomClick();
+
+  function triggerRandomClick() {
+    // Generate a random point within ~1km of the fixed location
+    const randomLat = (Math.random() - 0.5) * 0.02 + currentLocation.lat;
+    const randomLng = (Math.random() - 0.5) * 0.02 + currentLocation.lng;
+
+    const randomLocation = new google.maps.LatLng(randomLat, randomLng);
+    clickStep = -1;
+    handleMapClick(randomLocation);
+  }
+
+  function handleMapClick(location) {
     const warningBox = document.getElementById("map-warning");
+
+    if (clickStep === -1) {
+      document.getElementById("latitude_ram").value = location.lat();
+      document.getElementById("longitude_ram").value = location.lng();
+      getCityFromCoordinates(location.lat(), location.lng(), "lieu_ram");
+      clickStep = 0;
+      return;
+    }
 
     if (clickStep === 0) {
       if (pickupMarker) pickupMarker.setMap(null);
       pickupMarker = new google.maps.Marker({
-        position: clickedLocation,
+        position: location,
         map: map,
         label: "A",
+        icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
       });
 
-      document.getElementById("latitude_ram").value = clickedLocation.lat();
-      document.getElementById("longitude_ram").value = clickedLocation.lng();
-
-      getCityFromCoordinates(clickedLocation.lat(), clickedLocation.lng(), "lieu_ram");
+      document.getElementById("latitude_ram").value = location.lat();
+      document.getElementById("longitude_ram").value = location.lng();
+      getCityFromCoordinates(location.lat(), location.lng(), "lieu_ram");
 
       clickStep = 1;
-      warningBox.textContent = "📍 Pickup location set. Now click to choose the delivery location.";
+      warningBox.textContent = "📍 Pickup set. Cliquez pour définir la livraison.";
       warningBox.classList.add("text-warning");
       warningBox.classList.remove("text-success");
     } else if (clickStep === 1) {
       if (deliveryMarker) deliveryMarker.setMap(null);
       deliveryMarker = new google.maps.Marker({
-        position: clickedLocation,
+        position: location,
         map: map,
         label: "B",
+        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
       });
 
-      document.getElementById("latitude_dest").value = clickedLocation.lat();
-      document.getElementById("longitude_dest").value = clickedLocation.lng();
-
-      getCityFromCoordinates(clickedLocation.lat(), clickedLocation.lng(), "lieu_dest");
+      document.getElementById("latitude_dest").value = location.lat();
+      document.getElementById("longitude_dest").value = location.lng();
+      getCityFromCoordinates(location.lat(), location.lng(), "lieu_dest");
 
       clickStep = 0;
-      warningBox.textContent = "✅ Delivery location set.";
+      warningBox.textContent = "✅ Livraison définie.";
       warningBox.classList.remove("text-warning");
       warningBox.classList.add("text-success");
+
+      drawRoute();
+    }
+  }
+  // Listener for user clicks to set the delivery location
+  map.addListener("click", function (event) {
+    const clickedLocation = event.latLng;
+    handleMapClick(clickedLocation);
+  });
+}
+
+console.log("📦 lieu_ram:", lieuRam);
+function getCityFromCoordinates(lat, lng, targetFieldId) {
+  const latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+  geocoder.geocode({ location: latlng }, (results, status) => {
+    console.log("Geocoder status:", status);
+    console.log("Geocoder results:", results);
+  
+    if (status === "OK" && results[0]) {
+      let city = null;
+      for (const comp of results[0].address_components) {
+        if (
+          comp.types.includes("locality") ||
+          comp.types.includes("administrative_area_level_1") ||
+          comp.types.includes("administrative_area_level_2")
+        ) {
+          city = comp.long_name;
+          break;
+        }
+      }
+  
+      const field = document.getElementById(targetFieldId);
+      if (field) {
+        field.value = city || results[0].formatted_address;
+        console.log(`✅ Set ${targetFieldId} to:`, field.value);
+      } else {
+        console.warn("⚠️ Target field not found:", targetFieldId);
+      }
+    } else {
+      document.getElementById(targetFieldId).value = "Adresse non trouvée";
+      console.error("Geocoder failed due to:", status);
+    }
+  });
+  
+}
+
+function drawRoute() {
+  if (!pickupMarker || !deliveryMarker) return;
+
+  const directionsService = new google.maps.DirectionsService();
+  const request = {
+    origin: pickupMarker.getPosition(),
+    destination: deliveryMarker.getPosition(),
+    travelMode: google.maps.TravelMode.DRIVING,
+  };
+
+  directionsService.route(request, (result, status) => {
+    if (status === "OK") {
+      directionsRenderer.setDirections(result);
+    } else {
+      console.error("Erreur de direction: " + status);
     }
   });
 }
 
-// New function replacing old geocoder
-async function getCityFromCoordinates(lat, lon, targetFieldId) {
-  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=fr`;
-
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'TransitX/1.0 (hakimyessine72@gmail.com)' // update your email here
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Nominatim API error: ' + response.statusText);
-    }
-
-    const data = await response.json();
-    let city = data.address.city || data.address.town || data.address.village || data.address.hamlet || "Ville non trouvée";
-
-    document.getElementById(targetFieldId).value = city;
-  } catch (error) {
-    console.error('Erreur lors du géocodage inversé:', error);
-    document.getElementById(targetFieldId).value = "Erreur géocodage";
-  }
-}
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const earthRadius = 6371;

@@ -440,6 +440,7 @@ $clients = $ColisC->getAllClients();
     </div>
   </footer>
 
+
   <!-- Delete Confirmation Modal -->
   <div class="modal" id="delete-modal">
     <div class="modal-content">
@@ -486,5 +487,4 @@ $clients = $ColisC->getAllClients();
 
   </script>
 </body>
-
 </html>
