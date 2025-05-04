@@ -243,12 +243,12 @@ $clients = $ReclamationC->getAllClients();
                             <label for="objet-filter">Objet</label>
                             <select id="objet-filter">
                                 <option value="all">Toutes les Réclamations</option>
-                                <option value="en_cours">Retard</option>
-                                <option value="traitee">Annulation</option>
-                                <option value="rejettee">Dommage</option>
-                                <option value="en_cours">Qualité de service</option>
-                                <option value="traitee">Facturation</option>
-                                <option value="rejettee">Autre</option>
+                                <option value="retard">Retard</option>
+                                <option value="annulation">Annulation</option>
+                                <option value="dommage">Dommage</option>
+                                <option value="qualite_service">Qualité de service</option>
+                                <option value="facturation">Facturation</option>
+                                <option value="autre">Autre</option>
                             </select>
                         </div>
                         <div class="filter-group">
@@ -261,17 +261,17 @@ $clients = $ReclamationC->getAllClients();
                         </div>
                     </div>
                     <div class="filter-actions">
-                        <button class="btn secondary">Réinitialiser</button>
-                        <button class="btn primary">Appliquer</button>
+                        <button type="button" class="btn btn-outline reset-btn">Réinitialiser</button>
+                        <button type="button" class="btn btn-primary apply-btn">Appliquer</button>
                     </div>
                 </div>
 
                 <div class="tabs-container">
-                    <div class="tab active">Tous <span class="count">0</span></div>
-                    <div class="tab">Refusée <span class="count">0</span></div>
-                    <div class="tab">En attente <span class="count">0</span></div>
-                    <div class="tab">En cours <span class="count">0</span></div>
-                    <div class="tab">Résolue <span class="count">0</span></div>
+                    <div class="tab active" data-status="all">Tous <span class="count">0</span></div>
+                    <div class="tab" data-status="refused">Refusée <span class="count">0</span></div>
+                    <div class="tab" data-status="pending">En attente <span class="count">0</span></div>
+                    <div class="tab" data-status="in-progress">En cours <span class="count">0</span></div>
+                    <div class="tab" data-status="resolved">Résolue <span class="count">0</span></div>
                 </div>
 
                 <div class="rec-container table-view active">
@@ -474,6 +474,7 @@ $clients = $ReclamationC->getAllClients();
             document.querySelector('.filter-actions').style.display = 'none';
 
         </script>
+        <script src="assets/js/recModals.js"></script>
         <script src="assets/js/recFilters.js"></script>
 </body>
 

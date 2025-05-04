@@ -1,93 +1,94 @@
-// Function to handle modal opening with data attributes
-function openViewModal(button) {
-  const modal = document.getElementById('viewModal');
-  // Fill modal fields with data attributes
-  document.getElementById('modal-objet').innerText = button.getAttribute('data-objet');
-  document.getElementById('modal-date').innerText = button.getAttribute('data-date');
-  document.getElementById('modal-covoit').innerText = button.getAttribute('data-covoit');
-  document.getElementById('modal-description').innerText = button.getAttribute('data-description');
-  document.getElementById('modal-statut').innerText = button.getAttribute('data-statut');
-  modal.classList.add('active'); // Open the modal by adding the 'active' class
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const objetFilter = document.getElementById("objet-filter");
+    const dateFilter = document.getElementById("date-filter");
+    const searchFilter = document.getElementById("search-filter");
 
-// Setup handlers for view buttons
-function setupViewButtonHandlers() {
-  document.querySelectorAll('.action-btn.view').forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      openViewModal(this);
-    });
-  });
-}
+    const applyBtn = document.querySelector(".apply-btn");
+    const resetBtn = document.querySelector(".reset-btn");
 
-// Setup handlers for modal closing
-function setupCloseModalHandlers() {
-  // Close modal when clicking the close button or cancel button
-  document.querySelectorAll('.close-modal, .cancel-btn').forEach(button => {
-    button.addEventListener('click', function() {
-      const modal = this.closest('.modal');
-      if (modal) {
-        modal.classList.remove('active');
-      }
-    });
-  });
+    const tableRows = document.querySelectorAll(".rec-table tbody tr");
+    const tabs = document.querySelectorAll(".tabs-container .tab");
 
-  // Close modal when clicking outside the modal
-  window.addEventListener('click', function(e) {
-    const modal = document.getElementById('viewModal');
-    if (e.target === modal) {
-      modal.classList.remove('active');
+    function updateCounts() {
+        const counts = {
+            all: 0,
+            refused: 0,
+            pending: 0,
+            "in-progress": 0,
+            resolved: 0
+        };
+
+        tableRows.forEach(row => {
+            const statusSpan = row.querySelector(".status");
+            if (!statusSpan) return;
+
+            const status = statusSpan.classList[1]; // e.g., 'pending'
+            counts.all++;
+            if (counts[status] !== undefined) counts[status]++;
+        });
+
+        tabs.forEach(tab => {
+            const statusKey = tab.dataset.status || "all";
+            const countSpan = tab.querySelector(".count");
+            if (countSpan) countSpan.textContent = counts[statusKey];
+        });
     }
-  });
-}
 
-// Setup handlers for delete button and confirmation modal
-function setupDeleteButtonHandlers() {
-  document.querySelectorAll('.action-btn.delete').forEach(button => {
-    button.addEventListener('click', function() {
-      const recId = this.dataset.id;
-      const fullName = `${recId}`.trim();
+    function applyFilters() {
+        const selectedObjet = objetFilter.value.toLowerCase();
+        const selectedDate = dateFilter.value;
+        const searchTerm = searchFilter.value.toLowerCase();
+        const selectedStatusClass = document.querySelector(".tab.active")?.dataset.status || "all";
 
-      // Set hidden input for delete form
-      const deleteFormIdInput = document.getElementById('delete-id');
-      if (deleteFormIdInput) {
-        deleteFormIdInput.value = recId;
-      }
+        const objetMap = {
+            retard: "retard",
+            annulation: "annulation",
+            dommage: "dommage",
+            qualite_service: "qualité de service",
+            facturation: "facturation",
+            autre: "autre"
+        };
 
-      // Update modal text
-      const modalBodyText = document.querySelector('#delete-modal .modal-body p');
-      if (modalBodyText) {
-        modalBodyText.textContent = `Êtes-vous sûr de vouloir supprimer la réclamation ${fullName} ? Cette action est irréversible.`;
-      }
+        tableRows.forEach(row => {
+            const objet = row.children[1].textContent.trim().toLowerCase();
+            const date = row.children[2].textContent.trim();
+            const covoitText = row.children[3].textContent.toLowerCase();
+            const statusSpan = row.querySelector(".status");
+            const status = statusSpan?.classList[1];
 
-      // Show delete modal
-      const deleteModal = document.getElementById('delete-modal');
-      if (deleteModal) {
-        deleteModal.classList.add('active');
-      }
-    });
-  });
-}
+            const mappedObjet = objetMap[selectedObjet];
+            const matchesObjet = selectedObjet === "all" || (mappedObjet && objet.includes(mappedObjet));
+            const matchesDate = !selectedDate || date === selectedDate;
+            const matchesSearch = !searchTerm || covoitText.includes(searchTerm);
+            const matchesStatus = selectedStatusClass === "all" || status === selectedStatusClass;
 
-// Handle confirm delete button click
-function setupConfirmDeleteButton() {
-  document.getElementById('confirm-delete-btn').addEventListener('click', function() {
-    this.disabled = true; // Disable to avoid double-click
-    const deleteForm = document.getElementById('delete-form');
-    if (deleteForm) {
-      deleteForm.submit(); // Submit the form to confirm deletion
+            row.style.display = matchesObjet && matchesDate && matchesSearch && matchesStatus ? "" : "none";
+        });
+
+        updateCounts();
     }
-  });
-}
 
-// Initialize all modal and button handlers
-function initializeModalHandlers() {
-  setupViewButtonHandlers();
-  setupCloseModalHandlers();
-  setupDeleteButtonHandlers();
-  setupConfirmDeleteButton();
-}
+    applyBtn.addEventListener("click", applyFilters);
 
-// Initialize all handlers when document is ready
-initializeModalHandlers();
+    resetBtn.addEventListener("click", () => {
+        objetFilter.value = "all";
+        dateFilter.value = "";
+        searchFilter.value = "";
+
+        tabs.forEach(tab => tab.classList.remove("active"));
+        tabs[0].classList.add("active");
+
+        tableRows.forEach(row => row.style.display = "");
+        updateCounts();
+    });
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            applyFilters();
+        });
+    });
+
+    updateCounts();
+});
