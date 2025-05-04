@@ -78,11 +78,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (
             $covoiturage['date_depart'] == $colis['date_colis'] &&
             $covoiturage['lieu_depart'] == $colis['lieu_ram'] &&
-            $covoiturage['lieu_arrivee'] == $colis['lieu_dest']
+            $covoiturage['lieu_arrivee'] == $colis['lieu_dest'] &&
+            $covoiturage['accepte_colis'] == 1 &&
+            $covoiturage['colis_complet'] == 0
         ) {
             $matchingCovoiturages[] = $covoiturage;
         }
-    }
+    }    
     ?>
 
     <?php if (count($covoiturages) === 0): ?>
