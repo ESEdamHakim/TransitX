@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Handle "Voir Véhicule" button clicks
-    document.querySelectorAll(".voir-vehicule-btn").forEach((button) => {
+    document.querySelectorAll(".vehicule-icon-btn").forEach((button) => {
         button.addEventListener("click", () => {
             console.log("Voir Véhicule button clicked"); // Debugging log
 

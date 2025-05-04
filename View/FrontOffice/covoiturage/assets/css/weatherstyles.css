@@ -238,63 +238,8 @@
     font-size: 20px;
   }
 }
-/* Style the weather icon button */
-/* Style the weather icon button */
-.weather-icon-btn {
-  all: unset; /* Remove all default button styles */
-  cursor: pointer; /* Add pointer cursor for interactivity */
-  display: inline-flex; /* Ensure the button wraps tightly around the icon */
-  align-items: center; /* Center the icon vertically */
-  justify-content: center; /* Center the icon horizontally */
-  background-color: #f5f5f5; /* Light gray background (similar to the delete button) */
-  border: 1px solid #ddd; /* Add a subtle border */
-  border-radius: 50%; /* Make the button circular */
-  width: 32px; /* Set a fixed width */
-  height: 32px; /* Set a fixed height */
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margin */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  transition: background-color 0.2s ease, transform 0.2s ease; /* Add hover and click effects */
-}
-
-/* Style the icon inside the button */
-.weather-icon-btn i {
-  font-size: 16px; /* Adjust the size of the icon */
-  color: #FFD43B; /* Yellow color for the icon */
-}
-
-/* Hover effect for the button */
-.weather-icon-btn:hover {
-  background-color: #eaeaea; /* Slightly darker background on hover */
-  transform: scale(1.1); /* Slightly enlarge the button on hover */
-}
-
-/* Active (click) effect for the button */
-.weather-icon-btn:active {
-  transform: scale(0.95); /* Slightly shrink the button on click */
-}
-/* Adjust spacing for the weather icon button */
-.weather-icon-btn {
-  margin-bottom: 5px; /* Reduce space below the button */
-}
-
-/* Adjust spacing for the title */
-.route-card h3 {
-  margin-top: 0; /* Remove unnecessary space above the title */
-  margin-left: 10px; /* Add some space between the button and the title */
-  display: inline-block; /* Ensure the title aligns properly with the button */
-  vertical-align: middle; /* Align the title vertically with the button */
-}
-/* Container for top buttons */
-.top-buttons {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Add spacing between the buttons */
-  margin-bottom: 10px; /* Add some space below the buttons */
-}
-
-/* Style the Voir Véhicule button */
-.vehicule-icon-btn {
+/* General button styles for circular buttons */
+.icon-btn {
   all: unset; /* Remove all default button styles */
   cursor: pointer; /* Add pointer cursor for interactivity */
   display: inline-flex; /* Ensure the button wraps tightly around the icon */
@@ -311,19 +256,33 @@
   transition: background-color 0.2s ease, transform 0.2s ease; /* Add hover and click effects */
 }
 
-/* Style the icon inside the Voir Véhicule button */
-.vehicule-icon-btn i {
+/* Style the icon inside the button */
+.icon-btn i {
   font-size: 16px; /* Adjust the size of the icon */
-  color: #63E6BE; /* Greenish color for the car icon */
 }
 
-/* Hover effect for the Voir Véhicule button */
-.vehicule-icon-btn:hover {
+/* Hover effect for the button */
+.icon-btn:hover {
   background-color: #eaeaea; /* Slightly darker background on hover */
   transform: scale(1.1); /* Slightly enlarge the button on hover */
 }
 
-/* Active (click) effect for the Voir Véhicule button */
-.vehicule-icon-btn:active {
+/* Active (click) effect for the button */
+.icon-btn:active {
   transform: scale(0.95); /* Slightly shrink the button on click */
+}
+
+/* Specific styles for the weather button */
+.weather-icon-btn i {
+  color: #FFD43B; /* Yellow color for the weather icon */
+}
+
+/* Specific styles for the Voir Véhicule button */
+.vehicule-icon-btn i {
+  color: #63E6BE; /* Greenish color for the car icon */
+}
+
+/* Specific styles for the user profile button */
+.user-icon-btn i {
+  color: #4CAF50; /* Green color for the user icon */
 }

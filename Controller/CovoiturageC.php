@@ -249,5 +249,18 @@ public function searchCovoiturages($departure, $destination, $date)
         throw new Exception('Erreur : ' . $e->getMessage());
     }
 }
+public function getUserById($id_user)
+{
+    $sql = "SELECT nom, prenom, email, telephone FROM users WHERE id_user = :id_user";
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([':id_user' => $id_user]);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
 }
 ?>

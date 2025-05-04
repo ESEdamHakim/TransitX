@@ -47,7 +47,7 @@ function isBadWeather($city)
                     <div class="top-buttons">
                         <!-- Add Voir Météo Button if bad weather -->
                         <?php if (isBadWeather($covoiturage['lieu_arrivee'])): ?>
-                            <button class="weather-icon-btn"
+                            <button class="icon-btn weather-icon-btn"
                                 data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
                                 data-date="<?= htmlspecialchars($covoiturage['date_depart']) ?>">
                                 <i class="fa-solid fa-circle-exclamation"></i>
@@ -56,11 +56,16 @@ function isBadWeather($city)
 
                         <!-- Add Voir Véhicule Button -->
                         <?php if (!empty($covoiturage['id_vehicule'])): ?>
-                            <button class="voir-vehicule-btn"
+                            <button class="icon-btn vehicule-icon-btn"
                                 data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">
                                 <i class="fa-solid fa-car" style="color: #63E6BE;"></i>
                             </button>
                         <?php endif; ?>
+                         <!-- User Profile Button -->
+                         <button class="icon-btn user-icon-btn"
+                            data-id-user="<?= htmlspecialchars($covoiturage['id_user']) ?>">
+                            <i class="fa-solid fa-user" style="color: #4CAF50;"></i>
+                        </button>
                     </div>
 
                     <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
@@ -136,5 +141,16 @@ function isBadWeather($city)
         </div>
     </div>
 </div>
+<div id="user-modal" class="user-modal">
+    <div class="user-modal-content">
+        <span class="close-user-modal">&times;</span>
+        <h2 class="user-modal-title">Détails du Conducteur</h2>
+        <p><strong>Nom:</strong> <span id="user-nom"></span></p>
+        <p><strong>Prénom:</strong> <span id="user-prenom"></span></p>
+        <p><strong>Email:</strong> <span id="user-email"></span></p>
+        <p><strong>Téléphone:</strong> <span id="user-telephone"></span></p>
+    </div>
+</div>
 
 <script src="voirvehicule.js"></script>
+<script src="driver.js"></script>
