@@ -96,3 +96,104 @@ document.getElementById('searchForm').addEventListener('submit', function (e) {
     card.style.display = show ? '' : 'none';
   });
 });
+
+function openModal(modalId, message = '', title = '') {
+  const modal = document.getElementById(modalId);
+
+  if (modalId === 'errorModal') {
+    const errorMessageElement = document.getElementById('errorMessage');
+    if (errorMessageElement) errorMessageElement.innerText = message;
+  }
+
+  if (modalId === 'successModal') {
+    const successMessageElement = document.getElementById('successMessage');
+    const modalTitleElement = document.getElementById('modalTitle');
+    if (successMessageElement) successMessageElement.innerText = message;
+    if (modalTitleElement) modalTitleElement.innerText = title || 'Succès';
+  }
+
+  if (modal) {
+    modal.classList.add('show');
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('show');
+  }
+}
+
+function attachReserveHandlers() {
+  document.querySelectorAll('.reserver-btn').forEach(function (button) {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+      const busId = this.getAttribute('data-bus-id');
+      const busNum = this.getAttribute('data-bus-num');
+
+      fetch('reserver_bus.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id_bus=${busId}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          openModal('successModal', `Votre réservation a été confirmée pour le bus ${busNum}.`, 'Réservation réussie !');
+
+          // Update button
+          this.outerHTML = `<button class="annuler-btn" data-bus-id="${busId}" data-bus-num="${busNum}">Annuler la réservation</button>`;
+          attachCancelHandlers();
+
+          // Update nbplacesdispo
+          const dispoElement = document.querySelector(`.nbplacesdispo[data-bus-id="${busId}"]`);
+          if (dispoElement) {
+            const newDispo = parseInt(dispoElement.textContent) - 1;
+            dispoElement.textContent = newDispo;
+          }
+        } else {
+          openModal('errorModal', data.message);
+        }
+      });
+    });
+  });
+}
+
+function attachCancelHandlers() {
+  document.querySelectorAll('.annuler-btn').forEach(function (button) {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+      const busId = this.getAttribute('data-bus-id');
+      const busNum = this.getAttribute('data-bus-num');
+
+      fetch('annuler_reservation.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id_bus=${busId}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          openModal('successModal', `Votre réservation pour le bus ${busNum} a été annulée.`, 'Annulation réussie !');
+
+          // Update button
+          this.outerHTML = `<button class="reserver-btn" data-bus-id="${busId}" data-bus-num="${busNum}">Réserver ce bus</button>`;
+          attachReserveHandlers();
+
+          // Update nbplacesdispo
+          const dispoElement = document.querySelector(`.nbplacesdispo[data-bus-id="${busId}"]`);
+          if (dispoElement) {
+            const newDispo = parseInt(dispoElement.textContent) + 1;
+            dispoElement.textContent = newDispo;
+          }
+        } else {
+          openModal('errorModal', data.message);
+        }
+      });
+    });
+  });
+}
+
+// Initial binding
+attachReserveHandlers();
+attachCancelHandlers();

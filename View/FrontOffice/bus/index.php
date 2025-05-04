@@ -1,8 +1,10 @@
 <?php
 include("../../../Controller/trajetcontroller.php");
+
 $controller_trajet = new TrajetController();
 $trajetlist = $controller_trajet->listTrajets();
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -115,52 +117,85 @@ $trajetlist = $controller_trajet->listTrajets();
 
               <div class="route-price">
                 <span class="price"><?= htmlspecialchars($trajet['prix']) ?> TND</span>
-                <button class="btn btn-primary toggle-info-btn" type="button"
-                  data-id="<?= $trajet['id_trajet'] ?>">Informations sur les bus</button>
+                <button class="btn btn-primary toggle-info-btn" type="button" data-id="<?= $trajet['id_trajet'] ?>">
+                  Informations sur les bus
+                </button>
 
                 <div id="bus-info-modal-<?= $trajet['id_trajet'] ?>" class="modal">
                   <div class="modal-content">
-                    <span class="close-btn">&times;</span>
+                    <span class="close-btn"
+                      onclick="closeModal('bus-info-modal-<?= $trajet['id_trajet'] ?>')">&times;</span>
                     <div class="modal-header">
                       <h2>Informations sur les bus</h2>
                     </div>
                     <div class="modal-body">
                       <?php
-                      $buses = $controller_trajet->getBusesByTrajetId($trajet['id_trajet']);
+                      $user_id = 1;
+                      $buses = $controller_trajet->getBusesByTrajetId($trajet['id_trajet'], $user_id);
                       if (!empty($buses)) {
-                        foreach ($buses as $bus) {
-                          ?>
+                        foreach ($buses as $bus): ?>
                           <div class="bus-info">
                             <p><strong>Statut:</strong> <?= htmlspecialchars($bus['statut']) ?></p>
                             <p><strong>Numéro de bus:</strong> <?= htmlspecialchars($bus['num_bus']) ?></p>
                             <p><strong>Capacité:</strong> <?= htmlspecialchars($bus['capacite']) ?> personnes</p>
-                            <p><strong>Places disponibles:</strong> <?= htmlspecialchars($bus['nbplacesdispo']) ?> personnes
+                            <p><strong>Places disponibles:</strong>
+                              <span class="nbplacesdispo" data-bus-id="<?= $bus['id_bus'] ?>">
+                                <?= htmlspecialchars($bus['nbplacesdispo']) ?>
+                              </span> personnes
                             </p>
                             <p><strong>Type de bus:</strong> <?= htmlspecialchars($bus['type_bus']) ?></p>
                             <p><strong>Marque:</strong> <?= htmlspecialchars($bus['marque']) ?></p>
                             <p><strong>Modèle:</strong> <?= htmlspecialchars($bus['modele']) ?></p>
                             <p><strong>Date de mise en service:</strong> <?= htmlspecialchars($bus['date_mise_en_service']) ?>
                             </p>
-
-                            <!-- Add the Reserve button here -->
-                            <form method="POST" action="reserver_bus.php" style="margin-top: 10px;">
-                              <input type="hidden" name="id_bus" value="<?= htmlspecialchars($bus['id_bus']) ?>">
-                              <button type="submit" class="reserver-btn">Réserver ce bus</button>
-                            </form>
+                            <?php if ($bus['reserved']): ?>
+                              <button class="annuler-btn" data-bus-id="<?= $bus['id_bus'] ?>"
+                                data-bus-num="<?= $bus['num_bus'] ?>">
+                                Annuler la réservation
+                              </button>
+                            <?php else: ?>
+                              <button class="reserver-btn" data-bus-id="<?= $bus['id_bus'] ?>"
+                                data-bus-num="<?= $bus['num_bus'] ?>">
+                                Réserver ce bus
+                              </button>
+                            <?php endif; ?>
                           </div>
-                          <?php
-                        }
+                        <?php endforeach;
                       } else {
                         echo "<p>Aucun bus associé à ce trajet.</p>";
                       }
                       ?>
                     </div>
-
                   </div>
                 </div>
+
               </div>
             </div>
           <?php endforeach; ?>
+          <!-- Success Modal -->
+          <div id="successModal" class="modal">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div class="bus-info">
+                  <span class="close-btn" onclick="closeModal('successModal')">&times;</span>
+                  <h2 id="modalTitle">Réservation réussie !</h2>
+                  <p id="successMessage"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Error Modal -->
+          <div id="errorModal" class="modal">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div class="bus-info">
+                  <span class="close-btn" onclick="closeModal('errorModal')">&times;</span>
+                  <h2>Erreur</h2>
+                  <p id="errorMessage"></p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -279,6 +314,7 @@ $trajetlist = $controller_trajet->listTrajets();
     </div>
   </footer>
   <script src="assets/js/main.js"></script>
+
 
 </body>
 

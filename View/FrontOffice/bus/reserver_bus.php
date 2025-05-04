@@ -1,117 +1,42 @@
-<!DOCTYPE html>
-<html lang="fr">
+<?php
+include("../../../Controller/trajetcontroller.php");
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TransitX - Services de Bus</title>
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet"> 
-</head>
+header('Content-Type: application/json');
 
-<body>
-  <?php
-  include(__DIR__ . "/../../../Controller/buscontroller.php");
+$response = ['success' => false];
 
-  $controller = new BusController();
-  $error_message = '';
-  $success_message = '';
+if (!isset($_POST['id_bus'])) {
+  $response['message'] = "ID du bus manquant.";
+  echo json_encode($response);
+  exit;
+}
 
-  if (!isset($_POST['id_bus'])) {
-    $error_message = "ID du bus manquant.";
-  }
+$id_bus = intval($_POST['id_bus']);
+$user_id = 1; // Replace with actual user ID from session
 
-  $id_bus = intval($_POST['id_bus']);
-  $user_id = 1;
+try {
+  $controller_trajet = new TrajetController();
+  $bus = $controller_trajet->getBusById($id_bus);
 
-  try {
-    $bus = $controller->getBusById($id_bus);
-
-    if (!$bus) {
-      $error_message = "Bus introuvable.";
-    }
-
-    if ($bus['nbplacesdispo'] <= 0) {
-      $error_message = "Aucune place disponible pour ce bus.";
-    }
-
-    $db = config::getConnexion();
-    $stmt = $db->prepare("SELECT COUNT(*) FROM bus_reservation WHERE id_bus = ? AND id_user = ?");
+  if (!$bus) {
+    $response['message'] = "Bus introuvable.";
+  } elseif ($bus['nbplacesdispo'] <= 0) {
+    $response['message'] = "Aucune place disponible pour ce bus.";
+  } else {
+    // Insert reservation
+    $stmt = $controller_trajet->db->prepare("INSERT INTO bus_reservation (id_bus, id_user) VALUES (?, ?)");
     $stmt->execute([$id_bus, $user_id]);
-    $reservationExists = $stmt->fetchColumn();
 
-    if ($reservationExists > 0) {
-      $error_message = "Vous avez déjà réservé une place pour ce bus.";
-    }
+    // Update available seats
+    $stmt = $controller_trajet->db->prepare("UPDATE bus SET nbplacesdispo = nbplacesdispo - 1 WHERE id_bus = ?");
+    $stmt->execute([$id_bus]);
 
-    if (!$error_message) {
-      $stmt = $db->prepare("INSERT INTO bus_reservation (id_bus, id_user) VALUES (?, ?)");
-      $stmt->execute([$id_bus, $user_id]);
-
-      $stmt = $db->prepare("UPDATE bus SET nbplacesdispo = nbplacesdispo - 1 WHERE id_bus = ?");
-      $stmt->execute([$id_bus]);
-
-      $success_message = "Réservation réussie !";
-    }
-
-  } catch (Exception $e) {
-    $error_message = "Erreur lors de la réservation : " . $e->getMessage();
+    $response['success'] = true;
+    $response['message'] = "Réservation réussie !";
   }
-  ?>
+} catch (Exception $e) {
+  $response['message'] = "Erreur lors de la réservation : " . $e->getMessage();
+}
 
-  <header class="landing-header">
-    <div class="container"></div>
-
-    <!-- Success Modal -->
-    <?php if ($success_message): ?>
-      <div class="bus-info-modal show" id="reservation-success-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4>Succès</h4>
-          </div>
-          <div class="modal-body">
-            <?php echo htmlspecialchars($success_message); ?>
-          </div>
-          <div class="modal-footer">
-            <a href="index.php" class="btn-secondary">Retour à la liste des trajets</a>
-          </div>
-        </div>
-      </div>
-    <?php endif; ?>
-
-    <!-- Error Modal -->
-    <?php if ($error_message): ?>
-      <div class="bus-info-modal show" id="reservation-error-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4>Erreur</h4>
-          </div>
-          <div class="modal-body">
-            <?php echo htmlspecialchars($error_message); ?>
-          </div>
-          <div class="modal-footer">
-            <a href="index.php" class="btn-secondary">Retour à la liste des trajets</a>
-          </div>
-        </div>
-      </div>
-    <?php endif; ?>
-
-  </header>
-
-  <script>
-    // Modal close functionality
-    window.addEventListener('click', function (event) {
-      const successModal = document.getElementById('reservation-success-modal');
-      const errorModal = document.getElementById('reservation-error-modal');
-      if (event.target === successModal || event.target === errorModal) {
-        successModal.classList.remove('show');
-        errorModal.classList.remove('show');
-      }
-    });
-  </script>
-
-</body>
-
-</html>
+echo json_encode($response);
+?>

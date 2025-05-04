@@ -91,14 +91,28 @@ class TrajetController
             die('Error: ' . $e->getMessage());
         }
     }
-    public function getBusesByTrajetId($id_trajet)
+    public function getBusesByTrajetId($id_trajet, $user_id) {
+        $stmt = $this->db->prepare("SELECT * FROM bus WHERE id_trajet = ?");
+        $stmt->execute([$id_trajet]);
+        $buses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+        foreach ($buses as &$bus) {
+          $stmt2 = $this->db->prepare("SELECT COUNT(*) FROM bus_reservation WHERE id_bus = ? AND id_user = ?");
+          $stmt2->execute([$bus['id_bus'], $user_id]);
+          $bus['reserved'] = $stmt2->fetchColumn() > 0;
+        }
+      
+        return $buses;
+      }      
+
+    public function getBusById($id_bus)
     {
-        $sql = "SELECT * FROM bus WHERE id_trajet = :id_trajet"; 
+        $sql = "SELECT * FROM bus WHERE id_bus = :id_bus";
         try {
             $query = $this->db->prepare($sql);
-            $query->bindValue(':id_trajet', $id_trajet);
+            $query->bindValue(':id_bus', $id_bus);
             $query->execute();
-            return $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $query->fetch();
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
         }
