@@ -396,7 +396,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <script src="validAddCovoiturage.js"></script>
   <script src="validEditCovoiturage.js"></script>
   <script src="validDeleteCovoiturage.js"></script>
-  <script src="meteo.js"></script>
+ 
 <script src="meteo-card.js"></script>
 </body>
 
