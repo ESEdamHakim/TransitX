@@ -245,6 +245,7 @@ $clients = $ColisC->getAllClients();
           </div>
         </div>
 
+        <!-- FILTERS -->
         <div class="filters-section">
           <div class="filters-title">
             <h3>Filtres</h3>
@@ -258,9 +259,8 @@ $clients = $ColisC->getAllClients();
               <select id="status-filter">
                 <option value="all">Tous les statuts</option>
                 <option value="pending">En attente</option>
-                <option value="in-transit">En transit</option>
-                <option value="delivered">Livré</option>
-                <option value="cancelled">Annulé</option>
+                <option value="in-progress">En transit</option>
+                <option value="resolved">Livré</option>
               </select>
             </div>
             <div class="filter-group">
@@ -268,45 +268,63 @@ $clients = $ColisC->getAllClients();
               <input type="date" id="date-filter">
             </div>
             <div class="filter-group">
-              <label for="city-filter">Ville de destination</label>
-              <select id="city-filter">
-                <option value="all">Toutes les villes</option>
-                <option value="tunis">Tunis</option>
-                <option value="sousse">Sousse</option>
-                <option value="sfax">Sfax</option>
-                <option value="monastir">Monastir</option>
-              </select>
+              <label for="search-filter">Recherche</label>
+              <input type="text" id="search-filter" placeholder="ID covoiturage">
             </div>
             <div class="filter-group">
-              <label for="search-filter">Recherche</label>
-              <input type="text" id="search-filter" placeholder="ID, destinataire...">
+              <label for="price-sort">Tri par prix</label>
+              <select id="price-sort">
+                <option value="none">Aucun tri</option>
+                <option value="asc">Prix croissant</option>
+                <option value="desc">Prix décroissant</option>
+              </select>
             </div>
           </div>
           <div class="filter-actions">
-            <button class="btn secondary">Réinitialiser</button>
-            <button class="btn primary">Appliquer</button>
+            <button type="button" class="btn btn-outline reset-btn">Réinitialiser</button>
+            <button type="button" class="btn btn-primary apply-btn">Appliquer</button>
           </div>
         </div>
 
+        <!-- TABS -->
         <div class="tabs-container">
-          <div class="tab active">Tous <span class="count">12</span></div>
-          <div class="tab">En attente <span class="count">3</span></div>
-          <div class="tab">En transit <span class="count">5</span></div>
-          <div class="tab">Livrés <span class="count">4</span></div>
+          <div class="tab" data-status="all">Tous <span class="count">0</span></div>
+          <div class="tab" data-status="pending">En attente <span class="count">0</span></div>
+          <div class="tab" data-status="in-progress">En transit <span class="count">0</span></div>
+          <div class="tab" data-status="resolved">Livrés <span class="count">0</span></div>
         </div>
-
         <section class="bus-routes">
           <div class="container">
             <div class="route-cards">
-              <?php foreach ($list as $colis): 
+              <?php foreach ($list as $colis):
                 $covoit = null;
 
-                    if (!empty($colis['id_covoit'])) {
-                      $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
-                    }?>
-                <?php if ($colis['id_client'] != 3)
-                  continue; ?>
-                <div class="route-card">
+                // Fetch the covoiturage data if applicable
+                if (!empty($colis['id_covoit'])) {
+                  $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
+                }
+
+                // Skip if the client is not 3 (adjust condition if needed)
+                if ($colis['id_client'] != 3) {
+                  continue;
+                }
+
+                // Map the status to a class for styling
+                $statusClassMap = [
+                  'en attente' => 'pending',
+                  'en transit' => 'in-progress',
+                  'livré' => 'resolved'
+                ];
+
+                $statut = trim($colis['statut']);
+                $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
+                ?>
+
+                <div class="route-card" data-status="<?= $className ?>"
+                  data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
+                  data-price="<?= htmlspecialchars($colis['prix']) ?>"
+                  data-covoit-id="<?= $covoit ? htmlspecialchars($covoit['id_covoit']) : '' ?>">
+
                   <div class="route-info">
                     <div class="route-cities">
                       <span class="departure"><?= htmlspecialchars($colis['lieu_ram']) ?></span>
@@ -342,21 +360,9 @@ $clients = $ColisC->getAllClients();
                       </div>
                       <div class="detail">
                         <i class="fas fa-info-circle"></i>
-                        <?php
-                        $statusClassMap = [
-                          'en attente' => 'pending',
-                          'en transit' => 'in-progress',
-                          'livré' => 'resolved'
-                        ];
-
-                        $statut = trim($colis['statut']);
-                        $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
-                        ?>
-                        <td>
-                          <span class="status <?= $className ?>">
-                            <?= htmlspecialchars($colis['statut']) ?>
-                          </span>
-                        </td>
+                        <span class="status <?= $className ?>">
+                          <?= htmlspecialchars($colis['statut']) ?>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -465,6 +471,8 @@ $clients = $ColisC->getAllClients();
 
   <script src="assets/js/colisValidation.js"></script>
   <script src="assets/js/colisDelete.js"></script>
+  <script src="assets/js/colisFilters.js"></script>
+
   <script>
     // Filters toggle
     document.querySelector('.filters-toggle').addEventListener('click', function () {
@@ -488,4 +496,5 @@ $clients = $ColisC->getAllClients();
 
   </script>
 </body>
+
 </html>
