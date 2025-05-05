@@ -37,29 +37,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['id_covoit'])) {
         $id_covoit = $_POST['id_covoit'];
 
-        $ColisC->updateColis(
-            $colis['id_colis'],
-            $colis['id_client'],
-            $id_covoit,
-            $colis['statut'],
-            $colis['date_colis'],
-            $colis['longueur'],
-            $colis['largeur'],
-            $colis['hauteur'],
-            $colis['poids'],
-            $colis['lieu_ram'],
-            $colis['lieu_dest'],
-            $colis['latitude_ram'],
-            $colis['longitude_ram'],
-            $colis['latitude_dest'],
-            $colis['longitude_dest'],
-            $colis['prix']
-        );
+        $selectedCovoiturage = null;
+        foreach ($covoiturages as $cov) {
+            if ($cov['id_covoit'] == $id_covoit) {
+                $selectedCovoiturage = $cov;
+                break;
+            }
+        }
 
-        header("Location: ../colis/ColisList.php?success=1");
-        exit();
+        if ($selectedCovoiturage) {
+            $isExactMatch = (
+                $selectedCovoiturage['date_depart'] == $colis['date_colis'] &&
+                $selectedCovoiturage['lieu_depart'] == $colis['lieu_ram']
+            );
+
+            $newDateColis = $isExactMatch ? $colis['date_colis'] : $selectedCovoiturage['date_depart'];
+            $newLieuRam = $isExactMatch ? $colis['lieu_ram'] : $selectedCovoiturage['lieu_depart'];
+            $newLieuDest = $isExactMatch ? $colis['lieu_dest'] : $selectedCovoiturage['lieu_arrivee'];
+
+
+            $ColisC->updateColis(
+                $colis['id_colis'],
+                $colis['id_client'],
+                $id_covoit,
+                $colis['statut'],
+                $newDateColis,
+                $colis['longueur'],
+                $colis['largeur'],
+                $colis['hauteur'],
+                $colis['poids'],
+                $newLieuRam,
+                $newLieuDest,
+                $colis['latitude_ram'],
+                $colis['longitude_ram'],
+                $colis['latitude_dest'],
+                $colis['longitude_dest'],
+                $colis['prix']
+            );
+
+            header("Location: ../colis/ColisList.php?success=1");
+            exit();
+        }
     }
 }
+
 ?>
 
 <div class="route-cards">
