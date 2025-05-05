@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $newDateColis = $isExactMatch ? $colis['date_colis'] : $selectedCovoiturage['date_depart'];
             $newLieuRam = $isExactMatch ? $colis['lieu_ram'] : $selectedCovoiturage['lieu_depart'];
-            $newLieuDest = $isExactMatch ? $colis['lieu_dest'] : $selectedCovoiturage['lieu_arrivee'];
+            $newLieuDest = $selectedCovoiturage['lieu_arrivee'];
 
 
             $ColisC->updateColis(
