@@ -1,9 +1,17 @@
 <?php
 require_once '../../../Controller/ColisController.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../../../lib/PHPMailer/src/PHPMailer.php';
+require '../../../lib/PHPMailer/src/SMTP.php';
+require '../../../lib/PHPMailer/src/Exception.php';
+
 
 session_start();
 
 $ColisC = new ColisController();
+$client = $ColisC->getClientById($colis['id_client']);
 
 if (!isset($_GET['id_colis'])) {
   die("Invalid Request");
@@ -37,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newStatus = 'en attente';
   }
 
+  // Update the colis
   $ColisC->updateColis(
     $id_colis,
     $_POST['id_client'],
@@ -56,8 +65,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_POST['prix']
   );
 
+  // Only send mail if status is en transit or livré
+  if (in_array($newStatus, ['en transit', 'livré']) && !empty($client['email'])) {
+    $mail = new PHPMailer(true);
+
+    try {
+      // Server settings
+      $mail->isSMTP();
+      $mail->Host       = 'smtp.gmail.com';
+      $mail->SMTPAuth   = true;
+      $mail->Username   = 'hakimyessine72@gmail.com';
+      $mail->Password   = 'hewe qyyb wabn krko'; // Use Gmail App Password
+      $mail->SMTPSecure = 'tls';
+      $mail->Port       = 587;
+
+      // Recipients
+      $mail->setFrom('hakimyessine72@gmail.com', 'TransitX');
+      $mail->addAddress($client['email'], $client['nom'] . ' ' . $client['prenom']);
+
+      // Content
+      $mail->isHTML(true);
+      $mail->Subject = 'Mise à jour du statut de votre colis';
+      $mail->Body = "
+      <p>Bonjour <strong>{$client['prenom']} {$client['nom']}</strong>,</p>
+    
+      <p>Nous vous informons que le statut de votre colis (ID : <strong>{$id_colis}</strong>) a été mis à jour.</p>
+    
+      <p><strong>Nouveau statut :</strong> <span style='color:#1f4f65;'>{$newStatus}</span></p>
+    
+      <p>Merci de faire confiance à <strong>TransitX</strong> pour vos livraisons durables.</p>
+    
+      <p style='margin-top:20px;'>Cordialement,<br>L'équipe TransitX</p>
+    ";
+    
+      $mail->send();
+
+    } catch (Exception $e) {
+      error_log("Mailer Error: " . $mail->ErrorInfo);
+    }
+  }
+
   header("Location: colisList.php?updated_colis=" . $id_colis);
-exit;
+  exit;
 }
 ?>
 
