@@ -5,43 +5,61 @@ require_once __DIR__ . '/../Model/employe.php';
 require_once __DIR__ . '/../config.php';
 
 class UserC {
-    public function listUsers() {
-        $sql = "SELECT u.*, 
-                c.date_naissance,
-                e.date_embauche, e.poste, e.salaire, e.role
-                FROM user u
-                LEFT JOIN client c ON u.id = c.user_id AND u.type = 'client'
-                LEFT JOIN employe e ON u.id = e.user_id AND u.type = 'employe'";
-        $db = config::getConnexion();
+    public function listUsers($sort = 'id', $order = 'ASC', $search = '') {
         try {
-            $stmt = $db->query($sql);
-            $users = [];
+            $sql = "SELECT u.*, 
+                    c.date_naissance,
+                    e.date_embauche, e.poste, e.salaire, e.role
+                    FROM user u
+                    LEFT JOIN client c ON u.id = c.user_id AND u.type = 'client'
+                    LEFT JOIN employe e ON u.id = e.user_id AND u.type = 'employe'";
             
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // Add search condition
+            if (!empty($search)) {
+                $sql .= " WHERE (u.nom LIKE :search OR u.prenom LIKE :search OR u.email LIKE :search)";
+            }
+            
+            // Validate sort column to prevent SQL injection
+            $allowedSortColumns = ['id', 'nom', 'prenom', 'email', 'type', 'date_inscription'];
+            $sort = in_array($sort, $allowedSortColumns) ? $sort : 'id';
+            
+            // Validate order direction
+            $order = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+            
+            $sql .= " ORDER BY u.$sort $order";
+            
+            $db = config::getConnexion();
+            $query = $db->prepare($sql);
+            
+            if (!empty($search)) {
+                $searchTerm = "%$search%";
+                $query->bindValue(':search', $searchTerm, PDO::PARAM_STR);
+            }
+            
+            $query->execute();
+            $results = $query->fetchAll(PDO::FETCH_ASSOC);
+            
+            $users = [];
+            foreach ($results as $row) {
                 if ($row['type'] === 'client') {
                     $user = new Client(
                         $row['nom'],
                         $row['prenom'],
                         $row['email'],
-                        $row['password'] ?? '', // Ensure password exists
+                        $row['password'],
                         $row['telephone'],
                         $row['date_naissance'] ? new DateTime($row['date_naissance']) : null
                     );
                 } else {
-                    // Ensure all required employee fields have values
-                    $poste = $row['poste'] ?? '';
-                    $salaire = $row['salaire'] ?? 0;
-                    $role = $row['role'] ?? '';
-                    
                     $user = new Employe(
                         $row['nom'],
                         $row['prenom'],
                         $row['email'],
-                        $row['password'] ?? '', // Ensure password exists
+                        $row['password'],
                         $row['date_embauche'] ? new DateTime($row['date_embauche']) : new DateTime(),
-                        $poste,
-                        (float)$salaire,
-                        $role,
+                        $row['poste'] ?? '',
+                        $row['salaire'] ?? 0,
+                        $row['role'] ?? '',
                         $row['telephone']
                     );
                 }
@@ -49,9 +67,12 @@ class UserC {
                 $user->setDateInscription(new DateTime($row['date_inscription']));
                 $users[] = $user;
             }
+            
             return $users;
+            
         } catch (Exception $e) {
-            die('Error:' . $e->getMessage());
+            error_log('Error in listUsers: ' . $e->getMessage());
+            return [];
         }
     }
 
@@ -279,6 +300,7 @@ class UserC {
             return null;
         }
     }
-    
-    
+
+    // Remove the duplicate listUsers method and listUsersWithFilters method
 }
+

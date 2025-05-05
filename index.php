@@ -3,38 +3,61 @@ session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Controller/userC.php';
 
 $userController = new UserC();
+$error = '';
 
-// In your login page (index.php)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = $_POST['email'];
-  $password = $_POST['password'];
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $hcaptcha_response = $_POST['h-captcha-response'] ?? '';
+    
+    // Verify hCaptcha first
+    if (empty($hcaptcha_response)) {
+        $error = "Veuillez compléter le captcha.";
+    } else {
+        $hcaptcha_secret = 'ES_5c4045e58ba8477298cf1864401501e5';
+        $verify_url = 'https://hcaptcha.com/siteverify';
+        
+        $data = [
+            'secret' => $hcaptcha_secret,
+            'response' => $hcaptcha_response,
+            'remoteip' => $_SERVER['REMOTE_ADDR']
+        ];
+        
+        $options = [
+            'http' => [
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data)
+            ]
+        ];
+        
+        $context = stream_context_create($options);
+        $result = file_get_contents($verify_url, false, $context);
+        $response_data = json_decode($result);
+        
+        if (!$response_data->success) {
+            $error = "Échec de la vérification du captcha. Veuillez réessayer.";
+        } else {
+            // Proceed with login if captcha is valid
+            $user = $userController->getUserByEmail($email);
+            
+            if ($user) {
+                if (password_verify($password, $user->getPassword()) || 
+                    $password === $user->getPassword()) {
+                    
+                    $_SESSION['user_id'] = $user->getId();
+                    $_SESSION['user_type'] = $user->getType();
+                    $_SESSION['user_name'] = $user->getNom() . ' ' . $user->getPrenom();
 
-  $user = $userController->getUserByEmail($email);
-
-  if ($user) {
-      // Debug output (remove in production)
-      error_log("User found. Type: " . $user->getType());
-      error_log("Input password: " . $password);
-      error_log("Stored password: " . $user->getPassword());
-
-      // First try password_verify, then fallback to plain text comparison
-      // (Remove the plain text fallback after fixing all passwords)
-      if (password_verify($password, $user->getPassword()) || 
-          $password === $user->getPassword()) {
-          
-          $_SESSION['user_id'] = $user->getId();
-          $_SESSION['user_type'] = $user->getType();
-          $_SESSION['user_name'] = $user->getNom() . ' ' . $user->getPrenom();
-
-          // Redirect based on user type
-          header('Location: View/' . 
-                ($user->getType() === 'employe' ? 'BackOffice' : 'FrontOffice') . 
-                '/index.php');
-          exit();
-      }
-  }
-  
-  $error = "Email ou mot de passe incorrect.";
+                    header('Location: View/' . 
+                          ($user->getType() === 'employe' ? 'BackOffice' : 'FrontOffice') . 
+                          '/index.php');
+                    exit();
+                }
+            }
+            $error = "Email ou mot de passe incorrect.";
+        }
+    }
 }
 ?>
 
@@ -63,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <form class="auth-form" method="post">
-          <?php if (isset($error)): ?>
+          <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
           <?php endif; ?>
 
@@ -71,7 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="email">Email</label>
             <div class="input-with-icon">
               <i class="fas fa-envelope"></i>
-              <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
+              <input type="email" id="email" name="email" placeholder="Entrez votre email" required
+                     value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
             </div>
           </div>
 
@@ -83,33 +107,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </div>
 
+          <div class="form-group">
+            <div class="h-captcha" data-sitekey="3bde0e2e-31d0-4140-bf90-10b6a89c299c"></div>
+          </div>
+
           <div class="form-options">
             <div class="remember-me">
-              <input type="checkbox" id="remember">
+              <input type="checkbox" id="remember" name="remember">
               <label for="remember">Se souvenir de moi</label>
             </div>
             <a href="forgot-password.php" class="forgot-password">Mot de passe oublié?</a>
           </div>
 
           <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
-          <div class="social-login">
-            <p>Ou connectez-vous avec</p>
-            <div class="social-buttons">
-              <button type="button" class="social-btn facebook">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-              <button type="button" class="social-btn google">
-                <i class="fab fa-google"></i>
-              </button>
-              <button type="button" class="social-btn twitter">
-                <i class="fab fa-twitter"></i>
-              </button>
-            </div>
-          </div>
         </form>
 
         <div class="auth-footer">
-        <p>Vous n'avez pas de compte? <a href="/user/register.php">S'inscrire</a></p>
+          <p>Vous n'avez pas de compte? <a href="/user/register.php">S'inscrire</a></p>
         </div>
       </div>
     </div>
@@ -117,5 +131,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="overlay"></div>
     </div>
   </div>
+
+  <!-- Load hCaptcha API at the end of the body -->
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 </body>
 </html>
