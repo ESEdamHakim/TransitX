@@ -2,9 +2,15 @@
 // Include necessary files
 require_once '../../../Controller/CovoiturageC.php';
 require_once '../../../Model/Covoiturage.php';
-
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    
+    // Use the hardcoded user ID from the session
+    $id_user = $_SESSION['id_user'] ?? null;
+
+    if (!$id_user) {
+        echo "Erreur : Vous devez être connecté pour modifier un trajet.";
+        exit;
+    }
     $id_covoit = $_POST['id_covoit'];
     $lieu_depart = $_POST['departure'];
     $lieu_arrivee = $_POST['destination'];
@@ -17,8 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $details = $_POST['description'];
     $id_vehicule = $_POST['id_vehicule'];
     
-    //$id_user = 2; 
-    require_once __DIR__ . '/../../../configuration/appConfig.php';
+    
     $covoit = new Covoiturage();
     $covoit->setIdCovoit($id_covoit);
     $covoit->setLieuDepart($lieu_depart);
@@ -42,7 +47,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header('Location: index.php?success=update');
         exit;
     } catch (Exception $e) {
-        echo "Erreur lors de la mise à jour : " . $e->getMessage();
+        // Display a sanitized error message
+        echo "Erreur lors de la mise à jour : " . htmlspecialchars($e->getMessage());
+        exit;
     }
 } else {
     echo "Erreur : Requête invalide.";

@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const createRideForm = document.querySelector(".create-ride-form");
     const detailsOptions = document.getElementById("details-options");
     const rideDetails = document.getElementById("ride-details");
+    const cityInput = document.getElementById("start-point"); // City input field
+    const cityError = document.getElementById("start-point-error"); // Error span for city validation
+    const apiKey = "8aab6949191302a6a18a11e8f68d5acf"; // OpenWeatherMap API key
+    const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
     // Add event listener for id_vehicule change
     document.getElementById("id_vehicule").addEventListener("change", function () {
         console.log("Selected idVehicule:", this.value);
@@ -30,7 +35,34 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    createRideForm.addEventListener("submit", function (e) {
+    // Function to validate the city
+    async function validateCity(city, errorElement) {
+        try {
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+            if (response.status === 404) {
+                errorElement.textContent = "Ville introuvable. Veuillez entrer une ville valide.";
+                return false;
+            }
+            errorElement.textContent = ""; // Clear error if the city is valid
+            return true;
+        } catch (error) {
+            console.error("Error validating city:", error);
+            errorElement.textContent = "Erreur lors de la validation de la ville. Veuillez réessayer.";
+            return false;
+        }
+    }
+
+    cityInput.addEventListener("blur", async () => {
+        const city = cityInput.value.trim();
+        if (city) {
+            await validateCity(city, cityError); // Pass the cityError element to validateCity
+        } else {
+            cityError.textContent = "Veuillez entrer une ville.";
+        }
+    });
+
+    // Form submission logic
+    createRideForm.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         // Clear previous error messages
@@ -49,19 +81,31 @@ document.addEventListener("DOMContentLoaded", () => {
         const colisComplet = document.getElementById("full-parcels").value.trim();
         const details = rideDetails.value.trim();
         const idVehicule = document.getElementById("id_vehicule").value.trim();
-        console.log("idVehicule:", idVehicule);
         let hasError = false;
 
-        // Validate required fields
-        if (!lieuDepart) {
-            document.getElementById("start-point-error").textContent = "Veuillez remplir le point de départ.";
-            hasError = true;
-        }
+        // Validate required fields for departure
+if (!lieuDepart) {
+    document.getElementById("start-point-error").textContent = "Veuillez remplir le point de départ.";
+    hasError = true;
+} else {
+    // Validate the departure city
+    const isCityValid = await validateCity(lieuDepart, document.getElementById("start-point-error"));
+    if (!isCityValid) {
+        hasError = true;
+    }
+}
 
-        if (!lieuArrivee) {
-            document.getElementById("end-point-error").textContent = "Veuillez remplir la destination.";
-            hasError = true;
-        }
+// Validate required fields for destination
+if (!lieuArrivee) {
+    document.getElementById("end-point-error").textContent = "Veuillez remplir le point d'arrivée.";
+    hasError = true;
+} else {
+    // Validate the destination city
+    const isDestinationValid = await validateCity(lieuArrivee, document.getElementById("end-point-error"));
+    if (!isDestinationValid) {
+        hasError = true;
+    }
+}
 
         if (!dateDepart) {
             document.getElementById("ride-date-create-error").textContent = "Veuillez sélectionner une date.";
@@ -111,11 +155,12 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("full-parcels-error").textContent = "Veuillez indiquer si les colis sont complets.";
             hasError = true;
         }
-        
+
         if (!idVehicule) {
             document.getElementById("id-vehicule-error").textContent = "Veuillez sélectionner un véhicule.";
             hasError = true;
         }
+
         // If no errors, submit the form
         if (!hasError) {
             createRideForm.submit();

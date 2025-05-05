@@ -66,6 +66,15 @@ function isBadWeather($city)
                             data-id-user="<?= htmlspecialchars($covoiturage['id_user']) ?>">
                             <i class="fa-solid fa-user" style="color: #4CAF50;"></i>
                         </button>
+                         <!-- Book/Cancel Covoiturage Button -->
+                        <?php if ($_SESSION['id_user'] != $covoiturage['id_user']): ?>
+                            <button class="icon-btn book-icon-btn"
+                                data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
+                                data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>"
+                                data-booked="false">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        <?php endif; ?>
                     </div>
 
                     <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
@@ -154,3 +163,4 @@ function isBadWeather($city)
 
 <script src="voirvehicule.js"></script>
 <script src="driver.js"></script>
+<script src="clientinvit.js"></script>

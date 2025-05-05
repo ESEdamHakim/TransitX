@@ -12,7 +12,13 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
+// Use the hardcoded user ID from the session
+$id_user = $_SESSION['id_user'] ?? null;
 
+if (!$id_user) {
+    echo "<p>Erreur : Vous devez être connecté pour voir vos trajets.</p>";
+    exit;
+}
 $covoiturageController = new CovoiturageC();
 
 try {
@@ -25,8 +31,10 @@ try {
     $userCovoiturages = array_filter($userCovoiturages, function ($covoiturage) use ($currentDate) {
         return $covoiturage['date_depart'] >= $currentDate;
     });
+// Fetch booking requests from the session
+$bookingRequests = $_SESSION['booking_requests'] ?? [];
 } catch (Exception $e) {
-    echo "Erreur : " . $e->getMessage();
+    echo "<p>Erreur : " . htmlspecialchars($e->getMessage()) . "</p>";
     exit;
 }
 ?>
@@ -39,6 +47,14 @@ try {
                     <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
                         <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
                     </h3>
+                    <!-- Show booking requests -->
+                <?php if (isset($bookingRequests[$covoiturage['id_covoit']])): ?>
+                    <button class="icon-btn request-icon-btn"
+                        data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
+                        data-id-user="<?= htmlspecialchars($bookingRequests[$covoiturage['id_covoit']]) ?>">
+                        <i class="fa-solid fa-bell" style="color: #f52424;"></i>
+                    </button>
+                <?php endif; ?>
                     <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                     <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                     <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
@@ -171,6 +187,7 @@ try {
                 </div>
             </div>
         </div>
+        <script src="manageRequests.js"></script>
     </div>
 </body>
 

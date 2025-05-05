@@ -262,5 +262,6 @@ public function getUserById($id_user)
         throw new Exception('Erreur : ' . $e->getMessage());
     }
 }
+
 }
 ?>

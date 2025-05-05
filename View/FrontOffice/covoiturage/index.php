@@ -1,10 +1,12 @@
 <?php
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
-//$id_user = 2; // Replace this with the actual user ID from the session
+
+// Use the hardcoded user ID from the session
+$id_user = $_SESSION['id_user'];
+
 $vehiculeController = new VehiculeC();
 $vehicules = $vehiculeController->getVehiculesByUser($id_user);
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">

@@ -2,7 +2,10 @@
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php'; // Corrected path
 require_once __DIR__ . '/../../../Model/Covoiturage.php';      // Corrected path
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+     // Use the hardcoded user ID from the session
+     $id_user = $_SESSION['id_user'];
     // Sanitize and validate input data
     $dateDepart = filter_input(INPUT_POST, 'date_depart', FILTER_SANITIZE_STRING);
     $lieuDepart = filter_input(INPUT_POST, 'lieu_depart', FILTER_SANITIZE_STRING);
@@ -36,8 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-   // $id_user = 2;
-   require_once __DIR__ . '/../../../configuration/appConfig.php';
+   
     // Validate the matricule and fetch the corresponding vehicle
     $vehiculeController = new VehiculeC();
     $vehicule = $vehiculeController->getVehiculesByUser($id_user);

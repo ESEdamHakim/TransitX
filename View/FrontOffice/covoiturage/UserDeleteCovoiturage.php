@@ -1,14 +1,13 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
-
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_covoit'])) {
     $id_covoit = $_POST['id_covoit'];
 
-
-    //$id_user = 2;
-    require_once __DIR__ . '/../../../configuration/appConfig.php';
+    // Use the hardcoded user ID from the session
+    $id_user = $_SESSION['id_user'];
     $covoiturageController = new CovoiturageC();
 
     try {
