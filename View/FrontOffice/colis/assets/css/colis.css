@@ -10,6 +10,73 @@
   color: white;
   text-align: center;
 }
+.collapsible-header {
+  cursor: pointer;
+  color: var(--primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #f9f9f9;
+  border-bottom: 2px solid var(--primary);
+  border-radius: 8px 8px 0 0;
+  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.collapsible-header:hover {
+  cursor: pointer;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--primary);
+  border-bottom: 2px solid  var(--primary);
+  border-radius: 8px 8px 0 0;
+  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.collapsible-header .icon {
+  transition: transform 0.3s ease;
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+.collapsible-header:hover .icon {
+  color: white;
+  transform: scale(1.1);
+}
+/* Rotate the icon when active */
+.collapsible-header.active .icon {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: scaleY(0.97);
+  transition: all 0.4s ease;
+  padding: 0 1rem;
+  background-color: #fff;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 0 8px 8px;
+}
+
+.collapsible-content.active {
+  max-height: 1000px;
+  opacity: 1;
+  transform: scaleY(1);
+  padding: 1rem;
+}
 
 .bus-routes {
   padding: 5rem 5%;
