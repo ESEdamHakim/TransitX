@@ -8,6 +8,7 @@ $list = $ColisC->listColis();
 $listByCovoit = $ColisC->getColisByCovoiturage($_SESSION['user_id']);
 $covoiturages = $ColisC->getAllCovoiturages();
 $clients = $ColisC->getAllClients();
+
 ?>
 
 <!DOCTYPE html>
@@ -374,6 +375,14 @@ $clients = $ColisC->getAllClients();
                     </div>
                     <div class="route-price">
                       <span class="price"><?= htmlspecialchars($colis['prix']) ?> DT</span>
+                      <div class="action" style="margin-top: 10px; display: flex; gap: 5px;">
+                        <form method="GET" action="updateColisOfCovoit.php" style="display:inline;">
+                          <input type="hidden" name="id_colis" value="<?= htmlspecialchars($colis['id_colis']) ?>">
+                          <button type="submit" class="action-btn edit" title="Modifier">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 <?php endforeach; ?>
