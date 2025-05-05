@@ -160,7 +160,7 @@ class ColisController
     }
     public function getClientById($id_user)
     {
-        $sql = "SELECT id_user, nom, prenom FROM users WHERE id_user = :id_user";
+        $sql = "SELECT id_user, nom, prenom, email FROM users WHERE id_user = :id_user";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -245,6 +245,26 @@ class ColisController
             die('Error: ' . $e->getMessage()); // Handle any potential errors
         }
     }
+    public function getColisById($id_colis)
+    {
+        $sql = "SELECT * FROM colis WHERE id_colis = :id_colis";
+        $db = config::getConnexion();
+
+        try {
+            $query = $db->prepare($sql);
+            $query->bindValue(':id_colis', $id_colis, PDO::PARAM_INT);
+            $query->execute();
+
+            // Fetch the colis by its ID
+            $colis = $query->fetch(PDO::FETCH_ASSOC);
+
+            // Return the colis if found, otherwise null
+            return $colis ? $colis : null;
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage()); // Handle any errors
+        }
+    }
+
 
 }
 ?>
