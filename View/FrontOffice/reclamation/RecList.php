@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../../Controller/ReclamationController.php';
 
+session_start();
+
 $ReclamationC = new ReclamationController();
 $list = $ReclamationC->listReclamation();
 $covoiturages = $ReclamationC->getAllCovoiturages();
@@ -289,7 +291,7 @@ $clients = $ReclamationC->getAllClients();
                                 <?php foreach ($list as $rec): ?>
                                     <?php
                                     $covoit = $ReclamationC->getCovoiturageById($rec['id_covoit']);
-                                    if ($rec['id_client'] != 3)
+                                    if ($rec['id_client'] != $_SESSION['user_id'])
                                         continue; ?>
                                     <tr>
                                         <td><?= $rec['id_rec'] ?></td>

@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../../Controller/ColisController.php';
 
+session_start();
+
 $ColisC = new ColisController();
 $list = $ColisC->listColis();
 $covoiturages = $ColisC->getAllCovoiturages();
@@ -306,8 +308,8 @@ $clients = $ColisC->getAllClients();
                   }
                 }
 
-                // Skip if the client is not 3
-                if ($colis['id_client'] != 3) {
+                // Skip if the client is not 
+                if ($colis['id_client'] != $_SESSION['user_id']) {
                   continue;
                 }
                 // Map the status to a class for styling

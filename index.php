@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (!empty($_POST['user_id'])) {
+    $_SESSION['user_id'] = $_POST['user_id']; // Store the typed ID in session
+    header("Location: View/FrontOffice/index.php");
+    exit();
+  } else {
+    $error = "Veuillez saisir un ID valide.";
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -21,63 +35,34 @@
             <span class="logo-text">TransitX</span>
           </div>
           <h1>Connexion</h1>
-          <p>Bienvenue sur TransitX. Veuillez vous connecter pour continuer.</p>
+          <p>Veuillez entrer votre identifiant pour continuer.</p>
         </div>
-        <form class="auth-form" action="View/FrontOffice/index.php">
+
+        <?php if (!empty($error)): ?>
+          <p style="color:red;text-align:center;"><?php echo $error; ?></p>
+        <?php endif; ?>
+
+        <form class="auth-form" method="POST" action="">
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="user_id">ID utilisateur</label>
             <div class="input-with-icon">
-              <i class="fas fa-envelope"></i>
-              <input type="email" id="email" placeholder="Entrez votre email">
+              <i class="fas fa-id-card"></i>
+              <input type="text" id="user_id" name="user_id" placeholder="Entrez votre ID" required>
             </div>
           </div>
-          <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <div class="input-with-icon">
-              <i class="fas fa-lock"></i>
-              <input type="password" id="password" placeholder="Entrez votre mot de passe">
-            </div>
-          </div>
-          <div class="form-options">
-            <div class="remember-me">
-              <input type="checkbox" id="remember">
-              <label for="remember">Se souvenir de moi</label>
-            </div>
-            <a href="forgot-password.php" class="forgot-password">Mot de passe oublié?</a>
-          </div>
+
           <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
-          <div class="social-login">
-            <p>Ou connectez-vous avec</p>
-            <div class="social-buttons">
-              <button type="button" class="social-btn facebook">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-              <button type="button" class="social-btn google">
-                <i class="fab fa-google"></i>
-              </button>
-              <button type="button" class="social-btn twitter">
-                <i class="fab fa-twitter"></i>
-              </button>
-            </div>
+
+          <div class="auth-footer">
+            <p>Vous n'avez pas de compte? <a href="register.php">S'inscrire</a></p>
           </div>
         </form>
-        <div class="auth-footer">
-          <p>Vous n'avez pas de compte? <a href="register.php">S'inscrire</a></p>
-        </div>
       </div>
     </div>
     <div class="auth-image">
       <div class="overlay"></div>
     </div>
   </div>
-
-  <script>
-    // Simple login without authentication
-    document.querySelector('.auth-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      window.location.href = 'View/FrontOffice/index.php';
-    });
-  </script>
 </body>
 
 </html>
