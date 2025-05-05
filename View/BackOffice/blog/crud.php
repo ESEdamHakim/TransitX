@@ -730,10 +730,7 @@ form button:active {
   <a href="deletearticle.php?id_article=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn delete" title="Supprimer">
     <i class="fas fa-trash-alt"></i>
   </a>
-  <!-- Bouton Générer le résumé -->
-  <a href="generate_summary.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn" title="Générer le résumé">
-    <i class="fas fa-file-alt"></i> 
-  </a>
+  
    <!-- Nouveau lien pour exporter en PDF -->
    <a href="export_pdf.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn" title="Exporter en PDF">
     <i class="fas fa-file-pdf"></i> 
