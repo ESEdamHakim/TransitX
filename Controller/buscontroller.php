@@ -39,7 +39,7 @@ class BusController
             $query->bindValue(':statut', $bus->getStatut());
             $query->bindValue(':nbplacesdispo', $bus->getNbPlacesDispo());
             $query->execute();
-            return true;
+            return $this->db->lastInsertId();
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
         }
@@ -111,7 +111,50 @@ class BusController
             die("Erreur lors de la récupération des trajets: " . $e->getMessage());
         }
     }
-
+    public function notifyUsersAboutNewBus($id_trajet, $id_bus) {
+        // Step 1: Get all bus info
+        $busQuery = $this->db->prepare("SELECT * FROM bus WHERE id_bus = :id_bus");
+        $busQuery->execute(['id_bus' => $id_bus]);
+        $bus = $busQuery->fetch(PDO::FETCH_ASSOC);
+    
+        if (!$bus) {
+            return; // no bus found
+        }
+    
+        // Step 2: Get users who favorited this trajet
+        $query = $this->db->prepare("SELECT user_id AS id_user FROM bus_favoris WHERE id_trajet = :id_trajet");
+        $query->execute(['id_trajet' => $id_trajet]);
+        $users = $query->fetchAll(PDO::FETCH_ASSOC);
+    
+        if (!$users) {
+            return; // no users favorited this trajet
+        }
+    
+        // Step 3: Build a full detailed message
+        $message = "🚌 Nouveau bus ajouté au trajet ID: $id_trajet\n";
+        $message .= "🆔 Numéro: {$bus['num_bus']}\n";
+        $message .= "🚍 Type: {$bus['type_bus']}\n";
+        $message .= "🏷️ Marque: {$bus['marque']}\n";
+        $message .= "📦 Modèle: {$bus['modele']}\n";
+        $message .= "👥 Capacité: {$bus['capacite']} personnes\n";
+        $message .= "✅ Statut: {$bus['statut']}\n";
+        $message .= "📅 Mise en service: {$bus['date_mise_en_service']}\n";
+    
+        // Step 4: Insert notification for each user
+        foreach ($users as $user) {
+            $insert = $this->db->prepare("INSERT INTO bus_notification (id_user, message) VALUES (:id_user, :message)");
+            $insert->execute([
+                'id_user' => $user['id_user'],
+                'message' => $message
+            ]);
+        }
+    }
+    
+    public function getNotificationsForUser($id_user) {
+        $query = $this->db->prepare("SELECT * FROM bus_notification WHERE id_user = :id_user ORDER BY created_at DESC");
+        $query->execute(['id_user' => $id_user]);
+        return $query->fetchAll();
+    }   
 
 }
 ?>

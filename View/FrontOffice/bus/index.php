@@ -5,8 +5,6 @@ $controller_trajet = new TrajetController();
 $trajetlist = $controller_trajet->listTrajets();
 $favorisList = $controller_trajet->getFavorisByUserId($user_id);
 
-
-
 ?>
 
 <!DOCTYPE html>

@@ -37,7 +37,8 @@ if (
   );
 
   $controller = new BusController();
-  $controller->addBus($bus);
+  $id_bus = $controller->addBus($bus);
+  $controller->notifyUsersAboutNewBus($id_trajet, $id_bus);
 
   header("Location: crud.php");
   exit();
