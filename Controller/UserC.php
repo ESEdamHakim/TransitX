@@ -5,6 +5,20 @@ require_once __DIR__ . '/../Model/employe.php';
 require_once __DIR__ . '/../config.php';
 
 class UserC {
+    public function updatePassword($email, $newPassword) {
+        try {
+            $db = config::getConnexion();
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $query = $db->prepare('UPDATE user SET password = :password WHERE email = :email');
+            return $query->execute([
+                'password' => $hashedPassword,
+                'email' => $email
+            ]);
+        } catch (Exception $e) {
+            error_log('Error updating password: ' . $e->getMessage());
+            return false;
+        }
+    }
     public function listUsers($sort = 'id', $order = 'ASC', $search = '') {
         try {
             $sql = "SELECT u.*, 
