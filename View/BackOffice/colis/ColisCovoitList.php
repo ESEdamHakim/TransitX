@@ -96,13 +96,7 @@
 
     <main class="main-content">
       <section>
-        <div class="container">
-          <div class="section-header">
-            <h1>Covoiturages</h1>
-            <p>Choisir un covoiturage</p>
-          </div>
           <?php include 'ColisCovoitDisplay.php'; ?>
-        </div>
       </section>
     </main>
   </div>
