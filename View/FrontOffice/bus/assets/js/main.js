@@ -202,7 +202,11 @@ document.querySelectorAll('.favoris-btn').forEach(button => {
     .then(res => res.json())
     .then(data => {
       if (data.success) {
+        // Optionally update button state visually before refresh
         this.classList.toggle('favorited');
+
+        // Refresh the page to reflect updated data from the database
+        location.reload();
       } else {
         alert("Erreur : " + data.message);
       }
