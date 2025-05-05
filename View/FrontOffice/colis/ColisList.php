@@ -294,7 +294,7 @@ $clients = $ColisC->getAllClients();
           <div class="tab" data-status="in-progress">En transit <span class="count">0</span></div>
           <div class="tab" data-status="resolved">Livrés <span class="count">0</span></div>
         </div>
-        <div class="collapsible-section">
+        <div class="collapsible-section" id="affectes-covoiturage">
           <div class="collapsible-header">
             Colis Affectés à Mes Covoiturages
             <span class="icon">▼</span>
@@ -328,7 +328,7 @@ $clients = $ColisC->getAllClients();
                   $className = $statusClassMap[$statut] ?? 'default';
                   ?>
 
-                  <div class="route-card" data-status="<?= $className ?>"
+                  <div class="route-card" id="colis-<?= $colis['id_colis'] ?>" data-status="<?= $className ?>"
                     data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
                     data-price="<?= htmlspecialchars($colis['prix']) ?>">
 
@@ -373,6 +373,7 @@ $clients = $ColisC->getAllClients();
                         </div>
                       </div>
                     </div>
+
                     <div class="route-price">
                       <span class="price"><?= htmlspecialchars($colis['prix']) ?> DT</span>
                       <div class="action" style="margin-top: 10px; display: flex; gap: 5px;">
@@ -606,6 +607,27 @@ $clients = $ColisC->getAllClients();
       });
     });
 
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const updatedColisId = params.get('updated_colis');
+
+      if (updatedColisId) {
+        // Simulate click on the collapsible header to expand it (always works)
+        const header = document.querySelector('#affectes-covoiturage .collapsible-header');
+        if (header) header.click(); // This will open it using your existing JS logic
+
+        // Scroll to the specific colis after a short delay
+        setTimeout(() => {
+          const targetColis = document.getElementById(`colis-${updatedColisId}`);
+          if (targetColis) {
+            targetColis.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetColis.style.transition = 'box-shadow 0.3s ease';
+            targetColis.style.boxShadow = '0 0 15px 4px #97c3a2';
+            setTimeout(() => targetColis.style.boxShadow = '', 2000);
+          }
+        }, 500); // Delay to ensure collapsible is fully open
+      }
+    });
   </script>
 
 </body>

@@ -56,8 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_POST['prix']
   );
 
-  header("Location: ColisList.php?id_colis=$id_colis");
-  exit();
+  header("Location: colisList.php?updated_colis=" . $id_colis);
+exit;
 }
 ?>
 
