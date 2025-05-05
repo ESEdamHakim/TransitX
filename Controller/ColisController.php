@@ -185,7 +185,42 @@ class ColisController
             die('Error fetching covoiturage: ' . $e->getMessage());
         }
     }
-    
+    public function getCovoituragesByUserId($id_user)
+    {
+        $sql = "SELECT id_covoit, lieu_depart, lieu_arrivee, id_user FROM covoiturage WHERE id_user = :id_user";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->bindValue(':id_user', $id_user, PDO::PARAM_INT);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error fetching covoiturages by user: ' . $e->getMessage());
+        }
+    }
+
+    public function getColisByCovoiturage($id_user)
+    {
+        $covoiturages = $this->getCovoituragesByUserId($id_user); // <-- FIXED
+
+        if (empty($covoiturages)) {
+            return [];
+        }
+
+        $ids = array_column($covoiturages, 'id_covoit');
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $sql = "SELECT * FROM colis WHERE id_covoit IN ($placeholders)";
+        $db = config::getConnexion();
+
+        try {
+            $query = $db->prepare($sql);
+            $query->execute($ids);
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error fetching colis by user: ' . $e->getMessage());
+        }
+    }
     public function getUserById($id_user)
     {
         $db = config::getConnexion(); // Get database connection
