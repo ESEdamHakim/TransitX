@@ -12,13 +12,25 @@ if ($id_user) {
         $user = $covoiturageController->getUserById($id_user);
 
         if ($user) {
-            echo json_encode($user);
+            echo json_encode([
+                'success' => true,
+                'data' => $user
+            ]);
         } else {
-            echo json_encode(['error' => 'User not found.']);
+            echo json_encode([
+                'success' => false,
+                'message' => 'User not found.'
+            ]);
         }
     } catch (Exception $e) {
-        echo json_encode(['error' => $e->getMessage()]);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Database error: ' . $e->getMessage()
+        ]);
     }
 } else {
-    echo json_encode(['error' => 'Invalid request. No user ID provided.']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid request. No user ID provided.'
+    ]);
 }

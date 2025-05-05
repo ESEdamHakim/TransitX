@@ -9,35 +9,35 @@
 </head>
 
 <body>
-<?php
-require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
-require_once __DIR__ . '/../../../configuration/appConfig.php';
-// Use the hardcoded user ID from the session
-$id_user = $_SESSION['id_user'] ?? null;
+    <?php
+    require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
+    require_once __DIR__ . '/../../../configuration/appConfig.php';
+    // Use the hardcoded user ID from the session
+    $id_user = $_SESSION['id_user'] ?? null;
 
-if (!$id_user) {
-    echo "<p>Erreur : Vous devez être connecté pour voir vos trajets.</p>";
-    exit;
-}
-$covoiturageController = new CovoiturageC();
+    if (!$id_user) {
+        echo "<p>Erreur : Vous devez être connecté pour voir vos trajets.</p>";
+        exit;
+    }
+    $covoiturageController = new CovoiturageC();
 
-try {
-    $userCovoiturages = $covoiturageController->listUserCovoiturages($id_user);
+    try {
+        $userCovoiturages = $covoiturageController->listUserCovoiturages($id_user);
 
-    // Get the current date
-    $currentDate = date('Y-m-d');
+        // Get the current date
+        $currentDate = date('Y-m-d');
 
-    // Filter covoiturages to include only recent or future dates
-    $userCovoiturages = array_filter($userCovoiturages, function ($covoiturage) use ($currentDate) {
-        return $covoiturage['date_depart'] >= $currentDate;
-    });
-// Fetch booking requests from the session
-$bookingRequests = $_SESSION['booking_requests'] ?? [];
-} catch (Exception $e) {
-    echo "<p>Erreur : " . htmlspecialchars($e->getMessage()) . "</p>";
-    exit;
-}
-?>
+        // Filter covoiturages to include only recent or future dates
+        $userCovoiturages = array_filter($userCovoiturages, function ($covoiturage) use ($currentDate) {
+            return $covoiturage['date_depart'] >= $currentDate;
+        });
+        // Fetch booking requests from the session
+        $bookingRequests = $_SESSION['booking_requests'] ?? [];
+    } catch (Exception $e) {
+        echo "<p>Erreur : " . htmlspecialchars($e->getMessage()) . "</p>";
+        exit;
+    }
+    ?>
 
     <div class="user-route-cards">
         <h2>Vos Trajets Populaires</h2>
@@ -48,13 +48,13 @@ $bookingRequests = $_SESSION['booking_requests'] ?? [];
                         <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
                     </h3>
                     <!-- Show booking requests -->
-                <?php if (isset($bookingRequests[$covoiturage['id_covoit']])): ?>
-                    <button class="icon-btn request-icon-btn"
-                        data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
-                        data-id-user="<?= htmlspecialchars($bookingRequests[$covoiturage['id_covoit']]) ?>">
-                        <i class="fa-solid fa-bell" style="color: #f52424;"></i>
-                    </button>
-                <?php endif; ?>
+                    <?php if (isset($bookingRequests[$covoiturage['id_covoit']])): ?>
+                        <button class="icon-btn request-icon-btn"
+                            data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
+                            data-id-user="<?= htmlspecialchars($bookingRequests[$covoiturage['id_covoit']]) ?>">
+                            <i class="fa-solid fa-bell" style="color: #f52424;"></i>
+                        </button>
+                    <?php endif; ?>
                     <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                     <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                     <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
@@ -187,6 +187,19 @@ $bookingRequests = $_SESSION['booking_requests'] ?? [];
                 </div>
             </div>
         </div>
+        <!-- Modal for Viewing User Details -->
+<div id="user-modal" class="user-modal" style="display: none;">
+    <div class="user-modal-content">
+        <span class="close-user-modal">&times;</span>
+        <h2 class="user-modal-title">Détails du Conducteur</h2>
+        <p><strong>Nom:</strong> <span id="user-nom"></span></p>
+        <p><strong>Prénom:</strong> <span id="user-prenom"></span></p>
+        <p><strong>Email:</strong> <span id="user-email"></span></p>
+        <p><strong>Téléphone:</strong> <span id="user-telephone"></span></p>
+        <button class="btn accept-request">Accepter</button>
+        <button class="btn reject-request">Refuser</button>
+    </div>
+</div>
         <script src="manageRequests.js"></script>
     </div>
 </body>

@@ -2,14 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const requestButtons = document.querySelectorAll(".request-icon-btn");
 
     requestButtons.forEach((button) => {
-        button.addEventListener("click", () => {
+        button.addEventListener("click", async () => {
             const covoiturageId = button.getAttribute("data-id-covoiturage");
             const userId = button.getAttribute("data-id-user");
 
-            // Fetch user details (you can replace this with an AJAX call if needed)
-            fetch(`getUserDetails.php?id_user=${userId}`)
-                .then((response) => response.json())
-                .then((user) => {
+            try {
+                // Fetch user details from the server
+                const response = await fetch(`getUserDetails.php?id_user=${userId}`);
+                const result = await response.json();
+
+                console.log("User Details Response:", result); // Log the response for debugging
+
+                if (result.success) {
+                    const user = result.data;
+
+                    // Display user details in a confirmation dialog
                     const message = `
                         L'utilisateur suivant souhaite rejoindre votre trajet :
                         Nom: ${user.nom}
@@ -19,18 +26,43 @@ document.addEventListener("DOMContentLoaded", () => {
                     `;
 
                     const accept = confirm(message + "\nVoulez-vous accepter cette demande ?");
-                    if (accept) {
-                        alert("Demande acceptée.");
-                        button.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    const action = accept ? "accept" : "reject";
+
+                    // Send the response to the server
+                    const actionResponse = await fetch("updateBookingStatus.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            covoiturageId,
+                            userId,
+                            action,
+                        }),
+                    });
+
+                    const actionResult = await actionResponse.json();
+
+                    if (actionResult.success) {
+                        if (accept) {
+                            alert("Demande acceptée.");
+                            button.innerHTML = '<i class="fa-solid fa-check" style="color: #aaec98;"></i>';
+                        } else {
+                            alert("Demande refusée.");
+                            button.innerHTML = '<i class="fa-solid fa-face-sad-tear" style="color: #dd3308;"></i>';
+                        }
+                        // Disable the button after responding
+                        button.disabled = true;
                     } else {
-                        alert("Demande refusée.");
-                        button.innerHTML = '<i class="fa-solid fa-face-sad-tear" style="color: #dd3308;"></i>';
+                        alert("Erreur : " + actionResult.message);
                     }
-                })
-                .catch((error) => {
-                    console.error("Error fetching user details:", error);
-                    alert("Une erreur s'est produite. Veuillez réessayer.");
-                });
+                } else {
+                    alert("Erreur : " + result.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Une erreur s'est produite. Veuillez réessayer.");
+            }
         });
     });
 });

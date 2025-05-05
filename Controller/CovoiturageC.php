@@ -263,5 +263,25 @@ public function getUserById($id_user)
     }
 }
 
+
+public function getBookingStatus($id_covoiturage, $id_user)
+{
+    $sql = "SELECT notification_status 
+            FROM bookings 
+            WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user";
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([
+            ':id_covoiturage' => $id_covoiturage,
+            ':id_user' => $id_user
+        ]);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result['notification_status'] ?? null; // Return the status or null if no booking exists
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
 }
 ?>

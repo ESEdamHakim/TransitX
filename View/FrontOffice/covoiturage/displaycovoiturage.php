@@ -30,7 +30,7 @@ function isBadWeather($city)
         $condition = $data['weather'][0]['main'];
 
         // Define bad weather conditions
-        if ($temperature > 25 || $condition === "Rain" || $condition === "Drizzle" || $condition === "Thunderstorm") {
+        if ($temperature > 20 || $condition === "Rain" || $condition === "Drizzle" || $condition === "Thunderstorm") {
             return true;
         }
     }
@@ -47,8 +47,7 @@ function isBadWeather($city)
                     <div class="top-buttons">
                         <!-- Add Voir Météo Button if bad weather -->
                         <?php if (isBadWeather($covoiturage['lieu_arrivee'])): ?>
-                            <button class="icon-btn weather-icon-btn"
-                                data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
+                            <button class="icon-btn weather-icon-btn" data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
                                 data-date="<?= htmlspecialchars($covoiturage['date_depart']) ?>">
                                 <i class="fa-solid fa-circle-exclamation"></i>
                             </button>
@@ -61,19 +60,42 @@ function isBadWeather($city)
                                 <i class="fa-solid fa-car" style="color: #63E6BE;"></i>
                             </button>
                         <?php endif; ?>
-                         <!-- User Profile Button -->
-                         <button class="icon-btn user-icon-btn"
-                            data-id-user="<?= htmlspecialchars($covoiturage['id_user']) ?>">
+                        <!-- User Profile Button -->
+                        <button class="icon-btn user-icon-btn" data-id-user="<?= htmlspecialchars($covoiturage['id_user']) ?>">
                             <i class="fa-solid fa-user" style="color: #4CAF50;"></i>
                         </button>
-                         <!-- Book/Cancel Covoiturage Button -->
+                        <!-- Book/Cancel Covoiturage Button -->
                         <?php if ($_SESSION['id_user'] != $covoiturage['id_user']): ?>
-                            <button class="icon-btn book-icon-btn"
-                                data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
-                                data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>"
-                                data-booked="false">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
+                            <?php
+                            // Get the booking status for the current user and covoiturage
+                            $bookingStatus = $covoiturageController->getBookingStatus($covoiturage['id_covoit'], $_SESSION['id_user']);
+                            ?>
+
+                            <?php if ($bookingStatus === 'pending'): ?>
+                                <button class="icon-btn book-icon-btn"
+                                    data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
+                                    data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>" data-booked="true">
+                                    <i class="fa-solid fa-pause" style="color: #FFD43B;"></i>
+                                </button>
+                            <?php elseif ($bookingStatus === 'accepted'): ?>
+                                <button class="icon-btn book-icon-btn"
+                                    data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
+                                    data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>" data-booked="true">
+                                    <i class="fa-solid fa-check" style="color: #aaec98;"></i>
+                                </button>
+                            <?php elseif ($bookingStatus === 'rejected'): ?>
+                                <button class="icon-btn book-icon-btn"
+                                    data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
+                                    data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>" data-booked="true">
+                                    <i class="fa-solid fa-face-frown" style="color: #FFD43B;"></i>
+                                </button>
+                            <?php else: ?>
+                                <button class="icon-btn book-icon-btn"
+                                    data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
+                                    data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>" data-booked="false">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </div>
 
