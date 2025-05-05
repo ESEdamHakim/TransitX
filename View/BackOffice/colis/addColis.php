@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   ) {
     $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
 
-    $ColisC->addColis(
+    $id_colis = $ColisC->addColis(
       $_POST['id_client'],
       $id_covoit,
       $_POST['statut'],
@@ -42,7 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $_POST['longitude_dest'],
       $_POST['prix']
     );
-    header("Location: crud.php");
+
+    // Use $id_colis in your redirect
+    header("Location: ColisCovoitList.php?id_colis=$id_colis");
+
     exit();
   } else {
     echo "Erreur : tous les champs obligatoires ne sont pas remplis.";

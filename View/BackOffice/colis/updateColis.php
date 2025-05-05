@@ -27,7 +27,7 @@ if (!$colis) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $id_covoit = !empty($_POST['id_covoit']) ? $_POST['id_covoit'] : NULL;
+  $id_covoit = null;
 
   $ColisC->updateColis(
     $id_colis,
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_POST['prix']
   );
 
-  header("Location: crud.php"); // Redirect to the colis list
+  header("Location: ColisCovoitList.php?id_colis=$id_colis");
   exit();
 }
 ?>
