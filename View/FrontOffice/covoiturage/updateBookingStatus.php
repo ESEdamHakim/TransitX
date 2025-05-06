@@ -1,40 +1,59 @@
 <?php
-require_once __DIR__ . '/../../../configuration/config.php'; // Include database connection
+require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 header('Content-Type: application/json');
 
-// Start the session
 session_start();
 
-// Get the POST data
-$data = json_decode(file_get_contents('php://input'), true);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
 
-$covoiturageId = $data['covoiturageId'] ?? null;
-$userId = $data['userId'] ?? null;
-$action = $data['action'] ?? null;
+    $covoiturageId = $data['covoiturageId'] ?? null;
+    $userId = $data['userId'] ?? null;
+    $action = $data['action'] ?? null;
 
-if (!$covoiturageId || !$userId || !in_array($action, ['accept', 'reject'])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid data provided.']);
-    exit;
-}
-
-try {
-    $db = config::getConnexion();
-
-    if ($action === 'accept') {
-        // Update the booking notification_status to accepted
-        $sql = "UPDATE bookings SET notification_status = 'accepted' WHERE id_covoiturage = :covoiturageId AND id_user = :userId";
-    } else {
-        // Update the booking notification_status to rejected
-        $sql = "UPDATE bookings SET notification_status = 'rejected' WHERE id_covoiturage = :covoiturageId AND id_user = :userId";
+    if (!$covoiturageId || !$userId || !in_array($action, ['accept', 'reject'])) {
+        echo json_encode(['success' => false, 'message' => 'Invalid data provided.']);
+        exit;
     }
 
-    $query = $db->prepare($sql);
-    $query->execute([
-        ':covoiturageId' => $covoiturageId,
-        ':userId' => $userId,
-    ]);
+    try {
+        $db = config::getConnexion();
 
-    echo json_encode(['success' => true, 'message' => 'Booking notification status updated successfully.']);
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+        // Check if the booking exists
+        $checkQuery = $db->prepare("SELECT * FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
+        $checkQuery->execute([
+            ':id_covoiturage' => $covoiturageId,
+            ':id_user' => $userId
+        ]);
+
+        if ($checkQuery->rowCount() === 0) {
+            echo json_encode(['success' => false, 'message' => 'No booking found to update.']);
+            exit;
+        }
+
+        // Update the booking status
+        $status = $action === 'accept' ? 'accepted' : 'rejected';
+        $updateQuery = $db->prepare("UPDATE bookings SET notification_status = :status WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
+        $updateQuery->execute([
+            ':status' => $status,
+            ':id_covoiturage' => $covoiturageId,
+            ':id_user' => $userId
+        ]);
+
+        // Add a notification for the requester
+        $message = $action === 'accept' ? 'Votre demande a été acceptée.' : 'Votre demande a été refusée.';
+        $notificationQuery = $db->prepare("INSERT INTO notifications (id_user, id_covoiturage, message, is_read) VALUES (:id_user, :id_covoiturage, :message, 0)");
+        $notificationQuery->execute([
+            ':id_user' => $userId,
+            ':id_covoiturage' => $covoiturageId,
+            ':message' => $message
+        ]);
+
+        echo json_encode(['success' => true, 'message' => 'Booking status updated successfully.']);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+} else {
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
 }

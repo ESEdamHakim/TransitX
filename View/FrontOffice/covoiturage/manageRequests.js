@@ -1,4 +1,53 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Handle booking and canceling requests
+    const bookButtons = document.querySelectorAll(".book-icon-btn");
+
+    bookButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+            const covoiturageId = button.getAttribute("data-id-covoiturage");
+            const isBooked = button.getAttribute("data-booked") === "true";
+
+            console.log("Covoiturage ID:", covoiturageId);
+            console.log("Is Booked:", isBooked);
+
+            try {
+                // Send the booking or cancel request to the server
+                const response = await fetch("bookCovoiturage.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        covoiturageId: covoiturageId,
+                        action: isBooked ? "cancel" : "book",
+                    }),
+                });
+
+                const result = await response.json();
+                console.log("Booking Response:", result);
+
+                if (result.success) {
+                    if (isBooked) {
+                        button.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                        button.setAttribute("data-booked", "false");
+                        alert("Votre demande a été annulée.");
+                    } else {
+                        button.innerHTML = '<i class="fa-solid fa-pause" style="color: #FFD43B;"></i>';
+                        button.setAttribute("data-booked", "true");
+                        alert("Votre demande a été envoyée.");
+                    }
+                } else {
+                    console.error("Server Error:", result.message);
+                    alert("Erreur : " + result.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Une erreur s'est produite. Veuillez réessayer.");
+            }
+        });
+    });
+
+    // Handle responding to booking requests
     const requestButtons = document.querySelectorAll(".request-icon-btn");
 
     requestButtons.forEach((button) => {
@@ -11,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const response = await fetch(`getUserDetails.php?id_user=${userId}`);
                 const result = await response.json();
 
-                console.log("User Details Response:", result); // Log the response for debugging
+                console.log("User Details Response:", result);
 
                 if (result.success) {
                     const user = result.data;
@@ -42,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
 
                     const actionResult = await actionResponse.json();
+                    console.log("Action Result:", actionResult);
 
                     if (actionResult.success) {
                         if (accept) {
@@ -54,9 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         // Disable the button after responding
                         button.disabled = true;
                     } else {
+                        console.error("Server Error:", actionResult.message);
                         alert("Erreur : " + actionResult.message);
                     }
                 } else {
+                    console.error("User Details Error:", result.message);
                     alert("Erreur : " + result.message);
                 }
             } catch (error) {

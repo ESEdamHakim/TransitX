@@ -283,5 +283,23 @@ public function getBookingStatus($id_covoiturage, $id_user)
         throw new Exception('Erreur : ' . $e->getMessage());
     }
 }
+public function getBookingRequests($id_user) {
+    $db = config::getConnexion();
+    $sql = "SELECT b.id_covoiturage, b.id_user 
+            FROM bookings b
+            INNER JOIN covoiturage c ON b.id_covoiturage = c.id_covoit
+            WHERE c.id_user = :id_user AND b.notification_status = 'pending'";
+    $query = $db->prepare($sql);
+    $query->execute([':id_user' => $id_user]);
+    $results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    // Format the results as an associative array
+    $bookingRequests = [];
+    foreach ($results as $row) {
+        $bookingRequests[$row['id_covoiturage']] = $row;
+    }
+
+    return $bookingRequests;
+}
 }
 ?>

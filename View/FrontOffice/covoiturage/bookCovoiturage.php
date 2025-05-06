@@ -3,7 +3,6 @@ require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/config.php'; // Includes session_start()
 header('Content-Type: application/json');
 
-// Start the session to ensure session variables are accessible
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,81 +11,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $covoiturageId = $data['covoiturageId'] ?? null;
     $action = $data['action'] ?? null;
 
-    // Debugging: Check if the session variable is set
     if (!isset($_SESSION['id_user'])) {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Session user ID is not set.',
-            'debug' => [
-                'covoiturageId' => $covoiturageId,
-                'userId' => null,
-                'action' => $action,
-                'session' => $_SESSION
-            ]
-        ]);
+        echo json_encode(['success' => false, 'message' => 'User not logged in.']);
         exit;
     }
 
-    // Use the hardcoded user ID from the session
     $userId = $_SESSION['id_user'];
 
-    // Debugging: Return the variables in the JSON response
     if (!$covoiturageId || !$userId || !in_array($action, ['book', 'cancel'])) {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Invalid data provided.',
-            'debug' => [
-                'covoiturageId' => $covoiturageId,
-                'userId' => $userId,
-                'action' => $action
-            ]
-        ]);
+        echo json_encode(['success' => false, 'message' => 'Invalid data provided.']);
         exit;
     }
 
     try {
-        // Use the existing database connection
         $db = config::getConnexion();
 
         if ($action === 'book') {
-            // Check if the booking already exists
-            $checkSql = "SELECT COUNT(*) FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user";
-            $checkQuery = $db->prepare($checkSql);
+            // Check if a booking already exists
+            $checkQuery = $db->prepare("SELECT * FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
             $checkQuery->execute([
                 ':id_covoiturage' => $covoiturageId,
                 ':id_user' => $userId
             ]);
-            $exists = $checkQuery->fetchColumn();
 
-            if ($exists) {
+            if ($checkQuery->rowCount() > 0) {
                 echo json_encode(['success' => false, 'message' => 'You have already sent a booking request for this covoiturage.']);
                 exit;
             }
 
-            // Insert a new booking request into the database
-            $sql = "INSERT INTO bookings (id_covoiturage, id_user, notification_status) 
-                    VALUES (:id_covoiturage, :id_user, 'pending')";
-            $query = $db->prepare($sql);
-            $query->execute([
+            // Insert a new booking
+            $insertQuery = $db->prepare("INSERT INTO bookings (id_covoiturage, id_user, notification_status) VALUES (:id_covoiturage, :id_user, 'pending')");
+            $insertQuery->execute([
                 ':id_covoiturage' => $covoiturageId,
                 ':id_user' => $userId
             ]);
-            echo json_encode(['success' => true, 'message' => 'Booking request sent.']);
-        } else {
-            // Delete the booking request from the database
-            $sql = "DELETE FROM bookings 
-                    WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user";
-            $query = $db->prepare($sql);
-            $query->execute([
+
+            echo json_encode(['success' => true, 'message' => 'Booking request sent successfully.']);
+        } elseif ($action === 'cancel') {
+            // Check if the booking exists before attempting to delete
+            $checkQuery = $db->prepare("SELECT * FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
+            $checkQuery->execute([
                 ':id_covoiturage' => $covoiturageId,
                 ':id_user' => $userId
             ]);
-            echo json_encode(['success' => true, 'message' => 'Booking request canceled.']);
+
+            if ($checkQuery->rowCount() === 0) {
+                echo json_encode(['success' => false, 'message' => 'No booking found to cancel.']);
+                exit;
+            }
+
+            // Delete the booking
+            $deleteQuery = $db->prepare("DELETE FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
+            $deleteQuery->execute([
+                ':id_covoiturage' => $covoiturageId,
+                ':id_user' => $userId
+            ]);
+
+            echo json_encode(['success' => true, 'message' => 'Booking request canceled successfully.']);
         }
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
-    } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => 'An unexpected error occurred: ' . $e->getMessage()]);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 
 $covoiturageController = new CovoiturageC();
 try {
@@ -185,4 +186,4 @@ function isBadWeather($city)
 
 <script src="voirvehicule.js"></script>
 <script src="driver.js"></script>
-<script src="clientinvit.js"></script>
+<script src="manageRequests.js"></script> 

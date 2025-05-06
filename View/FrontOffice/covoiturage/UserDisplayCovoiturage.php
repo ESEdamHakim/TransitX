@@ -9,67 +9,72 @@
 </head>
 
 <body>
-    <?php
-    require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
-    require_once __DIR__ . '/../../../configuration/appConfig.php';
-    // Use the hardcoded user ID from the session
-    $id_user = $_SESSION['id_user'] ?? null;
+<?php
+require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 
-    if (!$id_user) {
-        echo "<p>Erreur : Vous devez être connecté pour voir vos trajets.</p>";
-        exit;
-    }
-    $covoiturageController = new CovoiturageC();
+// Use the hardcoded user ID from the session
+$id_user = $_SESSION['id_user'] ?? null;
 
-    try {
-        $userCovoiturages = $covoiturageController->listUserCovoiturages($id_user);
+if (!$id_user) {
+    echo "<p>Erreur : Vous devez être connecté pour voir vos trajets.</p>";
+    exit;
+}
 
-        // Get the current date
-        $currentDate = date('Y-m-d');
+$covoiturageController = new CovoiturageC();
 
-        // Filter covoiturages to include only recent or future dates
-        $userCovoiturages = array_filter($userCovoiturages, function ($covoiturage) use ($currentDate) {
-            return $covoiturage['date_depart'] >= $currentDate;
-        });
-        // Fetch booking requests from the session
-        $bookingRequests = $_SESSION['booking_requests'] ?? [];
-    } catch (Exception $e) {
-        echo "<p>Erreur : " . htmlspecialchars($e->getMessage()) . "</p>";
-        exit;
-    }
-    ?>
+try {
+    // Fetch the user's covoiturages
+    $userCovoiturages = $covoiturageController->listUserCovoiturages($id_user);
 
-    <div class="user-route-cards">
-        <h2>Vos Trajets Populaires</h2>
-        <?php if (!empty($userCovoiturages)): ?>
-            <?php foreach ($userCovoiturages as $covoiturage): ?>
-                <div class="route-card">
-                    <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
-                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
-                    </h3>
-                    <!-- Show booking requests -->
-                    <?php if (isset($bookingRequests[$covoiturage['id_covoit']])): ?>
-                        <button class="icon-btn request-icon-btn"
-                            data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
-                            data-id-user="<?= htmlspecialchars($bookingRequests[$covoiturage['id_covoit']]) ?>">
-                            <i class="fa-solid fa-bell" style="color: #f52424;"></i>
-                        </button>
-                    <?php endif; ?>
-                    <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
-                    <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
-                    <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
-                    <p><strong>Prix:</strong> <?= htmlspecialchars($covoiturage['prix']) ?> TND</p>
-                    <p><strong>Colis:</strong>
-                        <?php
-                        if ($covoiturage['accepte_colis'] == 0) {
-                            echo "Colis non acceptés.";
-                        } elseif ($covoiturage['accepte_colis'] == 1 && $covoiturage['colis_complet'] == 1) {
-                            echo "Livraison de colis possible.";
-                        } else {
-                            echo "Colis acceptés.";
-                        }
-                        ?>
-                    </p>
+    // Get the current date
+    $currentDate = date('Y-m-d');
+
+    // Filter covoiturages to include only recent or future dates
+    $userCovoiturages = array_filter($userCovoiturages, function ($covoiturage) use ($currentDate) {
+        return $covoiturage['date_depart'] >= $currentDate;
+    });
+
+    // Fetch booking requests dynamically from the database
+    $bookingRequests = $covoiturageController->getBookingRequests($id_user);
+
+} catch (Exception $e) {
+    echo "<p>Erreur : " . htmlspecialchars($e->getMessage()) . "</p>";
+    exit;
+}
+?>
+
+<div class="user-route-cards">
+    <h2>Vos Trajets Populaires</h2>
+    <?php if (!empty($userCovoiturages)): ?>
+        <?php foreach ($userCovoiturages as $covoiturage): ?>
+            <div class="route-card">
+                <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
+                    <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
+                </h3>
+                <!-- Show booking requests -->
+                <?php if (isset($bookingRequests[$covoiturage['id_covoit']])): ?>
+                    <button class="icon-btn request-icon-btn"
+                        data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
+                        data-id-user="<?= htmlspecialchars($bookingRequests[$covoiturage['id_covoit']]['id_user']) ?>">
+                        <i class="fa-solid fa-bell" style="color: #f52424;"></i>
+                    </button>
+                <?php endif; ?>
+                <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
+                <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
+                <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
+                <p><strong>Prix:</strong> <?= htmlspecialchars($covoiturage['prix']) ?> TND</p>
+                <p><strong>Colis:</strong>
+                    <?php
+                    if ($covoiturage['accepte_colis'] == 0) {
+                        echo "Colis non acceptés.";
+                    } elseif ($covoiturage['accepte_colis'] == 1 && $covoiturage['colis_complet'] == 1) {
+                        echo "Livraison de colis possible.";
+                    } else {
+                        echo "Colis acceptés.";
+                    }
+                    ?>
+                </p>
                     <p><strong>Détails:</strong> <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
                     <div class="actions">
                         <button class="btn edit" data-id="<?= $covoiturage['id_covoit'] ?>"
