@@ -109,36 +109,52 @@ document.addEventListener('DOMContentLoaded', function () {
     function addUserMessage(text) {
         const container = document.createElement('div');
         container.className = 'message-container user-container';
-        const avatar = document.createElement('div');
-        avatar.className = 'avatar user-avatar';
-        avatar.textContent = 'U';
+    
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
         messageDiv.textContent = text;
+    
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
         timeDiv.textContent = getCurrentTime();
         messageDiv.appendChild(timeDiv);
+    
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar user-avatar';
+        const img = document.createElement('img');
+        img.src = '../../assets/images/Me.jpeg';
+        img.alt = 'User';
+        img.className = 'avatar-img';
+        avatar.appendChild(img);
+    
         container.appendChild(messageDiv);
-        container.appendChild(avatar);
+        container.appendChild(avatar); // user avatar on the right due to order
         chatBox.appendChild(container);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
-
+    
     function addBotMessage(text) {
         const container = document.createElement('div');
         container.className = 'message-container bot-container';
+    
         const avatar = document.createElement('div');
         avatar.className = 'avatar bot-avatar';
-        avatar.textContent = 'AI';
+        const img = document.createElement('img');
+        img.src = '../../assets/images/logo.png';
+        img.alt = 'Bot';
+        img.className = 'avatar-img';
+        avatar.appendChild(img);
+    
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message bot-message';
         messageDiv.textContent = text;
+    
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
         timeDiv.textContent = getCurrentTime();
         messageDiv.appendChild(timeDiv);
-        container.appendChild(avatar);
+    
+        container.appendChild(avatar); // bot avatar on the left
         container.appendChild(messageDiv);
         chatBox.appendChild(container);
         chatBox.scrollTop = chatBox.scrollHeight;
