@@ -139,6 +139,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>
+        <button class="notify-button" title="Notify">
+          <i class="fa-solid fa-bell"></i>
+        </button>
       </div>
     </div>
   </header>

@@ -74,6 +74,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $colis['longitude_dest'],
                 $colis['prix']
             );
+            $covoiturage = $ColisC->getCovoiturageById($id_covoit);
+            $id_receiver = $covoiturage['id_user'];
+
+            $ColisC->addNotification($id_colis, $_SESSION['user_id'], $id_receiver);
 
             header("Location: crud.php?success=1");
             exit();

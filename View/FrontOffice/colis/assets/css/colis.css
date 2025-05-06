@@ -10,6 +10,23 @@
   color: white;
   text-align: center;
 }
+.notify-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1f4f65;
+  font-size: 1.55rem; /* Increase icon size */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 35%;
+  padding: 7px 7px;
+  transition: all 0.3s ease;
+}
+
+.notify-button:hover {
+  background-color: #ddf7d7;
+  transform: scale(1.1);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
 .collapsible-header {
   cursor: pointer;
   color: var(--primary);
