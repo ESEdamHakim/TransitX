@@ -283,7 +283,7 @@ class ColisController
     }
     public function getNotificationByIdUser($id_reciever)
     {
-        $sql = "SELECT n.*, c.lieu_ram, c.lieu_dest, c.date_colis
+        $sql = "SELECT n.*, c.lieu_ram, c.lieu_dest, c.date_colis, c.prix, c.longueur, c.largeur, c.hauteur, c.poids, c.statut, c.id_client, c.id_covoit
             FROM coliscovoit_notif n
             JOIN colis c ON n.id_colis = c.id_colis
             WHERE n.id_reciever = :id_reciever

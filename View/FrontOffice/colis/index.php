@@ -467,15 +467,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="modal-body">
         <div class="notifications-scroll">
           <?php foreach ($notifications as $notif): ?>
-            <div class="notification-item">
-              <p><strong>Colis:</strong> <?= htmlspecialchars($notif['lieu_ram']) ?> ➜
-                <?= htmlspecialchars($notif['lieu_dest']) ?></p>
-              <p><strong>Date:</strong> <?= htmlspecialchars($notif['date_colis']) ?></p>
-              <p><strong>Covoiturage ID:</strong> <?= htmlspecialchars($notif['id_covoit'] ?? 'Non affecté') ?></p>
+            <div class="notification-item card p-3 mb-3 shadow-sm rounded bg-light">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0"> Colis : <?= htmlspecialchars($notif['lieu_ram']) ?> ➜
+                  <?= htmlspecialchars($notif['lieu_dest']) ?></h5>
+              </div>
+
+              <ul class="mb-2">
+                <li><strong>Date :</strong> <?= htmlspecialchars($notif['date_colis']) ?></li>
+                <li><strong>Prix :</strong> <?= htmlspecialchars($notif['prix']) ?> TND</li>
+                <li><strong>Dimensions (L×l×H) :</strong> <?= htmlspecialchars($notif['longueur']) ?>cm ×
+                  <?= htmlspecialchars($notif['largeur']) ?>cm × <?= htmlspecialchars($notif['hauteur']) ?>cm</li>
+                <li><strong>Poids :</strong> <?= htmlspecialchars($notif['poids']) ?> kg</li>
+              </ul>
+
+              <p class="mb-0">
+                <strong>Covoiturage :</strong>
+                <?= $notif['id_covoit'] ? "Affecté (ID : " . htmlspecialchars($notif['id_covoit']) . ")" : "<span class='text-muted'>Non encore affecté</span>" ?>
+              </p>
             </div>
           <?php endforeach; ?>
         </div>
       </div>
+
+
     </div>
   </div>
 
