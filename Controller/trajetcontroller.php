@@ -15,12 +15,14 @@ class TrajetController
     {
         $sql = "SELECT * FROM trajet";
         try {
-            return $this->db->query($sql);
+            // Use fetchAll to retrieve all rows as an associative array
+            $stmt = $this->db->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetches all rows as an associative array
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
         }
     }
-
+    
     public function addTrajet(Trajet $trajet)
     {
         $sql = "INSERT INTO trajet (place_depart, place_arrivee, heure_depart, duree, distance_km, prix) 

@@ -1,5 +1,5 @@
 <?php
-include(__DIR__ . "/../config.php");
+include_once(__DIR__ . "/../config.php");
 include(__DIR__ . "/../Model/busmodel.php");
 
 class BusController
@@ -15,11 +15,14 @@ class BusController
     {
         $sql = "SELECT * FROM bus";
         try {
-            return $this->db->query($sql);
+            // Use fetchAll to retrieve all rows as an associative array
+            $stmt = $this->db->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetches all rows as an associative array
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
         }
     }
+    
 
     public function addBus(Bus $bus)
     {

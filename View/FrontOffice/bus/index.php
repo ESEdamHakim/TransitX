@@ -18,9 +18,11 @@ $favorisList = $controller_trajet->getFavorisByUserId($_SESSION['user_id']);
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
 </head>
 
 <body>
+  <?php include 'chatbot.php';?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -370,6 +372,8 @@ $favorisList = $controller_trajet->getFavorisByUserId($_SESSION['user_id']);
     </div>
   </footer>
   <script src="assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="assets/js/chatbot.js"> </script>
 
 
 </body>
