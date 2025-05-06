@@ -1,7 +1,7 @@
 <?php
 //session_start();
 include("../../../Controller/trajetcontroller.php");
-$user_id = 1; // replace with $_SESSION['user_id'] if logged in
+session_start();
 $id_trajet = $_POST['id_trajet'] ?? null;
 $action = $_POST['action'] ?? null;
 
@@ -10,9 +10,9 @@ $controller =  new TrajetController();
 if ($id_trajet && $action) {
   try {
     if ($action === 'add') {
-      $controller->addFavori($user_id, $id_trajet);
+      $controller->addFavori($_SESSION['user_id'], $id_trajet);
     } elseif ($action === 'remove') {
-      $controller->removeFavori($user_id, $id_trajet);
+      $controller->removeFavori($_SESSION['user_id'], $id_trajet);
     }
     echo json_encode(['success' => true]);
   } catch (Exception $e) {

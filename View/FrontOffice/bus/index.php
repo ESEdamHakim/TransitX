@@ -1,9 +1,9 @@
 <?php
 include("../../../Controller/trajetcontroller.php");
-$user_id = 1;
+session_start();
 $controller_trajet = new TrajetController();
 $trajetlist = $controller_trajet->listTrajets();
-$favorisList = $controller_trajet->getFavorisByUserId($user_id);
+$favorisList = $controller_trajet->getFavorisByUserId($_SESSION['user_id']);
 
 ?>
 
@@ -145,7 +145,7 @@ $favorisList = $controller_trajet->getFavorisByUserId($user_id);
     </div>
     <div class="route-cards" id="les-trajets">
     <?php foreach ($trajetlist as $trajet):
-        $isFavorite = $controller_trajet->isTrajetFavori($trajet['id_trajet'], $user_id);
+        $isFavorite = $controller_trajet->isTrajetFavori($trajet['id_trajet'], $_SESSION['user_id']);
         ?>
         <div class="route-card" data-trajet-id="<?= $trajet['id_trajet'] ?>">
           <div class="route-info">

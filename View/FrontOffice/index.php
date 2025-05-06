@@ -1,8 +1,8 @@
 <?php
 include("../../Controller/buscontroller.php");
-$user_id = 1;
+session_start();
 $controller = new BusController();
-$notifications = $controller->getNotificationsForUser($user_id);
+$notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +12,6 @@ $notifications = $controller->getNotificationsForUser($user_id);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Mobilité Urbaine Durable</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
@@ -44,12 +43,12 @@ $notifications = $controller->getNotificationsForUser($user_id);
         <!-- Notification Button -->
         <div class="notification-container">
           <button id="notifBtn"
-            class="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            class="notify-button">
             <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
             <!-- Notification Badge -->
             <?php if (count($notifications) > 0): ?>
               <span
-                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
+                class="notif-badge absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
                 <?= count($notifications) ?>
               </span>
             <?php endif; ?>

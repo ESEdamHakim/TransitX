@@ -1,16 +1,15 @@
 <?php
 include("../../../Controller/trajetcontroller.php");
-
+session_start();
 $controller_trajet = new TrajetController();
 $response = ['success' => false, 'message' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_bus'])) {
   $id_bus = intval($_POST['id_bus']);
-  $user_id = 1;
 
   try {
     $stmt = $controller_trajet->db->prepare("DELETE FROM bus_reservation WHERE id_bus = ? AND id_user = ?");
-    $stmt->execute([$id_bus, $user_id]);
+    $stmt->execute([$id_bus, $_SESSION['user_id']]);
 
     // Increase available seats
     $stmt = $controller_trajet->db->prepare("UPDATE bus SET nbplacesdispo = nbplacesdispo + 1 WHERE id_bus = ?");

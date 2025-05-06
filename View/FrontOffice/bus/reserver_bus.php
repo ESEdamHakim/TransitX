@@ -1,6 +1,6 @@
 <?php
 include("../../../Controller/trajetcontroller.php");
-
+session_start();
 header('Content-Type: application/json');
 
 $response = ['success' => false];
@@ -12,7 +12,6 @@ if (!isset($_POST['id_bus'])) {
 }
 
 $id_bus = intval($_POST['id_bus']);
-$user_id = 1; // Replace with actual user ID from session
 
 try {
   $controller_trajet = new TrajetController();
@@ -25,7 +24,7 @@ try {
   } else {
     // Insert reservation
     $stmt = $controller_trajet->db->prepare("INSERT INTO bus_reservation (id_bus, id_user) VALUES (?, ?)");
-    $stmt->execute([$id_bus, $user_id]);
+    $stmt->execute([$id_bus, $_SESSION['user_id']]);
 
     // Update available seats
     $stmt = $controller_trajet->db->prepare("UPDATE bus SET nbplacesdispo = nbplacesdispo - 1 WHERE id_bus = ? AND nbplacesdispo > 0");
