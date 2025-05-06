@@ -413,34 +413,6 @@
     color: var(--text-light);
   }
   
-  button {
-    background: var(--secondary-dark);
-    color: white;
-    border: none;
-    width: 50px;
-    height: 50px;
-    margin-left: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    border-radius: 14px;
-    cursor: pointer;
-    transition: var(--transition-bounce);
-    box-shadow: 0 4px 15px rgba(31, 79, 101, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  button:hover {
-    background: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(31, 79, 101, 0.3);
-  }
-  
-  button:active {
-    transform: translateY(1px);
-  }
-  
   /* Floating button */
   #openChatbotButton {
     position: fixed;

@@ -23,6 +23,9 @@ $clients = $ColisC->getAllClients();
   <link rel="stylesheet" href="assets/css/colis.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
 </head>
 <style>
   /* Additional styles specific to colis list */
@@ -203,6 +206,7 @@ $clients = $ColisC->getAllClients();
 </head>
 
 <body>
+<?php include 'chatbot.php'; ?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -578,6 +582,8 @@ $clients = $ColisC->getAllClients();
   <script src="assets/js/colisValidation.js"></script>
   <script src="assets/js/colisDelete.js"></script>
   <script src="assets/js/colisFilters.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="assets/js/chatbot.js"> </script>
 
   <script>
     // Filters toggle
