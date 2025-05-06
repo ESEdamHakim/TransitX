@@ -27,8 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':id_user' => $userId
         ]);
 
+
         if ($checkQuery->rowCount() === 0) {
-            echo json_encode(['success' => false, 'message' => 'No booking found to update.']);
+            echo json_encode(['success' => false, 'message' => 'Aucune réservation trouvée à mettre à jour.']);
             exit;
         }
 
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':message' => $message
         ]);
 
-        echo json_encode(['success' => true, 'message' => 'Booking status updated successfully.']);
+        echo json_encode(['success' => true, 'message' => 'Le statut de la réservation a été mis à jour avec succès.']);
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }

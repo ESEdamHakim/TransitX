@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             if ($checkQuery->rowCount() > 0) {
-                echo json_encode(['success' => false, 'message' => 'You have already sent a booking request for this covoiturage.']);
+                echo json_encode(['success' => false, 'message' => 'Vous avez déjà envoyé une demande pour ce covoiturage.']);
                 exit;
             }
 
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':id_user' => $userId
             ]);
 
-            echo json_encode(['success' => true, 'message' => 'Booking request sent successfully.']);
+            echo json_encode(['success' => true, 'message' => 'Votre demande de réservation a été envoyée avec succès.']);
         } elseif ($action === 'cancel') {
             // Check if the booking exists before attempting to delete
             $checkQuery = $db->prepare("SELECT * FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             if ($checkQuery->rowCount() === 0) {
-                echo json_encode(['success' => false, 'message' => 'No booking found to cancel.']);
+                echo json_encode(['success' => false, 'message' => 'Aucune réservation trouvée à annuler.']);
                 exit;
             }
 
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':id_user' => $userId
             ]);
 
-            echo json_encode(['success' => true, 'message' => 'Booking request canceled successfully.']);
+            echo json_encode(['success' => true, 'message' => 'Votre demande de réservation a été annulée avec succès.']);
         }
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);

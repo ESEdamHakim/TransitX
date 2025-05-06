@@ -22,23 +22,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         action: isBooked ? "cancel" : "book",
                     }),
                 });
-
+            
                 const result = await response.json();
-                console.log("Booking Response:", result);
-
+            
                 if (result.success) {
+                    // Update the button state and show a success alert
                     if (isBooked) {
                         button.innerHTML = '<i class="fa-solid fa-plus"></i>';
                         button.setAttribute("data-booked", "false");
-                        alert("Votre demande a été annulée.");
                     } else {
                         button.innerHTML = '<i class="fa-solid fa-pause" style="color: #FFD43B;"></i>';
                         button.setAttribute("data-booked", "true");
-                        alert("Votre demande a été envoyée.");
                     }
+                    alert(result.message); // Show success message
                 } else {
-                    console.error("Server Error:", result.message);
-                    alert("Erreur : " + result.message);
+                    alert(result.message); // Show error message
                 }
             } catch (error) {
                 console.error("Error:", error);
