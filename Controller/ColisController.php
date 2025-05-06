@@ -264,7 +264,22 @@ class ColisController
             die('Error: ' . $e->getMessage()); // Handle any errors
         }
     }
+    public function addNotification($id_colis, $id_sender, $id_reciever)
+    {
+        $sql = "INSERT INTO coliscovoit_notif (id_colis, id_sender, id_reciever)
+                VALUES (:id_colis, :id_sender, :id_reciever)";
 
-
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([
+                'id_colis' => $id_colis,
+                'id_sender' => $id_sender,
+                'id_reciever' => $id_reciever
+            ]);
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
 }
 ?>

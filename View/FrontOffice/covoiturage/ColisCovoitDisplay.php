@@ -55,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $newLieuRam = $isExactMatch ? $colis['lieu_ram'] : $selectedCovoiturage['lieu_depart'];
             $newLieuDest = $selectedCovoiturage['lieu_arrivee'];
 
-
             $ColisC->updateColis(
                 $colis['id_colis'],
                 $colis['id_client'],
@@ -74,6 +73,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $colis['longitude_dest'],
                 $colis['prix']
             );
+            $covoiturage = $ColisC->getCovoiturageById($id_covoit);
+            $id_receiver = $covoiturage['id_user'];
+
+            $ColisC->addNotification($id_colis, $_SESSION['user_id'], $id_receiver);
 
             header("Location: ../colis/ColisList.php?success=1");
             exit();
@@ -109,13 +112,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php elseif (!empty($matchingCovoiturages)): ?>
         <div style="text-align: center; margin: 30px 0;">
-  <p style="font-size: 1.25rem; color: #333333; font-weight: 500;">
-    Explorez les covoiturages disponibles correspondant au trajet de votre colis.
-  </p>
-</div>
+            <p style="font-size: 1.25rem; color: #333333; font-weight: 500;">
+                Explorez les covoiturages disponibles correspondant au trajet de votre colis.
+            </p>
+        </div>
         <?php foreach ($matchingCovoiturages as $covoiturage): ?>
             <div class="route-card">
-                <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
+                <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
+                    <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
                 <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                 <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                 <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
@@ -179,12 +183,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($suggestedCovoiturages)):
             foreach ($suggestedCovoiturages as $covoiturage): ?>
                 <div class="route-card">
-                    <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
+                    <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
+                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
                     <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                     <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                     <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
                     <p><strong>Prix:</strong> <?= htmlspecialchars($covoiturage['prix']) ?> TND</p>
-                    <p><strong>Colis:</strong> <?= $covoiturage['accepte_colis'] == 1 ? 'Colis acceptés.' : 'Colis non acceptés.' ?></p>
+                    <p><strong>Colis:</strong> <?= $covoiturage['accepte_colis'] == 1 ? 'Colis acceptés.' : 'Colis non acceptés.' ?>
+                    </p>
                     <p><strong>Détails:</strong> <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
 
                     <?php if (!empty($covoiturage['id_vehicule'])): ?>
