@@ -66,6 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="assets/css/colis.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
   <style>
     .section-header {
       text-align: center;
@@ -118,6 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+  <?php include 'chatbot.php'; ?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -143,11 +146,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <i class="fas fa-bars"></i>
         </button>
         <button class="notify-button position-relative" title="Notifications">
-  <i class="fa-solid fa-bell"></i>
-  <?php if (count($notifications) > 0): ?>
-    <span class="notif-badge"><?= count($notifications) ?></span>
-  <?php endif; ?>
-</button>
+          <i class="fa-solid fa-bell"></i>
+          <?php if (count($notifications) > 0): ?>
+            <span class="notif-badge"><?= count($notifications) ?></span>
+          <?php endif; ?>
+        </button>
       </div>
     </div>
   </header>
@@ -491,6 +494,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <script src="assets/js/colisValidation.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v6.9/mapsJavaScriptAPI.js"></script>
+  <script src="assets/js/chatbot.js"> </script>
   <script>
     const notifyBtn = document.querySelector('.notify-button');
     const modal = document.getElementById('notificationModal');
