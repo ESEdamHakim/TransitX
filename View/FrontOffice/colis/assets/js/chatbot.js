@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await axios.get('getColis.php');
             const colis = response.data.list; // or adjust depending on your structure
             colisText = colis.map(c => 
-                `ID: ${c.id_colis}, Expéditeur: ${c.nom_expediteur}, Destinataire: ${c.nom_destinataire}, Statut: ${c.statut}`
+                `ID: ${c.id_colis}, Client ID: ${c.id_client}, Covoiturage ID: ${c.id_covoit ?? 'N/A'}, Statut: ${c.statut}, ` +
+    `Date: ${c.date_colis}, Dimensions (LxWxH): ${c.longueur}x${c.largeur}x${c.hauteur}, Poids: ${c.poids}kg, ` +
+    `Lieu Ramassage: ${c.lieu_ram}, Lieu Destination: ${c.lieu_dest}, ` +
+    `Coord. Ramassage: (${c.latitude_ram}, ${c.longitude_ram}), Coord. Destination: (${c.latitude_dest}, ${c.longitude_dest}), ` +
+    `Prix: ${c.prix} TND`
             ).join('\n');            
         } catch (error) {
             console.error('Failed to load colis data:', error);
