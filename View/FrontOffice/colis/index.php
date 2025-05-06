@@ -142,15 +142,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>
-        <button class="notify-button" title="Notifications">
-          <i class="fa-solid fa-bell"></i>
-          <?php if (count($notifications) > 0): ?>
-            <span
-              class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
-              <?= count($notifications) ?>
-            </span>
-          <?php endif; ?>
-        </button>
+        <button class="notify-button position-relative" title="Notifications">
+  <i class="fa-solid fa-bell"></i>
+  <?php if (count($notifications) > 0): ?>
+    <span class="notif-badge"><?= count($notifications) ?></span>
+  <?php endif; ?>
+</button>
       </div>
     </div>
   </header>
@@ -468,16 +465,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="notifications-scroll">
           <?php foreach ($notifications as $notif): ?>
             <div class="notification-item card p-3 mb-3 shadow-sm rounded bg-light">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="mb-0"> Colis : <?= htmlspecialchars($notif['lieu_ram']) ?> ➜
-                  <?= htmlspecialchars($notif['lieu_dest']) ?></h5>
-              </div>
-
               <ul class="mb-2">
+                <li><strong> Colis :</strong> <?= htmlspecialchars($notif['lieu_ram']) ?> ➜
+                  <?= htmlspecialchars($notif['lieu_dest']) ?>
+                </li>
                 <li><strong>Date :</strong> <?= htmlspecialchars($notif['date_colis']) ?></li>
                 <li><strong>Prix :</strong> <?= htmlspecialchars($notif['prix']) ?> TND</li>
                 <li><strong>Dimensions (L×l×H) :</strong> <?= htmlspecialchars($notif['longueur']) ?>cm ×
-                  <?= htmlspecialchars($notif['largeur']) ?>cm × <?= htmlspecialchars($notif['hauteur']) ?>cm</li>
+                  <?= htmlspecialchars($notif['largeur']) ?>cm × <?= htmlspecialchars($notif['hauteur']) ?>cm
+                </li>
                 <li><strong>Poids :</strong> <?= htmlspecialchars($notif['poids']) ?> kg</li>
               </ul>
 
@@ -489,8 +485,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <?php endforeach; ?>
         </div>
       </div>
-
-
     </div>
   </div>
 
