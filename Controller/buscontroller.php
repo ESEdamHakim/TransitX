@@ -237,16 +237,27 @@ public function notifyUsersByEmail($id_trajet, $id_bus)
         return;
 
     // Step 4: Create a well-formatted, brief message
-    $subject  = "Nouveau bus disponible sur votre trajet favori: ";
-    $subject  .= "{$trajet['place_depart']} vers {$trajet['place_arrivee']} a {$trajet['heure_depart']} !\n\n";
-    $body = "• Statut : {$bus['statut']}\n";
-    $body .= "• Numéro : {$bus['num_bus']}\n";
-    $body .= "• Type : {$bus['type_bus']}\n";
-    $body .= "• Marque : {$bus['marque']}\n";
-    $body .= "• Modèle : {$bus['modele']}\n";
-    $body .= "• Capacité : {$bus['capacite']} personnes\n";
-    $body .= "• Mise en service : {$bus['date_mise_en_service']}\n";
+    $subject = "Nouveau bus disponible : {$trajet['place_depart']} vers {$trajet['place_arrivee']} a {$trajet['heure_depart']}";
 
+    $body = "
+      <div style='font-family:Arial, sans-serif; font-size:14px; color:#333;'>
+        <p style='font-size:18px; font-weight:bold; color:#2b6cb0; margin:0;'>🚍 Nouveau bus sur votre trajet favori !</p>
+        <p style='margin:4px 0 12px 0;'><strong>Trajet :</strong> {$trajet['place_depart']} → {$trajet['place_arrivee']} à {$trajet['heure_depart']}</p>
+        <ul style='margin:0; padding-left:18px; line-height:1.5;'>
+          <li><strong>Statut :</strong> {$bus['statut']}</li>
+          <li><strong>Numéro :</strong> {$bus['num_bus']}</li>
+          <li><strong>Type :</strong> {$bus['type_bus']}</li>
+          <li><strong>Marque :</strong> {$bus['marque']}</li>
+          <li><strong>Modèle :</strong> {$bus['modele']}</li>
+          <li><strong>Capacité :</strong> {$bus['capacite']} personnes</li>
+          <li><strong>Date de mise en service :</strong> {$bus['date_mise_en_service']}</li>
+        </ul>
+        <p style='margin-top:12px;'>Consultez TransitX pour plus de détails.</p>
+      </div>
+    ";
+    
+    
+    
     // Step 5: Send the email to each user
     foreach ($emails as $email) {
         sendBusEmailNotification($email, $subject, $body); // Send email to each user
