@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await axios.post('https://api.zukijourney.com/v1/chat/completions', {
                 model: 'gpt-4o-mini',
                 messages: [
-                    { role: 'system', content: 'je suis moez' },
+                    { role: 'system', content: 'I am Hakim' },
                     { role: 'user', content: userMessage } // Use user input
                 ]
             }, {

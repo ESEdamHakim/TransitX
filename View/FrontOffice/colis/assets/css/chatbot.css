@@ -434,7 +434,7 @@
   }
   
   button:hover {
-    background: #1a4559;
+    background: var(--primary-color);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(31, 79, 101, 0.3);
   }
