@@ -1,7 +1,10 @@
 <?php
 require_once '../../../Controller/ColisController.php';
 
+session_start();
+
 $ColisC = new ColisController();
+$notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (
@@ -139,8 +142,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>
-        <button class="notify-button" title="Notify">
+        <button class="notify-button" title="Notifications">
           <i class="fa-solid fa-bell"></i>
+          <?php if (count($notifications) > 0): ?>
+            <span
+              class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
+              <?= count($notifications) ?>
+            </span>
+          <?php endif; ?>
         </button>
       </div>
     </div>
@@ -436,8 +445,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </footer>
+
+  <div class="relative">
+    <button class="notify-button" title="Notifications" id="openModalBtn">
+      <i class="fa-solid fa-bell"></i>
+      <?php if (count($notifications) > 0): ?>
+        <span
+          class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full badge-pulse">
+          <?= count($notifications) ?>
+        </span>
+      <?php endif; ?>
+    </button>
+  </div>
+
+  <div id="notificationModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Mes Notifications</h3>
+        <button id="closeModal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="notifications-scroll">
+          <?php foreach ($notifications as $notif): ?>
+            <div class="notification-item">
+              <p><strong>Colis:</strong> <?= htmlspecialchars($notif['lieu_ram']) ?> ➜
+                <?= htmlspecialchars($notif['lieu_dest']) ?></p>
+              <p><strong>Date:</strong> <?= htmlspecialchars($notif['date_colis']) ?></p>
+              <p><strong>Covoiturage ID:</strong> <?= htmlspecialchars($notif['id_covoit'] ?? 'Non affecté') ?></p>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <script src="assets/js/colisValidation.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v6.9/mapsJavaScriptAPI.js"></script>
+  <script>
+    const notifyBtn = document.querySelector('.notify-button');
+    const modal = document.getElementById('notificationModal');
+    const closeModal = document.getElementById('closeModal');
+
+    notifyBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
+    // Optional: close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  </script>
+
 </body>
 
 </html>

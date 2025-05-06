@@ -27,6 +27,82 @@
   transform: scale(1.1);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
+/* Badge animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.badge-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1f4f65;
+  color: white;
+}
+
+.modal-body {
+  padding: 15px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.notifications-scroll {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.notification-item {
+  background-color: #f1f5f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
 .collapsible-header {
   cursor: pointer;
   color: var(--primary);
@@ -88,12 +164,15 @@
   border-radius: 0 0 8px 8px;
 }
 
+/* Active state with scrollable content */
 .collapsible-content.active {
-  max-height: 1000px;
+  max-height: 400px; /* set a fixed max height for scroll */
+  overflow-y: auto; /* enables vertical scrolling */
   opacity: 1;
   transform: scaleY(1);
   padding: 1rem;
 }
+
 
 .bus-routes {
   padding: 5rem 5%;

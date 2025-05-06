@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../../Controller/ColisController.php';
 
 $covoiturageController = new CovoiturageC();
 $ColisC = new ColisController();
+session_start();
 
 try {
     $covoiturages = $covoiturageController->listCovoiturages();
@@ -332,7 +333,7 @@ foreach ($covoiturages as $covoiturage) {
         $covoiturage['lieu_depart'] == $colis['lieu_ram'] &&
         $covoiturage['lieu_arrivee'] == $colis['lieu_dest'] &&
         $covoiturage['accepte_colis'] == 1 &&
-        $covoiturage['colis_complet'] == 0
+        $covoiturage['colis_complet'] == 0 && $covoiturage['id_user'] != $_SESSION['user_id']
     ) {
         $matchingCovoiturages[] = $covoiturage;
     }
@@ -420,7 +421,7 @@ foreach ($covoiturages as $covoiturage) {
                 $covoiturage['lieu_depart'] == $colis['lieu_ram'] &&
                 $daysDiff <= 3 &&
                 $covoiturage['accepte_colis'] == 1 &&
-                $covoiturage['colis_complet'] == 0
+                $covoiturage['colis_complet'] == 0 && $covoiturage['id_user'] != $_SESSION['user_id']
             ) {
                 $suggestedCovoiturages[] = $covoiturage;
             }

@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../../Controller/ColisController.php';
 
 $covoiturageController = new CovoiturageC();
 $ColisC = new ColisController();
+session_start();
 
 try {
     $covoiturages = $covoiturageController->listCovoiturages();
@@ -96,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $covoiturage['lieu_depart'] == $colis['lieu_ram'] &&
             $covoiturage['lieu_arrivee'] == $colis['lieu_dest'] &&
             $covoiturage['accepte_colis'] == 1 &&
-            $covoiturage['colis_complet'] == 0
+            $covoiturage['colis_complet'] == 0 && $covoiturage['id_user'] != $_SESSION['user_id']
         ) {
             $matchingCovoiturages[] = $covoiturage;
         }
@@ -119,7 +120,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php foreach ($matchingCovoiturages as $covoiturage): ?>
             <div class="route-card">
                 <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
-                    <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
+                    <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
+                </h3>
                 <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                 <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                 <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
@@ -174,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $covoiturage['lieu_depart'] == $colis['lieu_ram'] &&
                 $daysDiff <= 3 &&
                 $covoiturage['accepte_colis'] == 1 &&
-                $covoiturage['colis_complet'] == 0
+                $covoiturage['colis_complet'] == 0 && $covoiturage['id_user'] != $_SESSION['user_id']
             ) {
                 $suggestedCovoiturages[] = $covoiturage;
             }
@@ -184,7 +186,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             foreach ($suggestedCovoiturages as $covoiturage): ?>
                 <div class="route-card">
                     <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
-                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></h3>
+                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
+                    </h3>
                     <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
                     <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
                     <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>

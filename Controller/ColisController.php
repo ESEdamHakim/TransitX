@@ -281,5 +281,25 @@ class ColisController
             echo 'Error: ' . $e->getMessage();
         }
     }
+    public function getNotificationByIdUser($id_reciever)
+    {
+        $sql = "SELECT n.*, c.lieu_ram, c.lieu_dest, c.date_colis
+            FROM coliscovoit_notif n
+            JOIN colis c ON n.id_colis = c.id_colis
+            WHERE n.id_reciever = :id_reciever
+            ORDER BY n.id_notif DESC";
+
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute([
+                'id_reciever' => $id_reciever
+            ]);
+            return $query->fetchAll();
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+            return [];
+        }
+    }
 }
 ?>
