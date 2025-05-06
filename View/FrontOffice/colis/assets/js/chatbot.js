@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             chatbotContainer.style.display = 'flex';
             if (chatBox.children.length <= 1) {
                 setTimeout(() => {
-                    addBotMessage("Hello! How can I assist you today?");
+                    addBotMessage("Hello. How can I be of service to you today?");
                 }, 500);
             }
         } else {
