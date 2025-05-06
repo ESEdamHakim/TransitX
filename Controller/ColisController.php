@@ -10,12 +10,12 @@ class ColisController
         $sql = "SELECT * FROM colis";
         $db = config::getConnexion();
         try {
-            return $db->query($sql);
+            $stmt = $db->query($sql);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch as array
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
         }
     }
-
     // Add a new colis
     // Add a new colis and return the inserted ID
     public function addColis($id_client, $id_covoit, $statut, $date_colis, $longueur, $largeur, $hauteur, $poids, $lieu_ram, $lieu_dest, $latitude_ram, $longitude_ram, $latitude_dest, $longitude_dest, $prix)

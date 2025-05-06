@@ -1,22 +1,34 @@
+// Updated chatbot script that fetches and includes colis table data in the system message
+
 document.addEventListener('DOMContentLoaded', function () {
     const openChatbotButton = document.getElementById('openChatbotButton');
     const chatbotContainer = document.getElementById('chatbotContainer');
     const chatBox = document.getElementById('chatBox');
     const inputMessage = document.getElementById('inputMessage');
     const sendMessageButton = document.getElementById('sendMessageButton');
+    let colisText = 'Loading colis data...';
 
-    // Auto-resize textarea
+    // Fetch colis data from PHP backend
+    async function loadColisData() {
+        try {
+            const response = await axios.get('getColis.php');
+            const colis = response.data.list; // or adjust depending on your structure
+            colisText = colis.map(c => 
+                `ID: ${c.id_colis}, Expéditeur: ${c.nom_expediteur}, Destinataire: ${c.nom_destinataire}, Statut: ${c.statut}`
+            ).join('\n');            
+        } catch (error) {
+            console.error('Failed to load colis data:', error);
+            colisText = 'Unable to fetch colis data.';
+        }
+    }    
+    loadColisData();
+
     inputMessage.addEventListener('input', function () {
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
-        if (this.scrollHeight > 120) {
-            this.style.overflowY = 'auto';
-        } else {
-            this.style.overflowY = 'hidden';
-        }
+        this.style.overflowY = this.scrollHeight > 120 ? 'auto' : 'hidden';
     });
 
-    // Toggle chatbot visibility
     openChatbotButton.addEventListener('click', function () {
         if (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') {
             chatbotContainer.style.display = 'flex';
@@ -30,15 +42,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Close button in header
     document.querySelector('.header-icon:last-child').addEventListener('click', function () {
         chatbotContainer.style.display = 'none';
     });
 
-    // Send message on button click
     sendMessageButton.addEventListener('click', sendMessage);
 
-    // Send message on Enter key (but allow Shift+Enter for new lines)
     inputMessage.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -48,30 +57,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function sendMessage() {
         const userMessage = inputMessage.value.trim();
-        if (!userMessage) return; // Ignore empty messages
+        if (!userMessage) return;
 
-        // Add user message to chat
         addUserMessage(userMessage);
         inputMessage.value = '';
         inputMessage.style.height = 'auto';
 
-        // Show loading animation
         const loadingDiv = document.createElement('div');
         loadingDiv.className = 'loading';
-        for (let i = 0; i < 3; i++) {
-            const span = document.createElement('span');
-            loadingDiv.appendChild(span);
-        }
+        for (let i = 0; i < 3; i++) loadingDiv.appendChild(document.createElement('span'));
         chatBox.appendChild(loadingDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
 
         try {
-            // TODO: Replace with server-side API call for security
             const response = await axios.post('https://api.zukijourney.com/v1/chat/completions', {
                 model: 'gpt-4o-mini',
                 messages: [
-                    { role: 'system', content: 'I am Hakim' },
-                    { role: 'user', content: userMessage } // Use user input
+                    { role: 'system', content: `Here is the current Colis data:\n${colisText}` },
+                    { role: 'user', content: userMessage }
                 ]
             }, {
                 headers: {
@@ -80,17 +83,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            // Remove loading animation
             chatBox.removeChild(loadingDiv);
-
-            // Add bot response
             const botMessage = response.data.choices?.[0]?.message?.content || 'No response from API';
             addBotMessage(botMessage);
         } catch (error) {
-            // Remove loading animation
             chatBox.removeChild(loadingDiv);
-
-            // Show error message
             console.error('Error:', error);
             addBotMessage('Sorry, I encountered an error. Please try again.');
         }
@@ -103,22 +100,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12 || 12;
         minutes = minutes < 10 ? '0' + minutes : minutes;
-        return hours + ':' + minutes + ' ' + ampm;
+        return `${hours}:${minutes} ${ampm}`;
     }
 
     function addUserMessage(text) {
         const container = document.createElement('div');
         container.className = 'message-container user-container';
-    
+
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
         messageDiv.textContent = text;
-    
+
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
         timeDiv.textContent = getCurrentTime();
         messageDiv.appendChild(timeDiv);
-    
+
         const avatar = document.createElement('div');
         avatar.className = 'avatar user-avatar';
         const img = document.createElement('img');
@@ -126,17 +123,17 @@ document.addEventListener('DOMContentLoaded', function () {
         img.alt = 'User';
         img.className = 'avatar-img';
         avatar.appendChild(img);
-    
+
         container.appendChild(messageDiv);
-        container.appendChild(avatar); // user avatar on the right due to order
+        container.appendChild(avatar);
         chatBox.appendChild(container);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
-    
+
     function addBotMessage(text) {
         const container = document.createElement('div');
         container.className = 'message-container bot-container';
-    
+
         const avatar = document.createElement('div');
         avatar.className = 'avatar bot-avatar';
         const img = document.createElement('img');
@@ -144,17 +141,17 @@ document.addEventListener('DOMContentLoaded', function () {
         img.alt = 'Bot';
         img.className = 'avatar-img';
         avatar.appendChild(img);
-    
+
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message bot-message';
         messageDiv.textContent = text;
-    
+
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
         timeDiv.textContent = getCurrentTime();
         messageDiv.appendChild(timeDiv);
-    
-        container.appendChild(avatar); // bot avatar on the left
+
+        container.appendChild(avatar);
         container.appendChild(messageDiv);
         chatBox.appendChild(container);
         chatBox.scrollTop = chatBox.scrollHeight;
