@@ -12,6 +12,7 @@ $notifications = $controller->getNotificationsForUser($user_id);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Mobilité Urbaine Durable</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
@@ -39,27 +40,114 @@ $notifications = $controller->getNotificationsForUser($user_id);
       <div class="header-right">
         <a href="../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
         <a href="../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-        <button id="notifBtn">🔔 Notifications (<?= count($notifications) ?>)</button>
 
-        <div id="notifBox" style="display:none;">
-          <?php if (empty($notifications)): ?>
-            <p>Aucune notification</p>
-          <?php else: ?>
-            <?php foreach ($notifications as $notif): ?>
-              <div class="notification">
-                <?= htmlspecialchars($notif['message']) ?>
-                <br><small><?= $notif['created_at'] ?></small>
-              </div>
-            <?php endforeach; ?>
-          <?php endif; ?>
+        <!-- Notification Button -->
+        <div class="notification-container">
+          <button id="notifBtn"
+            class="relative p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
+            <!-- Notification Badge -->
+            <?php if (count($notifications) > 0): ?>
+              <span
+                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
+                <?= count($notifications) ?>
+              </span>
+            <?php endif; ?>
+          </button>
+
+          <!-- Notification Dropdown -->
+          <div id="notifBox" class="notification-dropdown hidden">
+            <div class="p-4 border-b border-gray-200">
+              <h3 class="text-lg font-medium text-gray-900">Notifications</h3>
+            </div>
+
+            <div class="max-h-96 overflow-y-auto">
+              <?php if (empty($notifications)): ?>
+                <div class="p-4 text-center text-gray-500">Aucune notification</div>
+              <?php else: ?>
+                <?php foreach ($notifications as $notif): ?>
+                  <div
+                    class="notification-item p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150 cursor-pointer"
+                    data-id="<?= htmlspecialchars($notif['id']) ?>">
+                    <div class="text-sm text-gray-800 notification-message">
+                      <?php
+                      // Format the message to enhance the emoji and styling
+                      $message = htmlspecialchars($notif['message']);
+                      // Trim any leading or trailing whitespace
+                      $message = trim($message);
+                      // Make the bus emoji larger
+                      $message = preg_replace('/🚌/', '<span class="emoji">🚌</span>', $message, 1);
+                      // Convert newlines to <br> tags
+                      $message = nl2br($message);
+                      // Make the first line (title) bold - improved regex to avoid extra spaces
+                      $message = preg_replace('/^(.*?)(?:\n|$)/s', '<strong>$1</strong>', $message, 1);
+                      // Output the formatted message
+                      echo $message;
+                      ?>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">
+                      <?php
+                      // Format the timestamp to be more readable
+                      $timestamp = strtotime($notif['created_at']);
+                      $now = time();
+                      $diff = $now - $timestamp-3600;
+
+                      if ($diff < 60) {
+                        echo "À l'instant";
+                      } elseif ($diff < 3600) {
+                        $minutes = floor($diff / 60);
+                        echo "Il y a " . $minutes . " minute" . ($minutes > 1 ? 's' : '');
+                      } elseif ($diff < 86400) {
+                        $hours = floor($diff / 3600);
+                        echo "Il y a " . $hours . " heure" . ($hours > 1 ? 's' : '');
+                      } elseif ($diff < 604800) {
+                        $days = floor($diff / 86400);
+                        echo "Il y a " . $days . " jour" . ($days > 1 ? 's' : '');
+                      } else {
+                        echo date('d/m/Y à H:i', $timestamp);
+                      }
+                      ?>
+                    </p>
+                  </div>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </div>
+          </div>
         </div>
 
         <script>
-          document.getElementById("notifBtn").addEventListener("click", function () {
-            document.getElementById("notifBox").style.display = "block";
-            // Optional: AJAX call to mark notifications as seen
+          // Get DOM elements
+          const notifBtn = document.getElementById("notifBtn");
+          const notifBox = document.getElementById("notifBox");
+          const markAllBtn = document.getElementById("mark-all-read");
+
+          // Toggle notification dropdown
+          notifBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
+
+            // Toggle between hidden and visible
+            notifBox.classList.toggle("hidden");
+            notifBox.classList.toggle("show");
+          });
+
+          // Close dropdown when clicking outside
+          document.addEventListener("click", function (event) {
+            if (!notifBtn.contains(event.target) && !notifBox.contains(event.target)) {
+              notifBox.classList.add("hidden");
+              notifBox.classList.remove("show");
+            }
+          });
+
+          // Add click handler for individual notifications
+          document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function () {
+              const notifId = this.getAttribute('data-id');
+              console.log('Clicked notification:', notifId);
+
+            });
           });
         </script>
+
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>

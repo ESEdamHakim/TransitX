@@ -1,5 +1,42 @@
 <?php
-include("../../../Controller/buscontroller.php");
+include '../../../Controller/buscontroller.php';
+require_once '../../assets/PHPMailer/src/Exception.php';
+require_once '../../assets/PHPMailer/src/PHPMailer.php';
+require_once '../../assets/PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+function sendBusEmailNotification($toEmail, $subject, $body)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP server configuration
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'hakimedam72@gmail.com'; // Replace with a real Gmail address
+        $mail->Password = 'anqz mbku mwvl desj';    // App-specific password from Gmail
+        $mail->SMTPSecure = 'tls'; // Use 'ssl' if you use port 465
+        $mail->Port = 587;
+
+        // Email headers and content
+        $mail->setFrom('hakimedam72@gmail.com', 'TransitX');
+        $mail->addAddress($toEmail);
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = nl2br($body); // Converts newlines to <br> for HTML formatting
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Email could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        return false;
+    }
+}
+
 $busController = new BusController();
 $trajets = $busController->getAllTrajets();
 
@@ -39,7 +76,7 @@ if (
   $controller = new BusController();
   $id_bus = $controller->addBus($bus);
   $controller->notifyUsersAboutNewBus($id_trajet, $id_bus);
-
+  $controller->notifyUsersByEmail($id_trajet, $id_bus);
   header("Location: crud.php");
   exit();
 }
@@ -202,7 +239,7 @@ if (
               </div>
 
               <div class="form-actions text-center">
-              <a href="crud.php" class="btn cancel" style="margin-left: 10px;">
+                <a href="crud.php" class="btn cancel" style="margin-left: 10px;">
                   Annuler <i class="fas fa-times"></i>
                 </a>
                 <button type="submit" class="btn btn-primary">

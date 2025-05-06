@@ -1,5 +1,41 @@
 <?php
-include("../../../Controller/buscontroller.php");
+include '../../../Controller/buscontroller.php';
+require_once '../../assets/PHPMailer/src/Exception.php';
+require_once '../../assets/PHPMailer/src/PHPMailer.php';
+require_once '../../assets/PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+function sendBusEmailNotification($toEmail, $subject, $body)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP server configuration
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'hakimedam72@gmail.com'; // Replace with a real Gmail address
+        $mail->Password = 'anqz mbku mwvl desj';    // App-specific password from Gmail
+        $mail->SMTPSecure = 'tls'; // Use 'ssl' if you use port 465
+        $mail->Port = 587;
+
+        // Email headers and content
+        $mail->setFrom('hakimedam72@gmail.com', 'TransitX');
+        $mail->addAddress($toEmail);
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = nl2br($body); // Converts newlines to <br> for HTML formatting
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Email could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        return false;
+    }
+}
 
 $busController = new BusController();
 $trajets = $busController->getAllTrajets();
@@ -15,7 +51,7 @@ if (!$bus) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $id_bus = $_POST['id_bus'];
-  $id_trajet = $_POST['id_trajet'];
+  $new_id_trajet = $_POST['id_trajet'];
   $num_bus = $_POST['num_bus'];
   $capacite = $_POST['capacite'];
   $type_bus = $_POST['type_bus'];
@@ -23,8 +59,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $modele = $_POST['modele'];
   $date_mise_en_service = $_POST['date_mise_en_service'];
   $statut = $_POST['statut'];
-  $bus = new Bus(
-    $id_trajet,
+
+  // Get the old bus to compare trajet
+  $oldBus = $busController->getBusByIdObject($id_bus);
+  $old_id_trajet = $oldBus ? $oldBus->getIdTrajet() : null;
+
+  // Create updated bus object
+  $updatedBus = new Bus(
+    $new_id_trajet,
     $num_bus,
     $capacite,
     $type_bus,
@@ -33,13 +75,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $date_mise_en_service,
     $statut
   );
-  $bus->setIdBus($id_bus);
-  $busController->updateBus($bus);
+  $updatedBus->setIdBus($id_bus);
+
+  // Update bus
+  $busController->updateBus($updatedBus);
+
+  // Only notify if the trajet changed
+  if ($old_id_trajet !== $new_id_trajet) {
+    $busController->notifyUsersAboutNewBus($new_id_trajet, $id_bus);
+    $busController->notifyUsersByEmail($new_id_trajet, $id_bus);
+
+  }
 
   header("Location: crud.php");
   exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">

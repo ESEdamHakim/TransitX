@@ -682,3 +682,160 @@ ul {
     grid-template-columns: 1fr;
   }
 }
+/* Enhanced notification styles */
+.notification-container {
+  position: relative;
+}
+
+/* Improved notification dropdown style */
+.notification-dropdown {
+  position: absolute;
+  top: 65px;
+  right: -10px; /* Offset slightly to align better with the button */
+  width: 350px; /* Wider for better readability */
+  min-width: 300px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Elegant animation */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.98);
+  background-color: white;
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 5px 10px -5px rgba(0, 0, 0, 0.04); /* Softer shadow */
+  border: 1px solid rgba(229, 231, 235, 0.8); /* Subtle border */
+  z-index: 1000; /* Ensure it appears above other content */
+  max-height: 80vh; /* Limit height on small screens */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Enhanced show animation */
+.notification-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* Header styling */
+.notification-dropdown .p-4.border-b {
+  background-color: #f9fafb; /* Light gray background */
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.notification-dropdown h3 {
+  font-weight: 600;
+  color: #374151;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.notification-dropdown h3::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #86b391; /* Match your bell color */
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Scrollable area */
+.notification-dropdown .max-h-96 {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+  flex: 1;
+  max-height: calc(80vh - 60px); /* Account for header */
+}
+
+/* Scrollbar styling */
+.notification-dropdown .max-h-96::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-dropdown .max-h-96::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.notification-dropdown .max-h-96::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 20px;
+}
+
+/* Empty state styling */
+.notification-dropdown .p-4.text-center {
+  padding: 30px 20px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Enhanced notification item */
+.notification-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Notification item hover effect */
+.notification-item:hover {
+  background-color: #f9fafb;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* Message content styling */
+.notification-item .text-sm {
+  line-height: 1.5;
+  color: #4b5563;
+  font-size: 0.925rem;
+  margin: 0px;
+
+}
+
+/* Style the emoji in the message */
+.notification-item .text-sm span.emoji {
+  font-size: 1.2em;
+  margin: 0px;
+}
+
+/* Style the timestamp */
+.notification-item .text-xs {
+  color: #9ca3af;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+/* Badge animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.badge-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+/* Notification button hover effect */
+#notifBtn {
+  transition: transform 0.2s ease;
+}
+
+#notifBtn:hover {
+  transform: scale(1.05);
+}
+
+/* Notification badge positioning */
+#notifBtn .absolute {
+  top: -2px;
+  right: -2px;
+}
