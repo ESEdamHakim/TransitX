@@ -192,18 +192,21 @@ try {
                 </div>
             </div>
         </div>
-        <!-- Modal for Viewing User Details -->
-<div id="user-modal" class="user-modal" style="display: none;">
-    <div class="user-modal-content">
-        <span class="close-user-modal">&times;</span>
-        <h2 class="user-modal-title">Détails du Conducteur</h2>
-        <p><strong>Nom:</strong> <span id="user-nom"></span></p>
-        <p><strong>Prénom:</strong> <span id="user-prenom"></span></p>
-        <p><strong>Email:</strong> <span id="user-email"></span></p>
-        <p><strong>Téléphone:</strong> <span id="user-telephone"></span></p>
-        <button class="btn accept-request">Accepter</button>
-        <button class="btn reject-request">Refuser</button>
+      <!-- Modal for Viewing User Details -->
+      <div id="client-booked-modal" class="client-booked-modal">
+    <div class="client-booked-modal-content">
+        <span class="close-client-booked-modal">&times;</span>
+        <h2 class="client-booked-modal-title">Détails du Conducteur</h2>
+        <p><strong>Nom:</strong> <span id="client-nom"></span></p>
+        <p><strong>Prénom:</strong> <span id="client-prenom"></span></p>
+        <p><strong>Email:</strong> <span id="client-email"></span></p>
+        <p><strong>Téléphone:</strong> <span id="client-telephone"></span></p>
+        <div class="client-modal-actions">
+            <button class="btn secondary cancel-btn reject-client-request">Refuser</button>
+            <button class="btn primary accept-client-request">Accepter</button>
+        </div>
     </div>
+</div>
 </div>
         <script src="manageRequests.js"></script>
     </div>

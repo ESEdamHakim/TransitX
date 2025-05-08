@@ -7,9 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const covoiturageId = button.getAttribute("data-id-covoiturage");
             const isBooked = button.getAttribute("data-booked") === "true";
 
-            console.log("Covoiturage ID:", covoiturageId);
-            console.log("Is Booked:", isBooked);
-
             try {
                 // Send the booking or cancel request to the server
                 const response = await fetch("bookCovoiturage.php", {
@@ -22,11 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         action: isBooked ? "cancel" : "book",
                     }),
                 });
-            
+
                 const result = await response.json();
-            
+
                 if (result.success) {
-                    // Update the button state and show a success alert
+                    // Update the button state
                     if (isBooked) {
                         button.innerHTML = '<i class="fa-solid fa-plus"></i>';
                         button.setAttribute("data-booked", "false");
@@ -34,19 +31,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         button.innerHTML = '<i class="fa-solid fa-pause" style="color: #FFD43B;"></i>';
                         button.setAttribute("data-booked", "true");
                     }
-                    alert(result.message); // Show success message
                 } else {
-                    alert(result.message); // Show error message
+                    console.error("Error:", result.message);
                 }
             } catch (error) {
                 console.error("Error:", error);
-                alert("Une erreur s'est produite. Veuillez réessayer.");
             }
         });
     });
 
     // Handle responding to booking requests
     const requestButtons = document.querySelectorAll(".request-icon-btn");
+    const clientModal = document.getElementById("client-booked-modal");
+    const closeClientModalButton = document.querySelector(".close-client-booked-modal");
+    const acceptClientButton = document.querySelector(".accept-client-request");
+    const rejectClientButton = document.querySelector(".reject-client-request");
 
     requestButtons.forEach((button) => {
         button.addEventListener("click", async () => {
@@ -58,61 +57,69 @@ document.addEventListener("DOMContentLoaded", () => {
                 const response = await fetch(`getUserDetails.php?id_user=${userId}`);
                 const result = await response.json();
 
-                console.log("User Details Response:", result);
-
                 if (result.success) {
                     const user = result.data;
 
-                    // Display user details in a confirmation dialog
-                    const message = `
-                        L'utilisateur suivant souhaite rejoindre votre trajet :
-                        Nom: ${user.nom}
-                        Prénom: ${user.prenom}
-                        Email: ${user.email}
-                        Téléphone: ${user.telephone}
-                    `;
+                    // Populate the modal with user details
+                    document.getElementById("client-nom").textContent = user.nom;
+                    document.getElementById("client-prenom").textContent = user.prenom;
+                    document.getElementById("client-email").textContent = user.email;
+                    document.getElementById("client-telephone").textContent = user.telephone;
 
-                    const accept = confirm(message + "\nVoulez-vous accepter cette demande ?");
-                    const action = accept ? "accept" : "reject";
+                    // Show the modal
+                    clientModal.style.display = "block";
 
-                    // Send the response to the server
-                    const actionResponse = await fetch("updateBookingStatus.php", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            covoiturageId,
-                            userId,
-                            action,
-                        }),
-                    });
+                    // Handle accept and reject actions
+                    acceptClientButton.onclick = async () => {
+                        await handleRequestAction(covoiturageId, userId, "accept");
+                        clientModal.style.display = "none";
+                    };
 
-                    const actionResult = await actionResponse.json();
-                    console.log("Action Result:", actionResult);
-
-                    if (actionResult.success) {
-                        if (accept) {
-                            alert("Demande acceptée.");
-                            button.innerHTML = '<i class="fa-solid fa-check" style="color: #aaec98;"></i>';
-                        } else {
-                            alert("Demande refusée.");
-                            button.innerHTML = '<i class="fa-solid fa-face-sad-tear" style="color: #dd3308;"></i>';
-                        }
-                        // Disable the button after responding
-                        button.disabled = true;
-                    } else {
-                        console.error("Server Error:", actionResult.message);
-                        alert("Erreur : " + actionResult.message);
-                    }
+                    rejectClientButton.onclick = async () => {
+                        await handleRequestAction(covoiturageId, userId, "reject");
+                        clientModal.style.display = "none";
+                    };
                 } else {
-                    console.error("User Details Error:", result.message);
-                    alert("Erreur : " + result.message);
+                    console.error("Error:", result.message);
                 }
             } catch (error) {
                 console.error("Error:", error);
-                alert("Une erreur s'est produite. Veuillez réessayer.");
             }
         });
     });
+
+    // Close the modal when the close button is clicked
+    closeClientModalButton.addEventListener("click", () => {
+        clientModal.style.display = "none";
+    });
+
+    // Function to handle accept/reject actions
+    async function handleRequestAction(covoiturageId, userId, action) {
+        try {
+            const response = await fetch("updateBookingStatus.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    covoiturageId,
+                    userId,
+                    action,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                console.log(action === "accept" ? "Demande acceptée." : "Demande refusée.");
+                // Removed alert here
+            } else {
+                console.error("Error:", result.message);
+                // Removed alert here
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            // Removed alert here
+        }
+    }
 });
