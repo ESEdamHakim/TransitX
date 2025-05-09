@@ -193,7 +193,7 @@ $favorisList = $controller_trajet->getFavorisByUserId($_SESSION['user_id']);
                 </div>
                 <div class="modal-body">
                   <?php
-                  $buses = $controller_trajet->getBusesByTrajetId($trajet['id_trajet'], $user_id);
+                  $buses = $controller_trajet->getBusesByTrajetId($trajet['id_trajet'], $_SESSION['user_id']);
                   if (!empty($buses)) {
                     foreach ($buses as $bus): ?>
                       <div class="bus-info">
