@@ -1,6 +1,6 @@
 <?php
-include_once(__DIR__ . "/../config.php");
-include(__DIR__ . "/../Model/trajetmodel.php");
+require_once(__DIR__ . "/../config.php");
+require_once(__DIR__ . "/../Model/trajetmodel.php");
 
 class TrajetController
 {

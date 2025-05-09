@@ -1,6 +1,6 @@
 <?php
-include_once(__DIR__ . "/../config.php");
-include(__DIR__ . "/../Model/busmodel.php");
+require_once(__DIR__ . "/../config.php");
+require_once(__DIR__ . "/../Model/busmodel.php");
 
 class BusController
 {
