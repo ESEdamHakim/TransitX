@@ -207,7 +207,7 @@ class BusController
     $query = $this->db->prepare("
         SELECT u.email
         FROM bus_favoris bf
-        JOIN users u ON bf.user_id = u.id_user
+        JOIN user u ON bf.user_id = u.id
         WHERE bf.id_trajet = :id_trajet
     ");
     $query->execute(['id_trajet' => $id_trajet]);
