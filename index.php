@@ -8,7 +8,7 @@ ini_set('session.use_strict_mode', 1); // Enhanced security
 session_start();
 session_regenerate_id(true); // Prevent session fixation
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Controller/userC.php';
+require_once 'Controller/userC.php';
 
 // Function to store attempts in session
 function storeAttempt($ip) {
@@ -265,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div class="auth-footer">
-          <p>Vous n'avez pas de compte? <a href="/user/register.php">S'inscrire</a></p>
+          <p>Vous n'avez pas de compte? <a href="register.php">S'inscrire</a></p>
         </div>
       </div>
     </div>

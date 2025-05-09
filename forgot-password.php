@@ -21,7 +21,7 @@
           <h1>Mot de passe oublié</h1>
           <p>Entrez votre adresse email pour réinitialiser votre mot de passe.</p>
         </div>
-        <form class="auth-form" action="login.php">
+        <form class="auth-form" action="/index.php">
           <div class="form-group">
             <label for="email">Email</label>
             <div class="input-with-icon">
@@ -32,7 +32,7 @@
           <button type="submit" class="btn btn-primary btn-block">Réinitialiser le mot de passe</button>
         </form>
         <div class="auth-footer">
-          <p>Vous vous souvenez de votre mot de passe? <a href="login.php">Se connecter</a></p>
+          <p>Vous vous souvenez de votre mot de passe? <a href="/index.php">Se connecter</a></p>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
     document.querySelector('.auth-form').addEventListener('submit', function(e) {
       e.preventDefault();
       alert('Un email de réinitialisation a été envoyé à votre adresse email.');
-      window.location.href = 'login.php';
+      window.location.href = 'index.php';
     });
   </script>
 </body>

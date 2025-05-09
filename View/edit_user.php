@@ -1,8 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Controller/userC.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Model/user.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Model/client.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Model/employe.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../Controller/userC.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../Model/user.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../Model/client.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../Model/employe.php';
 
 $userController = new UserC();
 

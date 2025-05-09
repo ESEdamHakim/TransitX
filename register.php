@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Controller/clientC.php';
+require_once  'Controller/clientC.php';
 
 $clientController = new ClientC();
 

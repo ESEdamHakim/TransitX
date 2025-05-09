@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Controller/userC.php';
+require_once '../../Controller/userC.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
