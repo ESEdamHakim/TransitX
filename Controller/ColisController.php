@@ -148,7 +148,7 @@ class ColisController
 
     public function getAllClients()
     {
-        $sql = "SELECT id_user, nom, prenom FROM users"; // Adjust table name if needed
+        $sql = "SELECT id, nom, prenom FROM user"; // Adjust table name if needed
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -160,7 +160,7 @@ class ColisController
     }
     public function getClientById($id_user)
     {
-        $sql = "SELECT id_user, nom, prenom, email FROM users WHERE id_user = :id_user";
+        $sql = "SELECT id, nom, prenom, email FROM user WHERE id = :id_user";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -227,7 +227,7 @@ class ColisController
 
         try {
             // Prepare SQL query to get user details by user ID
-            $sql = "SELECT * FROM users WHERE id_user = :id_user";
+            $sql = "SELECT * FROM user WHERE id = :id_user";
             $query = $db->prepare($sql);
 
             // Bind the ID parameter to the SQL query
