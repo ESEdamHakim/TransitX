@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
-require_once __DIR__ . '/../../../configuration/config.php'; // Includes session_start()
+require_once __DIR__ . '/../../../configuration/appConfig.php'; // Includes session_start()
 header('Content-Type: application/json');
 
 // Ensure the user is logged in
