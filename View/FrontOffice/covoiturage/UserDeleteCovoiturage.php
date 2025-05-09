@@ -2,12 +2,15 @@
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
 header('Content-Type: application/json');
-
+// Ensure the user is logged in
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_covoit'])) {
     $id_covoit = $_POST['id_covoit'];
 
-    // Use the hardcoded user ID from the session
-    $id_user = $_SESSION['id_user'];
+   
     $covoiturageController = new CovoiturageC();
 
     try {

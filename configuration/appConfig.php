@@ -1,6 +1,12 @@
 <?php
+
 session_start(); // Start the session
 
-// Always set the hardcoded user ID
-$_SESSION['id_user'] = 1; // Replace 2 with the desired user ID
+// Always set the hardcoded user ID for testing purposes
+$_SESSION['id'] = 2; // Replace 1 with the desired user ID
+
+// Set $id_user if the session ID exists
+if (isset($_SESSION['id'])) {
+    $id_user = $_SESSION['id'];
+}
 ?>

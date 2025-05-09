@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 const result = await response.json();
+                console.log("Server Response:", result);
 
                 if (result.success) {
                     // Update the button state
@@ -36,6 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (error) {
                 console.error("Error:", error);
+                console.error("Error parsing JSON:", error);
+                const text = await response.text();
+                console.log("Raw Response:", text);
             }
         });
     });
@@ -50,11 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
     requestButtons.forEach((button) => {
         button.addEventListener("click", async () => {
             const covoiturageId = button.getAttribute("data-id-covoiturage");
-            const userId = button.getAttribute("data-id-user");
+            const id_user = button.getAttribute("data-id-user");
 
             try {
                 // Fetch user details from the server
-                const response = await fetch(`getUserDetails.php?id_user=${userId}`);
+                const response = await fetch(`getUserDetails.php?id_user=${id_user}`);
                 const result = await response.json();
 
                 if (result.success) {
@@ -71,12 +75,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     // Handle accept and reject actions
                     acceptClientButton.onclick = async () => {
-                        await handleRequestAction(covoiturageId, userId, "accept");
+                        await handleRequestAction(covoiturageId, id_user, "accept");
                         clientModal.style.display = "none";
                     };
 
                     rejectClientButton.onclick = async () => {
-                        await handleRequestAction(covoiturageId, userId, "reject");
+                        await handleRequestAction(covoiturageId, id_user, "reject");
                         clientModal.style.display = "none";
                     };
                 } else {
@@ -94,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Function to handle accept/reject actions
-    async function handleRequestAction(covoiturageId, userId, action) {
+    async function handleRequestAction(covoiturageId, id_user, action) {
         try {
             const response = await fetch("updateBookingStatus.php", {
                 method: "POST",
@@ -103,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 body: JSON.stringify({
                     covoiturageId,
-                    userId,
+                    id_user,
                     action,
                 }),
             });

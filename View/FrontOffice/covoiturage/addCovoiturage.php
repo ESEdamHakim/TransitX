@@ -3,10 +3,13 @@ require_once __DIR__ . '/../../../Controller/CovoiturageC.php'; // Corrected pat
 require_once __DIR__ . '/../../../Model/Covoiturage.php';      // Corrected path
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
+
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-     // Use the hardcoded user ID from the session
-     $id_user = $_SESSION['id_user'];
-    // Sanitize and validate input data
+    
     $dateDepart = filter_input(INPUT_POST, 'date_depart', FILTER_SANITIZE_STRING);
     $lieuDepart = filter_input(INPUT_POST, 'lieu_depart', FILTER_SANITIZE_STRING);
     $lieuArrivee = filter_input(INPUT_POST, 'lieu_arrivee', FILTER_SANITIZE_STRING);

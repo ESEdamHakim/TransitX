@@ -1,6 +1,11 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
+// Ensure the user is logged in
+if (!isset($id_user)) {
+    echo "Erreur : Vous devez être connecté pour accéder à cette page.";
+    exit;
+}
 
 $covoiturageController = new CovoiturageC();
 try {
@@ -66,34 +71,34 @@ function isBadWeather($city)
                             <i class="fa-solid fa-user" style="color: #4CAF50;"></i>
                         </button>
                         <!-- Book/Cancel Covoiturage Button -->
-                        <?php if ($_SESSION['id_user'] != $covoiturage['id_user']): ?>
+                        <?php if ($id_user != $covoiturage['id_user']): ?>
                             <?php
                             // Get the booking status for the current user and covoiturage
-                            $bookingStatus = $covoiturageController->getBookingStatus($covoiturage['id_covoit'], $_SESSION['id_user']);
+                            $bookingStatus = $covoiturageController->getBookingStatus($covoiturage['id_covoit'], $id_user);
                             ?>
 
                             <?php if ($bookingStatus === 'pending'): ?>
                                 <button class="icon-btn book-icon-btn"
                                     data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
-                                    data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>" data-booked="true">
+                                    data-id-user="<?= htmlspecialchars($id_user) ?>" data-booked="true">
                                     <i class="fa-solid fa-pause" style="color: #FFD43B;"></i>
                                 </button>
                             <?php elseif ($bookingStatus === 'accepted'): ?>
                                 <button class="icon-btn book-icon-btn"
                                     data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
-                                    data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>" data-booked="true">
+                                    data-id-user="<?= htmlspecialchars($id_user) ?>" data-booked="true">
                                     <i class="fa-solid fa-check" style="color: #aaec98;"></i>
                                 </button>
                             <?php elseif ($bookingStatus === 'rejected'): ?>
                                 <button class="icon-btn book-icon-btn"
                                     data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
-                                    data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>" data-booked="true">
+                                    data-id-user="<?= htmlspecialchars($id_user) ?>" data-booked="true">
                                     <i class="fa-solid fa-face-frown" style="color: #FFD43B;"></i>
                                 </button>
                             <?php else: ?>
                                 <button class="icon-btn book-icon-btn"
                                     data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>"
-                                    data-id-user="<?= htmlspecialchars($_SESSION['id_user']) ?>" data-booked="false">
+                                    data-id-user="<?= htmlspecialchars($id_user) ?>" data-booked="false">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             <?php endif; ?>
@@ -186,4 +191,4 @@ function isBadWeather($city)
 
 <script src="voirvehicule.js"></script>
 <script src="driver.js"></script>
-<script src="manageRequests.js"></script> 
+<script src="manageRequests.js"></script>

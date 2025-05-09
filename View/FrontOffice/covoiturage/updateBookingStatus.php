@@ -3,16 +3,20 @@ require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
 header('Content-Type: application/json');
 
-session_start();
+// Ensure the user is logged in
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-
+  // Log the received data for debugging
+error_log('Received data: ' . print_r($data, true));
     $covoiturageId = $data['covoiturageId'] ?? null;
-    $userId = $data['userId'] ?? null;
     $action = $data['action'] ?? null;
 
-    if (!$covoiturageId || !$userId || !in_array($action, ['accept', 'reject'])) {
+    if (!$covoiturageId || !$id_user || !in_array($action, ['accept', 'reject'])) {
         echo json_encode(['success' => false, 'message' => 'Invalid data provided.']);
         exit;
     }
@@ -24,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkQuery = $db->prepare("SELECT * FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
         $checkQuery->execute([
             ':id_covoiturage' => $covoiturageId,
-            ':id_user' => $userId
+            ':id_user' => $id_user
         ]);
 
 
@@ -39,14 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updateQuery->execute([
             ':status' => $status,
             ':id_covoiturage' => $covoiturageId,
-            ':id_user' => $userId
+            ':id_user' => $id_user
         ]);
 
         // Add a notification for the requester
         $message = $action === 'accept' ? 'Votre demande a été acceptée.' : 'Votre demande a été refusée.';
         $notificationQuery = $db->prepare("INSERT INTO notifications (id_user, id_covoiturage, message, is_read) VALUES (:id_user, :id_covoiturage, :message, 0)");
         $notificationQuery->execute([
-            ':id_user' => $userId,
+            ':id_user' => $id_user,
             ':id_covoiturage' => $covoiturageId,
             ':message' => $message
         ]);

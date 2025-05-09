@@ -56,15 +56,15 @@ class CovoiturageC
         try {
             if ($isAdmin) {
                 // Admin can delete any covoiturage
-                $sql = "DELETE FROM covoiturage WHERE id_covoit = :id";
+                $sql = "DELETE FROM covoiturage WHERE id_covoit = :id_covoit";
                 $query = $db->prepare($sql);
-                $query->execute([':id' => $id_covoit]);
+                $query->execute([':id_covoit' => $id_covoit]);
             } else {
                 // Regular user can only delete their own covoiturage
-                $sql = "DELETE FROM covoiturage WHERE id_covoit = :id AND id_user = :id_user";
+                $sql = "DELETE FROM covoiturage WHERE id_covoit = :id_covoit AND id_user = :id_user";
                 $query = $db->prepare($sql);
                 $query->execute([
-                    ':id' => $id_covoit,
+                    ':id_covoit' => $id_covoit,
                     ':id_user' => $id_user
                 ]);
             }
@@ -91,10 +91,10 @@ class CovoiturageC
                             prix = :prix,
                             temps_depart = :temps_depart,
                             places_dispo = :places_dispo
-                        WHERE id_covoit = :id";
+                        WHERE id_covoit = :id_covoit";
                 $query = $db->prepare($sql);
                 $query->execute([
-                    ':id' => $covoit->getIdCovoit(),
+                    ':id_covoit' => $covoit->getIdCovoit(),
                     ':date_depart' => $covoit->getDateDepart(),
                     ':lieu_depart' => $covoit->getLieuDepart(),
                     ':lieu_arrivee' => $covoit->getLieuArrivee(),
@@ -118,10 +118,10 @@ class CovoiturageC
                             temps_depart = :temps_depart,
                             places_dispo = :places_dispo,
                             id_vehicule = :id_vehicule
-                        WHERE id_covoit = :id AND id_user = :id_user";
+                        WHERE id_covoit = :id_covoit AND id_user = :id_user";
                 $query = $db->prepare($sql);
                 $query->execute([
-                    ':id' => $covoit->getIdCovoit(),
+                    ':id_covoit' => $covoit->getIdCovoit(),
                     ':date_depart' => $covoit->getDateDepart(),
                     ':lieu_depart' => $covoit->getLieuDepart(),
                     ':lieu_arrivee' => $covoit->getLieuArrivee(),
@@ -143,12 +143,12 @@ class CovoiturageC
     // Get a single covoiturage by ID
     public function getCovoiturageById($id_covoit)
     {
-        $sql = "SELECT * FROM covoiturage WHERE id_covoit = :id";
+        $sql = "SELECT * FROM covoiturage WHERE id_covoit = :id_covoit";
         $db = config::getConnexion();
 
         try {
             $query = $db->prepare($sql);
-            $query->execute([':id' => $id_covoit]);
+            $query->execute([':id_covoit' => $id_covoit]);
             $covoit = $query->fetch();
             return $covoit ?: null;
         } catch (Exception $e) {

@@ -3,7 +3,11 @@ require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/config.php'; // Includes session_start()
 header('Content-Type: application/json');
 
-session_start();
+// Ensure the user is logged in
+if (!isset($id_user)) {
+    echo json_encode(['success' => false, 'message' => 'Utilisateur non connecté.']);
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
@@ -11,14 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $covoiturageId = $data['covoiturageId'] ?? null;
     $action = $data['action'] ?? null;
 
-    if (!isset($_SESSION['id_user'])) {
-        echo json_encode(['success' => false, 'message' => 'User not logged in.']);
-        exit;
-    }
+  
 
-    $userId = $_SESSION['id_user'];
 
-    if (!$covoiturageId || !$userId || !in_array($action, ['book', 'cancel'])) {
+    if (!$covoiturageId || !$id_user || !in_array($action, ['book', 'cancel'])) {
         echo json_encode(['success' => false, 'message' => 'Invalid data provided.']);
         exit;
     }
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $checkQuery = $db->prepare("SELECT * FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
             $checkQuery->execute([
                 ':id_covoiturage' => $covoiturageId,
-                ':id_user' => $userId
+                ':id_user' => $id_user
             ]);
 
             if ($checkQuery->rowCount() > 0) {
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insertQuery = $db->prepare("INSERT INTO bookings (id_covoiturage, id_user, notification_status) VALUES (:id_covoiturage, :id_user, 'pending')");
             $insertQuery->execute([
                 ':id_covoiturage' => $covoiturageId,
-                ':id_user' => $userId
+                ':id_user' => $id_user
             ]);
 
             echo json_encode(['success' => true, 'message' => 'Votre demande de réservation a été envoyée avec succès.']);
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $checkQuery = $db->prepare("SELECT * FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
             $checkQuery->execute([
                 ':id_covoiturage' => $covoiturageId,
-                ':id_user' => $userId
+                ':id_user' => $id_user
             ]);
 
             if ($checkQuery->rowCount() === 0) {
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $deleteQuery = $db->prepare("DELETE FROM bookings WHERE id_covoiturage = :id_covoiturage AND id_user = :id_user");
             $deleteQuery->execute([
                 ':id_covoiturage' => $covoiturageId,
-                ':id_user' => $userId
+                ':id_user' => $id_user
             ]);
 
             echo json_encode(['success' => true, 'message' => 'Votre demande de réservation a été annulée avec succès.']);

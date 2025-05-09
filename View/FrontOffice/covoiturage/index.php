@@ -2,8 +2,11 @@
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
 
-// Use the hardcoded user ID from the session
-$id_user = $_SESSION['id_user'];
+// Ensure the user is logged in
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
 
 $vehiculeController = new VehiculeC();
 $vehicules = $vehiculeController->getVehiculesByUser($id_user);

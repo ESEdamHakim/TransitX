@@ -11,9 +11,11 @@
 <body>
     <?php
     require_once __DIR__ . '/../../../Controller/vehiculeC.php';
-
-    //$id_user = 1; // Hardcoded user ID for testing
     require_once __DIR__ . '/../../../configuration/appConfig.php';
+    if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
     $vehiculeController = new VehiculeC();
     try {
         $userVehicules = $vehiculeController->listUserVehicules($id_user);

@@ -4,13 +4,11 @@ require_once '../../../Controller/CovoiturageC.php';
 require_once '../../../Model/Covoiturage.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Use the hardcoded user ID from the session
-    $id_user = $_SESSION['id_user'] ?? null;
-
-    if (!$id_user) {
-        echo "Erreur : Vous devez être connecté pour modifier un trajet.";
-        exit;
-    }
+    // Ensure the user is logged in
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
     $id_covoit = $_POST['id_covoit'];
     $lieu_depart = $_POST['departure'];
     $lieu_arrivee = $_POST['destination'];

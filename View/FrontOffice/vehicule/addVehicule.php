@@ -2,6 +2,12 @@
 require_once __DIR__ . '/../../../Controller/vehiculeC.php'; // Corrected path
 require_once __DIR__ . '/../../../Model/vehicule.php';      // Corrected path
 
+require_once __DIR__ . '/../../../configuration/appConfig.php';
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize and validate input data
     $matricule = filter_input(INPUT_POST, 'matricule', FILTER_SANITIZE_STRING);
@@ -45,10 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $photoName = null; // No photo uploaded
     }
 
-    // Hardcoded user ID for testing
-    //$id_user = 2;
-    require_once __DIR__ . '/../../../configuration/appConfig.php';
-    // Create a new Vehicule object
+   
     $vehicule = new Vehicule(
         $matricule,
         $typeVehicule,

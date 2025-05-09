@@ -13,11 +13,9 @@
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
 
-// Use the hardcoded user ID from the session
-$id_user = $_SESSION['id_user'] ?? null;
-
-if (!$id_user) {
-    echo "<p>Erreur : Vous devez être connecté pour voir vos trajets.</p>";
+// Ensure the user is logged in
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
     exit;
 }
 

@@ -1,4 +1,3 @@
-
 <?php
 // Include necessary files
 require_once '../../../Controller/vehiculeC.php';
@@ -16,6 +15,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $confort = $_POST['confort'];
     //$id_user = 1; // Hardcoded user ID for testing
     require_once __DIR__ . '/../../../configuration/appConfig.php';
+    if (!isset($id_user)) {
+        echo "Erreur : Utilisateur non connecté.";
+        exit;
+    }
     // Handle photo upload or retain the existing photo
     $photo_vehicule = null;
     if (isset($_FILES['photo_vehicule']) && $_FILES['photo_vehicule']['error'] === UPLOAD_ERR_OK) {

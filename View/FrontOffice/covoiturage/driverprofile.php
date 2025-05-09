@@ -1,6 +1,11 @@
 <?php
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 require_once __DIR__ . '/../../../Controller/covoiturageC.php';
-
+// Ensure the user is logged in
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
 if (isset($_GET['action']) && $_GET['action'] === 'getUserById' && isset($_GET['id_user'])) {
     $controller = new CovoiturageC();
     try {

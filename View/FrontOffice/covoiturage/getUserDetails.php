@@ -4,8 +4,15 @@ require_once __DIR__ . '/../../../configuration/appConfig.php';
 header('Content-Type: application/json');
 
 // Use the id_user from the GET request if provided, otherwise fallback to the session
-$id_user = $_GET['id_user'] ?? $_SESSION['id_user'];
-
+//$id_user = $_GET['id'] ?? $_SESSION['id'];
+// Ensure the user is logged in
+if (!isset($id_user)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Utilisateur non connecté.'
+    ]);
+    exit;
+}
 if ($id_user) {
     try {
         $covoiturageController = new CovoiturageC();

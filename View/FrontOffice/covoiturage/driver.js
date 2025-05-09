@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     userButtons.forEach(button => {
         button.addEventListener("click", async () => {
-            const userId = button.getAttribute("data-id-user");
+            const id_user = button.getAttribute("data-id-user");
 
             try {
-                const response = await fetch(`driverprofile.php?action=getUserById&id_user=${userId}`);
+                const response = await fetch(`driverprofile.php?action=getUserById&id_user=${id_user}`);
                 const user = await response.json();
 
                 if (user) {
