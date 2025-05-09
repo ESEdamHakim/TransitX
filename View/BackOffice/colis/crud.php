@@ -226,13 +226,13 @@ $clients = $ColisC->getAllClients();
 
                       <td>
                         <?= htmlspecialchars($client['nom']) ?>   <?= htmlspecialchars($client['prenom']) ?>
-                        <small class="muted">(ID: <?= htmlspecialchars($client['id_user']) ?>)</small>
+                        <small class="muted">(ID: <?= htmlspecialchars($client['id']) ?>)</small>
                       </td>
 
                       <td>
                         <?php if ($covoit): ?>
                           <?= htmlspecialchars($client2['nom']) ?>     <?= htmlspecialchars($client2['prenom']) ?>
-                          <small class="muted">(ID: <?= htmlspecialchars($client2['id_user']) ?>)</small>
+                          <small class="muted">(ID: <?= htmlspecialchars($client2['id']) ?>)</small>
                         <?php else: ?>
                           <em>Aucun covoiturage</em>
                         <?php endif; ?>

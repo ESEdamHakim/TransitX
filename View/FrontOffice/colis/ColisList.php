@@ -348,7 +348,7 @@ $clients = $ColisC->getAllClients();
                           <i class="fas fa-user"></i>
                           <?php if ($client): ?>
                             Expéditeur : <?= htmlspecialchars($client['nom']) ?>       <?= htmlspecialchars($client['prenom']) ?>
-                            (ID: <?= htmlspecialchars($client['id_user']) ?>)
+                            (ID: <?= htmlspecialchars($client['id']) ?>)
                           <?php else: ?>
                             <em>Client inconnu</em>
                           <?php endif; ?>
@@ -446,7 +446,7 @@ $clients = $ColisC->getAllClients();
                       <i class="fas fa-user"></i>
                       <?php if ($covoit): ?>
                         <?= htmlspecialchars($client['nom']) ?>     <?= htmlspecialchars($client['prenom']) ?> (ID:
-                        <?= htmlspecialchars($client['id_user']) ?>)
+                        <?= htmlspecialchars($client['id']) ?>)
                       <?php else: ?>
                         <em>Aucun covoiturage</em>
                       <?php endif; ?>
