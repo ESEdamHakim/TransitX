@@ -150,7 +150,7 @@
           
           <!-- Grid View -->
           <div class="view-container grid-view">
-            <div class="users-grid">
+            <div class="-grid">
               <!-- User cards will go here -->
             </div>
             <div class="pagination">

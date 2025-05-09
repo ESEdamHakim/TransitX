@@ -206,9 +206,9 @@ public function listVehicules2()
                 vehicule.confort,
                 vehicule.photo_vehicule,
                 vehicule.id_user,
-                users.nom AS user_name
+                user.nom AS user_name
             FROM vehicule
-            LEFT JOIN users ON vehicule.id_user = users.id_user";
+            LEFT JOIN user ON vehicule.id_user = user.id";
 
     $db = config::getConnexion();
 

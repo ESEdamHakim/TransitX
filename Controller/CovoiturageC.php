@@ -188,9 +188,9 @@ public function listUserCovoiturage()
                 covoiturage.temps_depart,
                 covoiturage.places_dispo,
                 covoiturage.id_user,
-                users.nom AS user_name
+                user.nom AS user_name
             FROM covoiturage
-            LEFT JOIN users ON covoiturage.id_user = users.id_user";
+            LEFT JOIN user ON covoiturage.id_user = user.id";
     $db = config::getConnexion();
 
     try {
@@ -251,7 +251,7 @@ public function searchCovoiturages($departure, $destination, $date)
 }
 public function getUserById($id_user)
 {
-    $sql = "SELECT nom, prenom, email, telephone FROM users WHERE id_user = :id_user";
+    $sql = "SELECT nom, prenom, email, telephone FROM user WHERE id = :id_user";
     $db = config::getConnexion();
 
     try {
