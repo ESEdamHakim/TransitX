@@ -149,8 +149,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <select name="id_client" id="id_client" >
                     <option value="">-- Sélectionner un client --</option>
                     <?php foreach ($clients as $client): ?>
-                      <option value="<?= $client['id_user'] ?>">
-                        <?= $client['nom'] ?>   <?= $client['prenom'] ?> (ID: <?= $client['id_user'] ?>)
+                      <option value="<?= $client['id'] ?>">
+                        <?= $client['nom'] ?>   <?= $client['prenom'] ?> (ID: <?= $client['id'] ?>)
                       </option>
                     <?php endforeach; ?>
                   </select>

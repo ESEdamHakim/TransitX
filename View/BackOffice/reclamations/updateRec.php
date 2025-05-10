@@ -163,8 +163,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <option value="">-- Sélectionner un client --</option>
                                         <?php
                                         foreach ($clients as $client) {
-                                            $selected = ($client['id_user'] == $reclamation['id_client']) ? 'selected' : '';
-                                            echo "<option value='{$client['id_user']}' $selected>{$client['nom']} {$client['prenom']} (ID: {$client['id_user']})</option>";
+                                            $selected = ($client['id'] == $reclamation['id_client']) ? 'selected' : '';
+                                            echo "<option value='{$client['id']}' $selected>{$client['nom']} {$client['prenom']} (ID: {$client['id']})</option>";
                                         }
                                         ?>
                                     </select>

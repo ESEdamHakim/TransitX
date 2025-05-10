@@ -192,7 +192,7 @@ $clients = $ReclamationC->getAllClients();
                       <td><?= $rec['id_rec'] ?></td>
                       <td>
                         <?= htmlspecialchars($client['nom']) ?>   <?= htmlspecialchars($client['prenom']) ?> (ID:
-                        <?= htmlspecialchars($client['id_user']) ?>)
+                        <?= htmlspecialchars($client['id']) ?>)
                       </td>
                       <td><?= htmlspecialchars($rec['objet']) ?></td>
                       <td><?= htmlspecialchars($rec['date_rec']) ?></td>
