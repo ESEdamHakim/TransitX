@@ -15,5 +15,5 @@ if ($action === 'epingle') {
     $stmt->execute([$id_commentaire]);
 }
 
-header("Location: blog-detail.php?id=" . $_GET['id_article']); // Redirection vers la page de l'article
+header("Location: " . $_SERVER['HTTP_REFERER']);
 exit;
