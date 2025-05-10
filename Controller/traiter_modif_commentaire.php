@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$contenu, $id]);
 
     $id_article = $_POST['id_article']; 
-header("Location: /../View/FrontOffice/blog/blog-detail.php?id=$id_article");
+header("Location: ../View/FrontOffice/blog/blog-detail.php?id=$id_article");
     exit;
     
 }

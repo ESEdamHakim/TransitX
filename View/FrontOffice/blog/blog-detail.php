@@ -548,7 +548,7 @@ function getReplies($pdo, $parentId) {
                                 <i class="fas fa-edit"></i>
                             </button>
                         </form>
-                        <a href="/user/View/FrontOffice/blog/supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');" style="color: red; font-size: 20px;">
+                        <a href="supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');" style="color: red; font-size: 20px;">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>

@@ -1,5 +1,5 @@
 <?php
-require_once('/../../../fpdf186/fpdf.php');
+require_once __DIR__ . '../../../fpdf186/fpdf.php';
 
 $article_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : 0;
 $pdo = new PDO("mysql:host=localhost;dbname=transitx", "root", "");
@@ -114,7 +114,7 @@ if (count($commentaires) === 0) {
 
 // 🖼️ Petit logo en bas à droite
 $pdf->SetY(-25); // Position verticale proche du bas
-$pdf->Image('/../../assets/images/logo.png', 170, $pdf->GetY(), 20); // 20mm de largeur (petit)
+$pdf->Image('../../assets/images/logo.png', 170, $pdf->GetY(), 20); // 20mm de largeur (petit)
 
 $pdf->Output('D', 'article-' . $article_id . '.pdf');
 ?>
