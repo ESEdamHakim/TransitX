@@ -1,3 +1,40 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/user/Controller/clientC.php';
+
+$clientController = new ClientC();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ensure all fields are captured correctly
+    $nom = $_POST['firstname'];
+    $prenom = $_POST['lastname'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm-password'];
+    $telephone = $_POST['phone'];
+    $date_naissance = !empty($_POST['date_naissance']) ? new DateTime($_POST['date_naissance']) : null;
+
+    // Validate that passwords match
+    if ($password !== $confirm_password) {
+        $error = "Les mots de passe ne correspondent pas.";
+    } else {
+        // Hash password for security
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        // Create new client instance
+        $client = new Client($nom, $prenom, $email, $telephone, $date_naissance);
+        $client->setPassword($hashedPassword);
+
+        // Attempt to add client to DB
+        if ($clientController->addClient($client)) {
+            header('Location: index.php'); // Redirect after successful signup
+            exit();
+        } else {
+            $error = "Erreur lors de l'inscription.";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,103 +43,68 @@
   <title>TransitX - Inscription</title>
   <link rel="stylesheet" href="View/assets/css/main.css">
   <link rel="stylesheet" href="View/assets/css/auth.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="auth-page">
     <div class="auth-container">
       <div class="auth-card">
         <div class="auth-header">
-          <div class="logo-container">
-            <img src="View/assets/images/logo.png" alt="TransitX Logo" class="auth-logo">
-            <span class="logo-text">TransitX</span>
-          </div>
           <h1>Inscription</h1>
           <p>Créez votre compte TransitX pour profiter de tous nos services.</p>
         </div>
-        <form class="auth-form" action="login.php">
+
+        <form class="auth-form" method="post">
+          <?php if (isset($error)): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+          <?php endif; ?>
+
           <div class="form-row">
             <div class="form-group">
               <label for="firstname">Prénom</label>
-              <div class="input-with-icon">
-                <i class="fas fa-user"></i>
-                <input type="text" id="firstname" placeholder="Entrez votre prénom">
-              </div>
+              <input type="text" id="firstname" name="firstname" required>
             </div>
             <div class="form-group">
               <label for="lastname">Nom</label>
-              <div class="input-with-icon">
-                <i class="fas fa-user"></i>
-                <input type="text" id="lastname" placeholder="Entrez votre nom">
-              </div>
+              <input type="text" id="lastname" name="lastname" required>
             </div>
           </div>
+
           <div class="form-group">
             <label for="email">Email</label>
-            <div class="input-with-icon">
-              <i class="fas fa-envelope"></i>
-              <input type="email" id="email" placeholder="Entrez votre email">
-            </div>
+            <input type="email" id="email" name="email" required>
           </div>
+
           <div class="form-group">
             <label for="phone">Téléphone</label>
-            <div class="input-with-icon">
-              <i class="fas fa-phone"></i>
-              <input type="tel" id="phone" placeholder="Entrez votre numéro de téléphone">
-            </div>
+            <input type="tel" id="phone" name="phone">
           </div>
+
           <div class="form-group">
             <label for="password">Mot de passe</label>
-            <div class="input-with-icon">
-              <i class="fas fa-lock"></i>
-              <input type="password" id="password" placeholder="Créez un mot de passe">
-            </div>
+            <input type="password" id="password" name="password" required>
           </div>
+
           <div class="form-group">
             <label for="confirm-password">Confirmer le mot de passe</label>
-            <div class="input-with-icon">
-              <i class="fas fa-lock"></i>
-              <input type="password" id="confirm-password" placeholder="Confirmez votre mot de passe">
-            </div>
+            <input type="password" id="confirm-password" name="confirm-password" required>
           </div>
-          <div class="form-options">
-            <div class="remember-me">
-              <input type="checkbox" id="terms">
-              <label for="terms">J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a></label>
-            </div>
-          </div>
+
           <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
-          <div class="social-login">
-            <p>Ou inscrivez-vous avec</p>
-            <div class="social-buttons">
-              <button type="button" class="social-btn facebook">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-              <button type="button" class="social-btn google">
-                <i class="fab fa-google"></i>
-              </button>
-              <button type="button" class="social-btn twitter">
-                <i class="fab fa-twitter"></i>
-              </button>
-            </div>
-          </div>
         </form>
+
         <div class="auth-footer">
-          <p>Vous avez déjà un compte? <a href="login.php">Se connecter</a></p>
+          <p>Vous avez déjà un compte? <a href="index.php">Se connecter</a></p>
         </div>
       </div>
-    </div>
-    <div class="auth-image">
-      <div class="overlay"></div>
     </div>
   </div>
 
   <script>
-    // Simple registration redirect
     document.querySelector('.auth-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      window.location.href = 'login.php';
+      if (document.getElementById('password').value !== document.getElementById('confirm-password').value) {
+        e.preventDefault();
+        alert('Les mots de passe ne correspondent pas.');
+      }
     });
   </script>
 </body>
