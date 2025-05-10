@@ -15,7 +15,8 @@ $users = $userController->listUsers($sort, $order, $search);
 
 // Function to toggle sort order
 function getSortOrder($currentSort, $columnName) {
-    return ($currentSort === $columnName && $_GET['order'] === 'asc') ? 'desc' : 'asc';
+    $currentOrder = $_GET['order'] ?? 'asc';
+    return ($currentSort === $columnName && $currentOrder === 'asc') ? 'desc' : 'asc';
 }
 
 // Function to create sort URL

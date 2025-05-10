@@ -48,4 +48,5 @@ class User
     public function setTelephone($telephone) { $this->telephone = $telephone; }
     public function setDateInscription(DateTime $date) { $this->date_inscription = $date; }
     public function setType($type) { $this->type = $type; }
+    
 }

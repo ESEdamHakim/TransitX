@@ -1,25 +1,4 @@
 <?php
-<<<<<<< HEAD
-class config
-{   private static $pdo = null;
-    public static function getConnexion()
-    {
-        if (!isset(self::$pdo)) {
-            $servername="localhost";
-            $username="root";
-            $password ="";
-            $dbname="transitx";
-            try {
-                self::$pdo = new PDO("mysql:host=$servername;dbname=$dbname",
-                        $username,
-                        $password
-                   
-                );
-                self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                self::$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-               
-               
-=======
 
 class config
 {
@@ -30,7 +9,7 @@ class config
         if (!isset(self::$pdo)) {
             try {
                 self::$pdo = new PDO(
-                    'mysql:host=localhost;dbname=test',
+                    'mysql:host=localhost;dbname=transitx',
                     'root',
                     '',
                     [
@@ -38,7 +17,6 @@ class config
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                     ]
                 );
->>>>>>> f5096321fdd32f5237ae77c4883b2d2250920cb8
             } catch (Exception $e) {
                 die('Erreur: ' . $e->getMessage());
             }
@@ -46,17 +24,4 @@ class config
         return self::$pdo;
     }
 }
-<<<<<<< HEAD
-config::getConnexion();
-?>
-
-
-
-
-
-
-
-
-=======
->>>>>>> f5096321fdd32f5237ae77c4883b2d2250920cb8
 

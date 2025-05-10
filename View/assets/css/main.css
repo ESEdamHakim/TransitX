@@ -203,9 +203,7 @@ ul {
 
 /* Initially hide dashboard button */
 .dashboard-btn {
-  display: inline-block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+  display: none;
 }
 
 /* Hero Section */

@@ -1,15 +1,230 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Blog</title>
+
+  <!-- Feuilles de style -->
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .blog-posts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .blog-post {
+      width: 300px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .blog-post:hover {
+      transform: translateY(-5px);
+    }
+
+    .blog-post img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .post-info {
+      padding: 20px;
+    }
+
+    .author {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 14px;
+      color: #666;
+      font-weight: bold;
+    }
+
+    .post-info h3 {
+      font-size: 20px;
+      color: #1f4f65;
+      margin-bottom: 10px;
+    }
+
+    .post-info p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      background-color: #97c3a2;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .btn-primary:hover {
+      background-color: #1f4f65;
+      color: white;
+    }
+
+    footer {
+      background-color: #1f4f65;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    .content {
+      text-align: center;
+    }
+
+    .tags {
+      font-size: 14px;
+      color: #333;
+      /* Couleur du texte des tags */
+      font-family: 'Montserrat', sans-serif;
+      font-weight: bold;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tags span {
+      padding: 6px 12px;
+      background-color: #dcdcdc;
+      /* Fond des tags : gris clair */
+      border-radius: 20px;
+      /* Arrondi large pour un effet fluide */
+      color: white;
+      /* Texte blanc pour contraster avec le fond gris */
+      text-transform: uppercase;
+      /* Majuscules pour un look plus dynamique */
+      font-size: 14px;
+    }
+
+    .tags span:hover {
+      background-color: #b0b0b0;
+      /* Effet au survol : gris plus foncé */
+      cursor: pointer;
+    }
+
+    .clickable-tag {
+      display: inline-block;
+      background-color: #eee;
+      color: #333;
+      padding: 4px 8px;
+      margin: 0 4px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .clickable-tag:hover {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('get_articles.php')
+        .then(response => response.json())
+        .then(articles => {
+
+          const container = document.querySelector('.blog-posts');
+          if (!container) return;
+
+          container.innerHTML = '';
+          articles.forEach(article => {
+
+            const post = document.createElement('article');
+            post.className = 'blog-post';
+            post.innerHTML = `
+          <div class="blog-post">
+            <!-- Image de l'article en haut -->
+            <img src="../../assets/uploads/${article.photo}" alt="Image de ${article.titre}" />
+            <div class="post-info">
+              <!-- Afficher l'auteur avec l'icône en haut à droite -->
+              <p class="author">
+                <i class="fas ${article.auteur_icon}"></i> ${article.auteur}
+              </p>
+
+              <!-- Affichage des tags avant le titre, sans # et avec couleur -->
+              <p class="tags">
+  ${article.tags ? article.tags.split(',').map(tag => `<span class="tag clickable-tag" data-tag="${tag.trim()}">${tag.trim()}</span>`).join(' ') : 'Pas de tags'}
+</p>
+
+              <!-- Titre de l'article -->
+              <h3>${article.titre}</h3>
+
+              <!-- Premier extrait du contenu -->
+              <p>${article.contenu.substring(0, 100)}...</p>
+              <p>
+                <a href="blog-detail.php?id=${article.id_article}" class="btn-primary">Lire la suite</a>
+              </p>
+
+              <!-- Ajout de la catégorie ici -->
+              <p class="categorie">
+                <i class="fas fa-tag"></i> ${article.categorie || 'Pas de catégorie disponible'}
+              </p>
+
+              <!-- Nombre de commentaires -->
+              <p>
+                <a href="blog-detail.php?id=${article.id_article}#comments" class="comment-link">
+                  <i class="fas fa-comment-dots"></i> ${article.nb_commentaires} commentaire${article.nb_commentaires > 1 ? 's' : ''}
+                </a>
+              </p>
+            </div>
+          </div>
+        `;
+            container.appendChild(post);
+          });
+          document.querySelectorAll('.clickable-tag').forEach(tagElement => {
+            tagElement.addEventListener('click', function () {
+              const selectedTag = this.dataset.tag.toLowerCase();
+
+              document.querySelectorAll('.blog-post').forEach(post => {
+                const tagContainer = post.querySelector('.tags');
+                if (tagContainer && tagContainer.textContent.toLowerCase().includes(selectedTag)) {
+                  post.style.display = 'block';
+                } else {
+                  post.style.display = 'none';
+                }
+              });
+
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+          });
+
+        })
+        .catch(error => {
+          console.error("Erreur lors du chargement des articles :", error);
+        });
+    });
+
+  </script>
 </head>
+
 <body>
+
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -29,8 +244,16 @@
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <!-- Affiche le bouton Dashboard uniquement si l'utilisateur est un employé -->
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'employe'): ?>
+          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php endif; ?>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+        <a href="calendrier.php"
+          style="display: inline-flex; align-items: center; gap: 5px; font-size: 16px; text-decoration: none; color: inherit; background: none; border: 2px solid #97c3a2; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+          📅 <span>Calendrier</span>
+        </a>
+
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>
@@ -38,306 +261,46 @@
     </div>
   </header>
 
-  <main>
-    <section class="blog-hero">
-      <div class="hero-content">
-        <h1>Blog TransitX</h1>
-        <p>Actualités, conseils et tendances sur la mobilité urbaine durable.</p>
-      </div>
-    </section>
-
-    <section class="blog-content">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Articles</span>
-          <h2>Nos derniers articles</h2>
-          <p>Découvrez nos dernières publications sur la mobilité durable et les transports écologiques.</p>
-        </div>
-        <div class="blog-layout">
-          <div class="blog-main">
-            <div class="blog-filters">
-              <div class="search-box">
-                <input type="text" placeholder="Rechercher un article...">
-                <button><i class="fas fa-search"></i></button>
-              </div>
-              <div class="category-filters">
-                <span>Filtrer par catégorie :</span>
-                <div class="filter-buttons">
-                  <button class="filter-btn active">Tous</button>
-                  <button class="filter-btn">Mobilité Verte</button>
-                  <button class="filter-btn">Covoiturage</button>
-                  <button class="filter-btn">Transport Public</button>
-                  <button class="filter-btn">Conseils</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="featured-post">
-              <div class="post-image">
-                <img src="../../assets/images/blog-1.jpg" alt="Featured Post">
-              </div>
-              <div class="post-content">
-                <div class="post-metadata">
-                  <span class="category">Mobilité Verte</span>
-                  <span class="date"><i class="far fa-calendar-alt"></i> 10 Juin 2023</span>
-                </div>
-                <h2>Comment la mobilité partagée transforme nos villes</h2>
-                <p>Les services de mobilité partagée tels que le covoiturage, l'autopartage et les vélos en libre-service révolutionnent la façon dont nous nous déplaçons en ville...</p>
-                <a href="article.php" class="btn btn-primary">
-                  Lire la suite
-                  <i class="fas fa-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-
-            <div class="posts-grid">
-              <div class="post-card">
-                <div class="post-image">
-                  <img src="../../assets/images/blog-2.jpg" alt="Post">
-                  <div class="category-badge">Covoiturage</div>
-                </div>
-                <div class="post-content">
-                  <div class="post-metadata">
-                    <span class="date"><i class="far fa-calendar-alt"></i> 5 Juin 2023</span>
-                  </div>
-                  <h3>5 conseils pour un covoiturage réussi</h3>
-                  <p>Découvrez nos astuces pour rendre vos expériences de covoiturage plus agréables et sécurisées...</p>
-                  <a href="article.php" class="btn btn-outline">
-                    Lire la suite
-                    <i class="fas fa-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="post-card">
-                <div class="post-image">
-                  <img src="../../assets/images/blog-3.jpg" alt="Post">
-                  <div class="category-badge">Transport Public</div>
-                </div>
-                <div class="post-content">
-                  <div class="post-metadata">
-                    <span class="date"><i class="far fa-calendar-alt"></i> 1 Juin 2023</span>
-                  </div>
-                  <h3>L'avenir des bus électriques en France</h3>
-                  <p>Le déploiement des bus électriques s'accélère dans les villes françaises. Quels sont les bénéfices et les défis à relever ?</p>
-                  <a href="article.php" class="btn btn-outline">
-                    Lire la suite
-                    <i class="fas fa-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="post-card">
-                <div class="post-image">
-                  <img src="../../assets/images/blog-1.jpg" alt="Post">
-                  <div class="category-badge">Conseils</div>
-                </div>
-                <div class="post-content">
-                  <div class="post-metadata">
-                    <span class="date"><i class="far fa-calendar-alt"></i> 28 Mai 2023</span>
-                  </div>
-                  <h3>Comment calculer et réduire votre empreinte carbone liée aux transports</h3>
-                  <p>Des outils simples et des actions concrètes pour mesurer et diminuer l'impact environnemental de vos déplacements quotidiens...</p>
-                  <a href="article.php" class="btn btn-outline">
-                    Lire la suite
-                    <i class="fas fa-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="post-card">
-                <div class="post-image">
-                  <img src="../../assets/images/blog-2.jpg" alt="Post">
-                  <div class="category-badge">Mobilité Verte</div>
-                </div>
-                <div class="post-content">
-                  <div class="post-metadata">
-                    <span class="date"><i class="far fa-calendar-alt"></i> 25 Mai 2023</span>
-                  </div>
-                  <h3>Les zones à faibles émissions se multiplient : ce que vous devez savoir</h3>
-                  <p>Comprendre le fonctionnement des ZFE et leur impact sur vos déplacements urbains...</p>
-                  <a href="article.php" class="btn btn-outline">
-                    Lire la suite
-                    <i class="fas fa-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="post-card">
-                <div class="post-image">
-                  <img src="../../assets/images/blog-3.jpg" alt="Post">
-                  <div class="category-badge">Covoiturage</div>
-                </div>
-                <div class="post-content">
-                  <div class="post-metadata">
-                    <span class="date"><i class="far fa-calendar-alt"></i> 20 Mai 2023</span>
-                  </div>
-                  <h3>Covoiturage et éco-conduite : doublez vos économies</h3>
-                  <p>Combinez le partage de trajets avec des techniques d'éco-conduite pour réduire drastiquement vos dépenses en carburant et l'usure de votre véhicule...</p>
-                  <a href="article.php" class="btn btn-outline">
-                    Lire la suite
-                    <i class="fas fa-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="post-card">
-                <div class="post-image">
-                  <img src="../../assets/images/blog-1.jpg" alt="Post">
-                  <div class="category-badge">Transport Public</div>
-                </div>
-                <div class="post-content">
-                  <div class="post-metadata">
-                    <span class="date"><i class="far fa-calendar-alt"></i> 15 Mai 2023</span>
-                  </div>
-                  <h3>Les applications de mobilité multimodale : comparatif des meilleures solutions</h3>
-                  <p>Comment choisir la meilleure application pour combiner différents modes de transport et optimiser vos itinéraires...</p>
-                  <a href="article.php" class="btn btn-outline">
-                    Lire la suite
-                    <i class="fas fa-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="pagination">
-              <a href="#" class="pagination-link active">1</a>
-              <a href="#" class="pagination-link">2</a>
-              <a href="#" class="pagination-link">3</a>
-              <a href="#" class="pagination-link next">Suivant <i class="fas fa-chevron-right"></i></a>
-            </div>
-          </div>
-
-          <div class="blog-sidebar">
-            <div class="sidebar-section about">
-              <h3>À propos du blog</h3>
-              <p>Bienvenue sur le blog TransitX, votre source d'information sur la mobilité urbaine durable, le covoiturage, et les solutions de transport écologiques.</p>
-            </div>
-
-            <div class="sidebar-section popular-posts">
-              <h3>Articles populaires</h3>
-              <div class="popular-post">
-                <img src="../../assets/images/blog-1.jpg" alt="Popular Post">
-                <div>
-                  <h4>Comment économiser sur vos trajets quotidiens</h4>
-                  <span class="date">15 Avril 2023</span>
-                </div>
-              </div>
-              <div class="popular-post">
-                <img src="../../assets/images/blog-2.jpg" alt="Popular Post">
-                <div>
-                  <h4>Les villes les plus avancées en mobilité durable</h4>
-                  <span class="date">2 Mai 2023</span>
-                </div>
-              </div>
-              <div class="popular-post">
-                <img src="../../assets/images/blog-3.jpg" alt="Popular Post">
-                <div>
-                  <h4>Guide du débutant pour le covoiturage</h4>
-                  <span class="date">10 Avril 2023</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="sidebar-section categories">
-              <h3>Catégories</h3>
-              <ul>
-                <li><a href="#">Mobilité Verte <span>(12)</span></a></li>
-                <li><a href="#">Covoiturage <span>(8)</span></a></li>
-                <li><a href="#">Transport Public <span>(10)</span></a></li>
-                <li><a href="#">Conseils <span>(15)</span></a></li>
-                <li><a href="#">Nouvelles Technologies <span>(7)</span></a></li>
-              </ul>
-            </div>
-
-            <div class="sidebar-section newsletter">
-              <h3>Restez informé</h3>
-              <p>Inscrivez-vous à notre newsletter pour recevoir nos derniers articles et conseils.</p>
-              <form>
-                <input type="email" placeholder="Votre email">
-                <button type="submit" class="btn btn-primary">S'inscrire</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="main-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-logo">
-          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="footer-logo-img">
-          <span>TransitX</span>
-        </div>
-        <div class="footer-slogan">
-          <p>Move Green, Live Clean</p>
-        </div>
-        <div class="footer-social">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-      </div>
-      <div class="footer-middle">
-        <div class="footer-column">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="../bus/index.php">Bus</a></li>
-            <li><a href="../covoiturage/index.php">Covoiturage</a></li>
-            <li><a href="../colis/index.php">Colis</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>À propos</h4>
-          <ul>
-            <li><a href="../about.php">Notre mission</a></li>
-            <li><a href="index.php">Blog</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Légal</h4>
-          <ul>
-            <li><a href="#">Conditions d'utilisation</a></li>
-            <li><a href="#">Politique de confidentialité</a></li>
-            <li><a href="#">Cookies</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>Contact</h4>
-          <ul>
-            <li><i class="fas fa-map-marker-alt"></i> 123 Avenue Habib Bourguiba, Tunis</li>
-            <li><i class="fas fa-phone"></i> +216 71 123 456</li>
-            <li><i class="fas fa-envelope"></i> contact@transitx.com</li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 TransitX. Tous droits réservés.</p>
-      </div>
+  <section class="blog" id="blog">
+    <div class="content">
+      <h2>Notre blog</h2>
+      <p>
+        Restez informé avec les dernières nouvelles, idées et tendances sur la mobilité urbaine durable.
+        Explorez nos articles pour découvrir l'avenir des transports.
+      </p>
     </div>
+
+
+
+    <div class="blog-posts">
+      <!-- Articles dynamiques ajoutés ici par JS -->
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2023 TransitX. Tous droits réservés.</p>
   </footer>
 
   <script>
-    // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+    // Menu mobile
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
       document.querySelector('.main-nav').classList.toggle('active');
     });
 
-    // Filter buttons
+    // Boutons de filtre (si présents)
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         filterButtons.forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
       });
     });
 
-    // Ensure dashboard button is visible
+    // Affichage conditionnel boutons dashboard / logout
     document.querySelector('.dashboard-btn').style.display = 'inline-flex';
     document.querySelector('.logout-btn').style.display = 'inline-flex';
   </script>
+
 </body>
+
 </html>
