@@ -86,7 +86,7 @@ class ReclamationController
 
     public function getAllClients()
     {
-        $sql = "SELECT id_user, nom, prenom FROM users"; // Adjust table name if needed
+        $sql = "SELECT id, nom, prenom FROM user"; // Adjust table name if needed
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -98,7 +98,7 @@ class ReclamationController
     }
     public function getClientById($id_user)
     {
-        $sql = "SELECT id_user, nom, prenom FROM users WHERE id_user = :id_user";
+        $sql = "SELECT id, nom, prenom FROM user WHERE id = :id_user";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
