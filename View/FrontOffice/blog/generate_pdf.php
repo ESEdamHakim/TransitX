@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '../../../fpdf186/fpdf.php';
+require_once __DIR__ . '/../../assets/fpdf186/fpdf.php';
 
 $article_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : 0;
 $pdo = new PDO("mysql:host=localhost;dbname=transitx", "root", "");

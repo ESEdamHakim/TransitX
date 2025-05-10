@@ -145,7 +145,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      fetch('../../../Controller/get_articles.php')
+      fetch('get_articles.php')
         .then(response => response.json())
         .then(articles => {
 
@@ -160,7 +160,7 @@
             post.innerHTML = `
           <div class="blog-post">
             <!-- Image de l'article en haut -->
-            <img src="../../../uploads/${article.photo}" alt="Image de ${article.titre}" />
+            <img src="../../assets/uploads/${article.photo}" alt="Image de ${article.titre}" />
             <div class="post-info">
               <!-- Afficher l'auteur avec l'icône en haut à droite -->
               <p class="author">

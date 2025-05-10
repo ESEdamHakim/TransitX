@@ -1,5 +1,5 @@
 <?php
-require_once('../../../fpdf186/fpdf.php');
+require_once('../../assets/fpdf186/fpdf.php');
 
 $pdo = new PDO("mysql:host=localhost;dbname=transitx", "root", "");
 $pdo->exec("SET NAMES 'utf8mb4'");
@@ -46,7 +46,7 @@ $pdf->MultiCell(0, 10, utf8_decode($article['contenu']), 1);
 
 // Affichage de la photo si elle existe
 if (!empty($article['photo'])) {
-    $photoPath = '/../../../images/' . $article['photo'];
+    $photoPath = '/../../assets/images/' . $article['photo'];
     if (file_exists($photoPath)) {
         $pdf->Ln(5);
         $pdf->Cell(0, 10, utf8_decode("Image associée à l'article:"), 0, 1);

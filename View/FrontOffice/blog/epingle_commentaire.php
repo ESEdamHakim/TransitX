@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../../../fpdf186/fpdf.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/../../assets/fpdf186/fpdf.php');
 $pdo = new PDO("mysql:host=localhost;dbname=transitx", "root", "");
 
 // Vérification de l'existence de l'article

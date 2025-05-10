@@ -102,7 +102,7 @@ if (!$commentaire) {
 
 <div class="form-container">
     <h2>Modifier le Commentaire</h2>
-<form method="POST" action="../../../Controller/traiter_modif_commentaire.php">
+<form method="POST" action="traiter_modif_commentaire.php">
         <input type="hidden" name="id_commentaire" value="<?php echo $commentaire['id_commentaire']; ?>">
         <input type="hidden" name="id_article" value="<?php echo $commentaire['id_article']; ?>">
 

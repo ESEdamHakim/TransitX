@@ -2,7 +2,7 @@
 session_start(); // Important : Démarrer la session en haut du fichier
 $isLoggedIn = isset($_SESSION['user_id']);
 
-require_once __DIR__ . '/../../../fpdf186/fpdf.php';
+require_once __DIR__ . '/../../assets/fpdf186/fpdf.php';
 
 
 // Connexion à la base de données

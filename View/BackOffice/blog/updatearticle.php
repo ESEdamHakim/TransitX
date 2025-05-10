@@ -20,7 +20,7 @@ if (isset($_GET['id'])) {
 
             if ($photo['error'] == 0) {
                 $photo_name = time() . '_' . basename($photo['name']);
-                $photo_path = '../../../uploads/' . $photo_name;
+                $photo_path = '../../assets/uploads/' . $photo_name;
                 move_uploaded_file($photo['tmp_name'], $photo_path);
             } else {
                 $photo_name = $offer['photo'];
@@ -254,7 +254,7 @@ if (isset($_GET['id'])) {
                 <label>Photo actuelle:</label>
                 <div class="image-preview">
                     <?php if (!empty($offer['photo'])): ?>
-                        <img src="../../../uploads/<?= htmlspecialchars($offer['photo']); ?>" alt="Photo Article">
+                        <img src="../../assets/uploads/<?= htmlspecialchars($offer['photo']); ?>" alt="Photo Article">
                     <?php else: ?>
                         <p>Aucune photo actuelle</p>
                     <?php endif; ?>

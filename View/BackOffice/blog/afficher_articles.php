@@ -115,7 +115,7 @@ if (isset($_GET['searchTerm']) && !empty($_GET['searchTerm'])) {
 
                             <td>
                                 <?php if (!empty($offer['photo'])): ?>
-                                    <img src="../../../uploads/<?= htmlspecialchars($offer['photo']); ?>" alt="Photo Article" style="width: 80px;">
+                                    <img src="../../assets/uploads/<?= htmlspecialchars($offer['photo']); ?>" alt="Photo Article" style="width: 80px;">
                                 <?php else: ?>
                                     Aucune image
                                 <?php endif; ?>
