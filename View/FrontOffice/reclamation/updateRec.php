@@ -1,6 +1,7 @@
 <?php
 require_once '../../../Controller/ReclamationController.php';
 
+session_start();
 // Check if an ID is provided in the URL
 if (!isset($_GET['id_rec'])) {
     die("Invalid Request");

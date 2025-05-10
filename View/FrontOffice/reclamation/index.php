@@ -1,6 +1,8 @@
 <?php
 require_once '../../../Controller/ReclamationController.php';
 
+session_start();
+
 $ReclamationC = new ReclamationController();
 
 // Always load dropdown data
@@ -104,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
               <div class="form-section">
                 <h3>Détails de la réclamation</h3>
-                <input type="hidden" name="id_client" id="id_client" value="3">
+                <input type="hidden" name="id_client" id="id_client" value="<?php echo $_SESSION['user_id']; ?>">
                 <div class="form-row">
                   <div class="form-group">
                     <label for="complaint-type">Objet de la réclamation</label>
@@ -124,16 +126,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <input type="date" name="date_rec" id="incident-date">
                 </div>
                 <div class="form-group">
-                    <label for="id_covoit">Covoiturage :</label>
-                    <select name="id_covoit" id="id_covoit" >
-                      <option value="">-- Sélectionner un covoiturage --</option>
-                      <?php foreach ($covoiturages as $cov): ?>
-                        <option value="<?= $cov['id_covoit'] ?>">
-                          <?= $cov['lieu_depart'] ?> → <?= $cov['lieu_arrivee'] ?> (ID: <?= $cov['id_covoit'] ?>)
-                        </option>
-                      <?php endforeach; ?>
-                    </select>
-                 </div>
+                  <label for="id_covoit">Covoiturage :</label>
+                  <select name="id_covoit" id="id_covoit">
+                    <option value="">-- Sélectionner un covoiturage --</option>
+                    <?php foreach ($covoiturages as $cov): ?>
+                      <option value="<?= $cov['id_covoit'] ?>">
+                        <?= $cov['lieu_depart'] ?> → <?= $cov['lieu_arrivee'] ?> (ID: <?= $cov['id_covoit'] ?>)
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
                 <div class="form-group">
                   <label for="description">Description détaillée</label>
                   <textarea name="description" id="description" rows="5"
