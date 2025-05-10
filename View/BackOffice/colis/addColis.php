@@ -165,8 +165,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   style="border: 1px solid #dddddd; border-radius: 5px; padding: 8px;">
                   <option value="">-- Sélectionner un client --</option>
                   <?php foreach ($clients as $client): ?>
-                    <option value="<?= $client['id_user'] ?>">
-                      <?= $client['nom'] ?>   <?= $client['prenom'] ?> (ID: <?= $client['id_user'] ?>)
+                    <option value="<?= $client['id'] ?>">
+                      <?= $client['nom'] ?>   <?= $client['prenom'] ?> (ID: <?= $client['id'] ?>)
                     </option>
                   <?php endforeach; ?>
                 </select>
