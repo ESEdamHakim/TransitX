@@ -245,22 +245,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <input type="password" id="password" name="password" required placeholder="Entrez votre mot de passe">
             </div>
             <div class="text-right" style="margin-top: 5px;">
-              <a href="View/FrontOffice/reset_password.php" class="forgot-password" style="color: #007bff; text-decoration: none; font-size: 0.9em;">Mot de passe oublié ?</a>
+              <a href="View/FrontOffice/reset_password.php" class="forgot-password" style="color: #86b391; text-decoration: none; font-size: 0.9em;">Mot de passe oublié ?</a>
             </div>
           </div>
 
           <div class="form-group">
             <div class="h-captcha" data-sitekey="3bde0e2e-31d0-4140-bf90-10b6a89c299c"></div>
           </div>
-
-          <div class="form-options">
-            <div class="remember-me">
-              <input type="checkbox" id="remember" name="remember">
-              <label for="remember">Se souvenir de moi</label>
-            </div>
-            <a href="forgot-password.php" class="forgot-password">Mot de passe oublié?</a>
-          </div>
-
           <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
         </form>
 

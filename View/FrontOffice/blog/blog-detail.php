@@ -2,7 +2,8 @@
 session_start(); // Important : Démarrer la session en haut du fichier
 $isLoggedIn = isset($_SESSION['user_id']);
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/../../../fpdf186/fpdf.php');
+require_once __DIR__ . '/../../../fpdf186/fpdf.php';
+
 
 // Connexion à la base de données
 $pdo = new PDO("mysql:host=localhost;dbname=transitx", "root", "");
@@ -43,23 +44,33 @@ if (!$article) {
 
 // Récupérer les commentaires principaux (ceux sans parent)
 $commentStmt = $pdo->prepare("
-    SELECT * FROM commentaire 
-    WHERE id_article = ? AND id_parent IS NULL 
-    ORDER BY epingle DESC, date_commentaire DESC
+SELECT c.*, u.nom, u.prenom
+    FROM commentaire c
+    JOIN user u ON c.id_user = u.id
+    WHERE c.id_article = ? AND c.id_parent IS NULL 
+    ORDER BY c.epingle DESC, c.date_commentaire DESC
 ");
+
 $commentStmt->execute([$id_article]);
 $commentaires = $commentStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fonction pour récupérer les réponses à un commentaire
-function getReplies($pdo, $idCommentaire) {
+function getReplies($pdo, $parentId) {
     $stmt = $pdo->prepare("
-        SELECT * FROM commentaire 
-        WHERE id_parent = ? 
-        ORDER BY date_commentaire ASC
+        SELECT c.*, u.nom AS nom_auteur, u.prenom AS prenom_auteur, 
+                      up.nom AS nom_parent, up.prenom AS prenom_parent
+        FROM commentaire c
+        LEFT JOIN user u ON c.id_user = u.id
+        LEFT JOIN commentaire cp ON c.id_parent = cp.id_commentaire
+        LEFT JOIN user up ON cp.id_user = up.id
+        WHERE c.id_parent = ? 
+        ORDER BY c.date_commentaire ASC
     ");
-    $stmt->execute([$idCommentaire]);
+    $stmt->execute([$parentId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
 ?> 
 
 <!DOCTYPE html>
@@ -352,6 +363,20 @@ function getReplies($pdo, $idCommentaire) {
     color: #888; /* Texte gris clair */
     cursor: not-allowed;
 }
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-actions form {
+    display: inline-block;
+    margin: 0;
+}
+
+.comment-actions a {
+    display: inline-block;
+}
     </style>
 </head>
 <body>
@@ -408,10 +433,6 @@ function getReplies($pdo, $idCommentaire) {
         alert("Traduction en : " + selectedLanguage);  // Cette fonction peut être étendue pour effectuer la traduction
     }
 </script>
-
-
-
-
 <div class="blog-detail">
 <div class="article-meta-right">
         <small><i class="fa fa-calendar"></i> <?php echo htmlspecialchars($article['date_publication']); ?></small>
@@ -470,61 +491,68 @@ function getReplies($pdo, $idCommentaire) {
         <?php if (count($commentaires) === 0): ?>
             <p>Pas encore de commentaires.</p>
         <?php else: ?>
-           
-<?php foreach ($commentaires as $commentaire): ?>
-<div class="comment" style="display: flex; align-items: flex-start; margin-bottom: 15px; justify-content: space-between;">
-    
-      <!-- Bouton Épingler/Désépingler avec icônes -->
-<?php if ($commentaire['epingle'] == 0): ?>
-    <a href="epingle_commentaire.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=epingle" 
-       title="Épingler ce commentaire" style="color: #007bff;">
-       <i class="fas fa-thumbtack"></i> <!-- Icône pour épingler -->
-    </a>
-<?php else: ?>
-    <a href="epingle_commentaire.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=desepingle" 
-       title="Désépingler ce commentaire" style="color: #dc3545;">
-       <i class="fas fa-thumbtack"></i> <!-- Icône pour désépingler -->
-    </a>
-<?php endif; ?>
-    <div class="comment-content" style="flex-grow: 1;">
-        <p><?php echo nl2br(htmlspecialchars($commentaire['contenu_commentaire'])); ?></p>
-        <div class="comment-date" style="font-size: 0.9em; color: #888; margin-top: 5px;">
-            <?php echo htmlspecialchars($commentaire['date_commentaire']); ?>
-        </div>
-      
-        <!-- Like / Dislike -->
-        <div class="comment-likes" style="margin-top: 8px;">
-            <span>❤️ <?php echo $commentaire['nb_likes']; ?></span>
-            <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=like" style="margin-right: 10px; color: green;">Like</a>
-            <span>👎 <?php echo $commentaire['nb_dislikes']; ?></span>
-            <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=dislike" style="color: red;">Dislike</a>
-        </div>
-
-      
+            <?php foreach ($commentaires as $commentaire): ?>
+                <div class="comment" style="margin-bottom: 20px; padding: 15px; border-bottom: 1px solid #eee;">
+                    <!-- Affiche l'email de l'utilisateur et bouton épingler/désépingler -->
+                    <div class="comment-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex-grow: 1;">
+                           <p style="display: inline; margin: 0; font-weight: bold; color: #333;"><?php echo htmlspecialchars($commentaire['nom']); ?></p>
+<p style="display: inline; margin: 0; font-weight: bold; color: #333;"><?php echo htmlspecialchars($commentaire['prenom']); ?></p>
 
 
-        <!-- Formulaire pour répondre à ce commentaire -->
-        <form action="process_comment.php" method="POST" class="reply-form" style="margin-top: 15px;">
-            <input type="hidden" name="id_article" value="<?php echo $article['id_article']; ?>">
-            <input type="hidden" name="id_user" value="<?php echo $connectedUserId; ?>">
-            <input type="hidden" name="parent_id" value="<?php echo $commentaire['id_commentaire']; ?>"> <!-- ID du commentaire parent -->
-            <textarea name="comment" rows="3" placeholder="Répondre à ce commentaire..." required></textarea><br />
-            <button type="submit">Répondre</button>
-        </form>
-    </div>    <!-- Boutons Modifier et Supprimer -->
-<div class="comment-actions" style="display: flex; align-items: center; gap: 10px; margin-left: 10px;">
-    <form method="get" action="modifier_commentaire.php" style="margin: 0;">
-        <input type="hidden" name="id" value="<?php echo $commentaire['id_commentaire']; ?>">
-        <button type="submit" style="background: none; border: none; color: #4CAF50; font-size: 20px; cursor: pointer;">
-            <i class="fas fa-edit"></i>
-        </button>
-    </form>
-    <a href="/supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');" style="color: red; font-size: 20px;">
-        <i class="fas fa-trash-alt"></i>
-    </a>
-</div>
+                            <div class="comment-date" style="font-size: 0.9em; color: #888;">
+                                <?php echo htmlspecialchars($commentaire['date_commentaire']); ?>
+                            </div>
+                        </div>
+                        <!-- Bouton Épingler/Désépingler avec icônes -->
+                        <?php if ($commentaire['epingle'] == 0): ?>
+                            <a href="epingle_commentaire.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=epingle" 
+                               title="Épingler ce commentaire" style="color: #007bff;">
+                               <i class="fas fa-thumbtack"></i>
+                            </a>
+                        <?php else: ?>
+                            <a href="epingle_commentaire.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=desepingle" 
+                               title="Désépingler ce commentaire" style="color: #dc3545;">
+                               <i class="fas fa-thumbtack"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
 
-</div>
+                    <!-- Contenu du commentaire -->
+                    <div class="comment-content" style="margin-top: 10px;">
+                        <p><?php echo nl2br(htmlspecialchars($commentaire['contenu_commentaire'])); ?></p>
+                    </div>
+
+                    <!-- Like / Dislike -->
+                    <div class="comment-likes" style="margin-top: 8px;">
+                        <span>❤️ <?php echo $commentaire['nb_likes']; ?></span>
+                        <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=like" style="margin-right: 10px; color: green;">Like</a>
+                        <span>👎 <?php echo $commentaire['nb_dislikes']; ?></span>
+                        <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=dislike" style="color: red;">Dislike</a>
+                    </div>
+
+                    <!-- Formulaire pour répondre à ce commentaire -->
+                    <form action="process_comment.php" method="POST" class="reply-form" style="margin-top: 15px;">
+                        <input type="hidden" name="id_article" value="<?php echo $article['id_article']; ?>">
+                        <input type="hidden" name="id_user" value="<?php echo $connectedUserId; ?>">
+                        <input type="hidden" name="parent_id" value="<?php echo $commentaire['id_commentaire']; ?>"> <!-- ID du commentaire parent -->
+                        <textarea name="comment" rows="3" placeholder="Répondre à ce commentaire..." required></textarea><br />
+                        <button type="submit">Répondre</button>
+                    </form>
+
+                    <!-- Boutons Modifier et Supprimer -->
+                    <div class="comment-actions" style="margin-top: 10px; display: flex; gap: 10px;">
+                        <form method="get" action="modifier_commentaire.php" style="margin: 0;">
+                            <input type="hidden" name="id" value="<?php echo $commentaire['id_commentaire']; ?>">
+                            <button type="submit" style="background: none; border: none; color: #4CAF50; font-size: 20px; cursor: pointer;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </form>
+                        <a href="/user/View/FrontOffice/blog/supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');" style="color: red; font-size: 20px;">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
 
 <!-- Affichage des réponses sous le commentaire -->
 <?php
@@ -533,17 +561,25 @@ function getReplies($pdo, $idCommentaire) {
     foreach ($replies as $reply): 
 ?>
 <div class="comment reply" style="display: flex; align-items: flex-start; margin-bottom: 15px; margin-left: 30px; background-color: #f9f9f9; border-left: 3px solid #ddd;">
-    
-    <div class="comment-content" style="flex-grow: 1;">
-        <p><?php echo nl2br(htmlspecialchars($reply['contenu_commentaire'])); ?></p>
-        <div class="comment-date" style="font-size: 0.8em; color: #666; margin-top: 5px;">
-            <?php echo htmlspecialchars($reply['date_commentaire']); ?>
+            <div class="comment-content" style="flex-grow: 1;">
+                <p><?php echo nl2br(htmlspecialchars($reply['contenu_commentaire'])); ?></p>
+                
+                <!-- Affiche l'email de l'utilisateur ayant posté la réponse -->
+                <div class="reply-email" style="font-size: 0.8em; color: gray; margin-top: 5px;">
+                
+                </div>
+
+                <div class="comment-date" style="font-size: 0.8em; color: #666; margin-top: 5px;">
+
+                    <?php echo htmlspecialchars($reply['date_commentaire']); ?>
+                </div>
+                  <p style="display: inline; margin: 0; font-size: 0.8em; color: gray;">Commenté par : <?php echo htmlspecialchars($reply['nom_auteur']); ?> </p>
+<p style="display: inline; margin: 0; font-size: 0.8em; color: gray;"> <?php echo htmlspecialchars($reply['prenom_auteur']); ?></p>
+
+
+            </div>
         </div>
-    </div>
-</div>
-<?php endforeach; ?>
-
-
+        <?php endforeach; ?>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
@@ -592,7 +628,7 @@ async function translateArticle() {
     const originalText = el.dataset.original;
 
     if (originalText.length > 0) {
-      const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(originalText)}&langpair=${selectedLanguage}&de=emnagarbaa200@gmail.com`);
+      const response = await fetch(https://api.mymemory.translated.net/get?q=${encodeURIComponent(originalText)}&langpair=${selectedLanguage}&de=emnagarbaa200@gmail.com);
       const data = await response.json();
       return { el, translatedText: data.responseData.translatedText };
     }
