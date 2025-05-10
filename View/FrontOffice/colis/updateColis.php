@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <div class="colis-form-container">
           <form class="colis-form" method="POST">
-            <input type="hidden" name="id_client" id="id_client" value="3">
+            <input type="hidden" name="id_client" id="id_client" value="<?php echo $_SESSION['user_id']; ?>">
             <br>
             <input type="hidden" name="id_covoit" id="id_covoit"
               value="<?php echo htmlspecialchars($colis['id_covoit']); ?>">
