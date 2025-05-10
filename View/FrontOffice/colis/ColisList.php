@@ -8,6 +8,7 @@ $list = $ColisC->listColis();
 $listByCovoit = $ColisC->getColisByCovoiturage($_SESSION['user_id']);
 $covoiturages = $ColisC->getAllCovoiturages();
 $clients = $ColisC->getAllClients();
+$notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
 
 ?>
 
@@ -206,7 +207,7 @@ $clients = $ColisC->getAllClients();
 </head>
 
 <body>
-<?php include 'chatbot.php'; ?>
+  <?php include 'chatbot.php'; ?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -230,6 +231,12 @@ $clients = $ColisC->getAllClients();
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
+        </button>
+         <button class="notify-button position-relative" title="Notifications">
+          <i class="fa-solid fa-bell"></i>
+          <?php if (count($notifications) > 0): ?>
+            <span class="notif-badge"><?= count($notifications) ?></span>
+          <?php endif; ?>
         </button>
       </div>
     </div>
@@ -579,6 +586,39 @@ $clients = $ColisC->getAllClients();
     <input type="hidden" name="id_colis" id="delete-id">
   </form>
 
+  <div id="notificationModal" class="notimodal-overlay hidden">
+    <div class="notimodal-content">
+      <div class="notimodal-header">
+        <h3>Mes Notifications</h3>
+        <button id="closeModal" class="close-btn">&times;</button>
+      </div>
+      <div class="notimodal-body">
+        <div class="notifications-scroll">
+          <?php foreach ($notifications as $notif): ?>
+            <div class="notification-item card p-3 mb-3 shadow-sm rounded bg-light">
+              <ul class="mb-2">
+                <li><strong> Colis :</strong> <?= htmlspecialchars($notif['lieu_ram']) ?> ➜
+                  <?= htmlspecialchars($notif['lieu_dest']) ?>
+                </li>
+                <li><strong>Date :</strong> <?= htmlspecialchars($notif['date_colis']) ?></li>
+                <li><strong>Prix :</strong> <?= htmlspecialchars($notif['prix']) ?> TND</li>
+                <li><strong>Dimensions (L×l×H) :</strong> <?= htmlspecialchars($notif['longueur']) ?>cm ×
+                  <?= htmlspecialchars($notif['largeur']) ?>cm × <?= htmlspecialchars($notif['hauteur']) ?>cm
+                </li>
+                <li><strong>Poids :</strong> <?= htmlspecialchars($notif['poids']) ?> kg</li>
+              </ul>
+
+              <p class="mb-0">
+                <strong>Covoiturage :</strong>
+                <?= $notif['id_covoit'] ? "Affecté (ID : " . htmlspecialchars($notif['id_covoit']) . ")" : "<span class='text-muted'>Non encore affecté</span>" ?>
+              </p>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/js/colisValidation.js"></script>
   <script src="assets/js/colisDelete.js"></script>
   <script src="assets/js/colisFilters.js"></script>
@@ -632,6 +672,26 @@ $clients = $ColisC->getAllClients();
             setTimeout(() => targetColis.style.boxShadow = '', 2000);
           }
         }, 500); // Delay to ensure collapsible is fully open
+      }
+    });
+  </script>
+  <script>
+    const notifyBtn = document.querySelector('.notify-button');
+    const modal = document.getElementById('notificationModal');
+    const closeModal = document.getElementById('closeModal');
+
+    notifyBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
+    // Optional: close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
       }
     });
   </script>
