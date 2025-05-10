@@ -1,9 +1,10 @@
 <?php
+
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/config.php'; // Includes session_start()
+require_once __DIR__ . '/mailcovoit.php'; // Include the mail logic
 header('Content-Type: application/json');
 
-session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
@@ -15,8 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'User not logged in.']);
         exit;
     }
-
-
 
     if (!$covoiturageId || !$id_user || !in_array($action, ['book', 'cancel'])) {
         echo json_encode(['success' => false, 'message' => 'Invalid data provided.']);
@@ -45,6 +44,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':id_covoiturage' => $covoiturageId,
                 ':id_user' => $id_user
             ]);
+
+            // Fetch the email of the covoiturage creator
+            $creatorQuery = $db->prepare("SELECT u.email FROM user u JOIN covoiturages c ON u.id = c.id_user WHERE c.id_covoit = :id_covoiturage");
+            $creatorQuery->execute([':id_covoiturage' => $covoiturageId]);
+            $creatorEmail = $creatorQuery->fetchColumn();
+
+            if ($creatorEmail) {
+                // Send an email to the creator
+                $subject = "Nouvelle demande de réservation pour votre covoiturage";
+                $body = "Bonjour,<br><br>Un utilisateur a envoyé une demande pour rejoindre votre covoiturage.<br><br>Connectez-vous à votre compte pour voir les détails.";
+                $mailSent = sendMail($creatorEmail, $subject, $body);
+
+                if (!$mailSent) {
+                    error_log("Failed to send email to $creatorEmail");
+                }
+            }
 
             echo json_encode(['success' => true, 'message' => 'Votre demande de réservation a été envoyée avec succès.']);
         } elseif ($action === 'cancel') {
