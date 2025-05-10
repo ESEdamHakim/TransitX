@@ -3,19 +3,15 @@ require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
 require_once __DIR__ . '/../../../configuration/appConfig.php';
 header('Content-Type: application/json');
 
-// Ensure the user is logged in
-if (!isset($id_user)) {
-    echo "Erreur : Utilisateur non connecté.";
-    exit;
-}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-  // Log the received data for debugging
-error_log('Received data: ' . print_r($data, true));
-    $covoiturageId = $data['covoiturageId'] ?? null;
-    $action = $data['action'] ?? null;
 
+    $covoiturageId = $data['covoiturageId'] ?? null;
+    $id_user = $data['id_user'] ?? null;
+    $action = $data['action'] ?? null;
+    
     if (!$covoiturageId || !$id_user || !in_array($action, ['accept', 'reject'])) {
         echo json_encode(['success' => false, 'message' => 'Invalid data provided.']);
         exit;

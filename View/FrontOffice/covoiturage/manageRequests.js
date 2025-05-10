@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 const result = await response.json();
-                console.log("Server Response:", result);
 
                 if (result.success) {
                     // Update the button state
@@ -37,9 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (error) {
                 console.error("Error:", error);
-                console.error("Error parsing JSON:", error);
-                const text = await response.text();
-                console.log("Raw Response:", text);
             }
         });
     });

@@ -1,13 +1,9 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
-require_once __DIR__ . '/../../../configuration/appConfig.php'; // Includes session_start()
+require_once __DIR__ . '/../../../configuration/config.php'; // Includes session_start()
 header('Content-Type: application/json');
 
-// Ensure the user is logged in
-if (!isset($id_user)) {
-    echo json_encode(['success' => false, 'message' => 'Utilisateur non connecté.']);
-    exit;
-}
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
@@ -15,7 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $covoiturageId = $data['covoiturageId'] ?? null;
     $action = $data['action'] ?? null;
 
-  
+    if (!isset($id_user)) {
+        echo json_encode(['success' => false, 'message' => 'User not logged in.']);
+        exit;
+    }
+
 
 
     if (!$covoiturageId || !$id_user || !in_array($action, ['book', 'cancel'])) {
