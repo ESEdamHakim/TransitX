@@ -68,7 +68,7 @@
   animation: pulse 1.5s infinite;
 }
 
-.modal-overlay {
+.notimodal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -81,7 +81,7 @@
   z-index: 9999;
 }
 
-.modal-content {
+.notimodal-content {
   background: #fff;
   border-radius: 10px;
   width: 90%;
@@ -92,7 +92,7 @@
   flex-direction: column;
 }
 
-.modal-header {
+.notimodal-header {
   padding: 15px;
   border-bottom: 1px solid #ddd;
   display: flex;
@@ -102,7 +102,7 @@
   color: white;
 }
 
-.modal-body {
+.notimodal-body {
   padding: 15px;
   overflow-y: auto;
   flex: 1;

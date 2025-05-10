@@ -459,13 +459,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </button>
   </div>
 
-  <div id="notificationModal" class="modal-overlay hidden">
-    <div class="modal-content">
-      <div class="modal-header">
+  <div id="notificationModal" class="notimodal-overlay hidden">
+    <div class="notimodal-content">
+      <div class="notimodal-header">
         <h3>Mes Notifications</h3>
         <button id="closeModal" class="close-btn">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="notimodal-body">
         <div class="notifications-scroll">
           <?php foreach ($notifications as $notif): ?>
             <div class="notification-item card p-3 mb-3 shadow-sm rounded bg-light">
