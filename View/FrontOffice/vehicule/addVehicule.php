@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $photoTmpPath = $_FILES['photo_vehicule']['tmp_name'];
         $photoName = uniqid() . '_' . basename($_FILES['photo_vehicule']['name']);
-        $uploadDir = __DIR__ . '/../../../uploads/';
+        $uploadDir = __DIR__ . '../../assets/uploads/';
 
         if (move_uploaded_file($photoTmpPath, $uploadDir . $photoName)) {
             echo "Photo uploaded successfully: " . $photoName;

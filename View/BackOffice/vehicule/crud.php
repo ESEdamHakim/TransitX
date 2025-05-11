@@ -170,7 +170,7 @@ include 'BdisplayVehicule.php';
                     
                       <td>
                         <?php if (!empty($vehicule['photo_vehicule'])): ?>
-                          <img src="../../../uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>"
+                          <img src="../../assets/uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>"
                             alt="Photo du véhicule" width="50">
                         <?php else: ?>
                           Pas de photo

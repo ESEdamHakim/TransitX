@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         // Set the vehicle photo
                         const photoElement = document.getElementById("vehicule-photo");
                         if (photoElement) {
-                            photoElement.src = data.vehicule.photo_vehicule || '/XTransitX/uploads/default-image.jpg'; // Use a default image if none is provided
+                            photoElement.src = data.vehicule.photo_vehicule || '../../assets/uploads/default-image.jpg'; // Use a default image if none is provided
                         } else {
                             console.error("Element with id 'vehicule-photo' not found in the DOM.");
                         }

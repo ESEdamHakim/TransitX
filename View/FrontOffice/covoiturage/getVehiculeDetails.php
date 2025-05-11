@@ -23,7 +23,7 @@ if (isset($_GET['id_covoiturage'])) {
                 if ($vehicule) {
                     // Add the directory path to the photo_vehicule field
                     $vehicule['photo_vehicule'] = !empty($vehicule['photo_vehicule'])
-                        ? '/XTransitX/uploads/' . $vehicule['photo_vehicule']
+                        ? '../../assets/uploads/' . $vehicule['photo_vehicule']
                         : null;// Use null if no photo is available
 
                     echo json_encode(['success' => true, 'vehicule' => $vehicule]);

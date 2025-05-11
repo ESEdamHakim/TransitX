@@ -38,7 +38,7 @@
                     <p><strong>Confort:</strong> <?= htmlspecialchars($vehicule['confort']) ?></p>
                     <p><strong>Photo:</strong>
                         <?php if (!empty($vehicule['photo_vehicule'])): ?>
-                            <img src="../../../uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>" alt="Photo du véhicule"
+                            <img src="../../assets/uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>" alt="Photo du véhicule"
                                 style="width: 100px;">
                         <?php else: ?>
                             Aucune photo disponible.
