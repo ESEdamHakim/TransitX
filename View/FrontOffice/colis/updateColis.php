@@ -66,6 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="assets/css/colis.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
   <style>
     .section-header {
       text-align: center;
@@ -139,13 +142,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="header-right">
         <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-        <button class="mobile-menu-btn">
-          <i class="fas fa-bars"></i>
-        </button>
-         <button class="notify-button position-relative" title="Notifications">
-          <i class="fa-solid fa-bell"></i>
+        <button class="notify-button position-relative" title="Notifications">
+          <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
+          <!-- Notification Badge -->
           <?php if (count($notifications) > 0): ?>
-            <span class="notif-badge"><?= count($notifications) ?></span>
+            <span
+              class="notif-badge absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
+              <?= count($notifications) ?>
+            </span>
           <?php endif; ?>
         </button>
       </div>

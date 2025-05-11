@@ -227,15 +227,19 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php endif; ?>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-        <button class="mobile-menu-btn">
-          <i class="fas fa-bars"></i>
-        </button>
-         <button class="notify-button position-relative" title="Notifications">
-          <i class="fa-solid fa-bell"></i>
+        <!-- Notification Button -->
+        <button class="notify-button position-relative" title="Notifications">
+          <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
+          <!-- Notification Badge -->
           <?php if (count($notifications) > 0): ?>
-            <span class="notif-badge"><?= count($notifications) ?></span>
+            <span
+              class="notif-badge absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
+              <?= count($notifications) ?>
+            </span>
           <?php endif; ?>
         </button>
       </div>
@@ -280,9 +284,9 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
               <input type="date" id="date-filter">
             </div>
             <div class="filter-group" style="display: none;">
-  <label for="search-filter">Recherche</label>
-  <input type="text" id="search-filter" placeholder="ID covoiturage">
-</div>
+              <label for="search-filter">Recherche</label>
+              <input type="text" id="search-filter" placeholder="ID covoiturage">
+            </div>
             <div class="filter-group">
               <label for="price-sort">Tri par prix</label>
               <select id="price-sort">

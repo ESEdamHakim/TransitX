@@ -4,7 +4,6 @@ require_once __DIR__ . '/../../../Controller/ColisController.php';
 
 $covoiturageController = new CovoiturageC();
 $ColisC = new ColisController();
-session_start();
 
 try {
     $covoiturages = $covoiturageController->listCovoiturages();
