@@ -1,42 +1,54 @@
 # 🚍 TransitX – Plateforme de Mobilité Durable
+
 <p align="center">
-  <img src="./View/assets/images/logo.png" alt="TransitX Logo" width="250"/>
+  <img src="./View/assets/images/logo.png" alt="TransitX Logo" width="220"/>
 </p>
-TransitX est une application web destinée à améliorer la mobilité urbaine grâce au covoiturage, à la gestion des bus, et à la livraison intelligente. Elle vise à promouvoir des déplacements plus écologiques, efficaces et durables.
 
-## 🔧 Technologies
+**TransitX** est une application web innovante dédiée à l'amélioration de la mobilité urbaine. Elle intègre des fonctionnalités de **covoiturage**, de **gestion de bus**, de **livraison de colis**, et bien plus encore. Son objectif est de rendre les déplacements plus **écologiques**, **intelligents** et **durables**.
 
-- Frontend : HTML5, CSS3, JavaScript
-- Backend : PHP 8
+---
 
-## 🧩 Modules Principaux
+## 📌 Fonctionnalités Principales
 
-- Utilisateurs (clients, employés, administrateurs)
-- Covoiturage (création et consultation des trajets)
-- Livraison (gestion des colis par les employés)
-- Bus (gestion des trajets)
-- Blog (articles et commentaires)
+- 🔐 Authentification et gestion des utilisateurs (Clients / Employés)
+- 🚗 Covoiturage : création et réservation de trajets partagés
+- 📦 Livraison de colis avec suivi du statut et carte interactive
+- 🚌 Gestion des trajets de bus
+- 📝 Blog avec système de commentaires
+- 🧾 Tableau de bord admin avec recherche, tri, export PDF
+- 💬 Système de réclamations avec statut dynamique
+- 🗺️ Intégration Google Maps pour géolocalisation
+- 🤖 Chatbot d'assistance
 
-## 👥 Rôles et Accès
+---
 
-| Rôle         | Accès aux modules                                             |
-|--------------|---------------------------------------------------------------|
-| Administrateur | Tous les modules                                             |
-| Employé       | Livraison, Blog                                              |
-| Client        | Consultation : Covoiturage, Bus, Livraison, Blog             |
+## 🧪 Technologies Utilisées
 
-## 🎯 Objectifs Durables (ODD)
+- **Frontend** : HTML5, CSS3, JavaScript
+- **Backend** : PHP 8 (Architecture MVC)
+- **Base de données** : MySQL
+- **Librairies / APIs** : Google Maps API, PHPMailer, Jitsi Meet, GPT 4o-mini, Weather
 
-TransitX soutient les ODD suivants :
+---
+
+## 🎯 Engagement ODD
+
+TransitX soutient les Objectifs de Développement Durable de l’ONU :
 
 - ODD 9 : Infrastructures de transport intelligentes
 - ODD 11 : Mobilité urbaine écologique
 - ODD 13 : Réduction des émissions via transport partagé
 
+---
+
 ## 🎨 Charte Graphique
 
-### Couleurs
+| Nom         | Code Hex  | Aperçu |
+|-------------|-----------|--------|
+| Primaire    | `#97c3a2` | ![#97c3a2](https://www.colorhexa.com/97c3a2.png) |
+| Secondaire  | `#1f4f65` | ![#1f4f65](https://www.colorhexa.com/1f4f65.png) |
+| Tertiaire   | `#d7dd83` | ![#d7dd83](https://www.colorhexa.com/d7dd83.png) |
+| Accent      | `#f9d86d` | ![#f9d86d](https://www.colorhexa.com/f9d86d.png) |
+| Fond        | `#ffffff` | ![#ffffff](https://www.colorhexa.com/ffffff.png) |
 
-![#97c3a2](https://www.colorhexa.com/97c3a2.png) ![#1f4f65](https://www.colorhexa.com/1f4f65.png) ![#d7dd83](https://www.colorhexa.com/d7dd83.png) ![#f9d86d](https://www.colorhexa.com/f9d86d.png) ![#ffffff](https://www.colorhexa.com/ffffff.png)
 
-© 2025 TransitX | Propulsé par l’équipe Pentavision
