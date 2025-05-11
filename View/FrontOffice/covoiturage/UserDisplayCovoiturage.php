@@ -11,7 +11,7 @@
 <body>
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
-require_once __DIR__ . '/../../../configuration/appConfig.php';
+require_once __DIR__ . '/../../../appConfig.php';
 
 // Ensure the user is logged in
 if (!isset($id_user)) {

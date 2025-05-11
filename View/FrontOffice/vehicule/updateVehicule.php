@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $modele = $_POST['modele'];
     $confort = $_POST['confort'];
     //$id_user = 1; // Hardcoded user ID for testing
-    require_once __DIR__ . '/../../../configuration/appConfig.php';
+    require_once __DIR__ . '/../../../appConfig.php';
     if (!isset($id_user)) {
         echo "Erreur : Utilisateur non connecté.";
         exit;

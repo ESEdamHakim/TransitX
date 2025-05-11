@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
-require_once __DIR__ . '/../../../appConfig.php'; // Includes session_start()
+require_once __DIR__ . '/../../../appConfig.php';
 require_once __DIR__ . '/mailcovoit.php'; // Include the mail logic
 header('Content-Type: application/json');
 

@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../../../Controller/vehiculeC.php'; // Corrected path
 require_once __DIR__ . '/../../../Model/vehicule.php';      // Corrected path
+require_once __DIR__ . '/../../../appConfig.php';
 
-require_once __DIR__ . '/../../../configuration/appConfig.php';
 if (!isset($id_user)) {
     echo "Erreur : Utilisateur non connecté.";
     exit;

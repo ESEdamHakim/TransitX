@@ -1,17 +1,16 @@
 <?php
 
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
-require_once __DIR__ . '/../../../configuration/appConfig.php';
 
+require_once __DIR__ . '/../../../appConfig.php';
 header('Content-Type: application/json'); // Ensure the response is JSON
 
 // Check if the user is logged in
-if (!isset($_SESSION['id'])) {
-    echo json_encode(['success' => false, 'message' => 'Utilisateur non connecté.']);
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
     exit;
 }
 
-$id_user = $_SESSION['id'];
 
 // Check if the request is POST and id_vehicule is provided
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_vehicule']) && !empty($_POST['id_vehicule'])) {
