@@ -1,6 +1,6 @@
 <?php
-include("../../../Controller/trajetcontroller.php");
-include("../../../Controller/buscontroller.php");
+require __DIR__ . '/../../../Controller/trajetcontroller.php';
+require __DIR__ . '/../../../Controller/buscontroller.php';
 session_start();
 $controller_trajet = new TrajetController();
 $trajetlist = $controller_trajet->listTrajets();

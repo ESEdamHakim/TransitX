@@ -1,20 +1,20 @@
 <?php
-require_once __DIR__ .  '/../Controller/userC.php';
-require_once __DIR__ .  '/../Model/user.php';
-require_once __DIR__ .  '/../Model/client.php';
-require_once __DIR__ .  '/../Model/employe.php';
+require_once __DIR__ .  '/../../../Controller/userC.php';
+require_once __DIR__ .  '/../../../Model/user.php';
+require_once __DIR__ .  '/../../../Model/client.php';
+require_once __DIR__ .  '/../../../Model/employe.php';
 
 $userController = new UserC();
 
 $id = $_GET['id'] ?? null;
 if (!$id || !filter_var($id, FILTER_VALIDATE_INT)) {
-    header('Location: ../View/Backoffice/users/crud.php');
+    header('Location: crud.php');
     exit();
 }
 
 $user = $userController->showUser($id);
 if (!$user) {
-    header('Location: ../View/Backoffice/users/crud.php');
+    header('Location: crud.php');
     exit();
 }
 
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (empty($errors) && $userController->updateUser($user)) {
-            header('Location: ../View/Backoffice/users/crud.php');
+            header('Location: crud.php');
             exit();
         }
     }

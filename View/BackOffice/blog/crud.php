@@ -79,67 +79,6 @@ $topArticles = $articleC->getMostCommentedArticles();
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
   <style>
-    .search-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 350px;
-      padding: 8px 12px;
-      border-radius: 30px;
-      background-color: #f1f1f1;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease;
-    }
-
-    .search-bar:hover {
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    .search-bar input {
-      flex-grow: 1;
-      border: none;
-      outline: none;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 25px;
-      background-color: transparent;
-      color: #333;
-      transition: all 0.3s ease;
-    }
-
-    .search-bar input::placeholder {
-      color: #888;
-    }
-
-    .search-bar input:focus {
-      color: #333;
-      border-color: #1f4f65;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-    }
-
-    .search-bar button {
-      background-color: #1f4f65;
-      border: none;
-      padding: 10px 12px;
-      margin-left: 10px;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .search-bar button i {
-      color: white;
-      font-size: 18px;
-    }
-
-    .search-bar button:hover {
-      background-color: #0056b3;
-      transform: scale(1.1);
-    }
-
-    .search-bar button:focus {
-      outline: none;
-    }
 
     .header-left h1 {
       color: #1f4f65;

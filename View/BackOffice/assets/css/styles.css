@@ -17,6 +17,10 @@
   --warning: #ffc107;
   --danger: #dc3545;
   --info: #17a2b8;
+  --status-pending: #e0a800;
+  --status-in-progress: #17a2b8;
+  --status-resolved: #28a745;
+  --status-refused: #dc3545;
 }
 
 * {
@@ -216,29 +220,6 @@ ul {
   gap: 1.5rem;
 }
 
-.search-bar {
-  display: flex;
-  align-items: center;
-  background-color: var(--gray-light);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.search-bar input {
-  border: none;
-  background: none;
-  padding: 0.5rem 1rem;
-  width: 200px;
-}
-
-.search-bar button {
-  background: none;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  color: #666;
-}
-
 .notification-btn {
   background: none;
   border: none;
@@ -406,10 +387,23 @@ ul {
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: var(--secondary-1);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.section-header p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .section-header h3 {
@@ -466,28 +460,6 @@ ul {
 .activity-time {
   font-size: 0.8rem;
   color: #999;
-}
-
-/* Parcels Table */
-.parcels-table-container {
-  overflow-x: auto;
-}
-
-.parcels-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.parcels-table th,
-.parcels-table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid var(--gray-light);
-}
-
-.parcels-table th {
-  font-weight: 600;
-  color: var(--secondary-1);
 }
 
 .status {
@@ -604,13 +576,6 @@ ul {
     width: 100%;
   }
 
-  .search-bar {
-    flex: 1;
-  }
-
-  .search-bar input {
-    width: 100%;
-  }
 }
 
 @media (max-width: 576px) {
@@ -624,5 +589,101 @@ ul {
 
   .stat-card {
     padding: 1rem;
+  }
+}
+
+
+.search-bar {
+  display: flex;
+  border: 1px solid #ddd;
+  /* Lighter border color */
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: box-shadow 0.3s ease;
+
+}
+
+.search-bar:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow on hover */
+}
+
+.search-bar input {
+  padding: 0.8rem 1rem;
+  border: none;
+  width: 250px;
+  font-size: 1rem;
+  color: #333;
+  /* Dark text color */
+  background-color: #f9f9f9;
+  /* Light grey background for contrast */
+  border-radius: 12px 0 0 12px;
+  /* Rounded left corners */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  /* Remove default focus outline */
+  background-color: #e0e0e0;
+  /* Slightly darker background on focus */
+}
+
+.search-bar button {
+  background-color: #1f4f65;
+  /* Deep blue color for the button */
+  color: #fff;
+  /* White text for contrast */
+  border: none;
+  padding: 0.8rem 1.5rem;
+  /* Larger padding for a more balanced look */
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(31, 79, 101, 0.3);
+  /* Softer blue shadow to match the button */
+}
+
+.search-bar button:hover {
+  background-color: #1a4055;
+  /* Slightly darker blue on hover */
+  transform: scale(1.05);
+  /* Slight scale-up effect on hover */
+}
+
+.search-bar button:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(31, 79, 101, 0.6);
+  /* Stronger blue glow effect on focus */
+}
+
+.search-bar input::placeholder {
+  font-size: 15px;
+  /* Smaller placeholder text */
+  color: #888;
+  /* Slightly lighter color for the placeholder */
+}
+
+@media (max-width: 600px) {
+  .search-bar {
+    width: 100%;
+    max-width: 100%;
+    /* Ensure full width on small screens */
+  }
+
+  .search-bar input {
+    width: 70%;
+    /* Input takes more space on mobile */
+  }
+
+  .search-bar button {
+    width: 30%;
+    /* Button takes less space on mobile */
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-end;
   }
 }

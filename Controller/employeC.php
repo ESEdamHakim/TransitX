@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../models/employe.php';
-require_once __DIR__ . '/../models/user.php';
+require_once __DIR__ . '/../Model/employe.php';
+require_once __DIR__ . '/../Model/user.php';
 
 class EmployeC {
     // List all employees

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../Controller/userC.php';
+require_once __DIR__ . '/../../Controller/userC.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">

@@ -8,6 +8,6 @@ if ($id && filter_var($id, FILTER_VALIDATE_INT)) { // Validate ID input
     $userController->deleteUser($id);
 }
 
-header('Location: ../View/Backoffice/users/crud.php');
+header('Location: crud.php');
 exit();
 ?>
