@@ -106,32 +106,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       // Email content
       $mail->isHTML(true);
-<<<<<<< HEAD
-      $mail->Subject = 'Mise a jour du statut de votre colis';
-      $mail->Body = "
-      <p>Bonjour <strong>{$client['prenom']} {$client['nom']}</strong>,</p>
-    
-      <p>Nous vous informons que le statut de votre colis (ID : <strong>{$id_colis}</strong>) a été mis à jour.</p>
-    
-      <p><strong>Nouveau statut :</strong> <span style='color:#1f4f65;'>{$newStatus}</span></p>
-    
-      <p><strong>Détails du colis :</strong><br>
-      Dimensions : {$longueur}cm x {$largeur}cm x {$hauteur}cm<br>
-      Poids : {$poids}kg<br>
-      Lieu de ramassage : {$lieu_ram}<br>
-      Destination : {$lieu_dest}<br>
-      Prix : {$prix} DT
-      </p>
-    
-      <p><strong>Trajet de covoiturage :</strong> de <strong>{$lieu_ram}</strong> à <strong>{$lieu_dest}</strong></p>
-      <p><strong>Date du covoiturage :</strong> {$date_colis}</p>
-    
-      <p>Merci de faire confiance à <strong>TransitX</strong> pour vos livraisons durables.</p>
-    
-      <p style='margin-top:20px;'>Cordialement,<br>L'équipe TransitX</p>
-    ";    
-
-=======
       $mail->Subject = 'Mise à jour du statut de votre colis';
       $mail->Body = '
 <html>
@@ -224,7 +198,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   </div>
 </body>
 </html>';
->>>>>>> 24960e287be070f65fe7e3803defc83307272aa9
       $mail->send();
 
     } catch (Exception $e) {
