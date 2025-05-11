@@ -2,8 +2,8 @@
 
 .covoiturage-hero {
   height: 50vh;
-  background-image: linear-gradient(rgba(233, 245, 238, 0.9), rgba(241, 247, 245 ,0.9));
-    /*url("/placeholder.svg?height=800&width=1600");*/
+  background-image: linear-gradient(rgba(233, 245, 238, 0.9), rgba(241, 247, 245 ,0.9)),
+    url("/placeholder.svg?height=800&width=1600");
   background-size: cover;
   background-position: center;
   display: flex;
@@ -61,19 +61,30 @@
 .form-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1.5rem; 
 }
-
 .form-group label {
   margin-bottom: 0.5rem;
   font-weight: 500;
+  font-size: 1rem; 
   color: var(--secondary-1);
 }
 
 .form-group input,
 .form-group select {
-  padding: 0.8rem;
+  width: 100%; 
+  padding: 1rem;
+  font-size: 1rem; 
   border: 1px solid var(--gray);
   border-radius: 4px;
+  box-sizing: border-box; 
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none; 
+  border-color: var(--primary); 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
 }
 
 .search-form button {
@@ -420,148 +431,4 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-}
-.vehicule-modal {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  z-index: 1000;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 90%; /* Adjust the width */
-  max-width: 600px; /* Set a maximum width */
-  overflow-y: auto; /* Add scrolling if content overflows */
-  max-height: 90%; /* Prevent the modal from exceeding the viewport height */
-}
-
-.vehicule-modal-content {
-  text-align: center;
-}
-
-.vehicule-modal img {
-  max-width: 100%; /* Ensure the image fits within the modal */
-  height: auto; /* Maintain aspect ratio */
-  margin-bottom: 15px;
-}
-
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  cursor: pointer;
-  color: #333;
-}
-.user-modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.user-modal-content {
-  background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 50%;
-  border-radius: 8px;
-}
-
-.close-user-modal {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close-user-modal:hover,
-.close-user-modal:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.accept-request {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.reject-request {
-  background-color: #f44336;
-  color: white;
-}
-.client-booked-modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.client-booked-modal-content {
-  background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 50%;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.close-client-booked-modal {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close-client-booked-modal:hover,
-.close-client-booked-modal:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.client-modal-actions .btn {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.accept-client-request {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.reject-client-request {
-  background-color: #f44336;
-  color: white;
 }
