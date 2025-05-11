@@ -13,6 +13,10 @@
   --gray: #ddd;
   --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
+  --status-pending: #e0a800;
+  --status-in-progress: #17a2b8;
+  --status-resolved: #28a745;
+  --status-refused: #dc3545;
 }
 
 * {
