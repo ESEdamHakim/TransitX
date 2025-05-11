@@ -43,12 +43,8 @@ TransitX soutient les Objectifs de Développement Durable de l’ONU :
 
 ## 🎨 Charte Graphique
 
-| Nom         | Code Hex  | Aperçu |
-|-------------|-----------|--------|
-| Primaire    | `#97c3a2` | ![#97c3a2](https://www.colorhexa.com/97c3a2.png) |
-| Secondaire  | `#1f4f65` | ![#1f4f65](https://www.colorhexa.com/1f4f65.png) |
-| Tertiaire   | `#d7dd83` | ![#d7dd83](https://www.colorhexa.com/d7dd83.png) |
-| Accent      | `#f9d86d` | ![#f9d86d](https://www.colorhexa.com/f9d86d.png) |
-| Fond        | `#ffffff` | ![#ffffff](https://www.colorhexa.com/ffffff.png) |
+### Couleurs
 
+![#97c3a2](https://www.colorhexa.com/97c3a2.png) ![#1f4f65](https://www.colorhexa.com/1f4f65.png) ![#d7dd83](https://www.colorhexa.com/d7dd83.png) ![#f9d86d](https://www.colorhexa.com/f9d86d.png) ![#ffffff](https://www.colorhexa.com/ffffff.png)
 
+© 2025 TransitX | Propulsé par l’équipe Pentavision
