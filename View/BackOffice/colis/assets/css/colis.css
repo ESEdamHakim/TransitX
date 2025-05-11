@@ -13,6 +13,101 @@ main {
   padding: 2rem;
 }
 
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-box {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-box .stat-title {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.stat-box .stat-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.stat-box .stat-icon {
+  align-self: flex-end;
+  margin-top: -2.5rem;
+  font-size: 1.5rem;
+  opacity: 0.2;
+}
+
+.stat-box.primary {
+  border-left: 4px solid #1f4f65;
+}
+
+.stat-box.success {
+  border-left: 4px solid #28a745;
+}
+
+.stat-box.warning {
+  border-left: 4px solid #ffc107;
+}
+
+.stat-box.danger {
+  border-left: 4px solid #dc3545;
+}
+
+.colis-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-item label {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.filter-item select,
+.filter-item input {
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.filter-actions {
+  margin-left: auto;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+}
+
+.input-error {
+  display: block;
+  color: #dc3545; /* Red color for error */
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
 .colis-hero {
   height: 50vh;
   background-image: linear-gradient(rgba(233, 245, 238, 0.9), rgba(241, 247, 245 ,0.9)),
@@ -24,23 +119,6 @@ main {
   color: white;
   text-align: center;
   padding-left: 20%; /* Shifts everything to the right */
-}
-
-.colis-table {
-  min-width: 1000px; /* or more depending on columns */
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.colis-table th, .colis-table td {
-  white-space: nowrap;
-  padding: 8px 12px;
-  text-align: left;
-}
-.colis-table th {
-  background-color: var(--secondary);
-  color: white;
-  font-weight: 500;
 }
 
 .colis-hero .hero-content {

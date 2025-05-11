@@ -1,372 +1,213 @@
 <?php
 require_once __DIR__ . '/../../../Controller/ColisController.php';
 
+session_start();
+
 $ColisC = new ColisController();
 $list = $ColisC->listColis();
+$listByCovoit = $ColisC->getColisByCovoiturage($_SESSION['user_id']);
+$covoiturages = $ColisC->getAllCovoiturages();
+$clients = $ColisC->getAllClients();
+$notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Mes Colis</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/colis.css">
-  <link rel="stylesheet" href="../../BackOffice/bus/assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
 </head>
 <style>
-    /* Additional styles specific to colis list */
-    .colis-dashboard {
-      padding: 3rem 5%;
-      background-color: var(--background);
-    }
+  /* Additional styles specific to colis list */
+  .colis-dashboard {
+    padding: 3rem 5%;
+    background-color: var(--background);
+  }
 
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .dashboard-title {
+    color: var(--secondary);
+  }
+
+  .dashboard-title h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dashboard-title p {
+    color: #666;
+  }
+
+  .dashboard-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .filters-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .filters-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .filters-title h3 {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    margin: 0;
+  }
+
+  .filters-toggle {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .filters-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-group label {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .filter-group select,
+  .filter-group input {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+  }
+
+  .filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .tabs-container {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+
+  .tab:hover {
+    color: var(--primary);
+  }
+
+  .tab .count {
+    display: inline-block;
+    background-color: #f1f1f1;
+    color: #666;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    margin-left: 0.5rem;
+  }
+
+  .tab.active .count {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  .action {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state h3 {
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  @media (max-width: 992px) {
     .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-
-    .dashboard-title {
-      color: var(--secondary);
-    }
-
-    .dashboard-title h1 {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .dashboard-title p {
-      color: #666;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
     }
 
     .dashboard-actions {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .btn {
-      display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 24px;
-  border-radius: 50px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
-  font-size: 16px;
-    }
-
-    .btn.primary {
-      background-color: var(--primary);
-      color: white;
-    }
-
-    .btn.primary:hover {
-      background-color: #86b391;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(151, 195, 162, 0.4);
-    }
-
-    .btn.secondary {
-      background-color: white;
-      border: 1px solid #ddd;
-      color: #333;
-    }
-
-    .btn.secondary:hover {
-      background-color: #f8f9fa;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .filters-section {
-      background-color: white;
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .filters-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .filters-title h3 {
-      font-size: 1.2rem;
-      color: var(--secondary);
-      margin: 0;
-    }
-
-    .filters-toggle {
-      background: none;
-      border: none;
-      color: var(--primary);
-      cursor: pointer;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      width: 100%;
     }
 
     .filters-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: 1fr;
     }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .filter-group label {
-      font-size: 0.9rem;
-      color: #666;
-      font-weight: 500;
-    }
-
-    .filter-group select,
-    .filter-group input {
-      padding: 0.8rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background-color: #f8f9fa;
-    }
-
-    .filter-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .tabs-container {
-      display: flex;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 1.5rem;
-      overflow-x: auto;
-    }
-
-    .tab {
-      padding: 1rem 1.5rem;
-      font-weight: 500;
-      color: #666;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.3s;
-      white-space: nowrap;
-    }
-
-    .tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .tab:hover {
-      color: var(--primary);
-    }
-
-    .tab .count {
-      display: inline-block;
-      background-color: #f1f1f1;
-      color: #666;
-      font-size: 0.8rem;
-      padding: 0.2rem 0.5rem;
-      border-radius: 20px;
-      margin-left: 0.5rem;
-    }
-
-    .tab.active .count {
-      background-color: var(--primary);
-      color: white;
-    }
-
-    .colis-table-container {
-      background-color: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .colis-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .colis-table th {
-      background-color: #f8f9fa;
-      color: #333;
-      font-weight: 600;
-      text-align: left;
-      padding: 1rem;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .colis-table td {
-      padding: 1rem;
-      border-bottom: 1px solid #f1f1f1;
-      color: #333;
-    }
-
-    .colis-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .colis-table tr:hover {
-      background-color: #f8f9fa;
-    }
-
-    .status {
-      display: inline-block;
-      padding: 0.4rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    .status.pending {
-      background-color: rgba(255, 193, 7, 0.1);
-      color: #ffc107;
-    }
-
-    .status.in-transit {
-      background-color: rgba(23, 162, 184, 0.1);
-      color: #17a2b8;
-    }
-
-    .status.delivered {
-      background-color: rgba(40, 167, 69, 0.1);
-      color: #28a745;
-    }
-
-    .status.cancelled {
-      background-color: rgba(220, 53, 69, 0.1);
-      color: #dc3545;
-    }
-
-    .actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .action-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #666;
-      transition: all 0.3s;
-      background-color: transparent;
-    }
-
-    .action-btn:hover {
-      background-color: #f1f1f1;
-    }
-
-    .action-btn.view:hover {
-      color: var(--secondary);
-    }
-
-    .action-btn.edit:hover {
-      color: var(--primary);
-    }
-
-    .action-btn.delete:hover {
-      color: #dc3545;
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 2rem;
-    }
-
-    .pagination-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      background-color: white;
-      color: #666;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .pagination-btn.active {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .pagination-btn:hover:not(.active) {
-      background-color: #f8f9fa;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 3rem;
-      color: #666;
-    }
-
-    .empty-state i {
-      font-size: 3rem;
-      color: #ddd;
-      margin-bottom: 1rem;
-    }
-
-    .empty-state h3 {
-      margin-bottom: 0.5rem;
-      color: #333;
-    }
-
-    @media (max-width: 992px) {
-      .dashboard-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
-
-      .dashboard-actions {
-        width: 100%;
-      }
-
-      .filters-content {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .colis-table-container {
-        overflow-x: auto;
-      }
-
-      .colis-table {
-        min-width: 800px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
+
 <body>
+  <?php include 'chatbot.php'; ?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -386,10 +227,16 @@ $list = $ColisC->listColis();
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline btn">Dashboard</a>
-        <a href="../../../index.php" class="btn primary">Déconnexion</a>
+        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
+        </button>
+         <button class="notify-button position-relative" title="Notifications">
+          <i class="fa-solid fa-bell"></i>
+          <?php if (count($notifications) > 0): ?>
+            <span class="notif-badge"><?= count($notifications) ?></span>
+          <?php endif; ?>
         </button>
       </div>
     </div>
@@ -404,15 +251,13 @@ $list = $ColisC->listColis();
             <p>Gérez et suivez tous vos envois de colis</p>
           </div>
           <div class="dashboard-actions">
-            <a href="index.php" class="btn primary">
+            <a href="index.php" class="btn btn-primary">
               <i class="fas fa-plus"></i> Nouveau Colis
             </a>
-            <button class="btn secondary">
-              <i class="fas fa-download"></i> Exporter
-            </button>
           </div>
         </div>
 
+        <!-- FILTERS -->
         <div class="filters-section">
           <div class="filters-title">
             <h3>Filtres</h3>
@@ -426,9 +271,8 @@ $list = $ColisC->listColis();
               <select id="status-filter">
                 <option value="all">Tous les statuts</option>
                 <option value="pending">En attente</option>
-                <option value="in-transit">En transit</option>
-                <option value="delivered">Livré</option>
-                <option value="cancelled">Annulé</option>
+                <option value="in-progress">En transit</option>
+                <option value="resolved">Livré</option>
               </select>
             </div>
             <div class="filter-group">
@@ -436,94 +280,229 @@ $list = $ColisC->listColis();
               <input type="date" id="date-filter">
             </div>
             <div class="filter-group">
-              <label for="city-filter">Ville de destination</label>
-              <select id="city-filter">
-                <option value="all">Toutes les villes</option>
-                <option value="tunis">Tunis</option>
-                <option value="sousse">Sousse</option>
-                <option value="sfax">Sfax</option>
-                <option value="monastir">Monastir</option>
-              </select>
+              <label for="search-filter">Recherche</label>
+              <input type="text" id="search-filter" placeholder="ID covoiturage">
             </div>
             <div class="filter-group">
-              <label for="search-filter">Recherche</label>
-              <input type="text" id="search-filter" placeholder="ID, destinataire...">
+              <label for="price-sort">Tri par prix</label>
+              <select id="price-sort">
+                <option value="none">Aucun tri</option>
+                <option value="asc">Prix croissant</option>
+                <option value="desc">Prix décroissant</option>
+              </select>
             </div>
           </div>
           <div class="filter-actions">
-            <button class="btn secondary">Réinitialiser</button>
-            <button class="btn primary">Appliquer</button>
+            <button type="button" class="btn btn-outline reset-btn">Réinitialiser</button>
+            <button type="button" class="btn btn-primary apply-btn">Appliquer</button>
           </div>
         </div>
 
+        <!-- TABS -->
         <div class="tabs-container">
-          <div class="tab active">Tous <span class="count">12</span></div>
-          <div class="tab">En attente <span class="count">3</span></div>
-          <div class="tab">En transit <span class="count">5</span></div>
-          <div class="tab">Livrés <span class="count">4</span></div>
+          <div class="tab" data-status="all">Tous <span class="count">0</span></div>
+          <div class="tab" data-status="pending">En attente <span class="count">0</span></div>
+          <div class="tab" data-status="in-progress">En transit <span class="count">0</span></div>
+          <div class="tab" data-status="resolved">Livrés <span class="count">0</span></div>
         </div>
+        <div class="collapsible-section" id="affectes-covoiturage">
+          <div class="collapsible-header">
+            Colis Affectés à Mes Covoiturages
+            <span class="icon">▼</span>
+          </div>
+          <div class="collapsible-content">
+            <?php if (empty($listByCovoit)): ?>
+              <p style="text-align: center; padding: 20px; color: #555;">
+                Aucun colis n'est affecté à vos covoiturages pour le moment.
+              </p>
+            <?php else: ?>
+              <div class="route-cards">
+                <?php foreach ($listByCovoit as $colis):
+                  $covoit = null;
+                  $client = null;
 
-    <div style="overflow-x: auto; max-width: 100%;">
-  <table class="colis-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Covoit</th>
-        <th>Date.d'envoi</th>
-        <th>Dimensions (L × l × H)</th>
-        <th>Poids</th>
-        <th>Latitude Ram</th>
-        <th>Longitude Ram</th>
-        <th>Latitude Dest</th>
-        <th>Longitude Dest</th>
-        <th>Statut</th>
-        <th>Prix</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-  <?php foreach ($list as $colis): ?>
-    <?php if ($colis['id_client'] != 3) continue; ?>
-    <tr>
-      <td><?= $colis['id_colis'] ?></td>
-      <td><?= htmlspecialchars($colis['id_covoit']) ?></td>
-      <td><?= htmlspecialchars($colis['date_colis']) ?></td>
-      <td>
-        <?= number_format($colis['longueur'], 2) ?> × 
-        <?= number_format($colis['largeur'], 2) ?> × 
-        <?= number_format($colis['hauteur'], 2) ?> cm
-      </td>
-      <td><?= number_format($colis['poids'], 2) ?> kg</td>
-      <td><?= htmlspecialchars($colis['latitude_ram']) ?></td>
-      <td><?= htmlspecialchars($colis['longitude_ram']) ?></td>
-      <td><?= htmlspecialchars($colis['latitude_dest']) ?></td>
-      <td><?= htmlspecialchars($colis['longitude_dest']) ?></td>
-      <td><?= htmlspecialchars($colis['statut']) ?></td>
-      <td><?= htmlspecialchars($colis['prix']) ?> DT</td>
-      <td class="actions">
-        <form method="GET" action="updateColis.php" style="display:inline;">
-          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-          <button type="submit" class="action-btn edit" title="Modifier">
-            <i class="fas fa-edit"></i>
-          </button>
-        </form>
+                  if (!empty($colis['id_covoit'])) {
+                    $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
 
-        <form method="POST" action="deleteColis.php" style="display:inline;" 
-              onsubmit="return confirm('Are you sure you want to delete this colis?');">
-          <input type="hidden" name="id_colis" value="<?= $colis['id_colis'] ?>">
-          <button type="submit" class="action-btn delete" title="Supprimer">
-            <i class="fas fa-trash"></i>
-          </button>
-        </form>
-      </td>
-    </tr>
-  <?php endforeach; ?>
-</tbody>
+                    if ($covoit && isset($covoit['id_user'])) {
+                      $client = $ColisC->getClientById($colis['id_client']);
+                    }
+                  }
 
-  </table>
-</div>
+                  $statusClassMap = [
+                    'en attente' => 'pending',
+                    'en transit' => 'in-progress',
+                    'livré' => 'resolved'
+                  ];
 
+                  $statut = trim($colis['statut']);
+                  $className = $statusClassMap[$statut] ?? 'default';
+                  ?>
 
+                  <div class="route-card" id="colis-<?= $colis['id_colis'] ?>" data-status="<?= $className ?>"
+                    data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
+                    data-price="<?= htmlspecialchars($colis['prix']) ?>">
+
+                    <div class="route-info">
+                      <div class="route-cities">
+                        <span class="departure"><?= htmlspecialchars($colis['lieu_ram']) ?></span>
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                        <span class="arrival"><?= htmlspecialchars($colis['lieu_dest']) ?></span>
+                      </div>
+
+                      <div class="route-details">
+                        <div class="detail">
+                          <i class="fas fa-user"></i>
+                          <?php if ($client): ?>
+                            Expéditeur : <?= htmlspecialchars($client['nom']) ?>       <?= htmlspecialchars($client['prenom']) ?>
+                            (ID: <?= htmlspecialchars($client['id']) ?>)
+                          <?php else: ?>
+                            <em>Client inconnu</em>
+                          <?php endif; ?>
+                        </div>
+                        <div class="detail">
+                          <i class="fas fa-box"></i>
+                          <span>
+                            L: <?= number_format($colis['longueur'], 2) ?> ×
+                            l: <?= number_format($colis['largeur'], 2) ?> ×
+                            H: <?= number_format($colis['hauteur'], 2) ?> cm
+                          </span>
+                        </div>
+                        <div class="detail">
+                          <i class="fas fa-weight-hanging"></i>
+                          <span> <?= number_format($colis['poids'], 2) ?> kg</span>
+                        </div>
+                        <div class="detail">
+                          <i class="fas fa-calendar-alt"></i>
+                          <span> <?= htmlspecialchars($colis['date_colis']) ?></span>
+                        </div>
+                        <div class="detail">
+                          <i class="fas fa-info-circle"></i>
+                          <span class="status <?= $className ?>">
+                            <?= htmlspecialchars($colis['statut']) ?>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="route-price">
+                      <span class="price"><?= htmlspecialchars($colis['prix']) ?> DT</span>
+                      <div class="action" style="margin-top: 10px; display: flex; gap: 5px;">
+                        <form method="GET" action="updateColisOfCovoit.php" style="display:inline;">
+                          <input type="hidden" name="id_colis" value="<?= htmlspecialchars($colis['id_colis']) ?>">
+                          <button type="submit" class="action-btn edit" title="Modifier">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            <?php endif; ?>
+          </div>
+        </div>
+        <div class="collapsible-section">
+          <div class="collapsible-header">
+            Mes Colis
+            <span class="icon">▼</span>
+          </div>
+          <div class="collapsible-content">
+            <?php foreach ($list as $colis):
+              $covoit = null;
+              $client = null;
+
+              // Fetch covoiturage and client only if id_covoit is not empty
+              if (!empty($colis['id_covoit'])) {
+                $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
+
+                if ($covoit && isset($covoit['id_user'])) {
+                  $client = $ColisC->getClientById($covoit['id_user']);
+                }
+              }
+
+              // Skip if the client is not 
+              if ($colis['id_client'] != $_SESSION['user_id']) {
+                continue;
+              }
+              // Map the status to a class for styling
+              $statusClassMap = [
+                'en attente' => 'pending',
+                'en transit' => 'in-progress',
+                'livré' => 'resolved'
+              ];
+
+              $statut = trim($colis['statut']);
+              $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
+              ?>
+
+              <div class="route-card" data-status="<?= $className ?>"
+                data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
+                data-price="<?= htmlspecialchars($colis['prix']) ?>"
+                data-covoit-id="<?= $covoit ? htmlspecialchars($covoit['id_covoit']) : '' ?>">
+
+                <div class="route-info">
+                  <div class="route-cities">
+                    <span class="departure"><?= htmlspecialchars($colis['lieu_ram']) ?></span>
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                    <span class="arrival"><?= htmlspecialchars($colis['lieu_dest']) ?></span>
+                  </div>
+
+                  <div class="route-details">
+                    <div class="detail">
+                      <i class="fas fa-user"></i>
+                      <?php if ($covoit): ?>
+                        <?= htmlspecialchars($client['nom']) ?>     <?= htmlspecialchars($client['prenom']) ?> (ID:
+                        <?= htmlspecialchars($client['id']) ?>)
+                      <?php else: ?>
+                        <em>Aucun covoiturage</em>
+                      <?php endif; ?>
+                    </div>
+                    <div class="detail">
+                      <i class="fas fa-box"></i>
+                      <span>
+                        L: <?= number_format($colis['longueur'], 2) ?> ×
+                        l: <?= number_format($colis['largeur'], 2) ?> ×
+                        H: <?= number_format($colis['hauteur'], 2) ?> cm
+                      </span>
+                    </div>
+                    <div class="detail">
+                      <i class="fas fa-weight-hanging"></i>
+                      <span> <?= number_format($colis['poids'], 2) ?> kg</span>
+                    </div>
+                    <div class="detail">
+                      <i class="fas fa-calendar-alt"></i>
+                      <span> <?= htmlspecialchars($colis['date_colis']) ?></span>
+                    </div>
+                    <div class="detail">
+                      <i class="fas fa-info-circle"></i>
+                      <span class="status <?= $className ?>">
+                        <?= htmlspecialchars($colis['statut']) ?>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="route-price">
+                  <span class="price"><?= htmlspecialchars($colis['prix']) ?> DT</span>
+                  <div class="action" style="margin-top: 10px; display: flex; gap: 5px;">
+                    <form method="GET" action="updateColis.php" style="display:inline;">
+                      <input type="hidden" name="id_colis" value="<?= htmlspecialchars($colis['id_colis']) ?>">
+                      <button type="submit" class="action-btn edit" title="Modifier">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </form>
+                    <button type="button" class="action-btn delete open-delete-modal"
+                      data-id="<?= htmlspecialchars($colis['id_colis']) ?>" title="Supprimer">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <br>
+            <?php endforeach; ?>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -584,12 +563,74 @@ $list = $ColisC->listColis();
     </div>
   </footer>
 
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" id="delete-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirmer la suppression</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer ce colis ? Cette action est irréversible.</p>
+        <div class="form-actions">
+          <button type="button" class="btn secondary cancel-btn">Annuler</button>
+          <button type="button" class="btn danger" id="confirm-delete-btn">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Delete Form -->
+  <form method="POST" action="deleteColis.php" style="display:none;" id="delete-form">
+    <input type="hidden" name="id_colis" id="delete-id">
+  </form>
+
+  <div id="notificationModal" class="notimodal-overlay hidden">
+    <div class="notimodal-content">
+      <div class="notimodal-header">
+        <h3>Mes Notifications</h3>
+        <button id="closeModal" class="close-btn">&times;</button>
+      </div>
+      <div class="notimodal-body">
+        <div class="notifications-scroll">
+          <?php foreach ($notifications as $notif): ?>
+            <div class="notification-item card p-3 mb-3 shadow-sm rounded bg-light">
+              <ul class="mb-2">
+                <li><strong> Colis :</strong> <?= htmlspecialchars($notif['lieu_ram']) ?> ➜
+                  <?= htmlspecialchars($notif['lieu_dest']) ?>
+                </li>
+                <li><strong>Date :</strong> <?= htmlspecialchars($notif['date_colis']) ?></li>
+                <li><strong>Prix :</strong> <?= htmlspecialchars($notif['prix']) ?> TND</li>
+                <li><strong>Dimensions (L×l×H) :</strong> <?= htmlspecialchars($notif['longueur']) ?>cm ×
+                  <?= htmlspecialchars($notif['largeur']) ?>cm × <?= htmlspecialchars($notif['hauteur']) ?>cm
+                </li>
+                <li><strong>Poids :</strong> <?= htmlspecialchars($notif['poids']) ?> kg</li>
+              </ul>
+
+              <p class="mb-0">
+                <strong>Covoiturage :</strong>
+                <?= $notif['id_covoit'] ? "Affecté (ID : " . htmlspecialchars($notif['id_covoit']) . ")" : "<span class='text-muted'>Non encore affecté</span>" ?>
+              </p>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/colisValidation.js"></script>
+  <script src="assets/js/colisDelete.js"></script>
+  <script src="assets/js/colisFilters.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="assets/js/chatbot.js"> </script>
+
   <script>
     // Filters toggle
-    document.querySelector('.filters-toggle').addEventListener('click', function() {
+    document.querySelector('.filters-toggle').addEventListener('click', function () {
       const filtersContent = document.querySelector('.filters-content');
       const filterActions = document.querySelector('.filter-actions');
-      
+
       if (filtersContent.style.display === 'none' || filtersContent.style.display === '') {
         filtersContent.style.display = 'grid';
         filterActions.style.display = 'flex';
@@ -605,6 +646,56 @@ $list = $ColisC->listColis();
     document.querySelector('.filters-content').style.display = 'none';
     document.querySelector('.filter-actions').style.display = 'none';
 
+    document.querySelectorAll('.collapsible-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        content.classList.toggle('active');
+      });
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const updatedColisId = params.get('updated_colis');
+
+      if (updatedColisId) {
+        // Simulate click on the collapsible header to expand it (always works)
+        const header = document.querySelector('#affectes-covoiturage .collapsible-header');
+        if (header) header.click(); // This will open it using your existing JS logic
+
+        // Scroll to the specific colis after a short delay
+        setTimeout(() => {
+          const targetColis = document.getElementById(`colis-${updatedColisId}`);
+          if (targetColis) {
+            targetColis.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetColis.style.transition = 'box-shadow 0.3s ease';
+            targetColis.style.boxShadow = '0 0 15px 4px #97c3a2';
+            setTimeout(() => targetColis.style.boxShadow = '', 2000);
+          }
+        }, 500); // Delay to ensure collapsible is fully open
+      }
+    });
   </script>
+  <script>
+    const notifyBtn = document.querySelector('.notify-button');
+    const modal = document.getElementById('notificationModal');
+    const closeModal = document.getElementById('closeModal');
+
+    notifyBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
+    // Optional: close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  </script>
+
 </body>
+
 </html>

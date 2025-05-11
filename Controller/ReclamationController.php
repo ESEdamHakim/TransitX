@@ -71,5 +71,58 @@ class ReclamationController
             die('Error: ' . $e->getMessage());
         }
     }
+    public function getAllCovoiturages()
+    {
+        $sql = "SELECT id_covoit, lieu_depart, lieu_arrivee FROM covoiturage";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error fetching covoiturages: ' . $e->getMessage());
+        }
+    }
+
+    public function getAllClients()
+    {
+        $sql = "SELECT id, nom, prenom FROM user"; // Adjust table name if needed
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error fetching clients: ' . $e->getMessage());
+        }
+    }
+    public function getClientById($id_user)
+    {
+        $sql = "SELECT id, nom, prenom FROM user WHERE id = :id_user";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->bindValue(':id_user', $id_user);
+            $query->execute();
+            return $query->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error fetching client: ' . $e->getMessage());
+        }
+    }
+
+    public function getCovoiturageById($id_covoit)
+    {
+        $sql = "SELECT id_covoit, lieu_depart, lieu_arrivee FROM covoiturage WHERE id_covoit = :id_covoit";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->bindValue(':id_covoit', $id_covoit);
+            $query->execute();
+            return $query->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die('Error fetching covoiturage: ' . $e->getMessage());
+        }
+    }
+
 }
 ?>
