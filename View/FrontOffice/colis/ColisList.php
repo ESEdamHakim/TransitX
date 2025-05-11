@@ -279,10 +279,10 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
               <label for="date-filter">Date d'envoi</label>
               <input type="date" id="date-filter">
             </div>
-            <div class="filter-group">
-              <label for="search-filter">Recherche</label>
-              <input type="text" id="search-filter" placeholder="ID covoiturage">
-            </div>
+            <div class="filter-group" style="display: none;">
+  <label for="search-filter">Recherche</label>
+  <input type="text" id="search-filter" placeholder="ID covoiturage">
+</div>
             <div class="filter-group">
               <label for="price-sort">Tri par prix</label>
               <select id="price-sort">

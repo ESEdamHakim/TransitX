@@ -107,7 +107,7 @@ $clients = $ReclamationC->getAllClients();
         </div>
         <div class="header-right">
           <div class="search-bar">
-            <input type="text" placeholder="Rechercher une réclamation...">
+            <input type="text" placeholder="Nom du client">
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
