@@ -36,20 +36,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedDate = dateFilter?.value;
     const searchQuery = searchFilter?.value.toLowerCase();
 
-    let filteredParcels = Array.from(parcels).filter(parcel => {
+    const filteredParcels = Array.from(parcels).filter(parcel => {
       const parcelStatus = parcel.dataset.status;
       const parcelDate = parcel.dataset.date;
-      const parcelCovoitId = parcel.dataset.covoitId?.toLowerCase();
+      const clientName = parcel.dataset.clientName;
 
       if (currentTab !== "all" && parcelStatus !== currentTab) return false;
       if (selectedStatus && selectedStatus !== "all" && parcelStatus !== selectedStatus) return false;
       if (selectedDate && parcelDate !== selectedDate) return false;
-      if (searchQuery && parcelCovoitId && !parcelCovoitId.includes(searchQuery)) return false;
+      if (searchQuery && clientName && !clientName.includes(searchQuery)) return false;
 
       return true;
     });
 
-    // Display logic
     parcels.forEach(parcel => parcel.style.display = "none");
     filteredParcels.forEach(parcel => parcel.style.display = "table-row");
 
@@ -57,12 +56,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function resetFilters() {
-    statusFilter.value = "all";
-    dateFilter.value = "";
-    searchFilter.value = "";
+    if (statusFilter) statusFilter.value = "all";
+    if (dateFilter) dateFilter.value = "";
+    if (searchFilter) searchFilter.value = "";
     filterParcels();
   }
 
+  // Tab clicks
   tabButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       tabButtons.forEach(b => b.classList.remove("active"));
@@ -72,8 +72,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  applyBtn.addEventListener("click", filterParcels);
-  resetBtn.addEventListener("click", resetFilters);
+  // Search on typing
+  if (searchFilter) {
+    searchFilter.addEventListener("input", () => {
+      filterParcels();
+    });
+  }
 
-  filterParcels(); // Initial run
+  // Apply/reset buttons
+  if (applyBtn) applyBtn.addEventListener("click", filterParcels);
+  if (resetBtn) resetBtn.addEventListener("click", resetFilters);
+
+  // Initial run
+  filterParcels();
 });
