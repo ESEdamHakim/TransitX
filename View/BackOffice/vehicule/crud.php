@@ -26,10 +26,12 @@ include 'BdisplayVehicule.php';
   <div class="dashboard">
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo">
-          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
-          <span>Transit</span><span class="highlight">X</span>
-        </div>
+<a href="../../FrontOffice/index.php" class="logo-link">
+  <div class="logo">
+    <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
+    <span>Transit</span><span class="highlight">X</span>
+  </div>
+</a>
         <button class="sidebar-toggle">
           <i class="fas fa-bars"></i>
         </button>
@@ -56,6 +58,8 @@ include 'BdisplayVehicule.php';
                 <span>Bus</span>
               </a>
             </li>
+                  <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
+
             <li>
               <a href="../colis/crud.php">
                 <i class="fas fa-box"></i>

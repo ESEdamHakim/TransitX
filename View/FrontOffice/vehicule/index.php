@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -34,7 +37,9 @@
                 </ul>
             </nav>
             <div class="header-right">
-                <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+                <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+                    <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+                <?php endif; ?>
                 <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>

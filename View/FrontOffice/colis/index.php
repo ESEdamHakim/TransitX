@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="assets/css/chatbot.css">
+  <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
   <style>
     .section-header {
       text-align: center;
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-  <?php include 'chatbot.php'; ?>
+  <?php include '../../assets/chatbot/chatbot.php'; ?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">

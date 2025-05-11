@@ -26,7 +26,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="assets/css/chatbot.css">
+  <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
 </head>
 <style>
   /* Additional styles specific to colis list */
@@ -207,7 +207,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
 </head>
 
 <body>
-  <?php include 'chatbot.php'; ?>
+  <?php include '../../assets/chatbot/chatbot.php'; ?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">

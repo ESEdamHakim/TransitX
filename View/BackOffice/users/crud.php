@@ -268,10 +268,12 @@ function getSortUrl($columnName)
   <div class="dashboard">
     <aside class="sidebar">
       <div class="sidebar-header">
-        <div class="logo">
-          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
-          <span>Transit</span><span class="highlight">X</span>
-        </div>
+<a href="../../FrontOffice/index.php" class="logo-link">
+  <div class="logo">
+    <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
+    <span>Transit</span><span class="highlight">X</span>
+  </div>
+</a>
         <button class="sidebar-toggle">
           <i class="fas fa-bars"></i>
         </button>
@@ -298,6 +300,8 @@ function getSortUrl($columnName)
                 <span>Bus</span>
               </a>
             </li>
+                  <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
+
             <li>
               <a href="../colis/crud.php">
                 <i class="fas fa-box"></i>
@@ -322,6 +326,8 @@ function getSortUrl($columnName)
                 <span>Blog</span>
               </a>
             </li>
+                        <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
+
           </ul>
         </nav>
       </div>

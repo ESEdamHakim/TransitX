@@ -23,6 +23,8 @@
       <li><a href="../reclamations/crud.php"><i class="fas fa-exclamation-circle"></i><span>Réclamations</span></a></li>
       <li><a href="../covoiturage/crud.php"><i class="fas fa-car-side"></i><span>Covoiturage</span></a></li>
       <li><a href="../blog/crud.php"><i class="fas fa-blog"></i><span>Blog</span></a></li>
+      <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
+
     </ul>
   </nav>
 
