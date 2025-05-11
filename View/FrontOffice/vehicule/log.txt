@@ -1,0 +1,11 @@
+Array
+(
+    [type_vehicule] => Voiture
+    [matricule] => 12
+    [nb_places] => 4
+    [couleur] => noire
+    [marque] => bmw
+    [modele] => 911
+    [confort] => Toit ouvrant / panoramique
+    [custom_confort] => Toit ouvrant / panoramique
+)
