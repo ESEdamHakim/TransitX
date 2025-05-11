@@ -106,6 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       // Email content
       $mail->isHTML(true);
+<<<<<<< HEAD
       $mail->Subject = 'Mise a jour du statut de votre colis';
       $mail->Body = "
       <p>Bonjour <strong>{$client['prenom']} {$client['nom']}</strong>,</p>
@@ -130,6 +131,100 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <p style='margin-top:20px;'>Cordialement,<br>L'équipe TransitX</p>
     ";    
 
+=======
+      $mail->Subject = 'Mise à jour du statut de votre colis';
+      $mail->Body = '
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .header {
+      background-color: #1f4f65;
+      color: white;
+      text-align: center;
+      padding: 16px 24px;
+    }
+    .content {
+      padding: 24px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .status-box {
+      background-color: #f0f8ff;
+      border-left: 5px solid #1f4f65;
+      padding: 12px;
+      margin: 16px 0;
+      font-weight: bold;
+      color: #1f4f65;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      margin-bottom: 8px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      background-color: #f9f9f9;
+      padding: 16px;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>📦 Mise à jour de votre colis</h2>
+    </div>
+    <div class="content">
+      <p>Bonjour <strong>' . htmlspecialchars($client['prenom']) . ' ' . htmlspecialchars($client['nom']) . '</strong>,</p>
+
+      <p>Le statut de votre colis <strong>(ID : ' . $id_colis . ')</strong> a été récemment mis à jour.</p>
+
+      <div class="status-box">
+        Nouveau statut : ' . htmlspecialchars($newStatus) . '
+      </div>
+
+      <h3>Détails du colis</h3>
+      <ul>
+        <li><strong>Dimensions :</strong> ' . $longueur . 'cm × ' . $largeur . 'cm × ' . $hauteur . 'cm</li>
+        <li><strong>Poids :</strong> ' . $poids . ' kg</li>
+        <li><strong>Prix :</strong> ' . $prix . ' DT</li>
+      </ul>
+
+      <h3>Informations de livraison</h3>
+      <ul>
+        <li><strong>Lieu de ramassage :</strong> ' . htmlspecialchars($lieu_ram) . '</li>
+        <li><strong>Destination :</strong> ' . htmlspecialchars($lieu_dest) . '</li>
+        <li><strong>Date du covoiturage :</strong> ' . htmlspecialchars($date_colis) . '</li>
+      </ul>
+
+      <p>Merci pour votre confiance envers <strong>TransitX</strong> et notre engagement pour une mobilité durable.</p>
+    </div>
+    <div class="footer">
+      <p>🚀 TransitX — Move Clean, Live Clean</p>
+      <p>Ce message est automatique, merci de ne pas y répondre directement.</p>
+    </div>
+  </div>
+</body>
+</html>';
+>>>>>>> 24960e287be070f65fe7e3803defc83307272aa9
       $mail->send();
 
     } catch (Exception $e) {
