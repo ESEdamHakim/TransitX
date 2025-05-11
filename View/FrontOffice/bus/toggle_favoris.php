@@ -1,5 +1,4 @@
 <?php
-//session_start();
 include("../../../Controller/trajetcontroller.php");
 session_start();
 $id_trajet = $_POST['id_trajet'] ?? null;

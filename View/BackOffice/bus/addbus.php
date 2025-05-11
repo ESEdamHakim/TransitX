@@ -9,32 +9,32 @@ use PHPMailer\PHPMailer\Exception;
 
 function sendBusEmailNotification($toEmail, $subject, $body)
 {
-    $mail = new PHPMailer(true);
+  $mail = new PHPMailer(true);
 
-    try {
-        // SMTP server configuration
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'hakimedam72@gmail.com'; // Replace with a real Gmail address
-        $mail->Password = 'anqz mbku mwvl desj';    // App-specific password from Gmail
-        $mail->SMTPSecure = 'tls'; // Use 'ssl' if you use port 465
-        $mail->Port = 587;
+  try {
+    // SMTP server configuration
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'hakimedam72@gmail.com'; // Replace with a real Gmail address
+    $mail->Password = 'anqz mbku mwvl desj';    // App-specific password from Gmail
+    $mail->SMTPSecure = 'tls'; // Use 'ssl' if you use port 465
+    $mail->Port = 587;
 
-        // Email headers and content
-        $mail->setFrom('hakimedam72@gmail.com', 'TransitX');
-        $mail->addAddress($toEmail);
+    // Email headers and content
+    $mail->setFrom('hakimedam72@gmail.com', 'TransitX');
+    $mail->addAddress($toEmail);
 
-        $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body    = nl2br($body); // Converts newlines to <br> for HTML formatting
+    $mail->isHTML(true);
+    $mail->Subject = $subject;
+    $mail->Body = nl2br($body); // Converts newlines to <br> for HTML formatting
 
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        error_log("Email could not be sent. Mailer Error: {$mail->ErrorInfo}");
-        return false;
-    }
+    $mail->send();
+    return true;
+  } catch (Exception $e) {
+    error_log("Email could not be sent. Mailer Error: {$mail->ErrorInfo}");
+    return false;
+  }
 }
 
 $busController = new BusController();
@@ -125,44 +125,7 @@ if (
 
 <body>
   <div class="dashboard">
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
-          <span>Transit</span><span class="highlight">X</span>
-        </div>
-        <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
-      </div>
-
-      <div class="sidebar-content">
-        <nav class="sidebar-menu">
-          <ul>
-            <li><a href="../index.php"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-            <li><a href="../users/crud.php"><i class="fas fa-users"></i><span>Utilisateurs</span></a></li>
-            <li class="active"><a href="crud.php"><i class="fas fa-bus"></i><span>Bus</span></a></li>
-            <li><a href="../colis/crud.php"><i class="fas fa-box"></i><span>Colis</span></a></li>
-            <li><a href="../reclamations/crud.php"><i
-                  class="fas fa-exclamation-circle"></i><span>Réclamations</span></a></li>
-            <li><a href="../covoiturage/crud.php"><i class="fas fa-car-side"></i><span>Covoiturage</span></a></li>
-            <li><a href="../blog/crud.php"><i class="fas fa-blog"></i><span>Blog</span></a></li>
-          </ul>
-        </nav>
-      </div>
-
-      <div class="sidebar-footer">
-        <a href="#" class="user-profile">
-          <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
-          <div class="user-info">
-            <h4>Admin User</h4>
-            <p>Administrateur</p>
-          </div>
-        </a>
-        <a href="../../../index.php" class="logout">
-          <i class="fas fa-sign-out-alt"></i><span>Déconnexion</span>
-        </a>
-      </div>
-    </aside>
-
+    <?php include 'sidebar.php'; ?>
     <main class="main-content">
       <section class="bus-form-section">
         <div class="container">

@@ -1,10 +1,13 @@
 <!-- Sidebar -->
 <aside class="sidebar">
   <div class="sidebar-header">
-    <div class="logo">
-      <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
-      <span>Transit</span><span class="highlight">X</span>
-    </div>
+<a href="../../FrontOffice/index.php" class="logo-link">
+  <div class="logo">
+    <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
+    <span>Transit</span><span class="highlight">X</span>
+  </div>
+</a>
+
     <button class="sidebar-toggle" aria-label="Toggle sidebar">
       <i class="fas fa-bars"></i>
     </button>

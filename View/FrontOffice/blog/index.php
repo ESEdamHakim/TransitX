@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -244,8 +247,7 @@
         </ul>
       </nav>
       <div class="header-right">
-        <!-- Affiche le bouton Dashboard uniquement si l'utilisateur est un employé -->
-        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'employe'): ?>
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
           <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
         <?php endif; ?>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
