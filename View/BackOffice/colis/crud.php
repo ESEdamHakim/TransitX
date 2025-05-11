@@ -106,7 +106,7 @@ $clients = $ColisC->getAllClients();
         </div>
         <div class="header-right">
           <div class="search-bar">
-            <input type="text" placeholder="Rechercher un colis...">
+            <input type="text" id="search-filter" placeholder="Nom du client">
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
@@ -157,10 +157,6 @@ $clients = $ColisC->getAllClients();
           <div class="filter-item">
             <label for="date-filter">Date</label>
             <input type="date" id="date-filter">
-          </div>
-          <div class="filter-item">
-            <label for="search-filter">Recherche</label>
-            <input type="text" id="search-filter" placeholder="ID covoiturage">
           </div>
           <button id="apply-filters" class="btn primary">Appliquer</button>
           <button id="reset-filters" class="btn secondary">Réinitialiser</button>
@@ -219,8 +215,8 @@ $clients = $ColisC->getAllClients();
                     $className = $statusClassMap[$statut] ?? 'default';
                     ?>
                     <tr class="parcel-row" data-status="<?= $className ?>"
-                      data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
-                      data-covoit-id="<?= $covoit ? htmlspecialchars($covoit['id_covoit']) : '' ?>">
+                      data-client-name="<?= strtolower(htmlspecialchars($client['nom'] . ' ' . $client['prenom'])) ?>"
+                      data-date="<?= htmlspecialchars($colis['date_colis']) ?>">
 
                       <td><?= $colis['id_colis'] ?></td>
 
