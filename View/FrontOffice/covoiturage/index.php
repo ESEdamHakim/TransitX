@@ -4,8 +4,8 @@ require_once __DIR__ . '/../../../appConfig.php';
 
 // Ensure the user is logged in
 if (!isset($id_user)) {
-    echo "Erreur : Utilisateur non connecté.";
-    exit;
+  echo "Erreur : Utilisateur non connecté.";
+  exit;
 }
 
 $vehiculeController = new VehiculeC();
@@ -46,7 +46,9 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php endif; ?>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
@@ -63,7 +65,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         <div class="hero-buttons">
           <a href="#search-rides" class="btn btn-primary">Rechercher un trajet</a>
           <a href="#create-ride" class="btn btn-outline">Proposer un trajet</a>
-          
+
         </div>
       </div>
     </section>
@@ -360,7 +362,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       </div>
     </div>
   </footer>
-<!-- Weather Modal- >
+  <!-- Weather Modal- >
 <div id="weatherModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -401,8 +403,8 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <script src="validAddCovoiturage.js"></script>
   <script src="validEditCovoiturage.js"></script>
   <script src="validDeleteCovoiturage.js"></script>
- 
-<script src="meteo-card.js"></script>
+
+  <script src="meteo-card.js"></script>
 </body>
 
 </html>

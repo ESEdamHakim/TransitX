@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../Controller/userC.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,36 +13,39 @@ require_once __DIR__ . '/../../Controller/userC.php';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-<header class="landing-header">
+  <header class="landing-header">
     <div class="container">
-        <div class="header-left">
-            <div class="logo">
-                <img src="../assets/images/logo.png" alt="TransitX Logo" class="main-logo">
-                <span class="logo-text">TransitX</span>
-            </div>
+      <div class="header-left">
+        <div class="logo">
+          <img src="../assets/images/logo.png" alt="TransitX Logo" class="main-logo">
+          <span class="logo-text">TransitX</span>
         </div>
-        <nav class="main-nav">
-            <ul>
-                <li class="active"><a href="index.php">Accueil</a></li>
-                <li><a href="bus/index.php">Bus</a></li>
-                <li><a href="colis/index.php">Colis</a></li>
-                <li><a href="covoiturage/index.php">Covoiturage</a></li>
-                <li><a href="blog/index.php">Blog</a></li>
-                <li><a href="reclamation/index.php">Réclamation</a></li>
-            </ul>
-        </nav>
-        <div class="header-right">
-            <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-                <a href="../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
-            <?php endif; ?>
-            <a href="../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li class="active"><a href="index.php">Accueil</a></li>
+          <li><a href="bus/index.php">Bus</a></li>
+          <li><a href="colis/index.php">Colis</a></li>
+          <li><a href="covoiturage/index.php">Covoiturage</a></li>
+          <li><a href="blog/index.php">Blog</a></li>
+          <li><a href="reclamation/index.php">Réclamation</a></li>
+          <li><a href="../vehicule/index.php">Véhicule</a></li>
+
+        </ul>
+      </nav>
+      <div class="header-right">
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+          <a href="../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php endif; ?>
+        <a href="../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </div>
-</header>
+  </header>
 
   <main>
     <!-- Hero Section -->
@@ -49,7 +53,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
       <div class="container">
         <div class="hero-content">
           <h1>Move Green, Live Clean</h1>
-          <p>TransitX est votre plateforme de mobilité urbaine durable. Réservez des trajets en covoiturage, envoyez des colis et contribuez à un avenir plus vert.</p>
+          <p>TransitX est votre plateforme de mobilité urbaine durable. Réservez des trajets en covoiturage, envoyez des
+            colis et contribuez à un avenir plus vert.</p>
           <div class="hero-buttons">
             <a href="covoiturage/index.php" class="btn btn-primary">
               Réserver un trajet
@@ -99,7 +104,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
         <div class="section-header">
           <span class="badge">Nos avantages</span>
           <h2>Pourquoi choisir TransitX ?</h2>
-          <p>Découvrez les avantages qui font de TransitX la plateforme de mobilité urbaine préférée des utilisateurs.</p>
+          <p>Découvrez les avantages qui font de TransitX la plateforme de mobilité urbaine préférée des utilisateurs.
+          </p>
         </div>
         <div class="benefits-grid">
           <div class="benefit-item">
@@ -165,7 +171,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
       <div class="container">
         <div class="section-header">
           <h2>Nos Services</h2>
-          <p>Découvrez nos solutions de mobilité urbaine durable pour tous vos besoins de déplacement et de livraison.</p>
+          <p>Découvrez nos solutions de mobilité urbaine durable pour tous vos besoins de déplacement et de livraison.
+          </p>
         </div>
 
         <!-- Covoiturage Service -->
@@ -173,7 +180,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
           <div class="service-content">
             <span class="badge">Covoiturage</span>
             <h3>Partagez vos trajets, réduisez vos coûts</h3>
-            <p>Notre service de covoiturage vous permet de partager vos trajets quotidiens ou occasionnels avec d'autres utilisateurs, réduisant ainsi vos coûts de transport et votre empreinte carbone.</p>
+            <p>Notre service de covoiturage vous permet de partager vos trajets quotidiens ou occasionnels avec d'autres
+              utilisateurs, réduisant ainsi vos coûts de transport et votre empreinte carbone.</p>
             <a href="covoiturage/index.php" class="btn btn-primary">
               Réserver un trajet
               <i class="fas fa-arrow-right"></i>
@@ -192,7 +200,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
           <div class="service-content">
             <span class="badge">Livraison de Colis</span>
             <h3>Envoyez vos colis rapidement et en toute sécurité</h3>
-            <p>Notre service de livraison de colis vous permet d'envoyer vos colis rapidement et en toute sécurité, avec un suivi en temps réel et des tarifs compétitifs.</p>
+            <p>Notre service de livraison de colis vous permet d'envoyer vos colis rapidement et en toute sécurité, avec
+              un suivi en temps réel et des tarifs compétitifs.</p>
             <a href="colis/index.php" class="btn btn-primary">
               Envoyer un colis
               <i class="fas fa-arrow-right"></i>
@@ -205,7 +214,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
           <div class="service-content">
             <span class="badge">Transport en Commun</span>
             <h3>Planifiez vos déplacements en transport en commun</h3>
-            <p>Consultez les horaires des bus et planifiez vos déplacements en transport en commun. Réservez vos billets en ligne et évitez les files d'attente.</p>
+            <p>Consultez les horaires des bus et planifiez vos déplacements en transport en commun. Réservez vos billets
+              en ligne et évitez les files d'attente.</p>
             <a href="bus/index.php" class="btn btn-primary">
               Consulter les horaires
               <i class="fas fa-arrow-right"></i>
@@ -236,7 +246,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
               <time datetime="2023-03-15">15 mars 2023</time>
             </div>
             <h3>The Future of Sustainable Urban Mobility</h3>
-            <p>Exploring the latest trends and innovations in sustainable urban transportation and their impact on city planning.</p>
+            <p>Exploring the latest trends and innovations in sustainable urban transportation and their impact on city
+              planning.</p>
             <a href="blog/article.php" class="blog-link">
               Lire la suite
               <i class="fas fa-arrow-right"></i>
@@ -266,7 +277,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
               <time datetime="2023-04-10">10 avril 2023</time>
             </div>
             <h3>How Parcel Consolidation Reduces Carbon Emissions</h3>
-            <p>Learn how consolidating parcels for delivery can significantly reduce carbon emissions in the logistics industry.</p>
+            <p>Learn how consolidating parcels for delivery can significantly reduce carbon emissions in the logistics
+              industry.</p>
             <a href="blog/article.php" class="blog-link">
               Lire la suite
               <i class="fas fa-arrow-right"></i>
@@ -341,7 +353,7 @@ require_once __DIR__ . '/../../Controller/userC.php';
 
   <script>
     // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
       document.querySelector('.main-nav').classList.toggle('active');
     });
 
@@ -350,4 +362,5 @@ require_once __DIR__ . '/../../Controller/userC.php';
     document.querySelector('.logout-btn').style.display = 'inline-flex';
   </script>
 </body>
+
 </html>

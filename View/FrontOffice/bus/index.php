@@ -24,11 +24,11 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/chatbot.css">
+  <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
 </head>
 
 <body>
-  <?php include 'chatbot.php'; ?>
+  <?php include '../../assets/chatbot/chatbot.php'; ?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -45,6 +45,8 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
           <li><a href="../covoiturage/index.php">Covoiturage</a></li>
           <li><a href="../blog/index.php">Blog</a></li>
           <li><a href="../reclamation/index.php">Réclamation</a></li>
+          <li><a href="../vehicule/index.php">Véhicule</a></li>
+
         </ul>
       </nav>
       <div class="header-right">

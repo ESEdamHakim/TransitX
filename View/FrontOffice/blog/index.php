@@ -244,6 +244,8 @@ session_start();
           <li><a href="../covoiturage/index.php">Covoiturage</a></li>
           <li class="active"><a href="index.php">Blog</a></li>
           <li><a href="../reclamation/index.php">Réclamation</a></li>
+          <li><a href="../vehicule/index.php">Véhicule</a></li>
+
         </ul>
       </nav>
       <div class="header-right">

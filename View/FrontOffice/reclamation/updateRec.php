@@ -76,10 +76,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li><a href="../covoiturage/index.php">Covoiturage</a></li>
                     <li><a href="../blog/index.php">Blog</a></li>
                     <li class="active"><a href="index.php">Réclamation</a></li>
+                    <li><a href="../vehicule/index.php">Véhicule</a></li>
+
                 </ul>
             </nav>
             <div class="header-right">
-                <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+                <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+                    <a href="../../BackOffice/index.php" class="btn btn-outline">Dashboard</a>
+                <?php endif; ?>
                 <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
