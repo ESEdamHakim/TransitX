@@ -1,9 +1,7 @@
 <?php
-require __DIR__ . '/../../../Controller/trajetcontroller.php';
-require __DIR__ . '/../../../Controller/buscontroller.php';
-
+include("../../../Controller/trajetcontroller.php");
+include("../../../Controller/buscontroller.php");
 session_start();
-
 $controller_trajet = new TrajetController();
 $trajetlist = $controller_trajet->listTrajets();
 $favorisList = $controller_trajet->getFavorisByUserId($_SESSION['user_id']);
@@ -46,13 +44,10 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
           <li><a href="../blog/index.php">Blog</a></li>
           <li><a href="../reclamation/index.php">Réclamation</a></li>
           <li><a href="../vehicule/index.php">Véhicule</a></li>
-
         </ul>
       </nav>
       <div class="header-right">
-        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-          <a href="../../BackOffice/index.php" class="btn btn-outline">Dashboard</a>
-        <?php endif; ?>
+        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <!-- Notification Button -->
         <div class="notification-container">
@@ -131,7 +126,6 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
           // Get DOM elements
           const notifBtn = document.getElementById("notifBtn");
           const notifBox = document.getElementById("notifBox");
-          const markAllBtn = document.getElementById("mark-all-read");
 
           // Toggle notification dropdown
           notifBtn.addEventListener("click", function (event) {
@@ -374,6 +368,19 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
         </div>
       </div>
     </div>
+    <section class="bus-map">
+      <div class="container">
+        <div class="section-header">
+          <span class="badge">Itinéraires</span>
+          <h2>Nos Itinéraires</h2>
+          <p>Consultez notre réseau de lignes de bus à travers le pays.</p>
+        </div>
+        <div class="map-container">
+          <img src="../../assets/images/bus-map.jpg" alt="Bus Routes Map" class="route-map">
+        </div>
+      </div>
+    </section>
+
     <section class="faq">
       <div class="container">
         <div class="section-header">
