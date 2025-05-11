@@ -19,9 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         action: isBooked ? "cancel" : "book",
                     }),
                 });
-
+                console.log("Raw Response:", response);
+                // Check if the response is ok
                 const result = await response.json();
-
+                console.log("Parsed Result:", result);
                 if (result.success) {
                     // Update the button state
                     if (isBooked) {
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (error) {
                 console.error("Error:", error);
+                alert("Une erreur s'est produite lors de la communication avec le serveur.");
             }
         });
     });

@@ -1,6 +1,7 @@
 <?php
-
-require __DIR__ . '/../../../assets/vendor/autoload.php'; // Corrected path to vendor/autoload.php
+require_once __DIR__ . '/assets/PHPMailer/PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/assets/PHPMailer/PHPMailer/src/Exception.php';
+require_once __DIR__ . '/assets/PHPMailer/PHPMailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -19,7 +20,7 @@ function sendMail($recipientEmail, $subject, $body) {
         $mail->Port       = 587;
 
         // Email settings
-        $mail->setFrom('no-reply@transitx.com', 'TransitX');  // Sender's email
+        $mail->setFrom('emna.garbaa@gmail.com', 'TransitX');  // Sender's email
         $mail->addAddress($recipientEmail);  // Recipient's email
         $mail->isHTML(true);  // Enable HTML content
         $mail->Subject = $subject;
