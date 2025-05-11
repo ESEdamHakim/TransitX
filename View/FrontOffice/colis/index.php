@@ -141,7 +141,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+         <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php endif; ?>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <button class="notify-button position-relative" title="Notifications">
           <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
