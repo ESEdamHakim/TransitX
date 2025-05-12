@@ -14,12 +14,15 @@ session_start();
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
 
 </head>
 
 <body>
-      <?php include '../../assets/chatbot/chatbot.php'; ?>
+    <?php include '../../assets/chatbot/chatbot.php'; ?>
 
     <header class="landing-header">
         <div class="container">
@@ -212,8 +215,8 @@ session_start();
         <script src="validAddVehicule.js"></script>
         <script src="validDeleteVehicule.js"></script>
         <script src="validEditVehicule.js"></script>
-          <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-          <script src="assets/js/chatbot.js"> </script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="assets/js/chatbot.js"> </script>
 
     </footer>
 </body>
