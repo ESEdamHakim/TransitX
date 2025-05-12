@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../../Controller/CovoiturageC.php';
-require_once __DIR__ . '/../../../appConfig.php';
+require_once __DIR__ . '/../../../configuration/appConfig.php';
 header('Content-Type: application/json');
 // Ensure the user is logged in
 if (!isset($id_user)) {

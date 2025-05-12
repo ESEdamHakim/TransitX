@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // A new photo is uploaded
         $photoTmpPath = $_FILES['photo_vehicule']['tmp_name'];
         $photoName = uniqid() . '_' . basename($_FILES['photo_vehicule']['name']);
-        $uploadDir = '../../assets/uploads/';
+        $uploadDir = '/../../assets/uploads/'. $photo_name;
         if (move_uploaded_file($photoTmpPath, $uploadDir . $photoName)) {
             $photo_vehicule = $photoName;
         } else {
