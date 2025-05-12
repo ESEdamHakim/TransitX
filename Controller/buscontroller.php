@@ -239,41 +239,42 @@ class BusController
         if (empty($emails))
             return;
 
-        // Step 4: Create a well-formatted, brief message
-        $subject = "Nouveau bus disponible : {$trajet['place_depart']} vers {$trajet['place_arrivee']} a {$trajet['heure_depart']}";
+ // Step 4: Create a well-formatted, brief message
+$subject = "Nouveau bus disponible : {$trajet['place_depart']} vers {$trajet['place_arrivee']} a {$trajet['heure_depart']}";
 
-        $body = '
+$body = '
 <html>
-  <body style="margin:0; padding:0; font-family: Arial, sans-serif;">
-    <div style="max-width:600px; margin:auto; background-color:#ffffff; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); overflow:hidden;">
-      <div style="background-color:#2b6cb0; color:white; text-align:center; padding:16px 24px; margin:0;">
-        <h2 style="margin:0; padding:0;">🚍 Nouveau bus sur votre trajet favori !</h2>
+  <body style="margin:0; padding:0; font-family:Arial,sans-serif;">
+    <div style="max-width:600px;margin:auto;background-color:#ffffff;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);overflow:hidden;">
+      <div style="background-color:#2b6cb0;color:white;text-align:center;padding:16px 24px;margin:0;">
+        <h2 style="margin:0;padding:0;">🚍 Nouveau bus sur votre trajet favori !</h2>
       </div>
-      <div style="padding:24px; font-size:15px; line-height:1.6; margin:0;">
+      <div style="padding:24px;font-size:15px;line-height:1.6;margin:0;">
         <p style="margin:0;">Bonjour <strong></p>
-        <p style="margin:16px 0 0 0;">Un nouveau bus a été ajouté pour votre trajet préféré :</p>
-        <div style="background-color:#f0f8ff; border-left:5px solid #2b6cb0; padding:12px; margin:16px 0; font-weight:bold; color:#2b6cb0;">
+        <p style="margin:16px 0;">Un nouveau bus a été ajouté pour votre trajet préféré :</p>
+        <div style="background-color:#f0f8ff;border-left:5px solid #2b6cb0;padding:12px;margin:16px 0;font-weight:bold;color:#2b6cb0;">
           Trajet : ' . htmlspecialchars($trajet["place_depart"]) . ' → ' . htmlspecialchars($trajet["place_arrivee"]) . ' à ' . htmlspecialchars($trajet["heure_depart"]) . '
         </div>
         <h3 style="margin:24px 0 16px 0;">Détails du bus</h3>
-        <ul style="list-style:none; padding:0; margin:0;">
-          <li style="margin-bottom:8px; padding:0;"><strong>Statut :</strong> ' . htmlspecialchars($bus["statut"]) . '</li>
-          <li style="margin-bottom:8px; padding:0;"><strong>Numéro :</strong> ' . htmlspecialchars($bus["num_bus"]) . '</li>
-          <li style="margin-bottom:8px; padding:0;"><strong>Type :</strong> ' . htmlspecialchars($bus["type_bus"]) . '</li>
-          <li style="margin-bottom:8px; padding:0;"><strong>Marque :</strong> ' . htmlspecialchars($bus["marque"]) . '</li>
-          <li style="margin-bottom:8px; padding:0;"><strong>Modèle :</strong> ' . htmlspecialchars($bus["modele"]) . '</li>
-          <li style="margin-bottom:8px; padding:0;"><strong>Capacité :</strong> ' . htmlspecialchars($bus["capacite"]) . ' personnes</li>
-          <li style="margin-bottom:8px; padding:0;"><strong>Date de mise en service :</strong> ' . htmlspecialchars($bus["date_mise_en_service"]) . '</li>
+        <ul style="list-style:none;padding:0;margin:0;">
+          <li style="margin-bottom:8px;padding:0;"><strong>Statut :</strong> ' . htmlspecialchars($bus["statut"]) . '</li>
+          <li style="margin-bottom:8px;padding:0;"><strong>Numéro :</strong> ' . htmlspecialchars($bus["num_bus"]) . '</li>
+          <li style="margin-bottom:8px;padding:0;"><strong>Type :</strong> ' . htmlspecialchars($bus["type_bus"]) . '</li>
+          <li style="margin-bottom:8px;padding:0;"><strong>Marque :</strong> ' . htmlspecialchars($bus["marque"]) . '</li>
+          <li style="margin-bottom:8px;padding:0;"><strong>Modèle :</strong> ' . htmlspecialchars($bus["modele"]) . '</li>
+          <li style="margin-bottom:8px;padding:0;"><strong>Capacité :</strong> ' . htmlspecialchars($bus["capacite"]) . ' personnes</li>
+          <li style="margin-bottom:8px;padding:0;"><strong>Date de mise en service :</strong> ' . htmlspecialchars($bus["date_mise_en_service"]) . '</li>
         </ul>
         <p style="margin:16px 0;">Rendez-vous sur <strong>TransitX</strong> pour plus d’informations et réserver votre place.</p>
       </div>
-      <div style="text-align:center; font-size:12px; color:#888; background-color:#f9f9f9; padding:16px; border-top:1px solid #eee; margin:0;">
+      <div style="text-align:center;font-size:12px;color:#888;background-color:#f9f9f9;padding:16px;border-top:1px solid #eee;margin:0;">
         <p style="margin:0;">🚀 TransitX — Move Clean, Live Clean</p>
         <p style="margin:0;">Ce message est automatique, merci de ne pas y répondre directement.</p>
       </div>
     </div>
   </body>
 </html>';
+
 
         // Step 5: Send the email to each user
         foreach ($emails as $email) {
