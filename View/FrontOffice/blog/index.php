@@ -70,21 +70,6 @@ session_start();
       margin-bottom: 10px;
     }
 
-    .btn-primary {
-      background-color: #97c3a2;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-
-    .btn-primary:hover {
-      background-color: #1f4f65;
-      color: white;
-    }
-
     .content {
       text-align: center;
     }

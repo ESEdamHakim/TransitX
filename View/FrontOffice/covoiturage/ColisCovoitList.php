@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
 require_once __DIR__ . '/../../../appConfig.php';
+
+
 $vehiculeController = new VehiculeC();
 $vehicules = $vehiculeController->getVehiculesByUser($id_user);
 ?>
@@ -12,6 +14,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Covoiturage</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../colis/assets/css/main.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
@@ -26,22 +29,22 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
           <span class="logo-text">TransitX</span>
         </div>
       </div>
-      <nav class="main-nav">
+       <nav class="main-nav">
         <ul>
           <li><a href="../index.php">Accueil</a></li>
           <li><a href="../bus/index.php">Bus</a></li>
-          <li class="active"><a href="../colis/index.php">Colis</a></li>
-          <li><a href="index.php">Covoiturage</a></li>
+          <li class="active"><a href="index.php">Colis</a></li>
+          <li><a href="../covoiturage/index.php">Covoiturage</a></li>
           <li><a href="../blog/index.php">Blog</a></li>
           <li><a href="../reclamation/index.php">Réclamation</a></li>
+          <li><a href="../vehicule/index.php">Véhicule</a></li>
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
-        <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-        <button class="mobile-menu-btn">
-          <i class="fas fa-bars"></i>
-        </button>
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+          <a href="../../BackOffice/index.php" class="btn btn-outline">Dashboard</a>
+        <?php endif; ?>
+        <a href="../../../index.php" class="btn btn-primary">Déconnexion</a>
       </div>
     </div>
   </header>
