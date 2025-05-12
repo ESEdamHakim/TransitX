@@ -70,22 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const fetchResponse = await axios.get('systemprompt.php');
             const data = fetchResponse.data;
 
-            // STEP 2: Create a summarized string
-            const trajets = Array.isArray(data.trajets) ? data.trajets : [];
-            const buses = Array.isArray(data.buses) ? data.buses : [];
-
-            const trajetData = trajets.length > 0
-                ? trajets.map(t =>
-                    `- Départ: ${t.place_depart}, Arrivée: ${t.place_arrivee}, Heure départ: ${t.heure_depart}, Durée: ${t.duree}, Distance: ${t.distance_km} km, Prix: ${t.prix} DT`
-                ).join('\n')
-                : 'Aucun trajet disponible.';
-
-            const busData = buses.length > 0
-                ? buses.map(b =>
-                    `- Numéro: ${b.num_bus}, Marque: ${b.marque}, Modèle: ${b.modele}, Matricule: ${b.matricule}, Capacité: ${b.capacite} places, Disponibles: ${b.nb_places_dispo} places, Date mise en service: ${b.date_mise_en_service}`
-                ).join('\n')
-                : 'Aucun bus disponible.';
-
 
             // STEP 3: Create the system message content with the data
             const systemContent = `You are speaking to a dear user of TransitX. Please assist them professionally and helpfully.`;

@@ -409,8 +409,8 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <script src="validDeleteCovoiturage.js"></script>
 
   <script src="meteo-card.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 
 </html>
