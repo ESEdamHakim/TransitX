@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_FILES['photo_vehicule']) && $_FILES['photo_vehicule']['error'] === UPLOAD_ERR_OK) {
         $photoTmpPath = $_FILES['photo_vehicule']['tmp_name'];
         $photoName = uniqid() . '_' . basename($_FILES['photo_vehicule']['name']);
-        $uploadDir = '/../../assets/uploads/'. $photo_name;
+        $uploadDir = '../../assets/uploads/'. $photo_name;
         if (move_uploaded_file($photoTmpPath, $uploadDir . $photoName)) {
             $photo_vehicule = $photoName;
         } else {
