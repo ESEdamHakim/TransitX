@@ -22,7 +22,7 @@ class BusController
             die('Error: ' . $e->getMessage());
         }
     }
-    
+
 
     public function addBus(Bus $bus)
     {
@@ -150,26 +150,26 @@ class BusController
         $busQuery = $this->db->prepare("SELECT * FROM bus WHERE id_bus = :id_bus");
         $busQuery->execute(['id_bus' => $id_bus]);
         $bus = $busQuery->fetch(PDO::FETCH_ASSOC);
-    
+
         if (!$bus)
             return;
-    
+
         // Step 2: Get trajet details (departure, arrival, and time)
         $trajetQuery = $this->db->prepare("SELECT place_depart, place_arrivee, heure_depart FROM trajet WHERE id_trajet = :id_trajet");
         $trajetQuery->execute(['id_trajet' => $id_trajet]);
         $trajet = $trajetQuery->fetch(PDO::FETCH_ASSOC);
-    
+
         if (!$trajet)
             return;
-    
+
         // Step 3: Get users who favorited this trajet
         $query = $this->db->prepare("SELECT user_id AS id_user FROM bus_favoris WHERE id_trajet = :id_trajet");
         $query->execute(['id_trajet' => $id_trajet]);
         $users = $query->fetchAll(PDO::FETCH_ASSOC);
-    
+
         if (!$users)
             return;
-    
+
         // Step 4: Create a well-formatted, brief message
         $message = "🚌 Nouveau bus disponible sur votre trajet favori: ";
         $message .= "{$trajet['place_depart']} → {$trajet['place_arrivee']} à {$trajet['heure_depart']} !\n\n";
@@ -180,10 +180,10 @@ class BusController
         $message .= "• Modèle : {$bus['modele']}\n";
         $message .= "• Capacité : {$bus['capacite']} personnes\n";
         $message .= "• Mise en service : {$bus['date_mise_en_service']}\n";
-    
+
         // Trim the message to remove any leading or trailing whitespace
         $message = trim($message);
-    
+
         // Step 5: Insert notifications
         foreach ($users as $user) {
             $insert = $this->db->prepare("INSERT INTO bus_notification (id_user, message) VALUES (:id_user, :message)");
@@ -193,7 +193,7 @@ class BusController
             ]);
         }
     }
-    
+
 
 
     public function getNotificationsForUser($id_user)
@@ -203,69 +203,83 @@ class BusController
         return $query->fetchAll();
     }
     public function getEmailsByTrajet($id_trajet)
-{
-    $query = $this->db->prepare("
+    {
+        $query = $this->db->prepare("
         SELECT u.email
         FROM bus_favoris bf
         JOIN user u ON bf.user_id = u.id
         WHERE bf.id_trajet = :id_trajet
     ");
-    $query->execute(['id_trajet' => $id_trajet]);
-    return $query->fetchAll(PDO::FETCH_COLUMN); // Returns array of emails
-}
-
-
-public function notifyUsersByEmail($id_trajet, $id_bus)
-{
-    // Step 1: Get all bus info
-    $busQuery = $this->db->prepare("SELECT * FROM bus WHERE id_bus = :id_bus");
-    $busQuery->execute(['id_bus' => $id_bus]);
-    $bus = $busQuery->fetch(PDO::FETCH_ASSOC);
-
-    if (!$bus)
-        return;
-
-    // Step 2: Get trajet details (departure, arrival, and time)
-    $trajetQuery = $this->db->prepare("SELECT place_depart, place_arrivee, heure_depart FROM trajet WHERE id_trajet = :id_trajet");
-    $trajetQuery->execute(['id_trajet' => $id_trajet]);
-    $trajet = $trajetQuery->fetch(PDO::FETCH_ASSOC);
-
-    if (!$trajet)
-        return;
-
-    // Step 3: Get emails of users who favorited this trajet
-    $emails = $this->getEmailsByTrajet($id_trajet); // Using the getEmailsByTrajet function
-
-    if (empty($emails))
-        return;
-
-    // Step 4: Create a well-formatted, brief message
-    $subject = "Nouveau bus disponible : {$trajet['place_depart']} vers {$trajet['place_arrivee']} a {$trajet['heure_depart']}";
-
-    $body = "
-      <div style='font-family:Arial, sans-serif; font-size:14px; color:#333;'>
-        <p style='font-size:18px; font-weight:bold; color:#2b6cb0; margin:0;'>🚍 Nouveau bus sur votre trajet favori !</p>
-        <p style='margin:4px 0 12px 0;'><strong>Trajet :</strong> {$trajet['place_depart']} → {$trajet['place_arrivee']} à {$trajet['heure_depart']}</p>
-        <ul style='margin:0; padding-left:18px; line-height:1.5;'>
-          <li><strong>Statut :</strong> {$bus['statut']}</li>
-          <li><strong>Numéro :</strong> {$bus['num_bus']}</li>
-          <li><strong>Type :</strong> {$bus['type_bus']}</li>
-          <li><strong>Marque :</strong> {$bus['marque']}</li>
-          <li><strong>Modèle :</strong> {$bus['modele']}</li>
-          <li><strong>Capacité :</strong> {$bus['capacite']} personnes</li>
-          <li><strong>Date de mise en service :</strong> {$bus['date_mise_en_service']}</li>
-        </ul>
-        <p style='margin-top:12px;'>Consultez TransitX pour plus de détails.</p>
-      </div>
-    ";
-    
-    
-    
-    // Step 5: Send the email to each user
-    foreach ($emails as $email) {
-        sendBusEmailNotification($email, $subject, $body); // Send email to each user
+        $query->execute(['id_trajet' => $id_trajet]);
+        return $query->fetchAll(PDO::FETCH_COLUMN); // Returns array of emails
     }
-}
+
+
+    public function notifyUsersByEmail($id_trajet, $id_bus)
+    {
+        // Step 1: Get all bus info
+        $busQuery = $this->db->prepare("SELECT * FROM bus WHERE id_bus = :id_bus");
+        $busQuery->execute(['id_bus' => $id_bus]);
+        $bus = $busQuery->fetch(PDO::FETCH_ASSOC);
+
+        if (!$bus)
+            return;
+
+        // Step 2: Get trajet details (departure, arrival, and time)
+        $trajetQuery = $this->db->prepare("SELECT place_depart, place_arrivee, heure_depart FROM trajet WHERE id_trajet = :id_trajet");
+        $trajetQuery->execute(['id_trajet' => $id_trajet]);
+        $trajet = $trajetQuery->fetch(PDO::FETCH_ASSOC);
+
+        if (!$trajet)
+            return;
+
+        // Step 3: Get emails of users who favorited this trajet
+        $emails = $this->getEmailsByTrajet($id_trajet); // Using the getEmailsByTrajet function
+
+        if (empty($emails))
+            return;
+
+        // Step 4: Create a well-formatted, brief message
+        $subject = "Nouveau bus disponible : {$trajet['place_depart']} vers {$trajet['place_arrivee']} a {$trajet['heure_depart']}";
+
+        $body = '
+<html>
+  <body style="margin:0; padding:0; font-family: Arial, sans-serif;">
+    <div style="max-width:600px; margin:auto; background-color:#ffffff; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); overflow:hidden;">
+      <div style="background-color:#2b6cb0; color:white; text-align:center; padding:16px 24px; margin:0;">
+        <h2 style="margin:0; padding:0;">🚍 Nouveau bus sur votre trajet favori !</h2>
+      </div>
+      <div style="padding:24px; font-size:15px; line-height:1.6; margin:0;">
+        <p style="margin:0;">Bonjour <strong></p>
+        <p style="margin:16px 0 0 0;">Un nouveau bus a été ajouté pour votre trajet préféré :</p>
+        <div style="background-color:#f0f8ff; border-left:5px solid #2b6cb0; padding:12px; margin:16px 0; font-weight:bold; color:#2b6cb0;">
+          Trajet : ' . htmlspecialchars($trajet["place_depart"]) . ' → ' . htmlspecialchars($trajet["place_arrivee"]) . ' à ' . htmlspecialchars($trajet["heure_depart"]) . '
+        </div>
+        <h3 style="margin:24px 0 16px 0;">Détails du bus</h3>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li style="margin-bottom:8px; padding:0;"><strong>Statut :</strong> ' . htmlspecialchars($bus["statut"]) . '</li>
+          <li style="margin-bottom:8px; padding:0;"><strong>Numéro :</strong> ' . htmlspecialchars($bus["num_bus"]) . '</li>
+          <li style="margin-bottom:8px; padding:0;"><strong>Type :</strong> ' . htmlspecialchars($bus["type_bus"]) . '</li>
+          <li style="margin-bottom:8px; padding:0;"><strong>Marque :</strong> ' . htmlspecialchars($bus["marque"]) . '</li>
+          <li style="margin-bottom:8px; padding:0;"><strong>Modèle :</strong> ' . htmlspecialchars($bus["modele"]) . '</li>
+          <li style="margin-bottom:8px; padding:0;"><strong>Capacité :</strong> ' . htmlspecialchars($bus["capacite"]) . ' personnes</li>
+          <li style="margin-bottom:8px; padding:0;"><strong>Date de mise en service :</strong> ' . htmlspecialchars($bus["date_mise_en_service"]) . '</li>
+        </ul>
+        <p style="margin:16px 0;">Rendez-vous sur <strong>TransitX</strong> pour plus d’informations et réserver votre place.</p>
+      </div>
+      <div style="text-align:center; font-size:12px; color:#888; background-color:#f9f9f9; padding:16px; border-top:1px solid #eee; margin:0;">
+        <p style="margin:0;">🚀 TransitX — Move Clean, Live Clean</p>
+        <p style="margin:0;">Ce message est automatique, merci de ne pas y répondre directement.</p>
+      </div>
+    </div>
+  </body>
+</html>';
+
+        // Step 5: Send the email to each user
+        foreach ($emails as $email) {
+            sendBusEmailNotification($email, $subject, $body); // Send email to each user
+        }
+    }
 
 }
 ?>

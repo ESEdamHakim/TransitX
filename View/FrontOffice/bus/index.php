@@ -47,7 +47,9 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php endif; ?>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <!-- Notification Button -->
         <div class="notification-container">
@@ -368,19 +370,7 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
         </div>
       </div>
     </div>
-    <section class="bus-map">
-      <div class="container">
-        <div class="section-header">
-          <span class="badge">Itinéraires</span>
-          <h2>Nos Itinéraires</h2>
-          <p>Consultez notre réseau de lignes de bus à travers le pays.</p>
-        </div>
-        <div class="map-container">
-          <img src="../../assets/images/bus-map.jpg" alt="Bus Routes Map" class="route-map">
-        </div>
-      </div>
-    </section>
-
+    
     <section class="faq">
       <div class="container">
         <div class="section-header">
