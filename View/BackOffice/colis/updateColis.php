@@ -131,22 +131,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span>Blog</span>
               </a>
             </li>
-          </ul>
+           </ul>
+          <a href="../../../index.php" class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+          </a>
         </nav>
-      </div>
-
-      <div class="sidebar-footer">
-        <a href="#" class="user-profile">
-          <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
-          <div class="user-info">
-            <h4>Admin User</h4>
-            <p>Administrateur</p>
-          </div>
-        </a>
-        <a href="../../../index.php" class="logout">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Déconnexion</span>
-        </a>
       </div>
     </aside>
 

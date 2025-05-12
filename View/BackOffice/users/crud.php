@@ -268,12 +268,12 @@ function getSortUrl($columnName)
   <div class="dashboard">
     <aside class="sidebar">
       <div class="sidebar-header">
-<a href="../../FrontOffice/index.php" class="logo-link">
-  <div class="logo">
-    <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
-    <span>Transit</span><span class="highlight">X</span>
-  </div>
-</a>
+        <a href="../../FrontOffice/index.php" class="logo-link">
+          <div class="logo">
+            <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
+            <span>Transit</span><span class="highlight">X</span>
+          </div>
+        </a>
         <button class="sidebar-toggle">
           <i class="fas fa-bars"></i>
         </button>
@@ -300,7 +300,7 @@ function getSortUrl($columnName)
                 <span>Bus</span>
               </a>
             </li>
-                  <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
+            <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
 
             <li>
               <a href="../colis/crud.php">
@@ -326,24 +326,14 @@ function getSortUrl($columnName)
                 <span>Blog</span>
               </a>
             </li>
-                        <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
+            <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
 
           </ul>
+          <a href="../../../index.php" class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+          </a>
         </nav>
-      </div>
-
-      <div class="sidebar-footer">
-        <a href="#" class="user-profile">
-          <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
-          <div class="user-info">
-            <h4>Admin User</h4>
-            <p>Administrateur</p>
-          </div>
-        </a>
-        <a href="../../../index.php" class="logout">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Déconnexion</span>
-        </a>
       </div>
     </aside>
 

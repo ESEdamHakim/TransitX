@@ -203,24 +203,14 @@
                 <span>Blog</span>
               </a>
             </li>
-                        <li><a href="vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
+            <li><a href="vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
 
           </ul>
+          <a href="../../../index.php" class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+          </a>
         </nav>
-      </div>
-
-      <div class="sidebar-footer">
-        <a href="#" class="user-profile">
-          <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
-          <div class="user-info">
-            <h4>Admin User</h4>
-            <p>Administrateur</p>
-          </div>
-        </a>
-        <a href="../../index.php" class="logout">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Déconnexion</span>
-        </a>
       </div>
     </aside>
 

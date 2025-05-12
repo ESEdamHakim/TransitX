@@ -79,7 +79,6 @@ $topArticles = $articleC->getMostCommentedArticles();
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
   <style>
-
     .header-left h1 {
       color: #1f4f65;
     }
@@ -394,21 +393,11 @@ $topArticles = $articleC->getMostCommentedArticles();
             <li class="active"><a href="crud.php"><i class="fas fa-blog"></i><span>Blog</span></a></li>
             <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
           </ul>
+          <a href="../../../index.php" class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+          </a>
         </nav>
-      </div>
-
-      <div class="sidebar-footer">
-        <a href="#" class="user-profile">
-          <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
-          <div class="user-info">
-            <h4>Admin User</h4>
-            <p>Administrateur</p>
-          </div>
-        </a>
-        <a href="../../../index.php" class="logout">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Déconnexion</span>
-        </a>
       </div>
     </aside>
 

@@ -26,12 +26,12 @@ include 'BdisplayVehicule.php';
   <div class="dashboard">
     <aside class="sidebar">
       <div class="sidebar-header">
-<a href="../../FrontOffice/index.php" class="logo-link">
-  <div class="logo">
-    <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
-    <span>Transit</span><span class="highlight">X</span>
-  </div>
-</a>
+        <a href="../../FrontOffice/index.php" class="logo-link">
+          <div class="logo">
+            <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
+            <span>Transit</span><span class="highlight">X</span>
+          </div>
+        </a>
         <button class="sidebar-toggle">
           <i class="fas fa-bars"></i>
         </button>
@@ -58,7 +58,7 @@ include 'BdisplayVehicule.php';
                 <span>Bus</span>
               </a>
             </li>
-                  <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
+            <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
 
             <li>
               <a href="../colis/crud.php">
@@ -78,35 +78,26 @@ include 'BdisplayVehicule.php';
                 <span>Covoiturage</span>
               </a>
             </li>
-            <li class="active">
-              <a href="crud.php">
-                <i class="fas fa-car"></i>
-                <span>Véhicules</span>
-              </a>
-            </li>
             <li>
               <a href="../blog/crud.php">
                 <i class="fas fa-blog"></i>
                 <span>Blog</span>
               </a>
             </li>
+            <li class="active">
+              <a href="crud.php">
+                <i class="fas fa-car"></i>
+                <span>Véhicules</span>
+              </a>
+            </li>
           </ul>
+          <a href="../../../index.php" class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+          </a>
         </nav>
       </div>
 
-      <div class="sidebar-footer">
-        <a href="#" class="user-profile">
-          <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
-          <div class="user-info">
-            <h4>Admin User</h4>
-            <p>Administrateur</p>
-          </div>
-        </a>
-        <a href="../../../index.php" class="logout">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Déconnexion</span>
-        </a>
-      </div>
     </aside>
 
     <main class="main-content">
@@ -120,7 +111,7 @@ include 'BdisplayVehicule.php';
             <input type="text" placeholder="Rechercher un véhicule...">
             <button><i class="fas fa-search"></i></button>
           </div>
-          <button id="add-vehicule-btn" class="btn btn-primary">
+          <button id="add-vehicule-btn" style="display: none;">
             <i class="fas fa-plus"></i> Ajouter un Véhicule
           </button>
         </div>
@@ -171,7 +162,7 @@ include 'BdisplayVehicule.php';
                       <td><?= htmlspecialchars($vehicule['marque']) ?></td>
                       <td><?= htmlspecialchars($vehicule['modele']) ?></td>
                       <td><?= htmlspecialchars($vehicule['confort']) ?></td>
-                    
+
                       <td>
                         <?php if (!empty($vehicule['photo_vehicule'])): ?>
                           <img src="../../assets/uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>"
@@ -193,13 +184,6 @@ include 'BdisplayVehicule.php';
               </table>
             </div>
             <script src="searchvehicule.js"></script>
-            <div class="pagination">
-              <button class="pagination-btn prev"><i class="fas fa-chevron-left"></i></button>
-              <button class="pagination-btn active">1</button>
-              <button class="pagination-btn">2</button>
-              <button class="pagination-btn">3</button>
-              <button class="pagination-btn next"><i class="fas fa-chevron-right"></i></button>
-            </div>
           </div>
 
           <!-- Grid View -->

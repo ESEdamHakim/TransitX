@@ -91,21 +91,11 @@ include 'Bdisplaycovoiturage.php';
               </a>
             </li>
           </ul>
+          <a href="../../../index.php" class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+          </a>
         </nav>
-      </div>
-
-      <div class="sidebar-footer">
-        <a href="#" class="user-profile">
-          <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
-          <div class="user-info">
-            <h4>Admin User</h4>
-            <p>Administrateur</p>
-          </div>
-        </a>
-        <a href="../../../index.php" class="logout">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Déconnexion</span>
-        </a>
       </div>
     </aside>
 
@@ -120,7 +110,7 @@ include 'Bdisplaycovoiturage.php';
             <input type="text" placeholder="Rechercher un trajet...">
             <button><i class="fas fa-search"></i></button>
           </div>
-          <button id="add-covoiturage-btn" class="btn btn-primary">
+          <button id="add-covoiturage-btn" style="display: none;">
             <i class="fas fa-plus"></i> Ajouter un Trajet
           </button>
         </div>
@@ -186,13 +176,6 @@ include 'Bdisplaycovoiturage.php';
             <script src="search.js"></script>
             <script src="Recent.js"></script>
             <script src="Ancien.js"></script>
-            <div class="pagination">
-              <button class="pagination-btn prev"><i class="fas fa-chevron-left"></i></button>
-              <button class="pagination-btn active">1</button>
-              <button class="pagination-btn">2</button>
-              <button class="pagination-btn">3</button>
-              <button class="pagination-btn next"><i class="fas fa-chevron-right"></i></button>
-            </div>
           </div>
 
           <!-- Grid View -->

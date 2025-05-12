@@ -111,21 +111,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </a>
             </li>
           </ul>
+          <a href="../../../index.php" class="logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Déconnexion</span>
+          </a>
         </nav>
-      </div>
-
-      <div class="sidebar-footer">
-        <a href="#" class="user-profile">
-          <img src="../assets/images/placeholder-admin.png" alt="Admin" class="user-img">
-          <div class="user-info">
-            <h4>Admin User</h4>
-            <p>Administrateur</p>
-          </div>
-        </a>
-        <a href="../../../index.php" class="logout">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Déconnexion</span>
-        </a>
       </div>
     </aside>
     <main class="main-content">
@@ -146,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="form-group">
                   <label for="id_client">Client :</label>
-                  <select name="id_client" id="id_client" >
+                  <select name="id_client" id="id_client">
                     <option value="">-- Sélectionner un client --</option>
                     <?php foreach ($clients as $client): ?>
                       <option value="<?= $client['id'] ?>">
@@ -176,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </div>
                   <div class="form-group">
                     <label for="id_covoit">Covoiturage :</label>
-                    <select name="id_covoit" id="id_covoit" >
+                    <select name="id_covoit" id="id_covoit">
                       <option value="">-- Sélectionner un covoiturage --</option>
                       <?php foreach ($covoiturages as $cov): ?>
                         <option value="<?= $cov['id_covoit'] ?>">
