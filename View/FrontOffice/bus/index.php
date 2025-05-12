@@ -461,7 +461,7 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
           <h4>Contact</h4>
           <ul>
             <li><i class="fas fa-map-marker-alt"></i> 123 Avenue Habib Bourguiba, Tunis</li>
-            <li><i class="fas fa-phone"></i> +216 71 123 456</li>
+            <li><i class="fas fa-phone"></i> +216 26 216 216</li>
             <li><i class="fas fa-envelope"></i> contact@transitx.com</li>
           </ul>
         </div>

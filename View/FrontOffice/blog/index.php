@@ -14,7 +14,7 @@ session_start();
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+  <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
 
 
   <style>
@@ -83,17 +83,6 @@ session_start();
     .btn-primary:hover {
       background-color: #1f4f65;
       color: white;
-    }
-
-    footer {
-      background-color: #1f4f65;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    footer p {
-      margin: 0;
     }
 
     .content {
@@ -258,7 +247,7 @@ session_start();
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <a href="calendrier.php"
           style="display: inline-flex; align-items: center; gap: 5px; font-size: 16px; text-decoration: none; color: inherit; background: none; border: 2px solid #97c3a2; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-          📅 <span>Calendrier</span>
+          📅
         </a>
 
         <button class="mobile-menu-btn">
@@ -284,33 +273,85 @@ session_start();
     </div>
   </section>
 
-  <footer>
-    <p>&copy; 2023 TransitX. Tous droits réservés.</p>
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">
+          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="footer-logo-img">
+          <span>TransitX</span>
+        </div>
+        <div class="footer-slogan">
+          <p>Move Green, Live Clean</p>
+        </div>
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-middle">
+        <div class="footer-column">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="../bus/index.php">Bus</a></li>
+            <li><a href="../covoiturage/index.php">Covoiturage</a></li>
+            <li><a href="index.php">Colis</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>À propos</h4>
+          <ul>
+            <li><a href="../about.php">Notre mission</a></li>
+            <li><a href="../blog/index.php">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Légal</h4>
+          <ul>
+            <li><a href="#">Conditions d'utilisation</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> 123 Avenue Habib Bourguiba, Tunis</li>
+            <li><i class="fas fa-phone"></i> +216 26 216 216</li>
+            <li><i class="fas fa-envelope"></i> contact@transitx.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 TransitX. Tous droits réservés.</p>
+      </div>
+    </div>
   </footer>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Menu mobile
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
-      document.querySelector('.main-nav').classList.toggle('active');
-    });
-
-    // Boutons de filtre (si présents)
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    filterButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Menu mobile
+      document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+        document.querySelector('.main-nav').classList.toggle('active');
       });
+
+      // Boutons de filtre (si présents)
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // Affichage conditionnel boutons dashboard / logout
+      document.querySelector('.dashboard-btn').style.display = 'inline-flex';
+      document.querySelector('.logout-btn').style.display = 'inline-flex';
     });
+  </script>
 
-    // Affichage conditionnel boutons dashboard / logout
-    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-    document.querySelector('.logout-btn').style.display = 'inline-flex';
-  });
-</script>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"> </script>
 
 </body>

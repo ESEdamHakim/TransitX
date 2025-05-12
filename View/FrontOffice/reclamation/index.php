@@ -241,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <h3>Téléphone</h3>
             <p>Service client disponible du lundi au vendredi, 9h-18h</p>
-            <a href="tel:+33123456789">+216 71 123 456</a>
+            <a href="tel:+33123456789">+216 26 216 216</a>
           </div>
           <div class="feature-card">
             <div class="feature-icon">
@@ -309,7 +309,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <h4>Contact</h4>
           <ul>
             <li><i class="fas fa-map-marker-alt"></i> 123 Avenue Habib Bourguiba, Tunis</li>
-            <li><i class="fas fa-phone"></i> +216 71 123 456</li>
+            <li><i class="fas fa-phone"></i> +216 26 216 216</li>
             <li><i class="fas fa-envelope"></i> contact@transitx.com</li>
           </ul>
         </div>
