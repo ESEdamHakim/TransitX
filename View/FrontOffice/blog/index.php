@@ -288,7 +288,8 @@ session_start();
     <p>&copy; 2023 TransitX. Tous droits réservés.</p>
   </footer>
 
-  <script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
     // Menu mobile
     document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
       document.querySelector('.main-nav').classList.toggle('active');
@@ -306,7 +307,9 @@ session_start();
     // Affichage conditionnel boutons dashboard / logout
     document.querySelector('.dashboard-btn').style.display = 'inline-flex';
     document.querySelector('.logout-btn').style.display = 'inline-flex';
-  </script>
+  });
+</script>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"> </script>
 

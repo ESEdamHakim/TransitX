@@ -1,20 +1,20 @@
-// Mobile menu toggle
-document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
-    document.querySelector('.main-nav').classList.toggle('active');
-});
-
-// Ensure dashboard button is visible
-document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-document.querySelector('.logout-btn').style.display = 'inline-flex';
-
 document.addEventListener("DOMContentLoaded", () => {
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+        document.querySelector('.main-nav').classList.toggle('active');
+    });
+
+    // Ensure dashboard and logout buttons are visible
+    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
+    document.querySelector('.logout-btn').style.display = 'inline-flex';
+
     // Add Ride Logic
     const createRideForm = document.querySelector(".create-ride-form");
     const detailsOptions = document.getElementById("details-options");
     const rideDetails = document.getElementById("ride-details");
-    const cityInput = document.getElementById("start-point"); // City input field
-    const cityError = document.getElementById("start-point-error"); // Error span for city validation
-    const apiKey = "8aab6949191302a6a18a11e8f68d5acf"; // OpenWeatherMap API key
+    const cityInput = document.getElementById("start-point");
+    const cityError = document.getElementById("start-point-error");
+    const apiKey = "8aab6949191302a6a18a11e8f68d5acf";
     const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 
     // Add event listener for id_vehicule change
@@ -26,11 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
     detailsOptions.addEventListener("change", function () {
         const selectedOption = detailsOptions.value;
         if (selectedOption === "other") {
-            // Allow the user to manually enter details if "other" is selected
             rideDetails.value = "";
             rideDetails.placeholder = "Ajoutez des détails ou complétez l'option sélectionnée";
         } else {
-            // Populate the details field with the selected option
             rideDetails.value = selectedOption;
         }
     });
@@ -43,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 errorElement.textContent = "Ville introuvable. Veuillez entrer une ville valide.";
                 return false;
             }
-            errorElement.textContent = ""; // Clear error if the city is valid
+            errorElement.textContent = "";
             return true;
         } catch (error) {
             console.error("Error validating city:", error);
@@ -55,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cityInput.addEventListener("blur", async () => {
         const city = cityInput.value.trim();
         if (city) {
-            await validateCity(city, cityError); // Pass the cityError element to validateCity
+            await validateCity(city, cityError);
         } else {
             cityError.textContent = "Veuillez entrer une ville.";
         }
@@ -83,29 +81,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const idVehicule = document.getElementById("id_vehicule").value.trim();
         let hasError = false;
 
-        // Validate required fields for departure
-if (!lieuDepart) {
-    document.getElementById("start-point-error").textContent = "Veuillez remplir le point de départ.";
-    hasError = true;
-} else {
-    // Validate the departure city
-    const isCityValid = await validateCity(lieuDepart, document.getElementById("start-point-error"));
-    if (!isCityValid) {
-        hasError = true;
-    }
-}
+        if (!lieuDepart) {
+            document.getElementById("start-point-error").textContent = "Veuillez remplir le point de départ.";
+            hasError = true;
+        } else {
+            const isCityValid = await validateCity(lieuDepart, document.getElementById("start-point-error"));
+            if (!isCityValid) hasError = true;
+        }
 
-// Validate required fields for destination
-if (!lieuArrivee) {
-    document.getElementById("end-point-error").textContent = "Veuillez remplir le point d'arrivée.";
-    hasError = true;
-} else {
-    // Validate the destination city
-    const isDestinationValid = await validateCity(lieuArrivee, document.getElementById("end-point-error"));
-    if (!isDestinationValid) {
-        hasError = true;
-    }
-}
+        if (!lieuArrivee) {
+            document.getElementById("end-point-error").textContent = "Veuillez remplir le point d'arrivée.";
+            hasError = true;
+        } else {
+            const isDestinationValid = await validateCity(lieuArrivee, document.getElementById("end-point-error"));
+            if (!isDestinationValid) hasError = true;
+        }
 
         if (!dateDepart) {
             document.getElementById("ride-date-create-error").textContent = "Veuillez sélectionner une date.";
@@ -113,7 +103,7 @@ if (!lieuArrivee) {
         } else {
             const today = new Date();
             const selectedDate = new Date(dateDepart);
-            today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate comparison
+            today.setHours(0, 0, 0, 0);
 
             if (selectedDate < today) {
                 document.getElementById("ride-date-create-error").textContent = "La date de départ ne peut pas être dans le passé.";
@@ -134,7 +124,6 @@ if (!lieuArrivee) {
             hasError = true;
         }
 
-        // Validate numeric fields
         if (isNaN(placesDispo) || placesDispo <= 0) {
             document.getElementById("seats-error").textContent = "Le nombre de places disponibles doit être supérieur à zéro.";
             hasError = true;
@@ -145,7 +134,6 @@ if (!lieuArrivee) {
             hasError = true;
         }
 
-        // Validate select fields
         if (!accepteColis) {
             document.getElementById("accept-parcels-error").textContent = "Veuillez indiquer si vous acceptez les colis.";
             hasError = true;
@@ -161,7 +149,6 @@ if (!lieuArrivee) {
             hasError = true;
         }
 
-        // If no errors, submit the form
         if (!hasError) {
             createRideForm.submit();
         }

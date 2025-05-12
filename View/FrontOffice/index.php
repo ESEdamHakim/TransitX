@@ -357,7 +357,8 @@ require_once __DIR__ . '/../../Controller/userC.php';
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../assets/chatbot/chatbot.js"> </script>
-  <script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
     // Mobile menu toggle
     document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
       document.querySelector('.main-nav').classList.toggle('active');
@@ -366,7 +367,9 @@ require_once __DIR__ . '/../../Controller/userC.php';
     // Ensure dashboard button is visible
     document.querySelector('.dashboard-btn').style.display = 'inline-flex';
     document.querySelector('.logout-btn').style.display = 'inline-flex';
-  </script>
+  });
+</script>
+
 </body>
 
 </html>

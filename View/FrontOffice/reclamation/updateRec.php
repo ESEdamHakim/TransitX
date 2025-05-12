@@ -274,57 +274,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </footer>
 
-    <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
-            document.querySelector('.main-nav').classList.toggle('active');
-        });
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+      document.querySelector('.main-nav').classList.toggle('active');
+    });
 
-        // Tab navigation
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+    // Tab navigation
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
 
-        tabButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const tabId = button.getAttribute('data-tab');
+    tabButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const tabId = button.getAttribute('data-tab');
 
-                // Remove active class from all buttons and panes
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabPanes.forEach(pane => pane.classList.remove('active'));
+        // Remove active class from all buttons and panes
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabPanes.forEach(pane => pane.classList.remove('active'));
 
-                // Add active class to current button and pane
-                button.classList.add('active');
-                document.getElementById(tabId + '-reclamation').classList.add('active');
-            });
-        });
+        // Add active class to current button and pane
+        button.classList.add('active');
+        document.getElementById(tabId + '-reclamation').classList.add('active');
+      });
+    });
 
-        // FAQ toggles
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                item.classList.toggle('active');
-            });
-        });
+    // FAQ toggles
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', () => {
+        item.classList.toggle('active');
+      });
+    });
 
-        // Show tracking result on submit (demo purpose)
-        const trackingForm = document.querySelector('.tracking-form');
-        const trackingResult = document.querySelector('.tracking-result');
+    // Show tracking result on submit (demo purpose)
+    const trackingForm = document.querySelector('.tracking-form');
+    const trackingResult = document.querySelector('.tracking-result');
 
-        if (trackingForm) {
-            trackingForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                trackingResult.style.display = 'block';
-                trackingForm.querySelector('input').value = '';
-                // Scroll to results
-                trackingResult.scrollIntoView({ behavior: 'smooth' });
-            });
-        }
+    if (trackingForm) {
+      trackingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        trackingResult.style.display = 'block';
+        trackingForm.querySelector('input').value = '';
+        // Scroll to results
+        trackingResult.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
 
-        // Ensure dashboard button is visible
-        document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-        document.querySelector('.logout-btn').style.display = 'inline-flex';
-    </script>
+    // Ensure dashboard button is visible
+    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
+    document.querySelector('.logout-btn').style.display = 'inline-flex';
+  });
+</script>
+
     <script src="assets/js/recValidation.js"></script>
 </body>
 

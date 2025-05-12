@@ -316,7 +316,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </footer>
 
-  <script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
     // Mobile menu toggle
     document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
       document.querySelector('.main-nav').classList.toggle('active');
@@ -335,8 +336,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         tabPanes.forEach(pane => pane.classList.remove('active'));
 
         // Add active class to current button and pane
+        document.getElementById(tabId + '-reclamation')?.classList.add('active');
         button.classList.add('active');
-        document.getElementById(tabId + '-reclamation').classList.add('active');
       });
     });
 
@@ -353,20 +354,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     const trackingForm = document.querySelector('.tracking-form');
     const trackingResult = document.querySelector('.tracking-result');
 
-    if (trackingForm) {
+    if (trackingForm && trackingResult) {
       trackingForm.addEventListener('submit', function (e) {
         e.preventDefault();
         trackingResult.style.display = 'block';
         trackingForm.querySelector('input').value = '';
-        // Scroll to results
         trackingResult.scrollIntoView({ behavior: 'smooth' });
       });
     }
 
-    // Ensure dashboard button is visible
-    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-    document.querySelector('.logout-btn').style.display = 'inline-flex';
-  </script>
+    // Ensure dashboard and logout buttons are visible
+    const dashboardBtn = document.querySelector('.dashboard-btn');
+    const logoutBtn = document.querySelector('.logout-btn');
+
+    if (dashboardBtn) dashboardBtn.style.display = 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+  });
+</script>
+
   <script src="assets/js/recValidation.js"></script>
 </body>
 
