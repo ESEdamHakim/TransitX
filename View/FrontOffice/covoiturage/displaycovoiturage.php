@@ -36,7 +36,7 @@ function isBadWeather($city)
         $condition = $data['weather'][0]['main'];
 
         // Define bad weather conditions
-        if ($temperature > 22 || $condition === "Rain" || $condition === "Drizzle" || $condition === "Thunderstorm") {
+        if ($temperature > 18 || $condition === "Rain" || $condition === "Drizzle" || $condition === "Thunderstorm") {
             return true;
         }
     }

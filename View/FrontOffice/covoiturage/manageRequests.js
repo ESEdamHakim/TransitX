@@ -123,5 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error:", error);
             // Removed alert here
         }
+        location.reload();
     }
+    
 });

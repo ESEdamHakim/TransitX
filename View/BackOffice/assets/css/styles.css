@@ -473,12 +473,25 @@ ul {
   margin-bottom: 2rem;
 }
 
+/* Section Header */
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  text-align: center;
+  margin-bottom: 50px;
 }
+
+.section-header h2 {
+  font-size: 36px;
+  color: var(--secondary);
+  margin-bottom: 16px;
+}
+
+.section-header p {
+  max-width: 700px;
+  margin: 0 auto;
+  color: #666;
+  font-size: 18px;
+}
+
 
 .section-header h3 {
   font-size: 1.2rem;

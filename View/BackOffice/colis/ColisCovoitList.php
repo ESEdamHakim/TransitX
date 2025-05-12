@@ -51,6 +51,8 @@
                 <span>Bus</span>
               </a>
             </li>
+            <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
+
             <li class="active">
               <a href="crud.php">
                 <i class="fas fa-box"></i>
@@ -75,6 +77,7 @@
                 <span>Blog</span>
               </a>
             </li>
+            <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
           </ul>
           <a href="../../../index.php" class="logout">
             <i class="fas fa-sign-out-alt"></i>
@@ -86,7 +89,7 @@
 
     <main class="main-content">
       <section>
-          <?php include 'ColisCovoitDisplay.php'; ?>
+        <?php include 'ColisCovoitDisplay.php'; ?>
       </section>
     </main>
   </div>
