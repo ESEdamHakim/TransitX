@@ -162,10 +162,10 @@ include 'Bdisplaycovoiturage.php';
                       <td><?= $covoiturage['accepte_colis'] ? 'Oui' : 'Non' ?></td>
                       <td><?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></td>
                       <td><?= htmlspecialchars($covoiturage['user_name'] ?? 'Utilisateur inconnu') ?></td>
-                      <td>
-                        <button class="btn edit" data-id="<?= $covoiturage['id_covoit'] ?>"><i
+                      <td class="actions">
+                        <button class="action-btn edit" data-id="<?= $covoiturage['id_covoit'] ?>"><i
                             class="fas fa-edit"></i></button>
-                        <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>"><i
+                        <button class="action-btn delete" data-id="<?= $covoiturage['id_covoit'] ?>"><i
                             class="fas fa-trash"></i></button>
                       </td>
                     </tr>

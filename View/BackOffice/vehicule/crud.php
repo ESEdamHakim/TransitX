@@ -172,10 +172,10 @@ include 'BdisplayVehicule.php';
                         <?php endif; ?>
                       </td>
                       <td><?= htmlspecialchars($vehicule['user_name'] ?? 'Utilisateur inconnu') ?></td>
-                      <td>
-                        <button class="btn edit" data-id="<?= $vehicule['id_vehicule'] ?>"><i
+                      <td class="actions">
+                        <button class="action-btn edit" data-id="<?= $vehicule['id_vehicule'] ?>"><i
                             class="fas fa-edit"></i></button>
-                        <button class="btn delete" data-id="<?= $vehicule['id_vehicule'] ?>"><i
+                        <button class="action-btn delete" data-id="<?= $vehicule['id_vehicule'] ?>"><i
                             class="fas fa-trash"></i></button>
                       </td>
                     </tr>
