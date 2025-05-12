@@ -1,3 +1,19 @@
+<?php
+require_once __DIR__ . '/../../../Controller/vehiculeC.php';
+require_once __DIR__ . '/../../../appConfig.php';
+if (!isset($id_user)) {
+    echo "Erreur : Utilisateur non connecté.";
+    exit;
+}
+$vehiculeController = new VehiculeC();
+try {
+    $userVehicules = $vehiculeController->listUserVehicules($id_user);
+} catch (Exception $e) {
+    echo "Erreur : " . $e->getMessage();
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,21 +25,6 @@
 </head>
 
 <body>
-    <?php
-    require_once __DIR__ . '/../../../Controller/vehiculeC.php';
-    require_once __DIR__ . '/../../../appConfig.php';
-    if (!isset($id_user)) {
-    echo "Erreur : Utilisateur non connecté.";
-    exit;
-}
-    $vehiculeController = new VehiculeC();
-    try {
-        $userVehicules = $vehiculeController->listUserVehicules($id_user);
-    } catch (Exception $e) {
-        echo "Erreur : " . $e->getMessage();
-        exit;
-    }
-    ?>
 
     <div class="user-route-cards">
         <h2>Vos Véhicules</h2>
@@ -38,8 +39,8 @@
                     <p><strong>Confort:</strong> <?= htmlspecialchars($vehicule['confort']) ?></p>
                     <p><strong>Photo:</strong>
                         <?php if (!empty($vehicule['photo_vehicule'])): ?>
-                            <img src="../../assets/uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>" alt="Photo du véhicule"
-                                style="width: 100px;">
+                            <img src="../../assets/uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>"
+                                alt="Photo du véhicule" style="width: 100px;">
                         <?php else: ?>
                             Aucune photo disponible.
                         <?php endif; ?>
@@ -75,7 +76,7 @@
                     <form id="ride-form" method="POST" action="updateVehicule.php" enctype="multipart/form-data">
                         <input type="hidden" id="id_vehicule" name="id_vehicule">
                         <input type="hidden" id="existing-photo" name="existing_photo">
-                        
+
                         <div class="form-group">
                             <label for="ride-matricule">Matricule</label>
                             <input type="text" id="ride-matricule" name="matricule" required>
