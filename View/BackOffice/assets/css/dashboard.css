@@ -81,19 +81,6 @@ ul {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-weight: 600;
-  font-size: 1.2rem;
-}
-
-.logo img {
-  height: 40px;
-  width: auto;
-}
-
 .sidebar-toggle {
   background: none;
   border: none;

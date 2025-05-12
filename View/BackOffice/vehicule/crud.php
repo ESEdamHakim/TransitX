@@ -126,10 +126,6 @@ include 'BdisplayVehicule.php';
               <button class="tab-btn" data-tab="pending">En attente</button>
               <button class="tab-btn" data-tab="completed">Terminés</button>
             </div>
-            <div class="view-options">
-              <button class="view-btn active" data-view="table"><i class="fas fa-list"></i></button>
-              <button class="view-btn" data-view="grid"><i class="fas fa-th"></i></button>
-            </div>
           </div>
 
           <!-- Table View -->

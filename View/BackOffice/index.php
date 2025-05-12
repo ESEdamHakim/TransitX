@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/dashboard.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     .reports-section {
@@ -143,7 +144,7 @@
   <div class="dashboard">
     <aside class="sidebar">
       <div class="sidebar-header">
-        <a href="../FrontOffice/index.php" class="logo-link">
+         <a href="../FrontOffice/index.php" class="logo-link">
           <div class="logo">
             <img src="../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
             <span>Transit</span><span class="highlight">X</span>
