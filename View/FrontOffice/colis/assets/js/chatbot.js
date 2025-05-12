@@ -108,31 +108,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function addUserMessage(text) {
-        const container = document.createElement('div');
-        container.className = 'message-container user-container';
-
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message user-message';
-        messageDiv.textContent = text;
-
-        const timeDiv = document.createElement('div');
-        timeDiv.className = 'message-time';
-        timeDiv.textContent = getCurrentTime();
-        messageDiv.appendChild(timeDiv);
-
-        const avatar = document.createElement('div');
-        avatar.className = 'avatar user-avatar';
-        const img = document.createElement('img');
-        img.src = '../../assets/images/Me.jpeg';
-        img.alt = 'User';
-        img.className = 'avatar-img';
-        avatar.appendChild(img);
-
-        container.appendChild(messageDiv);
-        container.appendChild(avatar);
-        chatBox.appendChild(container);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
+            const container = document.createElement('div');
+            container.className = 'message-container user-container';
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar user-avatar';
+            avatar.textContent = 'Me';
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            messageDiv.textContent = text;
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = getCurrentTime();
+            messageDiv.appendChild(timeDiv);
+            container.appendChild(messageDiv);
+            container.appendChild(avatar);
+            chatBox.appendChild(container);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
 
     function addBotMessage(text) {
         const container = document.createElement('div');

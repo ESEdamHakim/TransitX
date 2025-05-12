@@ -251,13 +251,10 @@
   }
   
   .avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: inherit;
-  }
-
-
+  width: 100%;           /* Or any desired size */
+  height: 100%;
+  object-fit: contain;    /* Ensures the image scales without being cropped */    /* Optional: make it circular */
+}
   
   .message {
     padding: 14px 18px;
