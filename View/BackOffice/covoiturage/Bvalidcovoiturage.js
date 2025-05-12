@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Open Edit Ride Modal
-  const editButtons = document.querySelectorAll('.btn.edit');
+  const editButtons = document.querySelectorAll('.action-btn.edit');
   editButtons.forEach(button => {
     button.addEventListener('click', function () {
       // Get the data attributes from the clicked button
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Open Delete Confirmation Modal
-  const deleteButtons = document.querySelectorAll('.btn.delete');
+  const deleteButtons = document.querySelectorAll('.action-btn.delete');
   deleteButtons.forEach(button => {
     button.addEventListener('click', function () {
       const row = this.closest('tr');

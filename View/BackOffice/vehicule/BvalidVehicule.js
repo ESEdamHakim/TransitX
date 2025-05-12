@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   
     // Open Edit Vehicle Modal
-    const editButtons = document.querySelectorAll('.btn.edit');
+    const editButtons = document.querySelectorAll('.action-btn.edit');
 editButtons.forEach(button => {
     button.addEventListener('click', function () {
         const idVehicule = this.getAttribute('data-id');
@@ -108,7 +108,7 @@ editButtons.forEach(button => {
   });
   
     // Open Delete Confirmation Modal
-    const deleteButtons = document.querySelectorAll('.btn.delete');
+    const deleteButtons = document.querySelectorAll('.action-btn.delete');
     deleteButtons.forEach(button => {
       button.addEventListener('click', function () {
         const row = this.closest('tr');
