@@ -51,7 +51,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         </ul>
       </nav>
       <div class="header-right">
-        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
+         <?php if (isset($user_type) && $user_type !== 'client'): ?>
           <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
         <?php endif; ?>
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
@@ -412,6 +412,8 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <script src="meteo-card.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"></script>
+  <script src="../vehicule/menuToggle.js"></script>
+
 
 </body>
 

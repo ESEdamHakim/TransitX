@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Véhicules</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
-</head>
-
-<body>
-    <?php
+ <?php
     require_once __DIR__ . '/../../../Controller/vehiculeC.php';
     require_once __DIR__ . '/../../../appConfig.php';
     if (!isset($id_user)) {
@@ -24,6 +13,18 @@
         exit;
     }
     ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Véhicules</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+   
 
     <div class="user-route-cards">
         <h2>Vos Véhicules</h2>

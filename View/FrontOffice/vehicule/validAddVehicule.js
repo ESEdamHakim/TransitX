@@ -1,43 +1,41 @@
+
 document.addEventListener("DOMContentLoaded", () => {
-    // ========== Mobile Menu Toggle ==========
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
-        document.querySelector('.main-nav').classList.toggle('active');
-    });
+  // Add Vehicle Logic
+  const createVehicleForm = document.querySelector(".create-ride-form");
+  const confortSelect = document.getElementById("confort");
+  const customConfortTextarea = document.getElementById("custom-confort");
 
-    // ========== Ensure dashboard and logout buttons are visible ==========
-    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-    document.querySelector('.logout-btn').style.display = 'inline-flex';
+  // Update the custom-confort field when an option is selected
+  confortSelect.addEventListener("change", function () {
+      const selectedOption = confortSelect.value;
 
-    // ========== Add Vehicle Logic ==========
-    const createVehicleForm = document.querySelector(".create-ride-form");
-    const confortSelect = document.getElementById("confort");
-    const customConfortTextarea = document.getElementById("custom-confort");
+      if (selectedOption === "other") {
+          // Enable the textarea for custom input
+          customConfortTextarea.placeholder = "Ajoutez votre confort personnalisé ici...";
+          customConfortTextarea.disabled = false;
+          customConfortTextarea.value = ""; // Clear any pre-filled value
+      } else if (selectedOption) {
+          // Populate the textarea with the selected option
+          customConfortTextarea.placeholder = "Ajoutez des détails ou modifiez l'option sélectionnée";
+          customConfortTextarea.disabled = false;
+          customConfortTextarea.value = selectedOption; // Pre-fill the textarea with the selected option
+      } else {
+          // Disable the textarea if no option is selected
+          customConfortTextarea.placeholder = " complétez l'option sélectionnée";
+          customConfortTextarea.disabled = true;
+          customConfortTextarea.value = ""; // Clear any pre-filled value
+      }
+  });
 
-    confortSelect.addEventListener("change", function () {
-        const selectedOption = confortSelect.value;
+  createVehicleForm.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-        if (selectedOption === "other") {
-            customConfortTextarea.placeholder = "Ajoutez votre confort personnalisé ici...";
-            customConfortTextarea.disabled = false;
-            customConfortTextarea.value = "";
-        } else if (selectedOption) {
-            customConfortTextarea.placeholder = "Ajoutez des détails ou modifiez l'option sélectionnée";
-            customConfortTextarea.disabled = false;
-            customConfortTextarea.value = selectedOption;
-        } else {
-            customConfortTextarea.placeholder = " complétez l'option sélectionnée";
-            customConfortTextarea.disabled = true;
-            customConfortTextarea.value = "";
-        }
-    });
+      // Clear previous error messages
+      document.querySelectorAll(".error-message").forEach((span) => {
+          span.textContent = "";
+      });
 
-    createVehicleForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        document.querySelectorAll(".error-message").forEach((span) => {
-            span.textContent = "";
-        });
-
+        // Get form fields
         const matricule = document.getElementById("matricule").value.trim();
         const typeVehicule = document.getElementById("type-vehicule").value.trim();
         const nbPlaces = parseInt(document.getElementById("nb-places").value);
@@ -50,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let hasError = false;
 
+        // Validate required fields
         if (!matricule) {
             document.getElementById("matricule-error").textContent = "Veuillez remplir le numéro de matricule.";
             hasError = true;
@@ -86,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
             hasError = true;
         }
 
+        // Validate confort field
         if (!selectedConfort && !customConfort) {
             document.getElementById("confort-error").textContent = "Veuillez sélectionner ou ajouter une option de confort.";
             hasError = true;
@@ -99,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
             hasError = true;
         }
 
+        // Combine confort values if no errors
         if (!hasError) {
             if (selectedConfort && customConfort) {
                 confortSelect.value = `${selectedConfort} - ${customConfort}`;
@@ -106,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 confortSelect.value = customConfort;
             }
 
+            // Submit the form
             createVehicleForm.submit();
         }
     });

@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -23,7 +20,7 @@ session_start();
 
 <body>
     <?php include '../../assets/chatbot/chatbot.php'; ?>
-
+     <?php require_once __DIR__ . '/../../../appConfig.php'; ?>
     <header class="landing-header">
         <div class="container">
             <div class="header-left">
@@ -44,9 +41,9 @@ session_start();
                 </ul>
             </nav>
             <div class="header-right">
-                <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-                    <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
-                <?php endif; ?>
+                 <?php if (isset($user_type) && $user_type !== 'client'): ?>
+          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+        <?php endif; ?>
                 <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
@@ -155,6 +152,7 @@ session_start();
                 <script src="validAddVehicule.js"></script>
                 <script src="validDeleteVehicule.js"></script>
                 <script src="validEditVehicule.js"></script>
+                <script src="menuToggle.js"></script>
             </div>
         </section>
     </main>
