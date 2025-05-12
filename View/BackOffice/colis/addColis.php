@@ -68,6 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="../../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/colis.css">
   <link rel="stylesheet" href="../../assets/css/main.css">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
@@ -107,6 +108,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span>Bus</span>
               </a>
             </li>
+            <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
+
             <li class="active">
               <a href="crud.php">
                 <i class="fas fa-box"></i>
@@ -131,6 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span>Blog</span>
               </a>
             </li>
+            <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
           </ul>
           <a href="../../../index.php" class="logout">
             <i class="fas fa-sign-out-alt"></i>
@@ -144,8 +148,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <section>
         <div class="container">
           <div class="section-header">
-            <h1>Ajouter un Colis</h1>
-            <p>Remplissez le formulaire ci-dessous</p>
+            <h2>Ajouter un Colis
+            <p>Remplissez le formulaire ci-dessous</p></h2>
           </div>
           <div class="colis-form-container">
             <form class="colis-form" method="POST">

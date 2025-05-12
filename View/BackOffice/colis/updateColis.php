@@ -107,6 +107,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span>Bus</span>
               </a>
             </li>
+            <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
+
             <li class="active">
               <a href="crud.php">
                 <i class="fas fa-box"></i>
@@ -131,7 +133,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span>Blog</span>
               </a>
             </li>
-           </ul>
+            <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
+          </ul>
           <a href="../../../index.php" class="logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Déconnexion</span>
@@ -144,8 +147,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <section>
         <div class="container">
           <div class="section-header">
-            <h1>Modifier un Colis</h1>
-            <p>Modifiez les informations ci-dessous</p>
+            <h2>Modifier un Colis
+            <p>Modifiez les informations ci-dessous</p></h2>
           </div>
 
           <div class="colis-form-container">
