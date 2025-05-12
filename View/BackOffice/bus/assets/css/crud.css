@@ -112,16 +112,21 @@
 
 .tab-btn {
   padding: 0.5rem 1rem;
-  border: none;
   background: none;
-  cursor: pointer;
-  font-weight: 450;
-  font-size: 14px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 500;
   color: #666;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 20px;
 }
 
+.tab-btn.active,
+.tab-btn:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
 .tab-btn:hover {
   background-color: var(--gray-light);
 }

@@ -40,22 +40,33 @@ $trajetlist = $trajetController->listTrajets();
         </div>
       </header>
       <div class="dashboard-content">
-        <div class="statistics-container">
-          <div class="stat-card total-trajets">
-            <h3><i class="fas fa-road icon"></i> Total Trajets</h3>
-            <p id="total-trajets">0</p>
+        <div class="dashboard-stats">
+          <!-- Total Trajets -->
+          <div class="stat-box primary">
+            <div class="stat-title">Total Trajets</div>
+            <div class="stat-value" id="total-trajets">0</div>
+            <div class="stat-icon"><i class="fas fa-road icon"></i></div>
           </div>
-          <div class="stat-card average-duration">
-            <h3><i class="fas fa-clock icon"></i> Durée Moyenne</h3>
-            <p id="average-duration">0</p>
+
+          <!-- Durée Moyenne -->
+          <div class="stat-box info">
+            <div class="stat-title">Durée Moyenne</div>
+            <div class="stat-value" id="average-duration">0</div>
+            <div class="stat-icon"><i class="fas fa-clock icon"></i></div>
           </div>
-          <div class="stat-card average-price">
-            <h3><i class="fas fa-money-bill-wave icon"></i> Prix Moyen (TND)</h3>
-            <p id="average-price">0</p>
+
+          <!-- Prix Moyen -->
+          <div class="stat-box success">
+            <div class="stat-title">Prix Moyen (TND)</div>
+            <div class="stat-value" id="average-price">0</div>
+            <div class="stat-icon"><i class="fas fa-money-bill-wave icon"></i></div>
           </div>
-          <div class="stat-card average-distance">
-            <h3><i class="fas fa-ruler icon"></i> Distance Moyenne (km)</h3>
-            <p id="average-distance">0</p>
+
+          <!-- Distance Moyenne -->
+          <div class="stat-box warning">
+            <div class="stat-title">Distance Moyenne (km)</div>
+            <div class="stat-value" id="average-distance">0</div>
+            <div class="stat-icon"><i class="fas fa-ruler icon"></i></div>
           </div>
         </div>
       </div>
