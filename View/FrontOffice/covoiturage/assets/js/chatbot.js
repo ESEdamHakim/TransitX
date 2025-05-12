@@ -66,10 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
         chatBox.scrollTop = chatBox.scrollHeight;
 
         try {
-            // STEP 1: Fetch data from your PHP backend
-            const fetchResponse = await axios.get('systemprompt.php');
-            const data = fetchResponse.data;
-
 
             // STEP 3: Create the system message content with the data
             const systemContent = `You are speaking to a dear user of TransitX. Please assist them professionally and helpfully.`;
@@ -110,31 +106,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function addUserMessage(text) {
-        const container = document.createElement('div');
-        container.className = 'message-container user-container';
-
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message user-message';
-        messageDiv.textContent = text;
-
-        const timeDiv = document.createElement('div');
-        timeDiv.className = 'message-time';
-        timeDiv.textContent = getCurrentTime();
-        messageDiv.appendChild(timeDiv);
-
-        const avatar = document.createElement('div');
-        avatar.className = 'avatar user-avatar';
-        const img = document.createElement('img');
-        img.src = '../../assets/images/Me.png';
-        img.alt = 'User';
-        img.className = 'avatar-img';
-        avatar.appendChild(img);
-
-        container.appendChild(messageDiv);
-        container.appendChild(avatar); // user avatar on the right due to order
-        chatBox.appendChild(container);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
+            const container = document.createElement('div');
+            container.className = 'message-container user-container';
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar user-avatar';
+            avatar.textContent = 'Me';
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            messageDiv.textContent = text;
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = getCurrentTime();
+            messageDiv.appendChild(timeDiv);
+            container.appendChild(messageDiv);
+            container.appendChild(avatar);
+            chatBox.appendChild(container);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
 
     function addBotMessage(text) {
         const container = document.createElement('div');
