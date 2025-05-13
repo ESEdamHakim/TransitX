@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('vehicule-modal');
     const closeBtn = document.querySelector('.close-modal');
 
-    document.querySelectorAll('.voir-vehicule-btn, .vehicule-icon-btn').forEach(button => {
+    document.querySelectorAll('.vehiculebtn.btn').forEach(button => {
         button.addEventListener('click', function () {
 const idCovoit = this.dataset.idCovoiturage;
 
-             fetch(`getVehiculeDetails.php?id_covoiturage=${idCovoit}`)
+             fetch(`getVehiculeByCovoiturage.php?id_covoiturage=${idCovoit}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data) {

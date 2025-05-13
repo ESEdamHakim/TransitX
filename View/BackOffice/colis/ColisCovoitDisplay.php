@@ -386,7 +386,7 @@ foreach ($covoiturages as $covoiturage) {
                                 <td><?= htmlspecialchars($covoiturage['details'] ?? 'Aucun') ?></td>
                                 <td>
                                     <?php if (!empty($covoiturage['id_vehicule'])): ?>
-                                        <button class="btn btn-outline" type="button"
+                                        <button class="vehiculebtn btn" type="button"
                                             data-id-covoiturage="<?= $covoiturage['id_covoit'] ?>">Voir</button>
                                     <?php else: ?>
                                         <span class="badge badge-secondary">Indisponible</span>
@@ -462,7 +462,7 @@ foreach ($covoiturages as $covoiturage) {
                                     <td><?= htmlspecialchars($covoiturage['details'] ?? 'Aucun') ?></td>
                                     <td>
                                         <?php if (!empty($covoiturage['id_vehicule'])): ?>
-                                            <button class="btn btn-outline" type="button"
+                                            <button class="vehiculebtn btn" type="button"
                                                 data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">Voir</button>
                                         <?php else: ?>
                                             <span class="badge badge-secondary">Indisponible</span>
@@ -507,8 +507,8 @@ foreach ($covoiturages as $covoiturage) {
     </div>
 </div>
 
-<script src="voirvehiculeColis.js"></script>
 
+<script src="voirvehiculeColis.js"></script>
 <script>
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', function () {
