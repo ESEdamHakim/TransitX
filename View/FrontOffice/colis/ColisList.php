@@ -306,10 +306,10 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
 
         <!-- TABS -->
         <div class="tabs-container">
-          <div class="tab" data-status="all">Tous <span class="count">0</span></div>
-          <div class="tab" data-status="pending">En attente <span class="count">0</span></div>
-          <div class="tab" data-status="in-progress">En transit <span class="count">0</span></div>
-          <div class="tab" data-status="resolved">Livrés <span class="count">0</span></div>
+          <div class="tab" data-status="all">Tous</div>
+          <div class="tab" data-status="pending">En attente</div>
+          <div class="tab" data-status="in-progress">En transit</div>
+          <div class="tab" data-status="resolved">Livrés</div>
         </div>
         <div class="collapsible-section" id="affectes-covoiturage">
           <div class="collapsible-header">

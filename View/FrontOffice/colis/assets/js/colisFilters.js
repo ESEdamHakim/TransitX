@@ -25,13 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
           counts.all++;
           if (counts[status] !== undefined) counts[status]++;
       });
-
-      tabs.forEach(tab => {
-          const status = tab.dataset.status;
-          if (counts[status] !== undefined) {
-              tab.querySelector(".count").textContent = counts[status];
-          }
-      });
   }
 
   // Apply filters to cards and update visibility
