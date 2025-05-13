@@ -80,7 +80,7 @@ const systemContent = `You are speaking to a dear user of TransitX. Please assis
                 ]
             }, {
                 headers: {
-                    'Authorization': 'Bearer zu-b4c25e58e0925cd7a87fc34aae4d4dbf',
+                    'Authorization': 'Bearer zu-c3b9ff6938b69d9d959f0aaf722415c8',
                     'Content-Type': 'application/json'
                 }
             });
