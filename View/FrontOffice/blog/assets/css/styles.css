@@ -95,6 +95,46 @@
   gap: 0.5rem;
 }
 
+.blog-btn {
+  padding: 0.4rem 0.9rem; /* Reduced padding */
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.85rem; /* Optional: slightly smaller text */
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  border: none;
+}
+
+.blog-btn-primary {
+  background-color: var(--primary);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.blog-btn-primary:hover {
+  background-color: #86b391;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.blog-btn-outline {
+  border: 1px solid var(--gray);
+  background-color: white;
+  color: var(--text-color, #333);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.blog-btn-outline:hover {
+  background-color: var(--gray-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
 .filter-btn {
   padding: 0.5rem 1rem;
   background-color: var(--gray-light);

@@ -157,7 +157,7 @@ session_start();
               <!-- Premier extrait du contenu -->
               <p>${article.contenu.substring(0, 100)}...</p>
               <p>
-                <a href="blog-detail.php?id=${article.id_article}" class="btn-primary">Lire la suite</a>
+                <a href="blog-detail.php?id=${article.id_article}" class="blog-btn blog-btn-primary">Lire la suite</a>
               </p>
 
               <!-- Ajout de la catégorie ici -->
@@ -232,9 +232,8 @@ session_start();
         <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <a href="calendrier.php"
           style="display: inline-flex; align-items: center; gap: 5px; font-size: 16px; text-decoration: none; color: inherit; background: none; border: 2px solid #97c3a2; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-          📅
+          <i class="fas fa-calendar-alt"></i>
         </a>
-
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>

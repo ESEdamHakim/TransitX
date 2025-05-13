@@ -207,7 +207,7 @@
             <li><a href="vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
 
           </ul>
-          <a href="../../../index.php" class="logout">
+          <a href="../../index.php" class="logout">
             <i class="fas fa-sign-out-alt"></i>
             <span>Déconnexion</span>
           </a>
