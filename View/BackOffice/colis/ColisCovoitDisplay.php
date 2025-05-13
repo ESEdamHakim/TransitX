@@ -463,7 +463,7 @@ foreach ($covoiturages as $covoiturage) {
                                     <td>
                                         <?php if (!empty($covoiturage['id_vehicule'])): ?>
                                             <button class="btn btn-outline" type="button"
-                                                data-id-covoiturage="<?= $covoiturage['id_covoit'] ?>">Voir</button>
+                                                data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">Voir</button>
                                         <?php else: ?>
                                             <span class="badge badge-secondary">Indisponible</span>
                                         <?php endif; ?>
@@ -493,6 +493,21 @@ foreach ($covoiturages as $covoiturage) {
         <?php endif; ?>
     <?php endif; ?>
 </div>
+<!-- Modal Structure -->
+<div id="vehicule-modal" class="vehicule-modal">
+    <div class="vehicule-modal-content">
+        <span class="close-modal">&times;</span>
+        <h2 class="vehicule-modal-title">Détails du Véhicule</h2>
+        <img id="vehicule-photo" src="" alt="Photo du véhicule" />
+        <p><strong>Marque:</strong> <span id="vehicule-marque"></span></p>
+        <p><strong>Modèle:</strong> <span id="vehicule-modele"></span></p>
+        <p><strong>Matricule:</strong> <span id="vehicule-matricule"></span></p>
+        <p><strong>Couleur:</strong> <span id="vehicule-couleur"></span></p>
+        <p><strong>Nombre de places:</strong> <span id="vehicule-places"></span></p>
+    </div>
+</div>
+
+<script src="voirvehiculeColis.js"></script>
 
 <script>
     document.querySelectorAll('form').forEach(form => {

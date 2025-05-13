@@ -33,8 +33,8 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         <ul>
           <li><a href="../index.php">Accueil</a></li>
           <li><a href="../bus/index.php">Bus</a></li>
-          <li class="active"><a href="index.php">Colis</a></li>
-          <li><a href="../covoiturage/index.php">Covoiturage</a></li>
+          <li class="active"><a href="../colis/index.php">Colis</a></li>
+          <li><a href="index.php">Covoiturage</a></li>
           <li><a href="../blog/index.php">Blog</a></li>
           <li><a href="../reclamation/index.php">Réclamation</a></li>
           <li><a href="../vehicule/index.php">Véhicule</a></li>

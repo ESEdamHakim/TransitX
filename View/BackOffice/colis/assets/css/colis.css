@@ -572,3 +572,30 @@ main {
     grid-template-columns: 1fr;
   }
 }
+
+.vehicule-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  z-index: 1000;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%; /* Adjust the width */
+  max-width: 600px; /* Set a maximum width */
+  overflow-y: auto; /* Add scrolling if content overflows */
+  max-height: 90%; /* Prevent the modal from exceeding the viewport height */
+}
+
+.vehicule-modal-content {
+  text-align: center;
+}
+
+.vehicule-modal img {
+  max-width: 100%; /* Ensure the image fits within the modal */
+  height: auto; /* Maintain aspect ratio */
+  margin-bottom: 15px;
+}
