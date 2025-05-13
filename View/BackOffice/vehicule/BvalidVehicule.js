@@ -103,7 +103,7 @@ editButtons.forEach(button => {
           })
           .catch(error => {
               console.error('Erreur lors de la requête :', error);
-              alert('Une erreur est survenue lors de la requête.');
+             // alert('Une erreur est survenue lors de la requête.');
           });
   });
   
