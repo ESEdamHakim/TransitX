@@ -154,8 +154,9 @@
 .rec-table td {
   background-color: #ffffff;
   text-align: left;
-  height: 90px;
+  height: 110px; 
 }
+
 
 .rec-table th:nth-child(3),
 .rec-table td:nth-child(3),

@@ -27,11 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (counts[status] !== undefined) counts[status]++;
         });
 
-        tabs.forEach(tab => {
-            const statusKey = tab.dataset.status || "all";
-            const countSpan = tab.querySelector(".count");
-            if (countSpan) countSpan.textContent = counts[statusKey];
-        });
     }
 
     function applyFilters() {

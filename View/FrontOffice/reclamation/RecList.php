@@ -275,11 +275,11 @@ $clients = $ReclamationC->getAllClients();
                 </div>
 
                 <div class="tabs-container">
-                    <div class="tab active" data-status="all">Tous <span class="count">0</span></div>
-                    <div class="tab" data-status="refused">Refusée <span class="count">0</span></div>
-                    <div class="tab" data-status="pending">En attente <span class="count">0</span></div>
-                    <div class="tab" data-status="in-progress">En cours <span class="count">0</span></div>
-                    <div class="tab" data-status="resolved">Résolue <span class="count">0</span></div>
+                    <div class="tab active" data-status="all">Tous</div>
+                    <div class="tab" data-status="refused">Refusée</div>
+                    <div class="tab" data-status="pending">En attente</div>
+                    <div class="tab" data-status="in-progress">En cours</div>
+                    <div class="tab" data-status="resolved">Résolue</div>
                 </div>
 
                 <div class="rec-container table-view active">
