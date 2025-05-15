@@ -80,20 +80,20 @@ ul {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.logo {
+.logoback {
   font-size: 1.5rem;
   font-weight: 700;
   display: flex;
   align-items: center;
 }
 
-.logo img {
+.logoback img {
   height: 40px;
   width: auto;
   margin-right: 10px;
 }
 
-.logo .highlight {
+.logoback .highlight {
   color: var(--primary);
 }
 

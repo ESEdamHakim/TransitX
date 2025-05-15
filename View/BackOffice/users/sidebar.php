@@ -1,9 +1,9 @@
 <div class="dashboard">
-     <aside class="sidebar">
+    <aside class="sidebar">
       <div class="sidebar-header">
         <a href="../../FrontOffice/index.php" class="logoback-link">
           <div class="logoback">
-            <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logo">
+            <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logoback">
             <span>Transit</span><span class="highlight">X</span>
           </div>
         </a>
@@ -21,8 +21,8 @@
                 <span>Dashboard</span>
               </a>
             </li>
-            <li>
-              <a href="../users/crud.php">
+            <li class="active">
+              <a href="crud.php">
                 <i class="fas fa-users"></i>
                 <span>Utilisateurs</span>
               </a>
@@ -41,8 +41,8 @@
                 <span>Colis</span>
               </a>
             </li>
-            <li class="active">
-              <a href="crud.php">
+            <li>
+              <a href="../reclamations/crud.php">
                 <i class="fas fa-exclamation-circle"></i>
                 <span>Réclamations</span>
               </a>

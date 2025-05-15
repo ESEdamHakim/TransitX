@@ -1,9 +1,9 @@
 <div class="dashboard">
   <aside class="sidebar">
     <div class="sidebar-header">
-      <a href="../../FrontOffice/index.php" class="logo-link">
-        <div class="logo">
-          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="nav-logo">
+      <a href="../../FrontOffice/index.php" class="logoback-link">
+        <div class="logoback">
+          <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logoback">
           <span>Transit</span><span class="highlight">X</span>
         </div>
       </a>
