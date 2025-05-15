@@ -113,36 +113,31 @@
 }
 
 .action-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
-  transition: all 0.3s ease;
-  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .action-btn:hover {
   background-color: var(--gray-light);
 }
 
-.action-btn.view {
-  background-color: rgba(23, 162, 184, 0.2);
-  color: var(--info);
+.action-btn.view:hover {
+  color: var(--secondary);
 }
 
-.action-btn.edit {
-  background-color: rgba(255, 193, 7, 0.2);
-  color: var(--warning);
+.action-btn.edit:hover {
+  color: var(--primary);
 }
 
-.action-btn.delete {
-  background-color: rgba(220, 53, 69, 0.2);
-  color: var(--danger);
+.action-btn.delete:hover {
+  color: var(--status-cancelled);
 }
 
 /* Grid View */

@@ -225,10 +225,6 @@
             <input type="text" placeholder="Rechercher...">
             <button><i class="fas fa-search"></i></button>
           </div>
-          <button class="notification-btn">
-            <i class="fas fa-bell"></i>
-            <span class="badge">3</span>
-          </button>
         </div>
       </header>
 
