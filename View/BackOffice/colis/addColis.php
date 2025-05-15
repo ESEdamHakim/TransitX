@@ -65,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <!-- css Imports -->
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
-  <link rel="stylesheet" href="../../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/colis.css">
   <link rel="stylesheet" href="../../assets/css/main.css">
 
