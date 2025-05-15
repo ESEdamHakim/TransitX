@@ -82,7 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container">
           <div class="section-header">
             <h2>Ajouter un Colis
-            <p>Remplissez le formulaire ci-dessous</p></h2>
+              <p>Remplissez le formulaire ci-dessous</p>
+            </h2>
           </div>
           <div class="colis-form-container">
             <form class="colis-form" method="POST">
@@ -191,12 +192,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
   <script>
-    // Sidebar Toggle
-    document.querySelector('.sidebar-toggle').addEventListener('click', function () {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-content').classList.toggle('expanded');
-    });
-
     // Tab Switching
     const tabButtons = document.querySelectorAll('.tab-btn');
     tabButtons.forEach(button => {

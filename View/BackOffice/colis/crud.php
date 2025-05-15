@@ -229,12 +229,6 @@ $clients = $ColisC->getAllClients();
 
 
   <script>
-    // Sidebar Toggle
-    document.querySelector('.sidebar-toggle').addEventListener('click', function () {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-content').classList.toggle('expanded');
-    });
-
     // Tab Switching
     const tabButtons = document.querySelectorAll('.tab-btn');
     tabButtons.forEach(button => {
