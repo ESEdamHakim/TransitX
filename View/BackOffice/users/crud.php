@@ -390,10 +390,10 @@ function getSortUrl($columnName)
                       class="user-role <?= $user->getType() ?>"><?= ucfirst(htmlspecialchars($user->getType())) ?></span>
                   </div>
                   <div class="user-actions">
-                    <a href="../../edit_user.php?id=<?= $user->getId() ?>" class="action-btn edit" title="Modifier">
+                    <a href="edit_user.php?id=<?= $user->getId() ?>" class="action-btn edit" title="Modifier">
                       <i class="fas fa-edit"></i>
                     </a>
-                    <a href="../../delete_user.php?id=<?= $user->getId() ?>" class="action-btn delete" title="Supprimer">
+                    <a href="delete_user.php?id=<?= $user->getId() ?>" class="action-btn delete" title="Supprimer">
                       <i class="fas fa-trash"></i>
                     </a>
                   </div>

@@ -132,8 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <!-- User Type Selection -->
                             <div class="form-group">
                                 <label class="form-label field-required">Type d'utilisateur</label>
-                                <select class="form-select" name="type"
-                                    id="userType" required>
+                                <select class="form-select" name="type" id="userType" required>
                                     <option value="">Sélectionner un type</option>
                                     <option value="client" <?php echo isset($_POST['type']) && $_POST['type'] === 'client' ? 'selected' : ''; ?>>Client</option>
                                     <option value="employe" <?php echo isset($_POST['type']) && $_POST['type'] === 'employe' ? 'selected' : ''; ?>>Employé</option>
@@ -183,10 +182,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 class="<?php echo (isset($_POST['type']) && $_POST['type'] === 'client' ? '' : 'hidden-field'); ?>">
                                 <div class="form-group">
                                     <label class="form-label field-required">Date de Naissance</label>
-                                    <input type="text" class="form-control" name="date_naissance" id="date_naissance"
-                                        placeholder="AAAA-MM-JJ"
+                                    <input type="date" class="form-control" name="date_naissance" id="date_naissance"
                                         value="<?php echo htmlspecialchars($_POST['date_naissance'] ?? ''); ?>">
-                                    <div class="invalid-feedback">Format requis: AAAA-MM-JJ</div>
                                 </div>
                             </div>
 
@@ -195,10 +192,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 class="<?php echo (isset($_POST['type']) && $_POST['type'] === 'employe' ? '' : 'hidden-field'); ?>">
                                 <div class="form-group">
                                     <label class="form-label field-required">Date d'Embauche</label>
-                                    <input type="text" class="form-control" name="date_embauche" id="date_embauche"
-                                        placeholder="AAAA-MM-JJ"
+                                    <input type="date" class="form-control" name="date_embauche" id="date_embauche"
                                         value="<?php echo htmlspecialchars($_POST['date_embauche'] ?? ''); ?>">
-                                    <div class="invalid-feedback">Format requis: AAAA-MM-JJ</div>
                                 </div>
 
                                 <div class="form-group">
@@ -225,8 +220,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             </div>
                             <div class="form-actions text-center">
-                                <button type="submit" class="btn primary">Ajouter</button>
-                                <a href="crud.php" class="btn secondary">Annuler</a>
+                                <a href="crud.php" class="btn secondary">
+                                    Annuler
+                                    <i class="fas fa-times"></i>
+                                </a>
+                                <button type="submit" class="btn primary">Ajouter
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -349,7 +350,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 return validateField(
                     dateNaissance,
                     patterns.date,
-                    "Format requis: AAAA-MM-JJ"
+                    "Format requis: MM-JJ-AAAA"
                 );
             }
             return true;
@@ -365,7 +366,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             isValid = validateField(
                 document.getElementById('date_embauche'),
                 patterns.date,
-                "Format requis: AAAA-MM-JJ"
+                "Format requis: MM-JJ-AAAA"
             ) && isValid;
 
             // Poste

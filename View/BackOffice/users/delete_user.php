@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../Controller/userC.php'; 
+require_once __DIR__ . '/../../../Controller/UserC.php';
 
 $userController = new UserC();
 $id = $_GET['id'] ?? null;
