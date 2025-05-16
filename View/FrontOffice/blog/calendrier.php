@@ -17,8 +17,8 @@ $url = "https://calendarific.com/api/v2/holidays?api_key=$apiKey&country=$countr
 $response = @file_get_contents($url); // @ pour éviter les erreurs d'affichage
 
 if (!$response) {
-    echo "<p>Erreur de récupération des données de l'API.</p>";
-    exit;
+  echo "<p>Erreur de récupération des données de l'API.</p>";
+  exit;
 }
 
 $data = json_decode($response, true);
@@ -26,56 +26,58 @@ $data = json_decode($response, true);
 // Récupérer les jours fériés dans un tableau pour un accès rapide
 $holidays = [];
 if (isset($data['response']['holidays'])) {
-    foreach ($data['response']['holidays'] as $holiday) {
-        $holidayDate = date('j', strtotime($holiday['date']['iso'])); // Extraire le jour du mois
-        $holidays[$holidayDate] = $holiday['name']; // Ajouter le nom du jour férié par date
-    }
+  foreach ($data['response']['holidays'] as $holiday) {
+    $holidayDate = date('j', strtotime($holiday['date']['iso'])); // Extraire le jour du mois
+    $holidays[$holidayDate] = $holiday['name']; // Ajouter le nom du jour férié par date
+  }
 }
 
 // Fonction pour créer un calendrier
-function generateCalendar($year, $month, $holidays) {
-    $firstDay = strtotime("$year-$month-01");
-    $lastDay = strtotime("$year-$month-" . date('t', $firstDay)); // Dernier jour du mois
-    $daysInMonth = date('t', $firstDay); // Nombre de jours dans le mois
+function generateCalendar($year, $month, $holidays)
+{
+  $firstDay = strtotime("$year-$month-01");
+  $lastDay = strtotime("$year-$month-" . date('t', $firstDay)); // Dernier jour du mois
+  $daysInMonth = date('t', $firstDay); // Nombre de jours dans le mois
 
-    $calendar = "<table class='calendar'>";
-    $calendar .= "<thead><tr><th>Dim</th><th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th></tr></thead>";
-    $calendar .= "<tbody><tr>";
+  $calendar = "<table class='calendar'>";
+  $calendar .= "<thead><tr><th>Dim</th><th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th></tr></thead>";
+  $calendar .= "<tbody><tr>";
 
-    // Ajout des espaces vides avant le premier jour du mois
-    for ($i = 0; $i < date('w', $firstDay); $i++) {
-        $calendar .= "<td></td>";
+  // Ajout des espaces vides avant le premier jour du mois
+  for ($i = 0; $i < date('w', $firstDay); $i++) {
+    $calendar .= "<td></td>";
+  }
+
+  // Remplissage des jours du mois
+  for ($day = 1; $day <= $daysInMonth; $day++) {
+    if (isset($holidays[$day])) {
+      $holidayName = $holidays[$day];
+      $calendar .= "<td class='holiday' data-holiday='$holidayName' onclick='showHolidayDetails(\"$holidayName\")'>$day</td>"; // Affichage du nom du jour férié dans l'info-bulle
+    } else {
+      $calendar .= "<td>$day</td>";
     }
 
-    // Remplissage des jours du mois
-    for ($day = 1; $day <= $daysInMonth; $day++) {
-        if (isset($holidays[$day])) {
-            $holidayName = $holidays[$day];
-            $calendar .= "<td class='holiday' data-holiday='$holidayName' onclick='showHolidayDetails(\"$holidayName\")'>$day</td>"; // Affichage du nom du jour férié dans l'info-bulle
-        } else {
-            $calendar .= "<td>$day</td>";
-        }
-
-        // Saut de ligne à la fin de chaque semaine
-        if (date('w', strtotime("$year-$month-$day")) == 6) {
-            $calendar .= "</tr><tr>";
-        }
+    // Saut de ligne à la fin de chaque semaine
+    if (date('w', strtotime("$year-$month-$day")) == 6) {
+      $calendar .= "</tr><tr>";
     }
+  }
 
-    // Compléter la dernière ligne du tableau si nécessaire
-    while (date('w', strtotime("$year-$month-$daysInMonth")) != 6) {
-        $calendar .= "<td></td>";
-        $daysInMonth++;
-    }
+  // Compléter la dernière ligne du tableau si nécessaire
+  while (date('w', strtotime("$year-$month-$daysInMonth")) != 6) {
+    $calendar .= "<td></td>";
+    $daysInMonth++;
+  }
 
-    $calendar .= "</tr></tbody></table>";
+  $calendar .= "</tr></tbody></table>";
 
-    return $calendar;
+  return $calendar;
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,88 +90,102 @@ function generateCalendar($year, $month, $holidays) {
 
   <style>
     .calendar {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: center;
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
     }
-    .calendar th, .calendar td {
-        padding: 10px;
-        width: 14%;
-        height: 60px;
-        font-size: 16px;
-    }
-    .calendar th {
-        background-color: #f0f0f0;
-    }
+
+    .calendar th,
     .calendar td {
-        background-color: #fff;
-        border: 1px solid #ddd;
+      padding: 10px;
+      width: 14%;
+      height: 60px;
+      font-size: 16px;
     }
+
+    .calendar th {
+      background-color: #f0f0f0;
+    }
+
+    .calendar td {
+      background-color: #fff;
+      border: 1px solid #ddd;
+    }
+
     .calendar td.holiday {
-        background-color: #ffcccb;
-        border: 2px solid #f00;
-        font-weight: bold;
-        cursor: pointer;
+      background-color: #ffcccb;
+      border: 2px solid #f00;
+      font-weight: bold;
+      cursor: pointer;
     }
+
     .calendar td:hover {
-        background-color: #f1f1f1;
+      background-color: #f1f1f1;
     }
+
     .calendar-navigation {
-        text-align: center;
-        margin: 20px 0;
+      text-align: center;
+      margin: 20px 0;
     }
+
     .calendar-navigation a {
-        font-size: 18px;
-        text-decoration: none;
-        margin: 0 10px;
+      font-size: 18px;
+      text-decoration: none;
+      margin: 0 10px;
     }
 
     /* Styles pour la modale */
     .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.4);
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
     }
+
     .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
     }
+
     .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
     }
+
     .close:hover,
     .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
     }
-    .calendar-navigation {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 24px;
-}
-.calendar-navigation a {
-    color: #333;
-    text-decoration: none;
-    padding: 10px;
-}
-.calendar-navigation a:hover {
-    color: #007bff;
-}
 
+    .calendar-navigation {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 24px;
+    }
+
+    .calendar-navigation a {
+      color: #333;
+      text-decoration: none;
+      padding: 10px;
+    }
+
+    .calendar-navigation a:hover {
+      color: #007bff;
+    }
   </style>
 </head>
+
 <body>
   <header class="landing-header">
     <div class="container">
@@ -202,24 +218,24 @@ function generateCalendar($year, $month, $holidays) {
   <section class="blog" id="blog">
     <!-- Calendrier avec les jours fériés -->
     <section id="calendrier">
-    <h2 style="text-align: center;">Calendrier du mois <?php echo $month; ?> - <?php echo $year; ?></h2>
-    <?php
-            // Afficher le calendrier du mois avec les jours fériés
-            echo generateCalendar($year, $month, $holidays);
-        ?>
+      <h2 style="text-align: center;">Calendrier du mois <?php echo $month; ?> - <?php echo $year; ?></h2>
+      <?php
+      // Afficher le calendrier du mois avec les jours fériés
+      echo generateCalendar($year, $month, $holidays);
+      ?>
     </section>
 
     <div class="calendar-navigation">
-    <a href="?year=<?php echo $prevYear; ?>&month=<?php echo $prevMonth; ?>" title="Mois précédent">
+      <a href="?year=<?php echo $prevYear; ?>&month=<?php echo $prevMonth; ?>" title="Mois précédent">
         <i class="fas fa-chevron-left"></i>
-    </a>
-    <span style="margin: 0 15px; font-weight: bold;">
+      </a>
+      <span style="margin: 0 15px; font-weight: bold;">
         <?php echo date("F", mktime(0, 0, 0, $month, 1)) . " " . $year; ?>
-    </span>
-    <a href="?year=<?php echo $nextYear; ?>&month=<?php echo $nextMonth; ?>" title="Mois suivant">
+      </span>
+      <a href="?year=<?php echo $nextYear; ?>&month=<?php echo $nextMonth; ?>" title="Mois suivant">
         <i class="fas fa-chevron-right"></i>
-    </a>
-</div>
+      </a>
+    </div>
 
     <div class="blog-posts">
       <!-- Articles dynamiques ajoutés ici par JS -->
@@ -235,16 +251,19 @@ function generateCalendar($year, $month, $holidays) {
     </div>
   </div>
 
+  <?php include '../../assets/footer.php'; ?>
+
   <script>
     function showHolidayDetails(holidayName) {
-        // Afficher la modale avec le nom du jour férié
-        document.getElementById("holidayTitle").innerText = holidayName;
-        document.getElementById("holidayModal").style.display = "block";
+      // Afficher la modale avec le nom du jour férié
+      document.getElementById("holidayTitle").innerText = holidayName;
+      document.getElementById("holidayModal").style.display = "block";
     }
 
     function closeModal() {
-        document.getElementById("holidayModal").style.display = "none";
+      document.getElementById("holidayModal").style.display = "none";
     }
   </script>
 </body>
+
 </html>

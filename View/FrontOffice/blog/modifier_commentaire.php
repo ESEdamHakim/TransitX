@@ -85,13 +85,6 @@ if (!$commentaire) {
         .form-group button:hover {
             background-color: #388e3c;
         }
-        footer {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin-top: 50px;
-        }
     </style>
 </head>
 <body>
@@ -119,9 +112,7 @@ if (!$commentaire) {
     </form>
 </div>
 
-<footer>
-    <p>&copy; 2023 TransitX. Tous droits réservés.</p>
-</footer>
+<?php include '../../assets/footer.php'; ?>
 
 </body>
 </html>
