@@ -185,14 +185,42 @@ function getReplies($pdo, $parentId)
         }
 
         .comment {
-            background-color: #f1f1f1;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 4px;
+            background: #f8fafd;
+            border: 1px solid #e3e3e3;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 8px rgba(31, 79, 101, 0.04);
+        }
+
+        .comment.reply {
+            background: #f4f7fa;
+            border-left: 4px solid #86b391;
+            margin-left: 32px;
+        }
+
+        .comment-header {
+            border-bottom: 1px solid #e3e3e3;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .comment p {
             margin: 5px 0;
+        }
+
+        .comment-likes a {
+            transition: color 0.2s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .comment-likes a:hover {
+            color: #1f4f65 !important;
+            transform: scale(1.15);
+        }
+
+        .comment-likes i {
+            margin-right: 4px;
         }
 
         .social-share {
@@ -399,7 +427,7 @@ function getReplies($pdo, $parentId)
                     <a href="../../BackOffice/index.php" class="btn btn-outline">Dashboard</a>
                 <?php endif; ?>
                 <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-                 <a href="calendrier.php" class="calen-button">
+                <a href="calendrier.php" class="calen-button">
                     <i class="fas fa-calendar-alt" style="color: #86b391;"></i>
                 </a>
             </div>
@@ -554,13 +582,19 @@ function getReplies($pdo, $parentId)
                         </div>
 
                         <!-- Like / Dislike -->
-                        <div class="comment-likes" style="margin-top: 8px;">
-                            <span>❤️ <?php echo $commentaire['nb_likes']; ?></span>
+                        <div class="comment-likes" style="margin-top: 8px; display: flex; align-items: center; gap: 12px;">
                             <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=like"
-                                style="margin-right: 10px; color: green;">Like</a>
-                            <span>👎 <?php echo $commentaire['nb_dislikes']; ?></span>
+                                title="J'aime"
+                                style="color: #1f4f65; font-size: 20px; display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span style="font-size: 16px;"><?php echo $commentaire['nb_likes']; ?></span>
+                            </a>
                             <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=dislike"
-                                style="color: red;">Dislike</a>
+                                title="Je n'aime pas"
+                                style="color: #d7dd83; font-size: 20px; display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-thumbs-down"></i>
+                                <span style="font-size: 16px;"><?php echo $commentaire['nb_dislikes']; ?></span>
+                            </a>
                         </div>
 
                         <!-- Formulaire pour répondre à ce commentaire -->

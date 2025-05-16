@@ -250,6 +250,7 @@ session_start();
     <div class="blog-posts">
       <!-- Articles dynamiques ajoutés ici par JS -->
     </div>
+    <br>
   </main>
   <?php include '../../assets/footer.php'; ?>
 
