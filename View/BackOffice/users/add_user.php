@@ -98,140 +98,142 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Ajouter un Utilisateur</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .field-required::after {
-            content: " *";
-            color: red;
-        }
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/users.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-        .hidden-field {
-            display: none;
-        }
-
-        .is-invalid {
-            border-color: #dc3545 !important;
-        }
-
-        .invalid-feedback {
-            color: #dc3545;
-            display: none;
-            width: 100%;
-            margin-top: 0.25rem;
-            font-size: 0.875em;
-        }
-    </style>
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Ajouter un Utilisateur</h1>
+    <div class="dashboard">
+        <?php include 'sidebar.php'; ?>
+        <main class="main-content">
+            <section>
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Ajouter un Utilisateur
+                            <p>Remplissez le formulaire ci-dessous</p>
+                        </h2>
+                    </div>
+                    <?php if (!empty($error)): ?>
+                        <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                    <?php endif; ?>
 
-        <?php if (!empty($error)): ?>
-            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
+                    <?php if ($success): ?>
+                        <div class="alert alert-success">Utilisateur ajouté avec succès!</div>
+                    <?php endif; ?>
+                    <div class="user-form-container">
+                        <!-- Form with direct POST to same page -->
+                        <form class="user-form" method="post" action="" id="userForm">
+                            <!-- User Type Selection -->
+                            <div class="form-group">
+                                <label class="form-label field-required">Type d'utilisateur</label>
+                                <select class="form-select" name="type"
+                                    id="userType" required>
+                                    <option value="">Sélectionner un type</option>
+                                    <option value="client" <?php echo isset($_POST['type']) && $_POST['type'] === 'client' ? 'selected' : ''; ?>>Client</option>
+                                    <option value="employe" <?php echo isset($_POST['type']) && $_POST['type'] === 'employe' ? 'selected' : ''; ?>>Employé</option>
+                                </select>
+                                <div class="invalid-feedback">Veuillez sélectionner un type d'utilisateur</div>
+                            </div>
 
-        <?php if ($success): ?>
-            <div class="alert alert-success">Utilisateur ajouté avec succès!</div>
-        <?php endif; ?>
+                            <!-- Common fields for both types -->
+                            <div class="form-group">
+                                <label class="form-label field-required">Nom</label>
+                                <input type="text" class="form-control" name="nom" id="nom"
+                                    value="<?php echo htmlspecialchars($_POST['nom'] ?? ''); ?>">
+                                <div class="invalid-feedback">Seules les lettres alphabétiques sont autorisées</div>
+                            </div>
 
-        <!-- Form with direct POST to same page -->
-        <form method="post" action="" id="userForm">
-            <!-- User Type Selection -->
-            <div class="mb-3">
-                <label class="form-label field-required">Type d'utilisateur</label>
-                <select class="form-select" name="type" id="userType" required>
-                    <option value="">Sélectionner un type</option>
-                    <option value="client" <?php echo isset($_POST['type']) && $_POST['type'] === 'client' ? 'selected' : ''; ?>>Client</option>
-                    <option value="employe" <?php echo isset($_POST['type']) && $_POST['type'] === 'employe' ? 'selected' : ''; ?>>Employé</option>
-                </select>
-                <div class="invalid-feedback">Veuillez sélectionner un type d'utilisateur</div>
-            </div>
+                            <div class="form-group">
+                                <label class="form-label field-required">Prénom</label>
+                                <input type="text" class="form-control" name="prenom" id="prenom"
+                                    value="<?php echo htmlspecialchars($_POST['prenom'] ?? ''); ?>">
+                                <div class="invalid-feedback">Seules les lettres alphabétiques sont autorisées</div>
+                            </div>
 
-            <!-- Common fields for both types -->
-            <div class="mb-3">
-                <label class="form-label field-required">Nom</label>
-                <input type="text" class="form-control" name="nom" id="nom"
-                    value="<?php echo htmlspecialchars($_POST['nom'] ?? ''); ?>">
-                <div class="invalid-feedback">Seules les lettres alphabétiques sont autorisées</div>
-            </div>
+                            <div class="form-group">
+                                <label class="form-label field-required">Email</label>
+                                <input type="text" class="form-control" name="email" id="email"
+                                    value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                                <div class="invalid-feedback">Veuillez entrer une adresse email valide</div>
+                            </div>
 
-            <div class="mb-3">
-                <label class="form-label field-required">Prénom</label>
-                <input type="text" class="form-control" name="prenom" id="prenom"
-                    value="<?php echo htmlspecialchars($_POST['prenom'] ?? ''); ?>">
-                <div class="invalid-feedback">Seules les lettres alphabétiques sont autorisées</div>
-            </div>
+                            <div class="form-group">
+                                <label class="form-label field-required">Mot de passe</label>
+                                <input type="password" class="form-control" name="password" id="password">
+                                <div class="invalid-feedback">Le mot de passe doit contenir au moins 8 caractères
+                                </div>
+                            </div>
 
-            <div class="mb-3">
-                <label class="form-label field-required">Email</label>
-                <input type="text" class="form-control" name="email" id="email"
-                    value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
-                <div class="invalid-feedback">Veuillez entrer une adresse email valide</div>
-            </div>
+                            <div class="form-group">
+                                <label class="form-label">Téléphone</label>
+                                <input type="text" class="form-control" name="telephone" id="telephone"
+                                    value="<?php echo htmlspecialchars($_POST['telephone'] ?? ''); ?>">
+                                <div class="invalid-feedback">Seuls les chiffres et le symbole + sont autorisés
+                                </div>
+                            </div>
 
-            <div class="mb-3">
-                <label class="form-label field-required">Mot de passe</label>
-                <input type="password" class="form-control" name="password" id="password">
-                <div class="invalid-feedback">Le mot de passe doit contenir au moins 8 caractères</div>
-            </div>
+                            <!-- Client specific fields -->
+                            <div id="clientFields"
+                                class="<?php echo (isset($_POST['type']) && $_POST['type'] === 'client' ? '' : 'hidden-field'); ?>">
+                                <div class="form-group">
+                                    <label class="form-label field-required">Date de Naissance</label>
+                                    <input type="text" class="form-control" name="date_naissance" id="date_naissance"
+                                        placeholder="AAAA-MM-JJ"
+                                        value="<?php echo htmlspecialchars($_POST['date_naissance'] ?? ''); ?>">
+                                    <div class="invalid-feedback">Format requis: AAAA-MM-JJ</div>
+                                </div>
+                            </div>
 
-            <div class="mb-3">
-                <label class="form-label">Téléphone</label>
-                <input type="text" class="form-control" name="telephone" id="telephone"
-                    value="<?php echo htmlspecialchars($_POST['telephone'] ?? ''); ?>">
-                <div class="invalid-feedback">Seuls les chiffres et le symbole + sont autorisés</div>
-            </div>
+                            <!-- Employee specific fields -->
+                            <div id="employeeFields"
+                                class="<?php echo (isset($_POST['type']) && $_POST['type'] === 'employe' ? '' : 'hidden-field'); ?>">
+                                <div class="form-group">
+                                    <label class="form-label field-required">Date d'Embauche</label>
+                                    <input type="text" class="form-control" name="date_embauche" id="date_embauche"
+                                        placeholder="AAAA-MM-JJ"
+                                        value="<?php echo htmlspecialchars($_POST['date_embauche'] ?? ''); ?>">
+                                    <div class="invalid-feedback">Format requis: AAAA-MM-JJ</div>
+                                </div>
 
-            <!-- Client specific fields -->
-            <div id="clientFields"
-                class="<?php echo (isset($_POST['type']) && $_POST['type'] === 'client' ? '' : 'hidden-field'); ?>">
-                <div class="mb-3">
-                    <label class="form-label field-required">Date de Naissance</label>
-                    <input type="text" class="form-control" name="date_naissance" id="date_naissance"
-                        placeholder="AAAA-MM-JJ"
-                        value="<?php echo htmlspecialchars($_POST['date_naissance'] ?? ''); ?>">
-                    <div class="invalid-feedback">Format requis: AAAA-MM-JJ</div>
+                                <div class="form-group">
+                                    <label class="form-label field-required">Poste</label>
+                                    <input type="text" class="form-control" name="poste" id="poste"
+                                        value="<?php echo htmlspecialchars($_POST['poste'] ?? ''); ?>">
+                                    <div class="invalid-feedback">Seules les lettres alphabétiques sont autorisées
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label field-required">Salaire</label>
+                                    <input type="text" class="form-control" name="salaire" id="salaire"
+                                        value="<?php echo htmlspecialchars($_POST['salaire'] ?? ''); ?>">
+                                    <div class="invalid-feedback">Seuls les chiffres sont autorisés</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label field-required">Rôle</label>
+                                    <input type="text" class="form-control" name="role" id="role"
+                                        value="<?php echo htmlspecialchars($_POST['role'] ?? ''); ?>">
+                                    <div class="invalid-feedback">Seules les lettres alphabétiques sont autorisées
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions text-center">
+                                <button type="submit" class="btn primary">Ajouter</button>
+                                <a href="crud.php" class="btn secondary">Annuler</a>
+                        </form>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Employee specific fields -->
-            <div id="employeeFields"
-                class="<?php echo (isset($_POST['type']) && $_POST['type'] === 'employe' ? '' : 'hidden-field'); ?>">
-                <div class="mb-3">
-                    <label class="form-label field-required">Date d'Embauche</label>
-                    <input type="text" class="form-control" name="date_embauche" id="date_embauche"
-                        placeholder="AAAA-MM-JJ" value="<?php echo htmlspecialchars($_POST['date_embauche'] ?? ''); ?>">
-                    <div class="invalid-feedback">Format requis: AAAA-MM-JJ</div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label field-required">Poste</label>
-                    <input type="text" class="form-control" name="poste" id="poste"
-                        value="<?php echo htmlspecialchars($_POST['poste'] ?? ''); ?>">
-                    <div class="invalid-feedback">Seules les lettres alphabétiques sont autorisées</div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label field-required">Salaire</label>
-                    <input type="text" class="form-control" name="salaire" id="salaire"
-                        value="<?php echo htmlspecialchars($_POST['salaire'] ?? ''); ?>">
-                    <div class="invalid-feedback">Seuls les chiffres sont autorisés</div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label field-required">Rôle</label>
-                    <input type="text" class="form-control" name="role" id="role"
-                        value="<?php echo htmlspecialchars($_POST['role'] ?? ''); ?>">
-                    <div class="invalid-feedback">Seules les lettres alphabétiques sont autorisées</div>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Ajouter</button>
-            <a href="../View/Backoffice/users/crud.php" class="btn btn-secondary">Annuler</a>
-        </form>
+            </section>
+        </main>
     </div>
+
 
     <script>
         // Validation patterns

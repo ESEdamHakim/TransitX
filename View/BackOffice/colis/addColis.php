@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </head>
 
-<body style="margin: 0; padding: 0;">
+<body>
   <div class="dashboard">
     <?php include 'sidebar.php'; ?>
     <main class="main-content">

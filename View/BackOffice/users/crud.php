@@ -41,12 +41,10 @@ function getSortUrl($columnName)
   <link rel="stylesheet" href="assets/css/users.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <!-- Add jsPDF library -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-  <!-- Add Jitsi Meet API -->
   <script src='https://meet.jit.si/external_api.js'></script>
-  <!-- Add marked.js for markdown rendering -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     .sort-icon {
@@ -296,6 +294,7 @@ function getSortUrl($columnName)
         <div class="users-container">
           <br>
           <div class="actions-container">
+            <span></span><span></span>
             <button class="btn primary" id="export-pdf-btn">
               <i class="fas fa-file-pdf"></i> PDF
             </button>
