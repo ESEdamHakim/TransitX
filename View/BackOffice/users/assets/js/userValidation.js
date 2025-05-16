@@ -26,13 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('userType').addEventListener('change', toggleFields);
 
   function clearAllErrors() {
-    document.querySelectorAll('.is-invalid').forEach(field => {
-      field.classList.remove('is-invalid');
-    });
-    document.querySelectorAll('.invalid-feedback').forEach(feedback => {
-      feedback.style.display = 'none';
-    });
-  }
+  document.querySelectorAll('.is-invalid').forEach(field => {
+    field.classList.remove('is-invalid');
+  });
+  document.querySelectorAll('.invalid-feedback').forEach(feedback => {
+    feedback.style.display = 'none';
+    feedback.textContent = '';
+  });
+}
 
   function validateField(input, pattern, errorMessage) {
     const isValid = pattern.test(input.value.trim());
