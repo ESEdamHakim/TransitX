@@ -156,6 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="text" name="nom"
                                     class="form-control <?= isset($errors['nom']) ? 'is-invalid' : '' ?>"
                                     value="<?= htmlspecialchars($user->getNom()) ?>" pattern="[a-zA-ZÀ-ÿ\s]+" required>
+                                <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="form-group">
@@ -164,6 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     class="form-control <?= isset($errors['prenom']) ? 'is-invalid' : '' ?>"
                                     value="<?= htmlspecialchars($user->getPrenom()) ?>" pattern="[a-zA-ZÀ-ÿ\s]+"
                                     required>
+                                <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="form-group">
@@ -171,6 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="email" name="email"
                                     class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>"
                                     value="<?= htmlspecialchars($user->getEmail()) ?>" required>
+                                <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="form-group">
@@ -178,6 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="password" name="password"
                                     class="form-control <?= isset($errors['password']) ? 'is-invalid' : '' ?>"
                                     minlength="8">
+                                <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="form-group">
@@ -186,6 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     class="form-control <?= isset($errors['telephone']) ? 'is-invalid' : '' ?>"
                                     value="<?= htmlspecialchars($user->getTelephone()) ?>" pattern="^\+?[0-9]+$"
                                     required>
+                                <div class="invalid-feedback"></div>
                             </div>
 
                             <?php if ($user instanceof Client): ?>
@@ -194,6 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <input type="date" name="date_naissance"
                                         class="form-control <?= isset($errors['date_naissance']) ? 'is-invalid' : '' ?>"
                                         value="<?= $user->getDateNaissance() ? $user->getDateNaissance()->format('Y-m-d') : '' ?>">
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             <?php elseif ($user instanceof Employe): ?>
                                 <div class="form-group">
@@ -201,6 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <input type="date" name="date_embauche"
                                         class="form-control <?= isset($errors['date_embauche']) ? 'is-invalid' : '' ?>"
                                         value="<?= $user->getDateEmbauche()->format('Y-m-d') ?>" required>
+                                    <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="form-group">
@@ -209,6 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         class="form-control <?= isset($errors['poste']) ? 'is-invalid' : '' ?>"
                                         value="<?= htmlspecialchars($user->getPoste()) ?>" pattern="[a-zA-ZÀ-ÿ\s]+"
                                         required>
+                                    <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="form-group">
@@ -216,6 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <input type="number" name="salaire"
                                         class="form-control <?= isset($errors['salaire']) ? 'is-invalid' : '' ?>"
                                         value="<?= htmlspecialchars($user->getSalaire()) ?>" step="0.01" required>
+                                    <div class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="form-group">
@@ -223,6 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <input type="text" name="role"
                                         class="form-control <?= isset($errors['role']) ? 'is-invalid' : '' ?>"
                                         value="<?= htmlspecialchars($user->getRole()) ?>" pattern="[a-zA-ZÀ-ÿ\s]+" required>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             <?php endif; ?>
 
@@ -239,122 +249,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            // Enable Bootstrap validation
-            (function () {
-                'use strict';
-                window.addEventListener('load', function () {
-                    var forms = document.getElementsByClassName('needs-validation');
-                    var validation = Array.prototype.filter.call(forms, function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (form.checkValidity() === false) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }
-                            form.classList.add('was-validated');
-                        }, false);
-                    });
-                }, false);
-            })();
+    <script src="assets/js/userValidation.js"></script>
 
-            // Real-time validation
-            $('input').on('input', function () {
-                validateField($(this));
-            });
-
-            function validateField(field) {
-                const value = field.val();
-                const name = field.attr('name');
-                const feedback = field.next('.invalid-feedback');
-
-                // Reset state
-                field.removeClass('is-invalid');
-                feedback.hide();
-
-                if (field.prop('required') && !value.trim()) {
-                    showError(field, 'Ce champ est obligatoire');
-                    return false;
-                }
-
-                // Field-specific validation
-                switch (name) {
-                    case 'nom':
-                    case 'prenom':
-                    case 'poste':
-                    case 'role':
-                        if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) {
-                            showError(field, 'Seules les lettres sont autorisées');
-                            return false;
-                        }
-                        break;
-
-                    case 'email':
-                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                            showError(field, 'Veuillez entrer une adresse email valide');
-                            return false;
-                        }
-                        break;
-
-                    case 'password':
-                        if (value && value.length < 8) {
-                            showError(field, 'Le mot de passe doit contenir au moins 8 caractères');
-                            return false;
-                        }
-                        break;
-
-                    case 'telephone':
-                        if (!/^\+?[0-9]+$/.test(value)) {
-                            showError(field, 'Seuls les chiffres et le symbole + sont autorisés');
-                            return false;
-                        }
-                        break;
-
-                    case 'date_naissance':
-                    case 'date_embauche':
-                        if (value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-                            showError(field, 'Choisir une date');
-                            return false;
-                        }
-                        break;
-
-                    case 'salaire':
-                        if (isNaN(value) || parseFloat(value) <= 0) {
-                            showError(field, 'Veuillez entrer un nombre valide');
-                            return false;
-                        }
-                        break;
-                }
-
-                return true;
-            }
-
-            function showError(field, message) {
-                const feedback = field.next('.invalid-feedback');
-                field.addClass('is-invalid');
-                feedback.text(message).show();
-            }
-
-            $('#userForm').submit(function (e) {
-                let isValid = true;
-
-                // Validate all fields
-                $('input').each(function () {
-                    if (!validateField($(this))) {
-                        isValid = false;
-                    }
-                });
-
-                if (!isValid) {
-                    e.preventDefault();
-                    // Scroll to first error
-                    $('html, body').animate({
-                        scrollTop: $('.is-invalid').first().offset().top - 100
-                    }, 500);
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>
