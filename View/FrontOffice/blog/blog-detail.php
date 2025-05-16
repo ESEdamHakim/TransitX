@@ -81,324 +81,18 @@ function getReplies($pdo, $parentId)
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo htmlspecialchars($article['titre']); ?> - TransitX</title>
     <!-- Inclure le CSS de Quill -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
     <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/blog.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <!-- Inclure la bibliothèque Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="styles.css" />
-    <style>
-        .language-selector {
-            position: absolute;
-            right: 20px;
-        }
-
-
-        .blog-detail {
-            width: 70%;
-            margin: 50px auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .blog-detail h2 {
-            font-size: 36px;
-            color: #1f4f65;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .post-info {
-            font-size: 16px;
-            color: #888;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .post-info small {
-            color: #555;
-        }
-
-        .content {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #555;
-        }
-
-        .content h3 {
-            color: #86b391;
-            font-size: 28px;
-            margin-top: 40px;
-        }
-
-        .content p {
-            margin-bottom: 25px;
-        }
-
-        .comment-section {
-            margin: 40px auto;
-            width: 70%;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .comment-section h3 {
-            font-size: 24px;
-            color: #1f4f65;
-            margin-bottom: 15px;
-        }
-
-        .comment-section form textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: vertical;
-        }
-
-        .comment-section form button {
-            background-color: #97c3a2;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .comment-section form button:hover {
-            background-color: #1f4f65;
-            color: white;
-        }
-
-        .comments {
-            margin-top: 40px;
-        }
-
-        .comment {
-            background: #f8fafd;
-            border: 1px solid #e3e3e3;
-            border-radius: 6px;
-            margin-bottom: 18px;
-            padding: 16px 18px;
-            box-shadow: 0 2px 8px rgba(31, 79, 101, 0.04);
-        }
-
-        .comment.reply {
-            background: #f4f7fa;
-            border-left: 4px solid #86b391;
-            margin-left: 32px;
-        }
-
-        .comment-header {
-            border-bottom: 1px solid #e3e3e3;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
-        }
-
-        .comment p {
-            margin: 5px 0;
-        }
-
-        .comment-likes a {
-            transition: color 0.2s, transform 0.2s;
-            text-decoration: none;
-        }
-
-        .comment-likes a:hover {
-            color: #1f4f65 !important;
-            transform: scale(1.15);
-        }
-
-        .comment-likes i {
-            margin-right: 4px;
-        }
-
-        .social-share {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .social-share a {
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 30px;
-            color: #333;
-            transition: color 0.3s ease;
-        }
-
-        .social-share a:hover {
-            color: #86b391;
-        }
-
-        .social-share a i.fa-file-pdf:hover {
-            color: #9a0007;
-        }
-
-        #translateButton {
-            background-color: #7f8c8d;
-            /* Gris doux et moderne */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #translateButton:hover {
-            background-color: #636e72;
-            /* Gris un peu plus foncé au survol */
-        }
-
-
-        #translateButton:disabled {
-            background-color: #e0e0e0;
-            border-color: #ccc;
-            color: #888;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        #translateButton i {
-            margin-right: 8px;
-            transition: transform 0.3s ease;
-        }
-
-        #translateButton:hover i {
-            transform: translateX(5px);
-        }
-
-        .fas.fa-thumbtack {
-            font-size: 20px;
-            /* Taille de l'icône */
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .fas.fa-thumbtack:hover {
-            color: #4CAF50;
-            /* Couleur au survol */
-            transform: scale(1.1);
-            /* Agrandissement léger au survol */
-        }
-
-        .article-meta-right {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            font-size: 0.9rem;
-            color: #777;
-            margin-bottom: 10px;
-        }
-
-        .article-meta-right small {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        #languageButton {
-            background-color: white;
-            color: #444;
-            border: 1px solid #ccc;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        #languageButton:hover {
-            background-color: #f9f9f9;
-        }
-
-        #languageDropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            /* aligne le dropdown sous le bouton */
-            right: 0;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 12px;
-            min-width: 200px;
-            z-index: 999;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-        }
-
-        .btn-speak {
-            background-color: white;
-            /* Fond blanc */
-            color: black;
-            /* Texte noir */
-            border: 1px solid #ccc;
-            /* Bordure grise */
-            padding: 8px 16px;
-            /* Réduit le padding */
-            border-radius: 6px;
-            /* Réduit les coins arrondis */
-            font-size: 14px;
-            /* Réduit la taille de la police */
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            /* Réduit l'espacement entre l'icône et le texte */
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-speak i {
-            color: black;
-            /* Icône noire */
-            font-size: 16px;
-            /* Réduit la taille de l'icône */
-        }
-
-        .btn-speak:hover {
-            background-color: #f9f9f9;
-            /* Fond gris clair au survol */
-            color: #333;
-            /* Texte gris foncé */
-        }
-
-        .btn-speak:disabled {
-            background-color: #e0e0e0;
-            /* Fond gris clair pour état désactivé */
-            color: #888;
-            /* Texte gris clair */
-            cursor: not-allowed;
-        }
-
-        .comment-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .comment-actions form {
-            display: inline-block;
-            margin: 0;
-        }
-
-        .comment-actions a {
-            display: inline-block;
-        }
-    </style>
+   
 </head>
 
 <body>
@@ -424,9 +118,9 @@ function getReplies($pdo, $parentId)
             </nav>
             <div class="header-right">
                 <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-                    <a href="../../BackOffice/index.php" class="btn btn-outline">Dashboard</a>
+                    <a href="../../BackOffice/index.php" class="btn secondary">Dashboard</a>
                 <?php endif; ?>
-                <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+                <a href="../../../index.php" class="btn primary logout-btn">Déconnexion</a>
                 <a href="calendrier.php" class="calen-button">
                     <i class="fas fa-calendar-alt" style="color: #86b391;"></i>
                 </a>
@@ -585,13 +279,13 @@ function getReplies($pdo, $parentId)
                         <div class="comment-likes" style="margin-top: 8px; display: flex; align-items: center; gap: 12px;">
                             <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=like"
                                 title="J'aime"
-                                style="color: #1f4f65; font-size: 20px; display: flex; align-items: center; gap: 4px;">
+                                style="color: #86b391; font-size: 20px; display: flex; align-items: center; gap: 4px;">
                                 <i class="fas fa-thumbs-up"></i>
                                 <span style="font-size: 16px;"><?php echo $commentaire['nb_likes']; ?></span>
                             </a>
                             <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=dislike"
                                 title="Je n'aime pas"
-                                style="color: #d7dd83; font-size: 20px; display: flex; align-items: center; gap: 4px;">
+                                style="color: #1f4f65; font-size: 20px; display: flex; align-items: center; gap: 4px;">
                                 <i class="fas fa-thumbs-down"></i>
                                 <span style="font-size: 16px;"><?php echo $commentaire['nb_dislikes']; ?></span>
                             </a>
@@ -762,33 +456,7 @@ function getReplies($pdo, $parentId)
         });
 
     </script>
-
-    <style>
-        /* Style pour le spinner */
-        .spinner {
-            border: 3px solid #f3f3f3;
-            /* Gris clair */
-            border-top: 3px solid #3498db;
-            /* Bleu pour la rotation */
-            border-radius: 50%;
-            width: 15px;
-            height: 15px;
-            animation: spin 1s linear infinite;
-        }
-
-        /* Animation de rotation */
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-
-
+    
 </body>
 
 </html>
