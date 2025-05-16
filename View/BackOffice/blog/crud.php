@@ -166,8 +166,8 @@ $topArticles = $articleC->getMostCommentedArticles();
                   <?php foreach ($list as $offer) { ?>
                     <tr>
                       <td><?= htmlspecialchars($offer['id_article']); ?></td>
-                      <td><?= htmlspecialchars($offer['titre']); ?></td>
-                      <td><?= htmlspecialchars(substr($offer['contenu'], 0, 100)) ?>...</td>
+                      <td><?= htmlspecialchars(substr($offer['titre'], 0, 30)); ?></td>
+                      <td><?= htmlspecialchars(substr($offer['contenu'], 0, 60)) ?>...</td>
                       <td><?= htmlspecialchars($offer['auteur']); ?></td>
                       <td><?= htmlspecialchars($offer['date_publication']); ?></td>
                       <td><?= htmlspecialchars($offer['categorie'] ?? '') ?></td>
@@ -253,7 +253,7 @@ $topArticles = $articleC->getMostCommentedArticles();
   <!-- View Modal -->
     <div id="content-modal" class="modal">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-headerr">
           <h2>Détails de l'article</h2>
           <button class="close-modal"><i class="fas fa-times"></i></button>
         </div>
