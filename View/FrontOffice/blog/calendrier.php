@@ -16,7 +16,22 @@ $nextYear = date("Y", $nextDate);
 
 // API call
 $url = "https://calendarific.com/api/v2/holidays?api_key=$apiKey&country=$countryCode&year=$year&month=$month";
-$response = @file_get_contents($url);
+
+// Add caching here
+$cacheFile = __DIR__ . "/assets/cache/cache_{$year}_{$month}.json";
+if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < 86400) { // 1 day cache
+    $response = file_get_contents($cacheFile);
+} else {
+    $response = @file_get_contents($url);
+    if ($response) file_put_contents($cacheFile, $response);
+}
+
+if (!$response) {
+  echo "<p>Erreur de récupération des données de l'API.</p>";
+  exit;
+}
+
+$data = json_decode($response, true);
 
 if (!$response) {
   echo "<p>Erreur de récupération des données de l'API.</p>";
@@ -206,8 +221,8 @@ function generateCalendar($year, $month, $holidays)
         </ul>
       </nav>
       <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
-        <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+        <a href="../../BackOffice/index.php" class="btn secondary">Dashboard</a>
+        <a href="../../../index.php" class="btn primary">Déconnexion</a>
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>
@@ -217,8 +232,10 @@ function generateCalendar($year, $month, $holidays)
 
   <section class="blog" id="blog">
     <!-- Calendrier avec les jours fériés -->
+     <br>
     <section id="calendrier">
       <h2 style="text-align: center;">Calendrier du mois <?php echo $month; ?> - <?php echo $year; ?></h2>
+      <br>
       <?php
       // Afficher le calendrier du mois avec les jours fériés
       echo generateCalendar($year, $month, $holidays);
