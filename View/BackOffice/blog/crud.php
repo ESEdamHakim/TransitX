@@ -65,7 +65,11 @@ $list = $articleC->listarticleFilteredByCategoryAndAuthor($order, $categorie, $a
 $topArticles = $articleC->getMostCommentedArticles();
 
 ?>
-
+<style>
+/* Add to your CSS file */
+.modal { display: none; }
+.modal.active { display: block; }
+</style>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -168,9 +172,8 @@ $topArticles = $articleC->getMostCommentedArticles();
                     <tr>
                       <td><?= htmlspecialchars($offer['id_article']); ?></td>
                       <td><?= htmlspecialchars($offer['titre']); ?></td>
-                      <td><?= htmlspecialchars($offer['contenu']); ?></td>
+                      <td><?= htmlspecialchars(substr($offer['contenu'], 0, 100)) ?>...</td>
                       <td><?= htmlspecialchars($offer['auteur']); ?></td>
-
                       <td><?= htmlspecialchars($offer['date_publication']); ?></td>
                       <td><?= htmlspecialchars($offer['categorie'] ?? '') ?></td>
                       <td><?= htmlspecialchars($offer['tags'] ?? '') ?></td>
@@ -185,24 +188,40 @@ $topArticles = $articleC->getMostCommentedArticles();
                         <?php endif; ?>
                       </td>
                       <td class="actions">
-                        <a href="updatearticle.php?id=<?= htmlspecialchars($offer['id_article']); ?>"
-                          class="action-btn edit" title="Modifier">
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
-                          data-id="<?= htmlspecialchars($offer['id_article']) ?>">
-                          <i class="fas fa-trash"></i>
-                        </button>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                          <!-- Top row: Edit & Delete -->
+                          <div style="display: flex; gap: 10px;">
+                            <a href="updatearticle.php?id=<?= htmlspecialchars($offer['id_article']); ?>"
+                              class="action-btn edit" title="Modifier">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
+                              data-id="<?= htmlspecialchars($offer['id_article']) ?>">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </div>
+                          <!-- Bottom row: PDF, Comments & View -->
+                          <div style="display: flex; gap: 10px;">
+                            <a href="export_pdf.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn"
+                              title="Exporter en PDF" style="color: red;">
+                              <i class="fas fa-file-pdf"></i>
+                            </a>
+                            <a href="commentaires.php?id=<?= htmlspecialchars($offer['id_article']); ?>"
+                              class="action-btn" title="Voir les commentaires" style="color: #4d7aa3;">
+                              <i class="fas fa-comments"></i>
+                            </a>
+                            <!-- View Button to open modal -->
+                            <button type="button" class="action-btn view open-content-modal"
+                              data-contenu="<?= htmlspecialchars($offer['contenu']); ?>" title="Voir le contenu complet"
+                              style="color: #366175;">
+                              <i class="fas fa-eye"></i>
+                            </button>
+                          </div>
 
-                        <!-- Export PDF Link -->
-                        <a href="export_pdf.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn"
-                          title="Exporter en PDF">
-                          <i class="fas fa-file-pdf"></i>
-                        </a>
+                        </div>
                       </td>
                     </tr>
                   <?php } ?>
-
                 </tbody>
               </table>
             </div>
@@ -231,6 +250,14 @@ $topArticles = $articleC->getMostCommentedArticles();
       <input type="hidden" name="id_article" id="delete-id">
     </form>
   </div>
+<!-- View Modal -->
+<div id="content-modal" class="modal">
+  <div class="modal-content" style="padding: 20px; background: white; border-radius: 8px; width: 50%; margin: 100px auto; position: relative;">
+    <button class="close-modal" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px; background: none; border: none;">&times;</button>
+    <h3>Contenu complet</h3>
+    <p id="modalContentText" style="white-space: pre-wrap;"></p>
+  </div>
+</div>
 
   <script src="assets/js/main.js"></script>
 
