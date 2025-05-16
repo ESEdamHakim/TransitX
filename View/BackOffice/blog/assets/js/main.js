@@ -176,11 +176,30 @@ function setupViewButtonHandlers() {
   });
 }
 
+
+function setupCommentsButtonHandlers() {
+  document.querySelectorAll('.comments-btn').forEach(button => {
+    button.addEventListener('click', function () {
+      const articleId = this.getAttribute('data-article-id');
+      // AJAX request to fetch comments
+      fetch(`fetch_comments.php?id_article=${encodeURIComponent(articleId)}`)
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('comments-list').innerHTML = html;
+          document.getElementById('comments-modal').classList.add('active');
+        });
+    });
+  });
+}
+
+
   function initializeModalHandlers() {
     setupCloseModalHandlers();
     setupDeleteButtonHandlers();
     setupConfirmDeleteButton();
     setupViewButtonHandlers();
+    setupCommentsButtonHandlers();
+
   }
 
   updateCategoryCounters();

@@ -4,8 +4,10 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../../Controller/ArticleC.php';
 
+
 $articleC = new ArticleC();
 $list = $articleC->listarticle();
+
 
 
 // Traitement du tri par date
@@ -212,12 +214,12 @@ $topArticles = $articleC->getMostCommentedArticles();
                               title="Exporter en PDF" style="color: red;">
                               <i class="fas fa-file-pdf"></i>
                             </a>
-                            <a href="commentaires.php?id=<?= htmlspecialchars($offer['id_article']); ?>"
-                              class="action-btn" title="Voir les commentaires" style="color: #4d7aa3;">
+                            <button type="button" class="action-btn comments-btn"
+                              data-article-id="<?= htmlspecialchars($offer['id_article']); ?>"
+                              title="Voir les commentaires" style="color: #4d7aa3;">
                               <i class="fas fa-comments"></i>
-                            </a>
+                            </button>
                           </div>
-
                         </div>
                       </td>
                     </tr>
@@ -251,27 +253,44 @@ $topArticles = $articleC->getMostCommentedArticles();
     </form>
   </div>
   <!-- View Modal -->
-    <div id="content-modal" class="modal">
-      <div class="modal-content">
-        <div class="modal-headerr">
-          <h2>Détails de l'article</h2>
-          <button class="close-modal"><i class="fas fa-times"></i></button>
+  <div id="content-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-headerr">
+        <h2>Détails de l'article</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="bus-info">
+          <p><strong>Titre:</strong> <span id="modalTitre"></span></p>
+          <p><strong>Auteur:</strong> <span id="modalAuteur"></span></p>
+          <p><strong>Date:</strong> <span id="modalDate"></span></p>
+          <p><strong>Catégorie:</strong> <span id="modalCategorie"></span></p>
+          <p><strong>Tags:</strong> <span id="modalTags"></span></p>
+          <p><strong>Contenu:</strong></p>
+          <p id="modalContentText"></p>
+          <p><strong>Photo:</strong></p>
+          <div id="modalPhoto"></div>
         </div>
-        <div class="modal-body">
+      </div>
+    </div>
+  </div>
+  <!-- Comments Modal -->
+  <div id="comments-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-headerr">
+        <h2>Commentaires de l'article</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div id="comments-list">
           <div class="bus-info">
-            <p><strong>Titre:</strong> <span id="modalTitre"></span></p>
-            <p><strong>Auteur:</strong> <span id="modalAuteur"></span></p>
-            <p><strong>Date:</strong> <span id="modalDate"></span></p>
-            <p><strong>Catégorie:</strong> <span id="modalCategorie"></span></p>
-            <p><strong>Tags:</strong> <span id="modalTags"></span></p>
-            <p><strong>Contenu:</strong></p>
-            <p id="modalContentText"></p>
-            <p><strong>Photo:</strong></p>
-            <div id="modalPhoto"></div>
+
+            <!-- Les commentaires seront chargés ici -->
           </div>
         </div>
       </div>
     </div>
+  </div>
 
   <script src="assets/js/main.js"></script>
 
