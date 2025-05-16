@@ -196,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p><strong>Détails:</strong> <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
 
                     <?php if (!empty($covoiturage['id_vehicule'])): ?>
-                        <button class="icon-btn vehicule-icon-btn"
+                        <button class="btn btn-primary voir-vehicule-btn"
                             data-id-covoiturage="<?= htmlspecialchars($covoiturage['id_covoit']) ?>">
                             Voir Véhicule
                         </button>
