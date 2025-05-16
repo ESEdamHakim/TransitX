@@ -92,7 +92,7 @@ $topArticles = $articleC->getMostCommentedArticles();
         </div>
         <div class="header-right">
           <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Rechercher un article..."
+            <input type="text" id="searchInput" placeholder="Rechercher par titre ou auteur"
               aria-label="Rechercher un article">
             <button><i class="fas fa-search"></i></button>
           </div>

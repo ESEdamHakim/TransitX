@@ -45,27 +45,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentTab = "all"; // default tab
 
-  function applyFilters() {
-    const searchValue = searchInput.value.toLowerCase();
+function applyFilters() {
+  const searchValue = searchInput.value.toLowerCase();
 
-    tableRows.forEach(row => {
-      const titleCell = row.querySelector("td:nth-child(2)");
-      const categoryCell = row.querySelector("td:nth-child(6)");
+  tableRows.forEach(row => {
+    const titleCell = row.querySelector("td:nth-child(2)");
+    const authorCell = row.querySelector("td:nth-child(4)");
+    const categoryCell = row.querySelector("td:nth-child(6)");
 
-      const title = titleCell ? titleCell.textContent.toLowerCase().trim() : "";
-      const category = categoryCell ? categoryCell.textContent.trim() : "";
+    const title = titleCell ? titleCell.textContent.toLowerCase().trim() : "";
+    const author = authorCell ? authorCell.textContent.toLowerCase().trim() : "";
+    const category = categoryCell ? categoryCell.textContent.trim() : "";
 
-      const matchesSearch = title.includes(searchValue);
-      const matchesTab =
-        currentTab === "all" ||
-        (currentTab === "Conseils de voyage" && category === "Conseils de voyage") ||
-        (currentTab === "Sécurité" && category === "Sécurité") ||
-        (currentTab === "Économie et écologie" && category === "Économie et écologie") ||
-        (currentTab === "Autre" && category === "Autre");
+    const matchesSearch = title.includes(searchValue) || author.includes(searchValue);
+    const matchesTab =
+      currentTab === "all" ||
+      (currentTab === "Conseils de voyage" && category === "Conseils de voyage") ||
+      (currentTab === "Sécurité" && category === "Sécurité") ||
+      (currentTab === "Économie et écologie" && category === "Économie et écologie") ||
+      (currentTab === "Autre" && category === "Autre");
 
-      row.style.display = (matchesSearch && matchesTab) ? "" : "none";
-    });
-  }
+    row.style.display = (matchesSearch && matchesTab) ? "" : "none";
+  });
+}
+
 
   // Bind search input event
   searchInput.addEventListener("input", applyFilters);
