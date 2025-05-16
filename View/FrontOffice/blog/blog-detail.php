@@ -289,9 +289,9 @@ function getReplies($pdo, $parentId)
                                 required></textarea><br />
                             <button type="submit">Répondre</button>
                         </form>
-                        <div class="comment-actions" style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+                        <div class="comment-actions">
                             <!-- Edit Button -->
-                            <form method="get" action="modifier_commentaire.php" class="comment-action-form" style="margin: 0;">
+                            <form method="get" action="modifier_commentaire.php" class="comment-action-form" >
                                 <input type="hidden" name="id" value="<?php echo $commentaire['id_commentaire']; ?>">
                                 <button type="submit" title="Modifier le commentaire" aria-label="Modifier"
                                     style="background: #f8fafd; border: 1px solid #86b391; color: #1f4f65; border-radius: 6px; padding: 6px 10px; font-size: 18px; cursor: pointer; display: flex; align-items: center;">
