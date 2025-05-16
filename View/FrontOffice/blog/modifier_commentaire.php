@@ -59,9 +59,8 @@ if (!$commentaire) {
                     <a href="../../BackOffice/index.php" class="btn secondary ">Dashboard</a>
                 <?php endif; ?>
                 <a href="../../../index.php" class="btn primary">Déconnexion</a>
-                <a href="calendrier.php"
-                    style="display: inline-flex; align-items: center; gap: 5px; font-size: 16px; text-decoration: none; color: inherit; background: none; border: 2px solid #97c3a2; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
-                    <i class="fas fa-calendar-alt"></i>
+                <a href="calendrier.php" class="calen-button">
+                    <i class="fas fa-calendar-alt" style="color: #86b391;"></i>
                 </a>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
@@ -70,27 +69,35 @@ if (!$commentaire) {
         </div>
     </header>
     <main>
-        <div class="container">
-            <div class="section-header">
-                <h2>Modifier le Commentaire</h2>
+        <section class="blog-hero">
+            <div class="hero-content">
+                <h1>Modifier un Commentaire</h1>
+                <p> Restez informé avec les dernières nouvelles, idées et tendances sur la mobilité urbaine durable.
+                    Explorez nos articles pour découvrir l'avenir des transports.</p>
             </div>
-            <h2></h2>
+        </section>
+        <div class="container">
             <form class="blog-form" method="POST" action="traiter_modif_commentaire.php">
                 <input type="hidden" name="id_commentaire" value="<?php echo $commentaire['id_commentaire']; ?>">
                 <input type="hidden" name="id_article" value="<?php echo $commentaire['id_article']; ?>">
 
                 <div class="form-group">
-                    <label for="contenu_commentaire">Votre commentaire :</label>
+                    <label for="contenu_commentaire">Votre commentaire </label>
                     <textarea name="contenu_commentaire" id="contenu_commentaire" rows="6"
                         required><?php echo htmlspecialchars($commentaire['contenu_commentaire']); ?></textarea>
                 </div>
-
-                <div class="form-group">
+                <br>
+                <div class="form-actions text-center">
+                    <a href="index.php" class="btn secondary">
+                        Annuler
+                        <i class="fas fa-times"></i>
+                    </a>
                     <button class='btn primary' type="submit">
-                        <i class="fas fa-save"></i> Enregistrer les modifications
+                        <i class="fas fa-save"></i> Enregistrer
                     </button>
                 </div>
             </form>
+            <br>
         </div>
     </main>
 

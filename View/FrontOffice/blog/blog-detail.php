@@ -399,6 +399,9 @@ function getReplies($pdo, $parentId)
                     <a href="../../BackOffice/index.php" class="btn btn-outline">Dashboard</a>
                 <?php endif; ?>
                 <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+                 <a href="calendrier.php" class="calen-button">
+                    <i class="fas fa-calendar-alt" style="color: #86b391;"></i>
+                </a>
             </div>
 
             <div class="language-selector">

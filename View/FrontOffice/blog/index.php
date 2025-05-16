@@ -230,8 +230,8 @@ session_start();
           <a href="../../BackOffice/index.php" class="btn secondary">Dashboard</a>
         <?php endif; ?>
         <a href="../../../index.php" class="btn primary">Déconnexion</a>
-        <a href="calendrier.php" class="btn secondary">
-          <i class="fas fa-calendar-alt"></i>
+        <a href="calendrier.php" class="calen-button">
+          <i class="fas fa-calendar-alt" style="color: #86b391;"></i>
         </a>
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>

@@ -578,3 +578,42 @@
 .btn.block {
   width: 100%;
 }
+
+.calen-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1f4f65;
+  font-size: 1.55rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 35%; /* Reverted to original border-radius */
+  padding: 7px 7px; /* Reverted to original padding */
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+  outline: none; /* Remove default outline */
+}
+
+/* Improved hover state */
+.calen-button:hover {
+  background-color: #ddf7d7; /* Reverted to original hover color */
+  transform: scale(1.1); /* Reverted to original scale effect */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Focus state for accessibility */
+.calen-button:focus-visible {
+  box-shadow: 0 0 0 3px rgba(31, 79, 101, 0.3);
+  outline: 2px solid #86b391;
+  outline-offset: 2px;
+}
+
+/* Active state */
+.calen-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
