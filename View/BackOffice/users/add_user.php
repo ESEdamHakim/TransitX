@@ -235,7 +235,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </main>
     </div>
 
-
     <script>
         // Validation patterns
         const patterns = {
