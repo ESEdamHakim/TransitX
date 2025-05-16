@@ -119,15 +119,22 @@ $topArticles = $articleC->getMostCommentedArticles();
             <div class="stat-value" id="scolaireCount">0</div>
             <div class="stat-icon"><i class="fas fa-school"></i></div>
           </div>
+          <div class="stat-box autre">
+            <div class="stat-title">Autre</div>
+            <div class="stat-value" id="autreCount">0</div>
+            <div class="stat-icon"><i class="fas fa-ellipsis-h"></i></div>
+          </div>
         </div>
+
         <div class="crud-container">
           <!-- Tabs -->
           <div class="crud-header">
             <div class="tabs">
               <button class="tab-btn active" data-tab="all">Tous les Articles</button>
-              <button class="tab-btn" data-tab="actif">Conseils de voyage</button>
-              <button class="tab-btn" data-tab="maintenance">Sécurité</button>
-              <button class="tab-btn" data-tab="inactif">Économie et écologie</button>
+              <button class="tab-btn" data-tab="Conseils de voyage">Conseils de voyage</button>
+              <button class="tab-btn" data-tab="Sécurité">Sécurité</button>
+              <button class="tab-btn" data-tab="Économie et écologie">Économie et écologie</button>
+              <button class="tab-btn" data-tab="Autre">Autre</button>
             </div>
           </div>
 

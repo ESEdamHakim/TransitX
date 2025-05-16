@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ========== Table Filtering ==========
-  const searchInput = document.getElementById("searchInput"); // make sure HTML has id="searchInput"
+  const searchInput = document.getElementById("searchInput");
   const tableRows = document.querySelectorAll(".buses-table tbody tr");
   const tabButtons = document.querySelectorAll(".tab-btn");
 
@@ -47,26 +47,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchValue = searchInput.value.toLowerCase();
 
     tableRows.forEach(row => {
-      const rowText = row.textContent.toLowerCase();
+      const titleCell = row.querySelector("td:nth-child(2)");
       const categoryCell = row.querySelector("td:nth-child(6)");
+
+      const title = titleCell ? titleCell.textContent.toLowerCase().trim() : "";
       const category = categoryCell ? categoryCell.textContent.trim() : "";
 
-      const matchesSearch = rowText.includes(searchValue);
+      const matchesSearch = title.includes(searchValue);
       const matchesTab = currentTab === "all" ||
-        (currentTab === "actif" && category === "Conseils de voyage") ||
-        (currentTab === "maintenance" && category === "Sécurité") ||
-        (currentTab === "inactif" && category === "Économie et écologie");
+        (currentTab === "Conseils de voyage" && category === "Conseils de voyage") ||
+        (currentTab === "Sécurité" && category === "Sécurité") ||
+        (currentTab === "Économie et écologie" && category === "Économie et écologie") ||
+        (currentTab === "Autre" && category === "Autre");
 
       row.style.display = (matchesSearch && matchesTab) ? "" : "none";
     });
 
-    updateCategoryCounters();
   }
 
-  // Search filter
+  // Search filter (title only)
   searchInput.addEventListener("input", applyFilters);
 
-  // Tab filtering
+  // Tab filter
   tabButtons.forEach(button => {
     button.addEventListener("click", () => {
       tabButtons.forEach(btn => btn.classList.remove("active"));
@@ -81,17 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const counts = {
       "Conseils de voyage": 0,
       "Sécurité": 0,
-      "Économie et écologie": 0
+      "Économie et écologie": 0,
+      "Autre": 0
     };
 
     tableRows.forEach(row => {
-      if (row.style.display !== "none") {
-        const categoryCell = row.querySelector("td:nth-child(6)");
-        if (categoryCell) {
-          const category = categoryCell.textContent.trim();
-          if (counts.hasOwnProperty(category)) {
-            counts[category]++;
-          }
+      const categoryCell = row.querySelector("td:nth-child(6)");
+      if (categoryCell) {
+        const category = categoryCell.textContent.trim();
+        if (counts.hasOwnProperty(category)) {
+          counts[category]++;
         }
       }
     });
@@ -99,9 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("standardCount").textContent = counts["Conseils de voyage"];
     document.getElementById("tourismeCount").textContent = counts["Sécurité"];
     document.getElementById("scolaireCount").textContent = counts["Économie et écologie"];
+    document.getElementById("autreCount").textContent = counts["Autre"];
   }
 
-  // Initial count on load
-  applyFilters();
-
+  updateCategoryCounters(); 
 });
