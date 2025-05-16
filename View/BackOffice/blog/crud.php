@@ -65,11 +65,6 @@ $list = $articleC->listarticleFilteredByCategoryAndAuthor($order, $categorie, $a
 $topArticles = $articleC->getMostCommentedArticles();
 
 ?>
-<style>
-/* Add to your CSS file */
-.modal { display: none; }
-.modal.active { display: block; }
-</style>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -199,6 +194,17 @@ $topArticles = $articleC->getMostCommentedArticles();
                               data-id="<?= htmlspecialchars($offer['id_article']) ?>">
                               <i class="fas fa-trash"></i>
                             </button>
+                            <!-- View Button to open modal -->
+                            <button type="button" class="action-btn view open-content-modal"
+                              data-titre="<?= htmlspecialchars($offer['titre']); ?>"
+                              data-contenu="<?= htmlspecialchars($offer['contenu']); ?>"
+                              data-auteur="<?= htmlspecialchars($offer['auteur']); ?>"
+                              data-date="<?= htmlspecialchars($offer['date_publication']); ?>"
+                              data-categorie="<?= htmlspecialchars($offer['categorie']); ?>"
+                              data-tags="<?= htmlspecialchars($offer['tags']); ?>"
+                              data-photo="<?= htmlspecialchars($offer['photo']); ?>" title="Voir le contenu complet">
+                              <i class="fas fa-eye"></i>
+                            </button>
                           </div>
                           <!-- Bottom row: PDF, Comments & View -->
                           <div style="display: flex; gap: 10px;">
@@ -210,12 +216,6 @@ $topArticles = $articleC->getMostCommentedArticles();
                               class="action-btn" title="Voir les commentaires" style="color: #4d7aa3;">
                               <i class="fas fa-comments"></i>
                             </a>
-                            <!-- View Button to open modal -->
-                            <button type="button" class="action-btn view open-content-modal"
-                              data-contenu="<?= htmlspecialchars($offer['contenu']); ?>" title="Voir le contenu complet"
-                              style="color: #366175;">
-                              <i class="fas fa-eye"></i>
-                            </button>
                           </div>
 
                         </div>
@@ -250,14 +250,28 @@ $topArticles = $articleC->getMostCommentedArticles();
       <input type="hidden" name="id_article" id="delete-id">
     </form>
   </div>
-<!-- View Modal -->
-<div id="content-modal" class="modal">
-  <div class="modal-content" style="padding: 20px; background: white; border-radius: 8px; width: 50%; margin: 100px auto; position: relative;">
-    <button class="close-modal" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px; background: none; border: none;">&times;</button>
-    <h3>Contenu complet</h3>
-    <p id="modalContentText" style="white-space: pre-wrap;"></p>
-  </div>
-</div>
+  <!-- View Modal -->
+    <div id="content-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Détails de l'article</h2>
+          <button class="close-modal"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="bus-info">
+            <p><strong>Titre:</strong> <span id="modalTitre"></span></p>
+            <p><strong>Auteur:</strong> <span id="modalAuteur"></span></p>
+            <p><strong>Date:</strong> <span id="modalDate"></span></p>
+            <p><strong>Catégorie:</strong> <span id="modalCategorie"></span></p>
+            <p><strong>Tags:</strong> <span id="modalTags"></span></p>
+            <p><strong>Contenu:</strong></p>
+            <p id="modalContentText"></p>
+            <p><strong>Photo:</strong></p>
+            <div id="modalPhoto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <script src="assets/js/main.js"></script>
 

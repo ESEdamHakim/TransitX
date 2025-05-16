@@ -294,6 +294,7 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
                 <button class="btn btn-primary toggle-info-btn" type="button" data-id="<?= $trajet['id_trajet'] ?>">
                   Informations sur les bus
                 </button>
+              </div>
 
                 <div id="bus-info-modal-<?= $trajet['id_trajet'] ?>" class="modal">
                   <div class="modal-content">
@@ -337,8 +338,6 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
                     </div>
                   </div>
                 </div>
-
-              </div>
             </div>
           <?php endforeach; ?>
         </div>

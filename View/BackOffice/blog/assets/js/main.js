@@ -142,20 +142,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function setupViewButtonHandlers() {
-    document.querySelectorAll('.action-btn.view').forEach(button => {
-      button.addEventListener('click', function () {
-        const contenu = this.getAttribute('data-contenu'); 
-        const modal = document.getElementById('content-modal');
-        const contentContainer = modal.querySelector('#modalContentText'); 
+function setupViewButtonHandlers() {
+  document.querySelectorAll('.action-btn.view').forEach(button => {
+    button.addEventListener('click', function () {
+      // Get all data attributes
+      const titre = this.getAttribute('data-titre');
+      const contenu = this.getAttribute('data-contenu');
+      const auteur = this.getAttribute('data-auteur');
+      const date = this.getAttribute('data-date');
+      const categorie = this.getAttribute('data-categorie');
+      const tags = this.getAttribute('data-tags');
+      const photo = this.getAttribute('data-photo');
 
-        if (contentContainer) {
-          contentContainer.textContent = contenu;
-        }
-        modal.classList.add('active'); // use class instead of style.display
-      });
+      // Fill modal fields
+      document.getElementById('modalTitre').textContent = titre || '';
+      document.getElementById('modalAuteur').textContent = auteur || '';
+      document.getElementById('modalDate').textContent = date || '';
+      document.getElementById('modalCategorie').textContent = categorie || '';
+      document.getElementById('modalTags').textContent = tags || '';
+      document.getElementById('modalContentText').textContent = contenu || '';
+
+      // Show photo if exists
+      const photoTd = document.getElementById('modalPhoto');
+      if (photo) {
+        photoTd.innerHTML = `<img src="../../assets/uploads/${photo}" alt="Photo Article" style="max-width:120px;">`;
+      } else {
+        photoTd.textContent = 'Aucune image';
+      }
+
+      // Show modal
+      document.getElementById('content-modal').classList.add('active');
     });
-  }
+  });
+}
 
   function initializeModalHandlers() {
     setupCloseModalHandlers();
