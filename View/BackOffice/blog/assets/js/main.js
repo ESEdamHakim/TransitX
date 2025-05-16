@@ -4,15 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
   window.validateForm = function () {
     let valid = true;
 
-    const titre = document.getElementById("titre").value;
-    const contenu = document.getElementById("contenu").value;
-    const date_publication = document.getElementById("date_publication").value;
-    const categorie = document.getElementById("categorie").value;
-    const photo = document.getElementById("photo").value;
-    const auteur = document.getElementById("auteur").value;
-    const tags = document.getElementById("tags").value;
+    const titre = document.getElementById("titre").value.trim();
+    const contenu = document.getElementById("contenu").value.trim();
+    const date_publication = document.getElementById("date_publication").value.trim();
+    const categorie = document.getElementById("categorie").value.trim();
+    const photo = document.getElementById("photo").value.trim();
+    const auteur = document.getElementById("auteur").value.trim();
+    const tags = document.getElementById("tags").value.trim();
     const tagsPattern = /^#\w+(?:,\s*#\w+)*$/;
 
+    // Clear previous errors and set new ones if invalid
     document.getElementById("titre-error").textContent = titre ? "" : "Le titre est requis.";
     document.getElementById("contenu-error").textContent = contenu ? "" : "Le contenu est requis.";
     document.getElementById("date-error").textContent = date_publication ? "" : "La date de publication est requise.";
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("tags-error").textContent = "";
     }
 
+    // Final overall check
     if (!titre || !contenu || !date_publication || !categorie || !photo || !auteur) valid = false;
 
     return valid;
@@ -54,7 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const category = categoryCell ? categoryCell.textContent.trim() : "";
 
       const matchesSearch = title.includes(searchValue);
-      const matchesTab = currentTab === "all" ||
+      const matchesTab =
+        currentTab === "all" ||
         (currentTab === "Conseils de voyage" && category === "Conseils de voyage") ||
         (currentTab === "Sécurité" && category === "Sécurité") ||
         (currentTab === "Économie et écologie" && category === "Économie et écologie") ||
@@ -62,13 +65,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       row.style.display = (matchesSearch && matchesTab) ? "" : "none";
     });
-
   }
 
-  // Search filter (title only)
+  // Bind search input event
   searchInput.addEventListener("input", applyFilters);
 
-  // Tab filter
+  // Bind tab buttons event
   tabButtons.forEach(button => {
     button.addEventListener("click", () => {
       tabButtons.forEach(btn => btn.classList.remove("active"));
@@ -103,5 +105,68 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("autreCount").textContent = counts["Autre"];
   }
 
-  updateCategoryCounters(); 
+  // ========== Modal Handling ==========
+
+  // Close modal on clicking close buttons or cancel buttons
+  function setupCloseModalHandlers() {
+    document.querySelectorAll('.close-modal, .cancel-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const modal = this.closest('.modal');
+        if (modal) {
+          modal.classList.remove('active');
+        }
+      });
+    });
+  }
+
+  // Setup delete buttons to open confirmation modal with correct info
+  function setupDeleteButtonHandlers() {
+    document.querySelectorAll('.action-btn.delete').forEach(button => {
+      button.addEventListener('click', function() {
+        const busId = this.dataset.id;
+
+        const deleteFormIdInput = document.getElementById('delete-id');
+        if (deleteFormIdInput) {
+          deleteFormIdInput.value = busId;
+        }
+
+        const modalBodyText = document.querySelector('#delete-modal .modal-body p');
+        if (modalBodyText) {
+          modalBodyText.textContent = `Êtes-vous sûr de vouloir supprimer le bus ${busId} ? Cette action est irréversible.`;
+        }
+
+        const deleteModal = document.getElementById('delete-modal');
+        if (deleteModal) {
+          deleteModal.classList.add('active');
+        }
+      });
+    });
+  }
+
+  // Handle confirm delete button click to submit the form and disable button
+  function setupConfirmDeleteButton() {
+    const confirmDeleteButton = document.getElementById('confirm-delete-btn');
+    if (confirmDeleteButton) {
+      confirmDeleteButton.addEventListener('click', function() {
+        this.disabled = true;
+
+        const deleteForm = document.getElementById('delete-form');
+        if (deleteForm) {
+          deleteForm.submit();
+        }
+      });
+    }
+  }
+
+  // Initialize modal and button handlers
+  function initializeModalHandlers() {
+    setupCloseModalHandlers();
+    setupDeleteButtonHandlers();
+    setupConfirmDeleteButton();
+  }
+
+  // Run initial updates and bind handlers
+  updateCategoryCounters();
+  initializeModalHandlers();
+
 });

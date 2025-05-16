@@ -189,20 +189,20 @@ $topArticles = $articleC->getMostCommentedArticles();
                           class="action-btn edit" title="Modifier">
                           <i class="fas fa-edit"></i>
                         </a>
-                        <a href="deletearticle.php?id_article=<?= htmlspecialchars($offer['id_article']); ?>"
-                          class="action-btn delete" title="Supprimer">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
+                        <button type="button" class="action-btn delete open-delete-modal" title="Supprimer"
+                          data-id="<?= htmlspecialchars($offer['id_article']) ?>">
+                          <i class="fas fa-trash"></i>
+                        </button>
 
-                        <!-- Nouveau lien pour exporter en PDF -->
+                        <!-- Export PDF Link -->
                         <a href="export_pdf.php?id=<?= htmlspecialchars($offer['id_article']); ?>" class="action-btn"
                           title="Exporter en PDF">
                           <i class="fas fa-file-pdf"></i>
                         </a>
                       </td>
-
                     </tr>
                   <?php } ?>
+
                 </tbody>
               </table>
             </div>
@@ -210,6 +210,28 @@ $topArticles = $articleC->getMostCommentedArticles();
         </div>
     </main>
   </div>
+  <!-- Modal -->
+  <div class="modal" id="delete-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirmer la suppression</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.</p>
+        <div class="form-actions">
+          <button type="button" class="btn secondary cancel-btn">Annuler</button>
+          <button type="button" class="btn danger" id="confirm-delete-btn">Supprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden form for deletion -->
+    <form method="POST" action="deletearticle.php" style="display: none;" id="delete-form">
+      <input type="hidden" name="id_article" id="delete-id">
+    </form>
+  </div>
+
   <script src="assets/js/main.js"></script>
 
 </body>
