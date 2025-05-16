@@ -7,8 +7,7 @@ if (isset($_GET['id_article'])) {
     if ($comments && count($comments) > 0) {
         foreach ($comments as $comment) {
             echo '<div class="comment">';
-            echo '<strong>' . htmlspecialchars($comment['auteur']) . ':</strong> ';
-            echo '<span>' . htmlspecialchars($comment['contenu']) . '</span>';
+            echo '<span>' . htmlspecialchars($comment['contenu_commentaire']) . '</span>';
             echo '<br><small>' . htmlspecialchars($comment['date_commentaire']) . '</small>';
             echo '</div><hr>';
         }
