@@ -14,6 +14,8 @@ session_start();
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
 
 
@@ -222,7 +224,6 @@ session_start();
           <li class="active"><a href="index.php">Blog</a></li>
           <li><a href="../reclamation/index.php">Réclamation</a></li>
           <li><a href="../vehicule/index.php">Véhicule</a></li>
-
         </ul>
       </nav>
       <div class="header-right">

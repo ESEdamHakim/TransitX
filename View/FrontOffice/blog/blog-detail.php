@@ -92,7 +92,7 @@ function getReplies($pdo, $parentId)
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-   
+
 </head>
 
 <body>
@@ -125,40 +125,6 @@ function getReplies($pdo, $parentId)
                     <i class="fas fa-calendar-alt" style="color: #86b391;"></i>
                 </a>
             </div>
-
-            <div class="language-selector">
-                <!-- Icône avec un bouton de traduction -->
-                <button id="languageButton" onclick="toggleLanguageDropdown()">
-                    <i class="fa fa-language"></i> <span></span>
-                </button>
-
-                <!-- Liste déroulante cachée par défaut -->
-                <div id="languageDropdown"
-                    style="display: none; position: absolute; background-color: white; padding: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.1);">
-                    <select id="languageSelect">
-                        <option value="fr|fr">Français</option>
-                        <option value="fr|en">Anglais</option>
-                        <option value="fr|es">Espagnol</option>
-                        <option value="fr|de">Allemand</option>
-                        <option value="fr|it">Italien</option>
-                        <option value="fr|pt">Portugais</option>
-                    </select>
-
-                    <!-- Bouton Traduire -->
-                    <button id="translateButton" onclick="translateArticle()" style="margin-right: 15px;">
-                        <i class="fa fa-check"></i> Traduire cet article
-                    </button>
-
-                </div>
-                <div style="display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 5px;">
-                    <button class="btn-speak" data-content="<?php echo htmlspecialchars($article['contenu']); ?>"
-                        title="Écouter l'article">
-                        <i class="fa fa-headphones"></i>
-                    </button>
-                </div>
-
-
-            </div>
         </div>
     </header>
 
@@ -179,13 +145,38 @@ function getReplies($pdo, $parentId)
 
 
     <div class="blog-detail">
+        <div class="language-selector" style="position: relative;">
+            <!-- Bouton de traduction -->
+            <button id="languageButton" onclick="toggleLanguageDropdown()">
+                <i class="fa fa-language"></i>
+            </button>
+            <!-- Bouton écouter -->
+            <button class="btn-speak" data-content="<?php echo htmlspecialchars($article['contenu']); ?>"
+                title="Écouter l'article">
+                <i class="fa fa-headphones"></i>
+            </button>
+            <!-- Dropdown de langue -->
+            <div id="languageDropdown">
+                <select id="languageSelect">
+                    <option value="fr|fr">Français</option>
+                    <option value="fr|en">Anglais</option>
+                    <option value="fr|es">Espagnol</option>
+                    <option value="fr|de">Allemand</option>
+                    <option value="fr|it">Italien</option>
+                    <option value="fr|pt">Portugais</option>
+                </select>
+                <button id="translateButton" onclick="translateArticle()">
+                    <i class="fa fa-check"></i> Traduire cet article
+                </button>
+            </div>
+        </div>
         <div class="article-meta-right">
             <small><i class="fa fa-calendar"></i> <?php echo htmlspecialchars($article['date_publication']); ?></small>
             <small><i class="fa fa-user"></i> <?php echo htmlspecialchars($article['auteur']); ?></small>
             <small><i class="fa fa-tag"></i> <?php echo htmlspecialchars($article['categorie']); ?></small>
         </div>
-        <h2 id="articleTitle"><?php echo htmlspecialchars($article['titre']); ?></h2>
 
+        <h2 id="articleTitle"><?php echo htmlspecialchars($article['titre']); ?></h2>
 
         <div class="post-info">
             <p>
@@ -228,9 +219,6 @@ function getReplies($pdo, $parentId)
                 <i class="fas fa-file-pdf" style="color: #D32F2F;"></i>
             </a>
         </div>
-
-
-
     </div>
 
     <div class="comment-section">
@@ -301,19 +289,22 @@ function getReplies($pdo, $parentId)
                                 required></textarea><br />
                             <button type="submit">Répondre</button>
                         </form>
-
-                        <!-- Boutons Modifier et Supprimer -->
-                        <div class="comment-actions" style="margin-top: 10px; display: flex; gap: 10px;">
-                            <form method="get" action="modifier_commentaire.php" style="margin: 0;">
+                        <div class="comment-actions" style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+                            <!-- Edit Button -->
+                            <form method="get" action="modifier_commentaire.php" class="comment-action-form" style="margin: 0;">
                                 <input type="hidden" name="id" value="<?php echo $commentaire['id_commentaire']; ?>">
-                                <button type="submit"
-                                    style="background: none; border: none; color: #4CAF50; font-size: 20px; cursor: pointer;">
+                                <button type="submit" title="Modifier le commentaire" aria-label="Modifier"
+                                    style="background: #f8fafd; border: 1px solid #86b391; color: #1f4f65; border-radius: 6px; padding: 6px 10px; font-size: 18px; cursor: pointer; display: flex; align-items: center;">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </form>
-                            <a href="supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>"
+
+                            <!-- Delete Button -->
+                            <a class="delete-btn"
+                                href="supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>"
+                                title="Supprimer le commentaire" aria-label="Supprimer"
                                 onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');"
-                                style="color: red; font-size: 20px;">
+                                style="background: #f8fafd; border: 1px solid #e74c3c; color: #e74c3c; border-radius: 6px; padding: 6px 10px; font-size: 18px; cursor: pointer; display: flex; align-items: center;">
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         </div>
@@ -456,7 +447,7 @@ function getReplies($pdo, $parentId)
         });
 
     </script>
-    
+
 </body>
 
 </html>

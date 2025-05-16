@@ -17,69 +17,89 @@
   --font-main: 'Montserrat', sans-serif;
 }
 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-/* Language Selector */
-.language-selector {
+/* ============================
+   Blog Detail Container
+============================ */
+.blog-detail {
   position: relative;
-  margin-left: 20px;
+  width: 85%;
+  max-width: 900px;
+  margin: 40px auto;
+  background-color: var(--bg-color, #fff);
+  padding: 40px;
+  border-radius: var(--radius, 10px);
+  box-shadow: var(--shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
 }
 
-#languageButton {
-  background-color: white;
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-  padding: 8px 15px;
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  cursor: pointer;
+.blog-detail h2 {
+  font-size: 2.5rem;
+  color: var(--primary-color, #1f4f65);
+  margin-bottom: 25px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* ============================
+   Language Selector Buttons
+============================ */
+.language-selector {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
+  gap: 10px;
   align-items: center;
-  gap: 8px;
-  transition: var(--transition);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  z-index: 100;
 }
 
-#languageButton:hover {
-  background-color: var(--bg-light);
+.language-selector button {
+  background-color: #1f4f65;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
+.language-selector button:hover {
+  background-color: #163a4c;
+}
+
+/* ============================
+   Translation Dropdown
+============================ */
 #languageDropdown {
   position: absolute;
   top: 100%;
-  right: 0;
+  left: 0;
   background-color: white;
-  border-radius: var(--radius);
-  padding: 15px;
-  min-width: 220px;
-  box-shadow: var(--shadow);
-  z-index: 999;
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   margin-top: 10px;
   display: none;
+  min-width: 220px;
+  z-index: 200;
 }
 
 #languageSelect {
   width: 100%;
   padding: 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
   margin-bottom: 10px;
-  font-family: var(--font-main);
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 #translateButton {
   width: 100%;
-  background-color: var(--primary-color);
+  background-color: #97c3a2;
   color: white;
   border: none;
   padding: 10px;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
-  transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,36 +107,41 @@
 }
 
 #translateButton:hover {
-  background-color: #17384a;
+  background-color: #1f4f65;
 }
 
 #translateButton:disabled {
-  background-color: var(--text-muted);
+  background-color: var(--text-muted, #ccc);
   cursor: not-allowed;
 }
 
+/* ============================
+   Speak Button
+============================ */
 .btn-speak {
   background-color: white;
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
+  color: var(--text-color, #333);
+  border: 1px solid var(--border-color, #ddd);
   padding: 8px 15px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-sm, 6px);
   font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: var(--transition);
-  margin-top: 10px;
+  transition: background-color 0.2s ease;
 }
 
 .btn-speak:hover {
-  background-color: var(--bg-light);
+  background-color: var(--bg-light, #f6f6f6);
 }
 
+/* ============================
+   Spinner
+============================ */
 .spinner {
   border: 3px solid #f3f3f3;
-  border-top: 3px solid var(--secondary-color);
+  border-top: 3px solid var(--secondary-color, #1f4f65);
   border-radius: 50%;
   width: 15px;
   height: 15px;
@@ -129,23 +154,23 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Blog Detail */
-.blog-detail {
-  width: 85%;
-  max-width: 900px;
-  margin: 40px auto;
-  background-color: var(--bg-color);
-  padding: 40px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
+/* ============================
+   Responsive Adjustments
+============================ */
+@media (max-width: 600px) {
+  .language-selector {
+    flex-direction: column;
+    align-items: flex-end;
+    top: auto;
+    bottom: 10px;
+    right: 10px;
+  }
 
-.blog-detail h2 {
-  font-size: 2.5rem;
-  color: var(--primary-color);
-  margin-bottom: 25px;
-  line-height: 1.3;
-  text-align: center;
+  #languageDropdown {
+    left: auto;
+    right: 0;
+    min-width: 180px;
+  }
 }
 
 .article-meta-right {
@@ -343,30 +368,47 @@
   color: var(--primary-color);
 }
 
+/* Align edit and delete buttons perfectly */
 .comment-actions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
 }
-
-.comment-actions button, .comment-actions a {
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition);
+.comment-actions form {
+    display: contents; /* Makes the button behave like a direct child */
+    margin: 0;
+    padding: 0;
 }
-
-.comment-actions button:hover, .comment-actions a:hover {
-  transform: scale(1.1);
+.comment-actions button,
+.comment-actions a.delete-btn {
+    background: #f8fafd;
+    border: 1px solid #86b391;
+    color: #1f4f65;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 40px; /* Ensures both buttons have the same height */
+    box-sizing: border-box;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    text-decoration: none;
 }
-
-.comment-actions .fa-edit {
-  color: var(--secondary-color);
+.comment-actions a.delete-btn {
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
 }
-
-.comment-actions .fa-trash-alt {
-  color: #dc3545;
+.comment-actions button:hover,
+.comment-actions a.delete-btn:hover {
+    background: #e6f2ea;
+    color: #1f4f65;
+}
+.comment-actions a.delete-btn:hover {
+    background: #ffeaea;
+    color: #b71c1c;
+    border-color: #b71c1c;
 }
 
 .reply-form {
@@ -431,9 +473,6 @@
     margin-left: 20px;
   }
   
-  .main-nav ul {
-    gap: 15px;
-  }
 }
 
 @media (max-width: 576px) {

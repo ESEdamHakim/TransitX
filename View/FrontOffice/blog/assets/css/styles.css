@@ -617,3 +617,30 @@
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.main-nav ul {
+  display: flex;
+  gap: 30px;
+}
+
+.main-nav ul li a {
+  font-weight: 500;
+  position: relative;
+  padding: 5px 0;
+}
+
+.main-nav ul li a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.main-nav ul li a:hover::after,
+.main-nav ul li.active a::after {
+  width: 100%;
+}
