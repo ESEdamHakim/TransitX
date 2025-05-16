@@ -1,20 +1,22 @@
 <?php
-$apiKey = 'FitXplCVELZM84MwY8fo9JwsUejXs9fO'; // Ta clé API
-$countryCode = 'TN'; // Code pays, ici pour la Tunisie (TN)
-$year = date("Y"); // Année en cours
-$month = isset($_GET['month']) ? $_GET['month'] : date("m"); // Mois actuel ou passé via GET
+$apiKey = 'FitXplCVELZM84MwY8fo9JwsUejXs9fO';
+$countryCode = 'TN';
+$year = filter_input(INPUT_GET, 'year', FILTER_VALIDATE_INT) ?: date("Y");
+$month = filter_input(INPUT_GET, 'month', FILTER_VALIDATE_INT) ?: date("n"); 
 
-// Calculer l'année et le mois précédent et suivant
-$prevMonth = ($month == 1) ? 12 : $month - 1;
-$nextMonth = ($month == 12) ? 1 : $month + 1;
-$prevYear = ($month == 1) ? $year - 1 : $year;
-$nextYear = ($month == 12) ? $year + 1 : $year;
+$month = max(1, min(12, (int) $month));
 
-// URL de l'API pour récupérer les jours fériés en Tunisie
+// Previous and next month/year logic
+$prevDate = strtotime("-1 month", strtotime("$year-$month-01"));
+$nextDate = strtotime("+1 month", strtotime("$year-$month-01"));
+$prevMonth = (int)date("n", $prevDate);
+$nextMonth = (int)date("n", $nextDate);
+$prevYear = date("Y", $prevDate);
+$nextYear = date("Y", $nextDate);
+
+// API call
 $url = "https://calendarific.com/api/v2/holidays?api_key=$apiKey&country=$countryCode&year=$year&month=$month";
-
-// Récupérer les données de l'API
-$response = @file_get_contents($url); // @ pour éviter les erreurs d'affichage
+$response = @file_get_contents($url);
 
 if (!$response) {
   echo "<p>Erreur de récupération des données de l'API.</p>";
@@ -23,57 +25,55 @@ if (!$response) {
 
 $data = json_decode($response, true);
 
-// Récupérer les jours fériés dans un tableau pour un accès rapide
+// Extract holidays
 $holidays = [];
-if (isset($data['response']['holidays'])) {
-  foreach ($data['response']['holidays'] as $holiday) {
-    $holidayDate = date('j', strtotime($holiday['date']['iso'])); // Extraire le jour du mois
-    $holidays[$holidayDate] = $holiday['name']; // Ajouter le nom du jour férié par date
-  }
+foreach ($data['response']['holidays'] ?? [] as $holiday) {
+  $day = date('j', strtotime($holiday['date']['iso']));
+  $holidays[$day] = $holiday['name'];
 }
 
-// Fonction pour créer un calendrier
+// Calendar generation function
 function generateCalendar($year, $month, $holidays)
 {
   $firstDay = strtotime("$year-$month-01");
-  $lastDay = strtotime("$year-$month-" . date('t', $firstDay)); // Dernier jour du mois
-  $daysInMonth = date('t', $firstDay); // Nombre de jours dans le mois
+  $daysInMonth = date('t', $firstDay);
+  $calendar = "<table class='calendar'><thead><tr>";
+  $days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
-  $calendar = "<table class='calendar'>";
-  $calendar .= "<thead><tr><th>Dim</th><th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th></tr></thead>";
-  $calendar .= "<tbody><tr>";
+  foreach ($days as $dayName) {
+    $calendar .= "<th>$dayName</th>";
+  }
+  $calendar .= "</tr></thead><tbody><tr>";
 
-  // Ajout des espaces vides avant le premier jour du mois
+  // Fill empty cells before the 1st
   for ($i = 0; $i < date('w', $firstDay); $i++) {
     $calendar .= "<td></td>";
   }
 
-  // Remplissage des jours du mois
+  // Fill days
   for ($day = 1; $day <= $daysInMonth; $day++) {
-    if (isset($holidays[$day])) {
-      $holidayName = $holidays[$day];
-      $calendar .= "<td class='holiday' data-holiday='$holidayName' onclick='showHolidayDetails(\"$holidayName\")'>$day</td>"; // Affichage du nom du jour férié dans l'info-bulle
-    } else {
-      $calendar .= "<td>$day</td>";
-    }
+    $weekday = date('w', strtotime("$year-$month-$day"));
+    $isHoliday = isset($holidays[$day]);
+    $holidayName = $holidays[$day] ?? '';
+    $class = $isHoliday ? " class='holiday' onclick='showHolidayDetails(\"$holidayName\")'" : '';
+    $calendar .= "<td$class>$day</td>";
 
-    // Saut de ligne à la fin de chaque semaine
-    if (date('w', strtotime("$year-$month-$day")) == 6) {
+    if ($weekday == 6 && $day !== $daysInMonth) {
       $calendar .= "</tr><tr>";
     }
   }
 
-  // Compléter la dernière ligne du tableau si nécessaire
-  while (date('w', strtotime("$year-$month-$daysInMonth")) != 6) {
+  // Complete final row
+  $lastWeekday = date('w', strtotime("$year-$month-$daysInMonth"));
+  for ($i = $lastWeekday + 1; $i <= 6; $i++) {
     $calendar .= "<td></td>";
-    $daysInMonth++;
   }
 
   $calendar .= "</tr></tbody></table>";
-
   return $calendar;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -226,17 +226,16 @@ function generateCalendar($year, $month, $holidays)
     </section>
 
     <div class="calendar-navigation">
-      <a href="?year=<?php echo $prevYear; ?>&month=<?php echo $prevMonth; ?>" title="Mois précédent">
+      <a href="?month=<?php echo $prevMonth; ?>&year=<?php echo $prevYear; ?>" title="Mois précédent">
         <i class="fas fa-chevron-left"></i>
       </a>
       <span style="margin: 0 15px; font-weight: bold;">
-        <?php echo date("F", mktime(0, 0, 0, $month, 1)) . " " . $year; ?>
+        <?php echo date("F", mktime(0, 0, 0, $month, 1)) . " $year"; ?>
       </span>
-      <a href="?year=<?php echo $nextYear; ?>&month=<?php echo $nextMonth; ?>" title="Mois suivant">
+      <a href="?month=<?php echo $nextMonth; ?>&year=<?php echo $nextYear; ?>" title="Mois suivant">
         <i class="fas fa-chevron-right"></i>
       </a>
     </div>
-
     <div class="blog-posts">
       <!-- Articles dynamiques ajoutés ici par JS -->
     </div>
@@ -254,14 +253,20 @@ function generateCalendar($year, $month, $holidays)
   <?php include '../../assets/footer.php'; ?>
 
   <script>
-    function showHolidayDetails(holidayName) {
-      // Afficher la modale avec le nom du jour férié
-      document.getElementById("holidayTitle").innerText = holidayName;
+    function showHolidayDetails(name) {
+      document.getElementById("holidayTitle").innerText = name;
       document.getElementById("holidayModal").style.display = "block";
     }
 
     function closeModal() {
       document.getElementById("holidayModal").style.display = "none";
+    }
+
+    // Optional: Close modal when clicking outside
+    window.onclick = function (e) {
+      if (e.target == document.getElementById("holidayModal")) {
+        closeModal();
+      }
     }
   </script>
 </body>

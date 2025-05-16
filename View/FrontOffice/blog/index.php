@@ -227,11 +227,10 @@ session_start();
       </nav>
       <div class="header-right">
         <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
+          <a href="../../BackOffice/index.php" class="btn secondary">Dashboard</a>
         <?php endif; ?>
-        <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-        <a href="calendrier.php"
-          style="display: inline-flex; align-items: center; gap: 5px; font-size: 16px; text-decoration: none; color: inherit; background: none; border: 2px solid #97c3a2; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+        <a href="../../../index.php" class="btn primary">Déconnexion</a>
+        <a href="calendrier.php" class="btn secondary">
           <i class="fas fa-calendar-alt"></i>
         </a>
         <button class="mobile-menu-btn">
@@ -240,23 +239,18 @@ session_start();
       </div>
     </div>
   </header>
-
-  <section class="blog" id="blog">
-    <div class="content">
-      <h2>Notre blog</h2>
-      <p>
-        Restez informé avec les dernières nouvelles, idées et tendances sur la mobilité urbaine durable.
-        Explorez nos articles pour découvrir l'avenir des transports.
-      </p>
-    </div>
-
-
-
+  <main>
+    <section class="blog-hero">
+      <div class="hero-content">
+        <h1>Notre blog</h1>
+        <p> Restez informé avec les dernières nouvelles, idées et tendances sur la mobilité urbaine durable.
+          Explorez nos articles pour découvrir l'avenir des transports.</p>
+      </div>
+    </section>
     <div class="blog-posts">
       <!-- Articles dynamiques ajoutés ici par JS -->
     </div>
-  </section>
-
+  </main>
   <?php include '../../assets/footer.php'; ?>
 
   <script>
