@@ -1,4 +1,11 @@
+// map-setup.js
+let map;
+let pickupMarker = null;
+let deliveryMarker = null;
+let clickStep = 0;
+
 document.addEventListener('DOMContentLoaded', function () {
+  const colisForms = document.querySelectorAll(".colis-form");
   const userForms = document.querySelectorAll(".user-form");
 
   const patterns = {
@@ -11,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function toggleFields() {
     const type = document.getElementById('userType').value;
-
     document.getElementById('clientFields').style.display = type === 'client' ? 'block' : 'none';
     document.getElementById('employeeFields').style.display = type === 'employe' ? 'block' : 'none';
 
@@ -22,25 +28,34 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('role').required = type === 'employe';
   }
 
-  toggleFields();
-  document.getElementById('userType').addEventListener('change', toggleFields);
-
   function clearAllErrors() {
-  document.querySelectorAll('.is-invalid').forEach(field => {
-    field.classList.remove('is-invalid');
-  });
-  document.querySelectorAll('.invalid-feedback').forEach(feedback => {
-    feedback.style.display = 'none';
-    feedback.textContent = '';
-  });
-}
+    document.querySelectorAll('.is-invalid').forEach(field => {
+      field.classList.remove('is-invalid');
+    });
+    document.querySelectorAll('.invalid-feedback').forEach(feedback => {
+      feedback.style.display = 'none';
+      feedback.textContent = '';
+    });
+  }
+
+  function showError(id, message) {
+    const input = document.getElementById(id);
+    let feedback = input.nextElementSibling;
+    if (!feedback || !feedback.classList.contains('invalid-feedback')) {
+      feedback = document.createElement('div');
+      feedback.classList.add('invalid-feedback');
+      input.parentNode.appendChild(feedback);
+    }
+    input.classList.add('is-invalid');
+    feedback.textContent = message;
+    feedback.style.display = 'block';
+  }
 
   function validateField(input, pattern, errorMessage) {
     const isValid = pattern.test(input.value.trim());
     let feedback = input.nextElementSibling;
 
     if (!feedback || !feedback.classList.contains('invalid-feedback')) {
-      // Create feedback if it doesn't exist
       feedback = document.createElement('div');
       feedback.classList.add('invalid-feedback');
       input.parentNode.appendChild(feedback);
@@ -142,6 +157,68 @@ document.addEventListener('DOMContentLoaded', function () {
     form.addEventListener("submit", function (e) {
       clearAllErrors();
 
+      const idClient = document.getElementById("id_client")?.value.trim();
+      const idCovoit = document.getElementById("id_covoit")?.value || null;
+      const dateColis = document.getElementById("date_colis")?.value;
+      const statut = document.getElementById("statut")?.value;
+      const longueur = parseFloat(document.getElementById("longueur")?.value);
+      const largeur = parseFloat(document.getElementById("largeur")?.value);
+      const hauteur = parseFloat(document.getElementById("hauteur")?.value);
+      const poids = parseFloat(document.getElementById("poids")?.value);
+      const latRam = parseFloat(document.getElementById("latitude_ram")?.value);
+      const lonRam = parseFloat(document.getElementById("longitude_ram")?.value);
+      const latDest = parseFloat(document.getElementById("latitude_dest")?.value);
+      const lonDest = parseFloat(document.getElementById("longitude_dest")?.value);
+
+      let hasError = false;
+
+      if (!idClient || idClient === "--") {
+        showError("id_client", "Veuillez sélectionner un client.");
+        hasError = true;
+      }
+      if (!dateColis) {
+        showError("date_colis", "Veuillez entrer une date.");
+        hasError = true;
+      }
+      if (
+        isNaN(longueur) || longueur < 1 ||
+        isNaN(largeur) || largeur < 1 ||
+        isNaN(hauteur) || hauteur < 1
+      ) {
+        const dimensionsError = document.getElementById("dimensions-error");
+        if (dimensionsError) {
+          dimensionsError.innerHTML = '<div class="error-message" style="color: red; font-size: 0.85em;">❗ Les dimensions sont incorrectes. Chaque dimension doit être un nombre supérieur à 0.</div>';
+        }
+        hasError = true;
+      }
+      if (isNaN(poids) || poids < 0.1) {
+        showError("poids", "Poids doit être supérieur à 0.");
+        hasError = true;
+      }
+      if (isNaN(latRam) || isNaN(lonRam) || isNaN(latDest) || isNaN(lonDest)) {
+        const mapWarning = document.getElementById("map-warning");
+        if (mapWarning) {
+          mapWarning.textContent = "❗ Veuillez sélectionner les emplacements sur la carte (ramassage et livraison).";
+          mapWarning.style.color = "red";
+        }
+        hasError = true;
+      }
+
+      if (hasError) {
+        e.preventDefault();
+        return;
+      }
+
+      const distance = calculateDistance(latRam, lonRam, latDest, lonDest);
+      const price = calculatePrice(poids, distance);
+      document.getElementById("prix").value = price;
+    });
+  });
+
+  userForms.forEach(form => {
+    form.addEventListener("submit", function (e) {
+      clearAllErrors();
+
       const isValid =
         validateUserType() &&
         validateNameFields() &&
@@ -161,7 +238,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Real-time validation on blur
+  toggleFields();
+  document.getElementById('userType').addEventListener('change', toggleFields);
+
   document.getElementById('userType').addEventListener('blur', validateUserType);
   document.getElementById('nom').addEventListener('blur', validateNameFields);
   document.getElementById('prenom').addEventListener('blur', validateNameFields);
@@ -174,4 +253,3 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('role').addEventListener('blur', validateEmployeeFields);
   document.getElementById('salaire').addEventListener('blur', validateEmployeeFields);
 });
-

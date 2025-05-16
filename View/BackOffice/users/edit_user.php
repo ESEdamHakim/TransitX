@@ -155,25 +155,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label class="form-label field-required">Nom</label>
                                 <input type="text" name="nom"
                                     class="form-control <?= isset($errors['nom']) ? 'is-invalid' : '' ?>"
-                                    value="<?= htmlspecialchars($user->getNom()) ?>" pattern="[a-zA-ZÀ-ÿ\s]+" required>
-                                <div class="invalid-feedback"></div>
+                                    value="<?= isset($errors['nom']) ? '' : htmlspecialchars($user->getNom()) ?>"
+                                    pattern="[a-zA-ZÀ-ÿ\s]+" required>
+                                <div class="invalid-feedback"><?= $errors['nom'] ?? '' ?></div>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label field-required">Prénom</label>
                                 <input type="text" name="prenom"
                                     class="form-control <?= isset($errors['prenom']) ? 'is-invalid' : '' ?>"
-                                    value="<?= htmlspecialchars($user->getPrenom()) ?>" pattern="[a-zA-ZÀ-ÿ\s]+"
-                                    required>
-                                <div class="invalid-feedback"></div>
+                                    value="<?= isset($errors['prenom']) ? '' : htmlspecialchars($user->getPrenom()) ?>"
+                                    pattern="[a-zA-ZÀ-ÿ\s]+" required>
+                                <div class="invalid-feedback"><?= $errors['prenom'] ?? '' ?></div>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label field-required">Email</label>
                                 <input type="email" name="email"
                                     class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>"
-                                    value="<?= htmlspecialchars($user->getEmail()) ?>" required>
-                                <div class="invalid-feedback"></div>
+                                    value="<?= isset($errors['email']) ? '' : htmlspecialchars($user->getEmail()) ?>"
+                                    required>
+                                <div class="invalid-feedback"><?= $errors['email'] ?? '' ?></div>
                             </div>
 
                             <div class="form-group">
@@ -181,16 +183,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="password" name="password"
                                     class="form-control <?= isset($errors['password']) ? 'is-invalid' : '' ?>"
                                     minlength="8">
-                                <div class="invalid-feedback"></div>
+                                <div class="invalid-feedback"><?= $errors['password'] ?? '' ?></div>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label field-required">Téléphone</label>
                                 <input type="tel" name="telephone"
                                     class="form-control <?= isset($errors['telephone']) ? 'is-invalid' : '' ?>"
-                                    value="<?= htmlspecialchars($user->getTelephone()) ?>" pattern="^\+?[0-9]+$"
-                                    required>
-                                <div class="invalid-feedback"></div>
+                                    value="<?= isset($errors['telephone']) ? '' : htmlspecialchars($user->getTelephone()) ?>"
+                                    pattern="^\+?[0-9]+$" required>
+                                <div class="invalid-feedback"><?= $errors['telephone'] ?? '' ?></div>
                             </div>
 
                             <?php if ($user instanceof Client): ?>
@@ -198,49 +200,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <label class="form-label">Date de Naissance</label>
                                     <input type="date" name="date_naissance"
                                         class="form-control <?= isset($errors['date_naissance']) ? 'is-invalid' : '' ?>"
-                                        value="<?= $user->getDateNaissance() ? $user->getDateNaissance()->format('Y-m-d') : '' ?>">
-                                    <div class="invalid-feedback"></div>
+                                        value="<?= isset($errors['date_naissance']) ? '' : ($user->getDateNaissance() ? $user->getDateNaissance()->format('Y-m-d') : '') ?>">
+                                    <div class="invalid-feedback"><?= $errors['date_naissance'] ?? '' ?></div>
                                 </div>
                             <?php elseif ($user instanceof Employe): ?>
                                 <div class="form-group">
                                     <label class="form-label field-required">Date d'Embauche</label>
                                     <input type="date" name="date_embauche"
                                         class="form-control <?= isset($errors['date_embauche']) ? 'is-invalid' : '' ?>"
-                                        value="<?= $user->getDateEmbauche()->format('Y-m-d') ?>" required>
-                                    <div class="invalid-feedback"></div>
+                                        value="<?= isset($errors['date_embauche']) ? '' : $user->getDateEmbauche()->format('Y-m-d') ?>"
+                                        required>
+                                    <div class="invalid-feedback"><?= $errors['date_embauche'] ?? '' ?></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="form-label field-required">Poste</label>
                                     <input type="text" name="poste"
                                         class="form-control <?= isset($errors['poste']) ? 'is-invalid' : '' ?>"
-                                        value="<?= htmlspecialchars($user->getPoste()) ?>" pattern="[a-zA-ZÀ-ÿ\s]+"
-                                        required>
-                                    <div class="invalid-feedback"></div>
+                                        value="<?= isset($errors['poste']) ? '' : htmlspecialchars($user->getPoste()) ?>"
+                                        pattern="[a-zA-ZÀ-ÿ\s]+" required>
+                                    <div class="invalid-feedback"><?= $errors['poste'] ?? '' ?></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="form-label field-required">Salaire</label>
                                     <input type="number" name="salaire"
                                         class="form-control <?= isset($errors['salaire']) ? 'is-invalid' : '' ?>"
-                                        value="<?= htmlspecialchars($user->getSalaire()) ?>" step="0.01" required>
-                                    <div class="invalid-feedback"></div>
+                                        value="<?= isset($errors['salaire']) ? '' : htmlspecialchars($user->getSalaire()) ?>"
+                                        step="0.01" required>
+                                    <div class="invalid-feedback"><?= $errors['salaire'] ?? '' ?></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="form-label field-required">Rôle</label>
                                     <input type="text" name="role"
                                         class="form-control <?= isset($errors['role']) ? 'is-invalid' : '' ?>"
-                                        value="<?= htmlspecialchars($user->getRole()) ?>" pattern="[a-zA-ZÀ-ÿ\s]+" required>
-                                    <div class="invalid-feedback"></div>
+                                        value="<?= isset($errors['role']) ? '' : htmlspecialchars($user->getRole()) ?>"
+                                        pattern="[a-zA-ZÀ-ÿ\s]+" required>
+                                    <div class="invalid-feedback"><?= $errors['role'] ?? '' ?></div>
                                 </div>
                             <?php endif; ?>
 
                             <div class="form-actions">
                                 <button type="submit" class="btn primary">Enregistrer</button>
-                                <a href="crud.php" class="btn secondary">Annuler
-                                    <i class="fas fa-times"></i>
-                                </a>
+                                <a href="crud.php" class="btn secondary">Annuler <i class="fas fa-times"></i></a>
                             </div>
                         </form>
                     </div>
@@ -248,9 +251,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </section>
         </main>
     </div>
-
-    <script src="assets/js/userValidation.js"></script>
-
 </body>
 
 </html>
