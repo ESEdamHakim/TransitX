@@ -249,12 +249,14 @@ function getReplies($pdo, $parentId)
                         <!-- Like / Dislike -->
                         <div class="comment-likes" style="margin-top: 8px; display: flex; align-items: center; gap: 12px;">
                             <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=like"
+                                class="like-btn" data-id="<?php echo $commentaire['id_commentaire']; ?>" data-action="like"
                                 title="J'aime"
                                 style="color: #86b391; font-size: 20px; display: flex; align-items: center; gap: 4px;">
                                 <i class="fas fa-thumbs-up"></i>
                                 <span style="font-size: 16px;"><?php echo $commentaire['nb_likes']; ?></span>
                             </a>
                             <a href="like_dislike.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=dislike"
+                                class="like-btn" data-id="<?php echo $commentaire['id_commentaire']; ?>" data-action="dislike"
                                 title="Je n'aime pas"
                                 style="color: #1f4f65; font-size: 20px; display: flex; align-items: center; gap: 4px;">
                                 <i class="fas fa-thumbs-down"></i>
@@ -533,7 +535,30 @@ function getReplies($pdo, $parentId)
                 window.speechSynthesis.speak(utterance);
             });
         });
+    </script>
+    <script>
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = btn.dataset.id;
+                const action = btn.dataset.action;
 
+                fetch(`like_dislike.php?id=${id}&action=${action}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Find the correct comment block and update counts
+                            if (action === 'like') {
+                                btn.querySelector('.like-count').innerText = data.nb_likes;
+                            } else {
+                                btn.querySelector('.dislike-count').innerText = data.nb_dislikes;
+                            }
+                             
+                        }          
+                    });
+                    window.location.reload();
+            });
+        });
     </script>
 
 </body>
