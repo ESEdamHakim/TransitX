@@ -795,13 +795,44 @@
   outline: none;
 }
 
+/* Danger Button (e.g., Delete) */
 .btn.danger {
-  background: #e74c3c;
-  color: #fff;
-  border: 1px solid #e74c3c;
+  background-color: #1a4055;
+  /* Dark teal-blue */
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn.danger:hover {
-  background: #c0392b;
-  border-color: #c0392b;
+  background-color: #b71c1c;
+  /* Deep red on hover */
+  transform: translateY(-2px);
+  /* Subtle lift effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Secondary Cancel Button */
+.btn.secondary.cancel-btn {
+  background-color: #86b391;
+  /* Soft green */
+  border: 1px solid var(--border-color);
+  color: #ffffff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.btn.secondary.cancel-btn:hover {
+  background-color: #6c8f74;
+  /* Slightly darker green on hover */
+  border-color: #999;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
 }

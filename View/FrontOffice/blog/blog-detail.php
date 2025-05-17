@@ -378,7 +378,7 @@ function getReplies($pdo, $parentId)
             <div class="modal-body">
                 <p>Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.</p>
                 <div class="form-actions" style="margin-top: 16px; text-align: right;">
-                    <button type="button" class="btn secondary" id="cancelDeleteCommentBtn">Annuler</button>
+                    <button type="button" class="btn secondary cancel-btn" id="cancelDeleteCommentBtn">Annuler</button>
                     <button type="button" class="btn danger" id="confirmDeleteCommentBtn">Supprimer</button>
                 </div>
             </div>
