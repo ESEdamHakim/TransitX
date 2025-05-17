@@ -24,8 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("tags-error").textContent = "Les tags sont requis.";
       valid = false;
     } else if (!tagsPattern.test(tags)) {
-      document.getElementById("tags-error").textContent =
-        "Les tags doivent commencer par un '#' et être séparés par des virgules.";
+      document.getElementById("tags-error").textContent = "Les tags doivent commencer par un '#' et être séparés par des virgules.";
       valid = false;
     } else {
       document.getElementById("tags-error").textContent = "";
@@ -142,56 +141,76 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-function setupViewButtonHandlers() {
-  document.querySelectorAll('.action-btn.view').forEach(button => {
-    button.addEventListener('click', function () {
-      // Get all data attributes
-      const titre = this.getAttribute('data-titre');
-      const contenu = this.getAttribute('data-contenu');
-      const auteur = this.getAttribute('data-auteur');
-      const date = this.getAttribute('data-date');
-      const categorie = this.getAttribute('data-categorie');
-      const tags = this.getAttribute('data-tags');
-      const photo = this.getAttribute('data-photo');
+  function setupViewButtonHandlers() {
+    document.querySelectorAll('.action-btn.view').forEach(button => {
+      button.addEventListener('click', function () {
+        const titre = this.getAttribute('data-titre');
+        const contenu = this.getAttribute('data-contenu');
+        const auteur = this.getAttribute('data-auteur');
+        const date = this.getAttribute('data-date');
+        const categorie = this.getAttribute('data-categorie');
+        const tags = this.getAttribute('data-tags');
+        const photo = this.getAttribute('data-photo');
 
-      // Fill modal fields
-      document.getElementById('modalTitre').textContent = titre || '';
-      document.getElementById('modalAuteur').textContent = auteur || '';
-      document.getElementById('modalDate').textContent = date || '';
-      document.getElementById('modalCategorie').textContent = categorie || '';
-      document.getElementById('modalTags').textContent = tags || '';
-      document.getElementById('modalContentText').textContent = contenu || '';
+        document.getElementById('modalTitre').textContent = titre || '';
+        document.getElementById('modalAuteur').textContent = auteur || '';
+        document.getElementById('modalDate').textContent = date || '';
+        document.getElementById('modalCategorie').textContent = categorie || '';
+        document.getElementById('modalTags').textContent = tags || '';
+        document.getElementById('modalContentText').textContent = contenu || '';
 
-      // Show photo if exists
-      const photoTd = document.getElementById('modalPhoto');
-      if (photo) {
-        photoTd.innerHTML = `<img src="../../assets/uploads/${photo}" alt="Photo Article" style="max-width:120px;">`;
-      } else {
-        photoTd.textContent = 'Aucune image';
-      }
+        const photoTd = document.getElementById('modalPhoto');
+        if (photo) {
+          photoTd.innerHTML = `<img src="../../assets/uploads/${photo}" alt="Photo Article" style="max-width:120px;">`;
+        } else {
+          photoTd.textContent = 'Aucune image';
+        }
 
-      // Show modal
-      document.getElementById('content-modal').classList.add('active');
+        document.getElementById('content-modal').classList.add('active');
+      });
     });
-  });
-}
+  }
 
+  function setupCommentsButtonHandlers() {
+    document.querySelectorAll('.comments-btn').forEach(button => {
+      button.addEventListener('click', function () {
+        const articleId = this.getAttribute('data-article-id');
+        document.querySelectorAll('.comments-btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
 
-function setupCommentsButtonHandlers() {
-  document.querySelectorAll('.comments-btn').forEach(button => {
-    button.addEventListener('click', function () {
-      const articleId = this.getAttribute('data-article-id');
-      // AJAX request to fetch comments
-      fetch(`fetch_comments.php?id_article=${encodeURIComponent(articleId)}`)
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('comments-list').innerHTML = html;
-          document.getElementById('comments-modal').classList.add('active');
-        });
+        fetch(`fetch_comments.php?id_article=${encodeURIComponent(articleId)}`)
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('comments-list').innerHTML = html;
+            document.getElementById('comments-modal').classList.add('active');
+            setupDeleteCommentHandlers(); // re-attach handlers after loading
+          });
+      });
     });
-  });
-}
+  }
 
+  function setupDeleteCommentHandlers() {
+    document.querySelectorAll('.delete-comment-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        if (!confirm('Supprimer ce commentaire ?')) return;
+        const commentId = this.getAttribute('data-comment-id');
+
+        fetch('delete_comment.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'id_commentaire=' + encodeURIComponent(commentId)
+        })
+          .then(res => res.text())
+          .then(response => {
+            if (response.trim() === 'success') {
+              this.closest('.comment')?.remove();
+            } else {
+              alert('Erreur lors de la suppression.');
+            }
+          });
+      });
+    });
+  }
 
   function initializeModalHandlers() {
     setupCloseModalHandlers();
@@ -199,7 +218,6 @@ function setupCommentsButtonHandlers() {
     setupConfirmDeleteButton();
     setupViewButtonHandlers();
     setupCommentsButtonHandlers();
-
   }
 
   updateCategoryCounters();
