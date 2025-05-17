@@ -280,10 +280,9 @@ function getReplies($pdo, $parentId)
                                 <i class="fas fa-edit"></i>
                             </button>
                             <!-- Delete Button -->
-                            <a class="delete-btn"
-                                href="supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>"
-                                title="Supprimer le commentaire" aria-label="Supprimer"
-                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                            <a class="delete-btn open-delete-comment-modal"
+                                data-id="<?php echo $commentaire['id_commentaire']; ?>" title="Supprimer le commentaire"
+                                aria-label="Supprimer">
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         </div>
@@ -366,6 +365,59 @@ function getReplies($pdo, $parentId)
             </form>
         </div>
     </div>
+    <!-- Delete Confirmation Modal for Comments -->
+    <div class="modal" id="deleteCommentModal">
+        <div class="modal-content">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Confirmer la suppression</h2>
+                <button class="close-modal" id="closeDeleteCommentModal"
+                    style="background: none; border: none; font-size: 24px; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.</p>
+                <div class="form-actions" style="margin-top: 16px; text-align: right;">
+                    <button type="button" class="btn secondary" id="cancelDeleteCommentBtn">Annuler</button>
+                    <button type="button" class="btn danger" id="confirmDeleteCommentBtn">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hidden Delete Form -->
+    <form method="POST" action="supprimer_commentaire.php" style="display:none;" id="deleteCommentForm">
+        <input type="hidden" name="id_commentaire" id="delete_comment_id">
+        <input type="hidden" name="id_article" value="<?php echo $id_article; ?>">
+    </form>
+    <script>
+        document.querySelectorAll('.open-delete-comment-modal').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.getElementById('delete_comment_id').value = btn.dataset.id;
+                document.getElementById('deleteCommentModal').style.display = 'block';
+            });
+        });
+
+        document.getElementById('closeDeleteCommentModal').onclick = closeDeleteCommentModal;
+        document.getElementById('cancelDeleteCommentBtn').onclick = closeDeleteCommentModal;
+
+        function closeDeleteCommentModal() {
+            document.getElementById('deleteCommentModal').style.display = 'none';
+        }
+
+        // Confirm delete
+        document.getElementById('confirmDeleteCommentBtn').onclick = function () {
+            document.getElementById('deleteCommentForm').submit();
+        };
+
+        // Optional: close modal when clicking outside
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('deleteCommentModal');
+            if (event.target === modal) {
+                closeDeleteCommentModal();
+            }
+        });
+    </script>
     <script>
         document.querySelectorAll('.edit-btn').forEach(btn => {
             btn.addEventListener('click', function () {

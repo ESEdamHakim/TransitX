@@ -794,3 +794,14 @@
   border-color: var(--primary-color);
   outline: none;
 }
+
+.btn.danger {
+  background: #e74c3c;
+  color: #fff;
+  border: 1px solid #e74c3c;
+}
+
+.btn.danger:hover {
+  background: #c0392b;
+  border-color: #c0392b;
+}
