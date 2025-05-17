@@ -274,12 +274,11 @@ function getReplies($pdo, $parentId)
                         </form>
                         <div class="comment-actions">
                             <!-- Edit Button -->
-                            <form method="get" action="modifier_commentaire.php" class="comment-action-form">
-                                <input type="hidden" name="id" value="<?php echo $commentaire['id_commentaire']; ?>">
-                                <button class="edit-btn" type="submit" title="Modifier le commentaire" aria-label="Modifier">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </form>
+                            <button type="button" class="edit-btn" data-id="<?php echo $commentaire['id_commentaire']; ?>"
+                                data-content="<?php echo htmlspecialchars($commentaire['contenu_commentaire']); ?>"
+                                title="Modifier le commentaire" aria-label="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </button>
                             <!-- Delete Button -->
                             <a class="delete-btn"
                                 href="supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>"
@@ -344,7 +343,52 @@ function getReplies($pdo, $parentId)
     </div>
 
     <?php include '../../assets/footer.php'; ?>
-    
+
+    <!-- Modal for editing comment -->
+    <div id="editCommentModal" class="modal" style="display:none;">
+        <div class="modal-content"
+            style="max-width: 500px; margin: 60px auto; background: #fff; border-radius: 8px; padding: 24px; position: relative;">
+            <span class="close-modal" id="closeEditModal"
+                style="position: absolute; top: 12px; right: 18px; font-size: 24px; cursor: pointer;">&times;</span>
+            <h2>Modifier le commentaire</h2>
+            <form id="editCommentForm" method="POST" action="traiter_modif_commentaire.php">
+                <input type="hidden" name="id_commentaire" id="edit_id_commentaire">
+                <input type="hidden" name="id_article" id="edit_id_article" value="<?php echo $id_article; ?>">
+                <div class="form-group">
+                    <label for="edit_contenu_commentaire">Votre commentaire</label>
+                    <textarea name="contenu_commentaire" id="edit_contenu_commentaire" rows="5" required
+                        style="width:100%;"></textarea>
+                </div>
+                <div class="form-actions" style="margin-top: 16px; text-align: right;">
+                    <button type="button" class="btn secondary" id="cancelEditBtn">Annuler</button>
+                    <button type="submit" class="btn primary"><i class="fas fa-save"></i> Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Fill modal fields
+                document.getElementById('edit_id_commentaire').value = btn.dataset.id;
+                document.getElementById('edit_contenu_commentaire').value = btn.dataset.content;
+                document.getElementById('editCommentModal').style.display = 'block';
+            });
+        });
+
+        // Close modal on X or Annuler
+        document.getElementById('closeEditModal').onclick = closeEditModal;
+        document.getElementById('cancelEditBtn').onclick = closeEditModal;
+        function closeEditModal() {
+            document.getElementById('editCommentModal').style.display = 'none';
+        }
+
+        // Optional: close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('editCommentModal');
+            if (event.target === modal) modal.style.display = "none";
+        };
+    </script>
     <script>
         function toggleLanguageDropdown() {
             var dropdown = document.getElementById("languageDropdown");

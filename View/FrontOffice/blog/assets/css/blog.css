@@ -22,14 +22,16 @@
 }
 
 .calen-button {
-    background: none;
+  background: none;
   border: none;
   cursor: pointer;
   color: #1f4f65;
   font-size: 1.55rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 35%; /* Reverted to original border-radius */
-  padding: 7px 7px; /* Reverted to original padding */
+  border-radius: 35%;
+  /* Reverted to original border-radius */
+  padding: 7px 7px;
+  /* Reverted to original padding */
   width: 42px;
   height: 42px;
   display: flex;
@@ -37,12 +39,15 @@
   justify-content: center;
   transition: all 0.2s ease;
   position: relative;
-  outline: none; /* Remove default outline */
+  outline: none;
+  /* Remove default outline */
 }
 
 .calen-button:hover {
-  background-color: #ddf7d7; /* Reverted to original hover color */
-  transform: scale(1.1); /* Reverted to original scale effect */
+  background-color: #ddf7d7;
+  /* Reverted to original hover color */
+  transform: scale(1.1);
+  /* Reverted to original scale effect */
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -138,7 +143,8 @@
   z-index: 100;
 }
 
-#languageButton, .btn-speak {
+#languageButton,
+.btn-speak {
   background-color: var(--secondary-dark);
   color: white;
   border: none;
@@ -153,12 +159,14 @@
   height: 40px;
 }
 
-#languageButton:hover, .btn-speak:hover {
+#languageButton:hover,
+.btn-speak:hover {
   background-color: var(--primary-color);
   transform: translateY(-2px);
 }
 
-#languageButton i, .btn-speak i {
+#languageButton i,
+.btn-speak i {
   font-size: 1.2rem;
 }
 
@@ -179,8 +187,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 #languageSelect {
@@ -241,8 +256,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Content Styles */
@@ -512,7 +532,7 @@
   margin-top: 20px;
 }
 
-.reply-form textarea, 
+.reply-form textarea,
 .comment-section form textarea {
   width: 100%;
   padding: 15px;
@@ -525,7 +545,7 @@
   min-height: 100px;
 }
 
-.reply-form textarea:focus, 
+.reply-form textarea:focus,
 .comment-section form textarea:focus {
   outline: none;
   border-color: var(--primary-color);
@@ -552,15 +572,17 @@
 
 /* Responsive Design */
 @media (max-width: 992px) {
-  .blog-detail, .comment-section {
+
+  .blog-detail,
+  .comment-section {
     width: 90%;
     padding: 30px;
   }
-  
+
   .blog-detail h2 {
     font-size: 2rem;
   }
-  
+
   .content h3 {
     font-size: 1.5rem;
   }
@@ -570,61 +592,65 @@
   .article-meta-right {
     justify-content: center;
   }
-  
+
   .comment.reply {
     margin-left: 25px;
   }
-  
+
   .language-selector {
     top: 10px;
     right: 10px;
   }
-  
-  #languageButton, .btn-speak {
+
+  #languageButton,
+  .btn-speak {
     width: 35px;
     height: 35px;
     padding: 8px;
   }
-  
-  #languageButton i, .btn-speak i {
+
+  #languageButton i,
+  .btn-speak i {
     font-size: 1rem;
   }
 }
 
 @media (max-width: 576px) {
-  .blog-detail, .comment-section {
+
+  .blog-detail,
+  .comment-section {
     width: 95%;
     padding: 20px;
   }
-  
+
   .blog-detail h2 {
     font-size: 1.7rem;
   }
-  
+
   .content {
     font-size: 1rem;
   }
-  
+
   .content h3 {
     font-size: 1.3rem;
   }
-  
+
   .comment-likes {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
-  
+
   .comment-actions {
     flex-wrap: wrap;
   }
-  
+
   .language-selector {
     flex-direction: column;
     align-items: flex-end;
     gap: 8px;
   }
-  
+
   #languageDropdown {
     min-width: 200px;
     right: 0;
@@ -633,11 +659,19 @@
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.blog-detail, .comment-section {
+.blog-detail,
+.comment-section {
   animation: fadeIn 0.5s ease-out;
 }
 
@@ -646,8 +680,117 @@
   animation-fill-mode: both;
 }
 
-.comment:nth-child(1) { animation-delay: 0.1s; }
-.comment:nth-child(2) { animation-delay: 0.2s; }
-.comment:nth-child(3) { animation-delay: 0.3s; }
-.comment:nth-child(4) { animation-delay: 0.4s; }
-.comment:nth-child(5) { animation-delay: 0.5s; }
+.comment:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.comment:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.comment:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.comment:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.comment:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+
+/* Modal Styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  transition: var(--transition);
+}
+
+.modal-content {
+  background-color: var(--background);
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 90%;
+  max-width: 500px;
+  transform: translateY(0);
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content h2 {
+  color: var(--secondary-dark);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary);
+}
+
+.modal-content p {
+  color: var(--text-dark);
+  line-height: 1.8;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: var(--text-light);
+  font-size: 28px;
+  font-weight: bold;
+  transition: var(--transition);
+}
+
+.close:hover {
+  color: var(--primary);
+  transform: rotate(90deg);
+}
+
+/* Modal Input & Textarea Styling */
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content input[type="number"],
+.modal-content textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: var(--font-main);
+  background: var(--bg-light);
+  color: var(--text-dark);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.modal-content input[type="text"]:focus,
+.modal-content input[type="email"]:focus,
+.modal-content input[type="password"]:focus,
+.modal-content input[type="number"]:focus,
+.modal-content textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
