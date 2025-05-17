@@ -127,23 +127,6 @@ function getReplies($pdo, $parentId)
             </div>
         </div>
     </header>
-
-    <script>
-        function toggleLanguageDropdown() {
-            var dropdown = document.getElementById("languageDropdown");
-            // Toggle affichage de la liste déroulante des langues
-            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
-        }
-
-        function translateArticle() {
-            var selectedLanguage = document.getElementById("languageSelect").value;
-            alert("Traduction en : " + selectedLanguage);  // Cette fonction peut être étendue pour effectuer la traduction
-        }
-    </script>
-
-
-
-
     <div class="blog-detail">
         <div class="language-selector" style="position: relative;">
             <!-- Bouton de traduction -->
@@ -247,7 +230,7 @@ function getReplies($pdo, $parentId)
                             <!-- Bouton Épingler/Désépingler avec icônes -->
                             <?php if ($commentaire['epingle'] == 0): ?>
                                 <a href="epingle_commentaire.php?id=<?php echo $commentaire['id_commentaire']; ?>&action=epingle"
-                                    title="Épingler ce commentaire" style="color: #007bff;">
+                                    title="Épingler ce commentaire" style="color: #86b391;">
                                     <i class="fas fa-thumbtack"></i>
                                 </a>
                             <?php else: ?>
@@ -291,20 +274,17 @@ function getReplies($pdo, $parentId)
                         </form>
                         <div class="comment-actions">
                             <!-- Edit Button -->
-                            <form method="get" action="modifier_commentaire.php" class="comment-action-form" >
+                            <form method="get" action="modifier_commentaire.php" class="comment-action-form">
                                 <input type="hidden" name="id" value="<?php echo $commentaire['id_commentaire']; ?>">
-                                <button type="submit" title="Modifier le commentaire" aria-label="Modifier"
-                                    style="background: #f8fafd; border: 1px solid #86b391; color: #1f4f65; border-radius: 6px; padding: 6px 10px; font-size: 18px; cursor: pointer; display: flex; align-items: center;">
+                                <button class="edit-btn" type="submit" title="Modifier le commentaire" aria-label="Modifier">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </form>
-
                             <!-- Delete Button -->
                             <a class="delete-btn"
                                 href="supprimer_commentaire.php?id_commentaire=<?php echo $commentaire['id_commentaire']; ?>&id_article=<?php echo $article['id_article']; ?>"
                                 title="Supprimer le commentaire" aria-label="Supprimer"
-                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');"
-                                style="background: #f8fafd; border: 1px solid #e74c3c; color: #e74c3c; border-radius: 6px; padding: 6px 10px; font-size: 18px; cursor: pointer; display: flex; align-items: center;">
+                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         </div>
@@ -354,7 +334,7 @@ function getReplies($pdo, $parentId)
                 <textarea name="comment" id="comment" rows="4" placeholder="Écrivez votre commentaire ici..."
                     required></textarea>
                 <br />
-                <button type="submit">Commenter</button>
+                <button class="btn primary" style="border-radius: 9px;" type="submit">Commenter</button>
             </form>
         <?php elseif ($isLoggedIn && !$userExists): ?>
             <p style="color: red;">Vous devez être connecté pour laisser un commentaire.</p>
@@ -364,7 +344,19 @@ function getReplies($pdo, $parentId)
     </div>
 
     <?php include '../../assets/footer.php'; ?>
+    
+    <script>
+        function toggleLanguageDropdown() {
+            var dropdown = document.getElementById("languageDropdown");
+            // Toggle affichage de la liste déroulante des langues
+            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+        }
 
+        function translateArticle() {
+            var selectedLanguage = document.getElementById("languageSelect").value;
+            alert("Traduction en : " + selectedLanguage);  // Cette fonction peut être étendue pour effectuer la traduction
+        }
+    </script>
     <script>
         async function translateArticle() {
             const button = document.getElementById('translateButton');
