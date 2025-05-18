@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../Model/client.php';
 require_once __DIR__ . '/../../../Model/employe.php';
 
 // Define the upload directory constant
-define('UPLOAD_DIR', $_SERVER['DOCUMENT_ROOT'] . '/TransitX-main/uploads/profiles/');
+define('UPLOAD_DIR', __DIR__ . '/../../assets/uploads/profiles/');
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -28,44 +28,44 @@ if (!$user) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Server-side validation
     $errors = [];
-    
+
     // Process image upload
     $current_image = $user->getImage() ?? 'default.png';
     $image = $current_image; // Default to current image
-    
-    if(isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === 0) {
+
+    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === 0) {
         $allowed = ['jpg', 'jpeg', 'png', 'gif'];
         $filename = $_FILES['profile_image']['name'];
         $filesize = $_FILES['profile_image']['size'];
-        
+
         // Get file extension
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        
+
         // Verify file extension
-        if(!in_array(strtolower($ext), $allowed)) {
+        if (!in_array(strtolower($ext), $allowed)) {
             $errors['profile_image'] = "Erreur: Veuillez sélectionner un format d'image valide.";
         }
-        
+
         // Verify file size - 5MB maximum
-        if($filesize > 5 * 1024 * 1024) {
+        if ($filesize > 5 * 1024 * 1024) {
             $errors['profile_image'] = "Erreur: La taille de l'image ne doit pas dépasser 5MB.";
         }
-        
-        if(!isset($errors['profile_image'])) {
+
+        if (!isset($errors['profile_image'])) {
             // Generate unique filename
             $new_filename = uniqid('user_') . '.' . $ext;
-            
+
             // Create directory if it doesn't exist
-            if(!file_exists(UPLOAD_DIR)) {
+            if (!file_exists(UPLOAD_DIR)) {
                 mkdir(UPLOAD_DIR, 0777, true);
             }
-            
+
             // Move the uploaded file
-            if(move_uploaded_file($_FILES['profile_image']['tmp_name'], UPLOAD_DIR . $new_filename)) {
+            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], UPLOAD_DIR . $new_filename)) {
                 $image = $new_filename;
-                
+
                 // Delete old image if not the default
-                if($current_image !== 'default.png' && file_exists(UPLOAD_DIR . $current_image)) {
+                if ($current_image !== 'default.png' && file_exists(UPLOAD_DIR . $current_image)) {
                     unlink(UPLOAD_DIR . $current_image);
                 }
             }
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-control.is-invalid {
             border-color: #dc3545;
         }
-        
+
         .profile-dropdown {
             position: relative;
             display: flex;
@@ -160,11 +160,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 5px;
             transition: all 0.3s ease;
         }
-        
+
         .profile-dropdown:hover {
             background-color: rgba(0, 0, 0, 0.05);
         }
-        
+
         .profile-dropdown .profile-pic {
             width: 35px;
             height: 35px;
@@ -172,12 +172,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-right: 10px;
             object-fit: cover;
         }
-        
+
         .profile-dropdown span {
             margin-right: 10px;
             font-weight: 500;
         }
-        
+
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -189,11 +189,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             z-index: 100;
             display: none;
         }
-        
+
         .profile-dropdown:hover .dropdown-menu {
             display: block;
         }
-        
+
         .dropdown-menu a {
             display: block;
             padding: 10px 15px;
@@ -201,11 +201,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-decoration: none;
             transition: all 0.2s ease;
         }
-        
+
         .dropdown-menu a:hover {
             background-color: #f5f5f5;
         }
-        
+
         .dropdown-menu a i {
             margin-right: 10px;
             width: 16px;
@@ -225,7 +225,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="header-right">
                     <div class="profile-dropdown">
-                        <img src="../../../get_image.php?file=<?= urlencode($user->getImage() ?? 'default.png') ?>" alt="Profile" class="profile-pic">
+                        <img src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage() ?? 'default.png') ?>"
+                            alt="Profile" class="profile-pic">
                         <span><?= htmlspecialchars($user->getPrenom() . ' ' . $user->getNom()) ?></span>
                         <i class="fas fa-chevron-down"></i>
                         <div class="dropdown-menu">
@@ -290,15 +291,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     pattern="^\+?[0-9]+$" required>
                                 <div class="invalid-feedback"><?= $errors['telephone'] ?? '' ?></div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label class="form-label">Photo de profil</label>
-                                <?php if($user->getImage()): ?>
-                                <div class="current-image-preview mb-2">
-                                    <img src="../../../get_image.php?file=<?= urlencode($user->getImage()) ?>" 
-                                         alt="Current profile" style="max-width: 100px; max-height: 100px; border-radius: 50%;">
-                                    <p class="mt-1">Image actuelle</p>
-                                </div>
+                                <?php if ($user->getImage()): ?>
+                                    <div class="current-image-preview mb-2">
+                                        <img src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage()) ?>"
+                                            alt="Current profile"
+                                            style="max-width: 100px; max-height: 100px; border-radius: 50%;">
+                                        <p class="mt-1">Image actuelle</p>
+                                    </div>
                                 <?php endif; ?>
                                 <input type="file" name="profile_image"
                                     class="form-control <?= isset($errors['profile_image']) ? 'is-invalid' : '' ?>"

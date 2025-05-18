@@ -167,7 +167,7 @@ if (!$profileUser || !$currentUser) {
                 <div class="profile-container">
                     <div class="profile-header">
                         <div class="profile-image">
-                            <img src="../../../get_image.php?file=<?= urlencode($profileUser->getImage() ?? 'default.png') ?>" alt="Profile Picture">
+                            <img src="../../../Controller/get_image.php?file=<?= urlencode($profileUser->getImage() ?? 'default.png') ?>" alt="Profile Picture">
                         </div>
                         <div class="profile-info">
                             <h1><?= htmlspecialchars($profileUser->getPrenom() . ' ' . $profileUser->getNom()) ?></h1>

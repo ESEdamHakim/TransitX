@@ -3,6 +3,9 @@ require_once __DIR__ . '/../../../Controller/userC.php';
 require_once __DIR__ . '/../../../Model/client.php';
 require_once __DIR__ . '/../../../Model/employe.php';
 
+// Define the upload directory constant
+define('UPLOAD_DIR', __DIR__ . '/../../assets/uploads/profiles/');
+
 $userController = new UserC();
 
 $id = $_GET['id'] ?? null;
@@ -20,6 +23,49 @@ if (!$user) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Server-side validation
     $errors = [];
+    
+    // Process image upload
+    $current_image = $user->getImage() ?? 'default.png';
+    $image = $current_image; // Default to current image
+    
+    if(isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === 0) {
+        $allowed = ['jpg', 'jpeg', 'png', 'gif'];
+        $filename = $_FILES['profile_image']['name'];
+        $filesize = $_FILES['profile_image']['size'];
+        
+        // Get file extension
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        
+        // Verify file extension
+        if(!in_array(strtolower($ext), $allowed)) {
+            $errors['profile_image'] = "Erreur: Veuillez sélectionner un format d'image valide.";
+        }
+        
+        // Verify file size - 5MB maximum
+        if($filesize > 5 * 1024 * 1024) {
+            $errors['profile_image'] = "Erreur: La taille de l'image ne doit pas dépasser 5MB.";
+        }
+        
+        if(!isset($errors['profile_image'])) {
+            // Generate unique filename
+            $new_filename = uniqid('user_') . '.' . $ext;
+            
+            // Create directory if it doesn't exist
+            if(!file_exists(UPLOAD_DIR)) {
+                mkdir(UPLOAD_DIR, 0777, true);
+            }
+            
+            // Move the uploaded file
+            if(move_uploaded_file($_FILES['profile_image']['tmp_name'], UPLOAD_DIR . $new_filename)) {
+                $image = $new_filename;
+                
+                // Delete old image if not the default
+                if($current_image !== 'default.png' && file_exists(UPLOAD_DIR . $current_image)) {
+                    unlink(UPLOAD_DIR . $current_image);
+                }
+            }
+        }
+    }
 
     // Validate nom (alphabets only)
     if (!preg_match('/^[a-zA-ZÀ-ÿ\s]+$/', $_POST['nom'])) {
@@ -51,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user->setPrenom($_POST['prenom']);
         $user->setEmail($_POST['email']);
         $user->setTelephone($_POST['telephone']);
+        $user->setImage($image);
 
         // Handling password change securely
         if (!empty($_POST['password'])) {
@@ -144,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="user-form-container">
-                        <form class="user-form" method="post" id="userForm" novalidate>
+                        <form class="user-form" method="post" id="userForm" enctype="multipart/form-data" novalidate>
                             <div class="form-group">
                                 <label class="form-label">Type d'utilisateur</label>
                                 <input type="text" class="form-control"
@@ -193,6 +240,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     value="<?= isset($errors['telephone']) ? '' : htmlspecialchars($user->getTelephone()) ?>"
                                     pattern="^\+?[0-9]+$" required>
                                 <div class="invalid-feedback"><?= $errors['telephone'] ?? '' ?></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Photo de profil</label>
+                                <?php if($user->getImage()): ?>
+                                <div class="current-image-preview mb-2">
+                                    <img src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage()) ?>" 
+                                         alt="Current profile" style="max-width: 100px; max-height: 100px; border-radius: 50%;">
+                                    <p class="mt-1">Image actuelle</p>
+                                </div>
+                                <?php endif; ?>
+                                <input type="file" name="profile_image"
+                                    class="form-control <?= isset($errors['profile_image']) ? 'is-invalid' : '' ?>"
+                                    accept="image/*">
+                                <div class="form-text">Formats acceptés: JPG, JPEG, PNG, GIF. Taille max: 5MB</div>
+                                <div class="invalid-feedback"><?= $errors['profile_image'] ?? '' ?></div>
                             </div>
 
                             <?php if ($user instanceof Client): ?>

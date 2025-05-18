@@ -30,6 +30,21 @@ function getSortUrl($columnName)
 }
 ?>
 
+<?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+    $currentUser = $userController->showUser($_SESSION['user_id']);
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -58,6 +73,94 @@ function getSortUrl($columnName)
 
     .sortable:hover {
       background-color: #f8f9fa;
+    }
+    
+    /* Profile dropdown styles */
+    .actions-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .profile-dropdown {
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      margin-left: 10px;
+    }
+    
+    .profile-dropdown:hover {
+      background-color: #e5e5e5;
+    }
+    
+    .profile-dropdown .profile-pic {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .profile-dropdown span {
+      margin-right: 10px;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 5px);
+      right: 0;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      min-width: 200px;
+      z-index: 1000;
+      display: none;
+      border: 1px solid #eee;
+    }
+    
+    .profile-dropdown:hover .dropdown-menu {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .dropdown-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    
+    .dropdown-menu a:last-child {
+      border-bottom: none;
+    }
+    
+    .dropdown-menu a:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .dropdown-menu a i {
+      margin-right: 10px;
+      width: 16px;
+      text-align: center;
+      color: #4a6cf7;
     }
 
     .export-btn {
@@ -199,12 +302,19 @@ function getSortUrl($columnName)
 
     .close-modal {
       background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
+    }
+    
+    .dropdown-menu a:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .dropdown-menu a i {
+      margin-right: 10px;
+      width: 16px;
+      text-align: center;
+      color: #4a6cf7;
     }
 
-    /* AI Assistance Styles */
     .ai-assistance-btn {
       margin-left: 10px;
       background-color: #6f42c1;
@@ -286,6 +396,18 @@ function getSortUrl($columnName)
             <a href="add_user.php" class="btn primary" id="add-user-btn">
               <i class="fas fa-plus"></i> Ajouter
             </a>
+            <!-- User Profile Dropdown -->
+            <div class="profile-dropdown">
+              <img src="../../../Controller/get_image.php?file=<?= urlencode(($currentUser ? $currentUser->getImage() : 'default.png')) ?>" 
+                   alt="Profile" class="profile-pic">
+              <span><?= $currentUser ? htmlspecialchars($currentUser->getPrenom() . ' ' . $currentUser->getNom()) : 'User' ?></span>
+              <i class="fas fa-chevron-down"></i>
+              <div class="dropdown-menu">
+                <a href="view_profile.php"><i class="fas fa-user"></i> Voir mon profil</a>
+                <a href="edit_profile.php"><i class="fas fa-edit"></i> Modifier mon profil</a>
+                <a href="../../../index.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -317,6 +439,7 @@ function getSortUrl($columnName)
                         <i class="fas fa-sort-<?= $order === 'asc' ? 'up' : 'down' ?> sort-icon"></i>
                       <?php endif; ?>
                     </th>
+                    <th>Photo</th>
                     <th class="sortable" onclick="window.location.href='<?= getSortUrl('nom') ?>'">
                       Nom
                       <?php if ($sort === 'nom'): ?>
@@ -354,12 +477,20 @@ function getSortUrl($columnName)
                     <?php foreach ($users as $user): ?>
                       <tr>
                         <td><?= htmlspecialchars($user->getId()) ?></td>
+                        <td>
+                          <img src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage() ?? 'default.png') ?>" 
+                               alt="Profile" 
+                               style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        </td>
                         <td><?= htmlspecialchars($user->getNom()) ?></td>
                         <td><?= htmlspecialchars($user->getPrenom()) ?></td>
                         <td><?= htmlspecialchars($user->getEmail()) ?></td>
                         <td><?= htmlspecialchars($user->getTelephone()) ?></td>
                         <td><?= ucfirst(htmlspecialchars($user->getType())) ?></td>
                         <td class="actions">
+                          <a href="view_profile.php?id=<?= $user->getId() ?>" class="action-btn view" title="Voir profil">
+                            <i class="fas fa-user"></i>
+                          </a>
                           <a href="edit_user.php?id=<?= $user->getId() ?>" class="action-btn edit" title="Modifier">
                             <i class="fas fa-edit"></i>
                           </a>
@@ -381,7 +512,8 @@ function getSortUrl($columnName)
               <?php foreach ($users as $user): ?>
                 <div class="user-card">
                   <div class="user-avatar">
-                    <img src="../assets/images/user-placeholder.png" alt="User Avatar">
+                    <img src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage() ?? 'default.png') ?>" 
+                         alt="User Avatar">
                   </div>
                   <div class="user-info">
                     <h3><?= htmlspecialchars($user->getPrenom() . ' ' . $user->getNom()) ?></h3>
@@ -917,6 +1049,21 @@ function getSortUrl($columnName)
             align-items: center;
             z-index: 1000;
         }
+        tbody td.actions {
+          white-space: nowrap;
+        }
+        
+        /* Style for profile image in table */
+        .users-table img {
+          object-fit: cover;
+          border: 2px solid #fff;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+          transition: transform 0.2s;
+        }
+        
+        .users-table img:hover {
+          transform: scale(1.1);
+        }
         .modal.active {
             display: flex;
         }
@@ -931,6 +1078,33 @@ function getSortUrl($columnName)
         }
     `;
     document.head.appendChild(modalStyle);
+  </script>
+  <!-- Add profile dropdown script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get the profile button and menu
+      const profileButton = document.getElementById('profileButton');
+      const profileMenu = document.getElementById('profileMenu');
+      
+      // Toggle the profile menu when button is clicked
+      if (profileButton && profileMenu) {
+        profileButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (profileMenu.style.display === 'block') {
+            profileMenu.style.display = 'none';
+          } else {
+            profileMenu.style.display = 'block';
+          }
+        });
+        
+        // Close the menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!profileButton.contains(e.target) && !profileMenu.contains(e.target)) {
+            profileMenu.style.display = 'none';
+          }
+        });
+      }
+    });
   </script>
 </body>
 

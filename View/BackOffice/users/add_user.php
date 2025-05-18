@@ -22,6 +22,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = isset($_POST['email']) ? $_POST['email'] : '';
         $password = isset($_POST['password']) ? $_POST['password'] : '';
         $telephone = isset($_POST['telephone']) ? $_POST['telephone'] : null;
+        
+        // Process image upload
+        $image = 'default.png'; // Default image
+        if(isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === 0) {
+            $allowed = ['jpg', 'jpeg', 'png', 'gif'];
+            $filename = $_FILES['profile_image']['name'];
+            $filesize = $_FILES['profile_image']['size'];
+            
+            // Get file extension
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+            
+            // Verify file extension
+            if(!in_array(strtolower($ext), $allowed)) {
+                $error = "Erreur: Veuillez sélectionner un format d'image valide.";
+            }
+            
+            // Verify file size - 5MB maximum
+            if($filesize > 5 * 1024 * 1024) {
+                $error = "Erreur: La taille de l'image ne doit pas dépasser 5MB.";
+            }
+            
+            // Generate unique filename
+            $new_filename = uniqid('user_') . '.' . $ext;
+            $upload_dir =  __DIR__ . '/../../assets/uploads/profiles/';
+
+            // Create directory if it doesn't exist
+            if(!file_exists($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
+            }
+            
+            // Move the uploaded file
+            if(empty($error) && move_uploaded_file($_FILES['profile_image']['tmp_name'], $upload_dir . $new_filename)) {
+                $image = $new_filename;
+            }
+        }
 
         // Basic validation
         if (empty($type) || empty($nom) || empty($prenom) || empty($email) || empty($password)) {
@@ -40,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     try {
                         $date_naissance = new DateTime($date_naissance_str);
                         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                        $user = new Client($nom, $prenom, $email, $hashedPassword, $telephone, $date_naissance);
+                        $user = new Client($nom, $prenom, $email, $hashedPassword, $telephone, $date_naissance, $image);
 
                         // Insert into database
                         if ($userC->addUser($user)) {
@@ -68,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $date_embauche = new DateTime($date_embauche_str);
                         $salaire = (float) $salaire_str;
                         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                        $user = new Employe($nom, $prenom, $email, $hashedPassword, $date_embauche, $poste, $salaire, $role, $telephone);
+                        $user = new Employe($nom, $prenom, $email, $hashedPassword, $date_embauche, $poste, $salaire, $role, $telephone, $image);
 
                         // Insert into database
                         if ($userC->addUser($user)) {
@@ -128,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
                     <div class="user-form-container">
                         <!-- Form with direct POST to same page -->
-                        <form class="user-form" method="post" action="" id="userForm">
+                        <form class="user-form" method="post" action="" id="userForm" enctype="multipart/form-data">
                             <!-- User Type Selection -->
                             <div class="form-group">
                                 <label class="form-label field-required">Type d'utilisateur</label>
@@ -175,6 +210,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     value="<?php echo htmlspecialchars($_POST['telephone'] ?? ''); ?>">
                                 <div class="invalid-feedback">Seuls les chiffres et le symbole + sont autorisés
                                 </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Photo de profil</label>
+                                <input type="file" class="form-control" name="profile_image" id="profile_image" accept="image/*">
+                                <div class="form-text">Formats acceptés: JPG, JPEG, PNG, GIF. Taille max: 5MB</div>
                             </div>
 
                             <!-- Client specific fields -->
