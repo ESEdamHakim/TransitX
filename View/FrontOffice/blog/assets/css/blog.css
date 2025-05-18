@@ -174,7 +174,7 @@
 #languageDropdown {
   position: absolute;
   top: 100%;
-  right: 0;
+  left: 0;
   background-color: white;
   border-radius: var(--radius-sm);
   padding: 15px;
