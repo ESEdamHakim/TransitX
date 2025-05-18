@@ -62,7 +62,8 @@ class UserC {
                         $row['email'],
                         $row['password'],
                         $row['telephone'],
-                        $row['date_naissance'] ? new DateTime($row['date_naissance']) : null
+                        $row['date_naissance'] ? new DateTime($row['date_naissance']) : null,
+                        $row['image'] ?? 'default.png'
                     );
                 } else {
                     $user = new Employe(
@@ -74,7 +75,8 @@ class UserC {
                         $row['poste'] ?? '',
                         $row['salaire'] ?? 0,
                         $row['role'] ?? '',
-                        $row['telephone']
+                        $row['telephone'],
+                        $row['image'] ?? 'default.png'
                     );
                 }
                 $user->setId($row['id']);
@@ -108,19 +110,20 @@ class UserC {
     
         try {
             $db->beginTransaction();
-    
-            // Insert into user table with password
-            $sql = "INSERT INTO user (nom, prenom, email, password, telephone, date_inscription, type)
-                    VALUES (:nom, :prenom, :email, :password, :telephone, :date_inscription, :type)";
+            
+            // Insert into user table
+            $sql = "INSERT INTO user (nom, prenom, email, password, telephone, image, type, date_inscription) 
+                   VALUES (:nom, :prenom, :email, :password, :telephone, :image, :type, :date_inscription)";
             $stmt = $db->prepare($sql);
             $stmt->execute([
                 ':nom' => $user->getNom(),
                 ':prenom' => $user->getPrenom(),
                 ':email' => $user->getEmail(),
-                ':password' => $user->getPassword(), // Hashed password
+                ':password' => $user->getPassword(),
                 ':telephone' => $user->getTelephone(),
-                ':date_inscription' => $user->getDateInscription()->format('Y-m-d H:i:s'),
-                ':type' => $user->getType()
+                ':image' => $user->getImage(),
+                ':type' => $user->getType(),
+                ':date_inscription' => $user->getDateInscription()->format('Y-m-d H:i:s')
             ]);
     
             $userId = $db->lastInsertId();
@@ -181,7 +184,8 @@ class UserC {
                     $row['email'],
                     $row['password'], // Add password
                     $row['telephone'],
-                    $row['date_naissance'] ? new DateTime($row['date_naissance']) : null
+                    $row['date_naissance'] ? new DateTime($row['date_naissance']) : null,
+                    $row['image'] ?? 'default.png' // Add image parameter
                 );
             }else {
                 $user = new Employe(
@@ -193,7 +197,8 @@ class UserC {
                     $row['poste'] ?? '',
                     $row['salaire'] ?? 0,
                     $row['role'] ?? '',
-                    $row['telephone']
+                    $row['telephone'],
+                    $row['image'] ?? 'default.png' // Add image parameter
                 );
             }
             $user->setId($row['id']);
@@ -218,7 +223,8 @@ class UserC {
                     nom = :nom, 
                     prenom = :prenom, 
                     email = :email, 
-                    telephone = :telephone
+                    telephone = :telephone,
+                    image = :image
                     WHERE id = :id";
             $stmt = $db->prepare($sql);
             $stmt->execute([
@@ -226,7 +232,8 @@ class UserC {
                 ':nom' => $user->getNom(),
                 ':prenom' => $user->getPrenom(),
                 ':email' => $user->getEmail(),
-                ':telephone' => $user->getTelephone()
+                ':telephone' => $user->getTelephone(),
+                ':image' => $user->getImage()
             ]);
             
             // Update specific table based on type
@@ -290,7 +297,8 @@ class UserC {
                     $row['email'],
                     $row['password'], // Make sure this is hashed
                     $row['telephone'],
-                    $row['date_naissance'] ? new DateTime($row['date_naissance']) : null
+                    $row['date_naissance'] ? new DateTime($row['date_naissance']) : null,
+                    $row['image'] ?? 'default.png'
                 );
             } else {
                 $user = new Employe(
@@ -302,7 +310,8 @@ class UserC {
                     $row['poste'],
                     $row['salaire'],
                     $row['role'],
-                    $row['telephone']
+                    $row['telephone'],
+                    $row['image'] ?? 'default.png'
                 );
             }
             
@@ -317,4 +326,3 @@ class UserC {
 
     // Remove the duplicate listUsers method and listUsersWithFilters method
 }
-

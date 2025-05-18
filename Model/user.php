@@ -7,6 +7,7 @@ class User
     protected $email;
     protected $password;
     protected $telephone;
+    protected $image;
     protected $date_inscription;
     protected $type;
 
@@ -16,13 +17,15 @@ class User
         string $email,
         string $password,  // Password parameter here
         ?string $telephone = null,
-        string $type = 'user'
+        string $type = 'user',
+        ?string $image = 'default.png'
     ) {
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->email = $email;
         $this->password = $password;  // Already hashed when passed
         $this->telephone = $telephone;
+        $this->image = $image;
         $this->date_inscription = new DateTime();
         $this->type = $type;
     }
@@ -34,6 +37,7 @@ class User
     public function getEmail() { return $this->email; }
     public function getPassword() { return $this->password; }
     public function getTelephone() { return $this->telephone; }
+    public function getImage() { return $this->image; }
     public function getDateInscription(): DateTime { return $this->date_inscription; }
     public function getType() { return $this->type; }
 
@@ -46,6 +50,7 @@ class User
         $this->password = password_hash($password, PASSWORD_BCRYPT); 
     }
     public function setTelephone($telephone) { $this->telephone = $telephone; }
+    public function setImage($image) { $this->image = $image; }
     public function setDateInscription(DateTime $date) { $this->date_inscription = $date; }
     public function setType($type) { $this->type = $type; }
     

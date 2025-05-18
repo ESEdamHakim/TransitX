@@ -17,9 +17,10 @@ class Employe extends User
         string $poste,
         float $salaire,
         string $role,
-        ?string $telephone = null
+        ?string $telephone = null,
+        ?string $image = 'default.png'
     ) {
-        parent::__construct($nom, $prenom, $email, $password, $telephone, 'employe');
+        parent::__construct($nom, $prenom, $email, $password, $telephone, 'employe', $image);
         $this->date_embauche = $date_embauche;
         $this->poste = $poste;
         $this->salaire = $salaire;

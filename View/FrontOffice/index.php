@@ -1,6 +1,13 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../Controller/userC.php';
+
+// Get user information if logged in
+$profileUser = null;
+if (isset($_SESSION['user_id'])) {
+  $userController = new UserC();
+  $profileUser = $userController->showUser($_SESSION['user_id']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,7 +19,6 @@ require_once __DIR__ . '/../../Controller/userC.php';
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="../assets/chatbot/chatbot.css">
 </head>
@@ -40,10 +46,27 @@ require_once __DIR__ . '/../../Controller/userC.php';
         </ul>
       </nav>
       <div class="header-right">
+        <?php if (isset($_SESSION['user_id']) && $profileUser): ?>
+          <div class="user-profile-dropdown" id="userProfileDropdown">
+            <div class="profile-toggle" id="profileToggle">
+              <img src="../../Controller/get_image.php?file=<?= urlencode($profileUser->getImage() ?? 'default.png') ?>"
+                alt="Profile" class="profile-pic">
+              <span><?= htmlspecialchars($profileUser->getPrenom()) ?></span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-content" id="profileDropdown">
+              <a href="user/view_profile.php"><i class="fas fa-user"></i> Mon Profil</a>
+              <a href="user/edit_profile.php"><i class="fas fa-edit"></i> Modifier Profil</a>
+              <a href="../../index.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+          </div>
+        <?php else: ?>
+          <a href="../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+        <?php endif; ?>
+
         <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
           <a href="../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
         <?php endif; ?>
-        <a href="../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
         <button class="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>
@@ -302,18 +325,37 @@ require_once __DIR__ . '/../../Controller/userC.php';
   <?php include '../assets/footer.php'; ?>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../assets/chatbot/chatbot.js"> </script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
-      document.querySelector('.main-nav').classList.toggle('active');
-    });
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Profile dropdown functionality
+      const profileToggle = document.getElementById('profileToggle');
+      const profileDropdown = document.getElementById('profileDropdown');
+      const userProfileDropdown = document.getElementById('userProfileDropdown');
 
-    // Ensure dashboard button is visible
-    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-    document.querySelector('.logout-btn').style.display = 'inline-flex';
-  });
-</script>
+      if (profileToggle && profileDropdown) {
+        profileToggle.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          userProfileDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+          if (!userProfileDropdown.contains(e.target)) {
+            userProfileDropdown.classList.remove('show');
+          }
+        });
+      }
+      // Mobile menu toggle
+      document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+        document.querySelector('.main-nav').classList.toggle('active');
+      });
+
+      // Ensure dashboard button is visible
+      document.querySelector('.dashboard-btn').style.display = 'inline-flex';
+      document.querySelector('.logout-btn').style.display = 'inline-flex';
+    });
+  </script>
 
 </body>
 

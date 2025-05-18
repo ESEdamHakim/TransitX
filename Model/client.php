@@ -5,9 +5,9 @@ class Client extends User
 {
     private $date_naissance;
 // In Client.php
-public function __construct($nom, $prenom, $email, $password, $telephone = null, $date_naissance = null)
+public function __construct($nom, $prenom, $email, $password, $telephone = null, $date_naissance = null, $image = 'default.png')
 {
-    parent::__construct($nom, $prenom, $email, $password, $telephone, 'client');
+    parent::__construct($nom, $prenom, $email, $password, $telephone, 'client', $image);
     $this->date_naissance = $date_naissance;
 }
     public function getId() { 

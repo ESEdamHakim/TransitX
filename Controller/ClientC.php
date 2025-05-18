@@ -54,8 +54,8 @@ class ClientC {
         $db->beginTransaction();
 
         // Insert into `user` table first
-        $sqlUser = "INSERT INTO user (nom, prenom, email, password, telephone, type) 
-                    VALUES (:nom, :prenom, :email, :password, :telephone, 'client')";
+        $sqlUser = "INSERT INTO user (nom, prenom, email, password, telephone, image, type) 
+                    VALUES (:nom, :prenom, :email, :password, :telephone, :image, 'client')";
         $stmtUser = $db->prepare($sqlUser);
         $stmtUser->execute([
             ':nom' => $client->getNom(),
@@ -63,6 +63,7 @@ class ClientC {
             ':email' => $client->getEmail(),
             ':password' => $client->getPassword(),
             ':telephone' => $client->getTelephone(),
+            ':image' => $client->getImage(),
         ]);
 
       
