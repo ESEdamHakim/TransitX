@@ -189,28 +189,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function setupDeleteCommentHandlers() {
-    document.querySelectorAll('.delete-comment-btn').forEach(btn => {
-      btn.addEventListener('click', function () {
-        if (!confirm('Supprimer ce commentaire ?')) return;
-        const commentId = this.getAttribute('data-comment-id');
-
-        fetch('delete_comment.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: 'id_commentaire=' + encodeURIComponent(commentId)
-        })
-          .then(res => res.text())
-          .then(response => {
-            if (response.trim() === 'success') {
-              this.closest('.comment')?.remove();
-            } else {
-              alert('Erreur lors de la suppression.');
-            }
-          });
-      });
+function setupDeleteCommentHandlers() {
+  document.querySelectorAll('.delete-comment-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      // Store the comment ID to delete
+      const commentId = this.getAttribute('data-comment-id');
+      document.getElementById('delete-comment-id').value = commentId;
+      // Show the confirmation modal
+      document.getElementById('delete-comment-modal').classList.add('active');
     });
+  });
+
+  // Confirm delete
+  const confirmBtn = document.getElementById('confirm-delete-comment-btn');
+  if (confirmBtn) {
+    confirmBtn.onclick = function () {
+      const commentId = document.getElementById('delete-comment-id').value;
+      fetch('delete_comment.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'id_commentaire=' + encodeURIComponent(commentId)
+      })
+        .then(res => res.text())
+        .then(response => {
+          if (response.trim() === 'success') {
+            // Remove the comment from the DOM
+            const commentDiv = document.querySelector(`.delete-comment-btn[data-comment-id="${commentId}"]`)?.closest('.comment');
+            if (commentDiv) commentDiv.remove();
+            document.getElementById('delete-comment-modal').classList.remove('active');
+          } else {
+            alert('Erreur lors de la suppression.');
+          }
+        });
+    };
   }
+}
 
   function initializeModalHandlers() {
     setupCloseModalHandlers();

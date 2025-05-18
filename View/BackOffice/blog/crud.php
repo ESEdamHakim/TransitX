@@ -291,6 +291,24 @@ $topArticles = $articleC->getMostCommentedArticles();
       </div>
     </div>
   </div>
+  <!-- Delete Comment Confirmation Modal -->
+<div class="modal" id="delete-comment-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Confirmer la suppression du commentaire</h2>
+      <button class="close-modal"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <p>Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.</p>
+      <div class="form-actions">
+        <button type="button" class="btn secondary cancel-btn">Annuler</button>
+        <button type="button" class="btn danger" id="confirm-delete-comment-btn">Supprimer</button>
+      </div>
+    </div>
+  </div>
+  <!-- Hidden form for deletion (optional, but not needed with AJAX) -->
+  <input type="hidden" id="delete-comment-id">
+</div>
 
   <script src="assets/js/main.js"></script>
 
