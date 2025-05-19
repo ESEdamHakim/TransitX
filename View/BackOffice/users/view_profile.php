@@ -66,10 +66,7 @@ if (!$profileUser || !$currentUser) {
 
                 <!-- Start Profile Component (works both in modal and full page) -->
 
-                <?php if ($isModal): ?>
-                    <button class="view-profile-modal-close-btn"
-                        onclick="document.querySelector('.view-profile-modal').style.display='none'">&times;</button>
-                <?php endif; ?>
+                <?php // Do NOT output the close button or container in modal mode ?>
 
                 <div class="profile-header">
                     <div class="profile-image">
@@ -120,21 +117,17 @@ if (!$profileUser || !$currentUser) {
                         <p><?= $profileUser->getDateInscription()->format('d/m/Y') ?></p>
                     </div>
                 </div>
-
-                <div class="profile-actions">
-                    <?php if (!$viewingOtherProfile): ?>
-                        <a href="edit_profile.php" class="btn primary"><i class="fas fa-edit"></i> Modifier</a>
-                    <?php else: ?>
-                        <a href="edit_user.php?id=<?= $profileUser->getId() ?>" class="btn primary"><i
-                                class="fas fa-edit"></i> Modifier</a>
-                    <?php endif; ?>
-                </div>
-                <!-- End Profile Component -->
-
                 <?php if (!$isModal): ?>
                 </div>
             </main>
         </div>
+        <div id="editProfileModal" class="edit-profile-modal">
+            <div class="profile-container">
+                <button class="edit-profile-modal-close-btn" type="button">&times;</button>
+                <div id="editProfileContent"></div>
+            </div>
+        </div>
+        <script src="assets/js/profileManage.js"></script>
     </body>
 
     </html>

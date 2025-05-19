@@ -149,13 +149,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="dashboard-content">
                 <?php endif; ?>
 
-                <?php if ($isModal): ?>
-                    <button class="edit-profile-modal-close-btn"
-                        onclick="document.querySelector('.edit-profile-modal').style.display='none'">&times;</button>
-                <?php endif; ?>
+                <?php // Do NOT output the close button or container in modal mode ?>
 
                 <?php if ($success): ?>
-                    <div class="alert success">Profil mis à jour avec succès.</div>
+                    <div class="alert alert-success profile-update-success">Profil mis à jour avec succès.</div>
                 <?php endif; ?>
 
                 <form method="POST" enctype="multipart/form-data" class="profile-form">
@@ -222,6 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </main>
         </div>
+        <script src="assets/js/profileManage.js"></script>
     </body>
 
     </html>
