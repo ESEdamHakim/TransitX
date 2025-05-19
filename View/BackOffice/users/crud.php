@@ -28,12 +28,9 @@ function getSortUrl($columnName)
   $params['order'] = getSortOrder($_GET['sort'] ?? 'id', $columnName);
   return '?' . http_build_query($params);
 }
-?>
-
-<?php
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+  session_start();
 }
 
 // For testing - use the first user from the list instead of session user
@@ -42,9 +39,10 @@ $currentUser = null;
 $currentUser = null;
 
 if (isset($_SESSION['user_id'])) {
-    $currentUser = $userController->showUser($_SESSION['user_id']);
+  $currentUser = $userController->showUser($_SESSION['user_id']);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -52,6 +50,7 @@ if (isset($_SESSION['user_id'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Gestion des Utilisateurs</title>
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/users.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -73,94 +72,6 @@ if (isset($_SESSION['user_id'])) {
 
     .sortable:hover {
       background-color: #f8f9fa;
-    }
-    
-    /* Profile dropdown styles */
-    .actions-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    
-    .profile-dropdown {
-      position: relative;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      padding: 8px 12px;
-      border-radius: 5px;
-      transition: all 0.3s ease;
-      background-color: #f0f0f0;
-      border: 1px solid #ddd;
-      margin-left: 10px;
-    }
-    
-    .profile-dropdown:hover {
-      background-color: #e5e5e5;
-    }
-    
-    .profile-dropdown .profile-pic {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: 10px;
-      object-fit: cover;
-      border: 2px solid #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .profile-dropdown span {
-      margin-right: 10px;
-      font-weight: 500;
-      color: #333;
-    }
-    
-    .dropdown-menu {
-      position: absolute;
-      top: calc(100% + 5px);
-      right: 0;
-      background: white;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-      min-width: 200px;
-      z-index: 1000;
-      display: none;
-      border: 1px solid #eee;
-    }
-    
-    .profile-dropdown:hover .dropdown-menu {
-      display: block;
-      animation: fadeIn 0.2s ease-in-out;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .dropdown-menu a {
-      display: flex;
-      align-items: center;
-      padding: 12px 15px;
-      color: #333;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      border-bottom: 1px solid #f5f5f5;
-    }
-    
-    .dropdown-menu a:last-child {
-      border-bottom: none;
-    }
-    
-    .dropdown-menu a:hover {
-      background-color: #f8f9fa;
-    }
-    
-    .dropdown-menu a i {
-      margin-right: 10px;
-      width: 16px;
-      text-align: center;
-      color: #4a6cf7;
     }
 
     .export-btn {
@@ -302,19 +213,12 @@ if (isset($_SESSION['user_id'])) {
 
     .close-modal {
       background: none;
-    }
-    
-    .dropdown-menu a:hover {
-      background-color: #f8f9fa;
-    }
-    
-    .dropdown-menu a i {
-      margin-right: 10px;
-      width: 16px;
-      text-align: center;
-      color: #4a6cf7;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
     }
 
+    /* AI Assistance Styles */
     .ai-assistance-btn {
       margin-left: 10px;
       background-color: #6f42c1;
@@ -396,18 +300,8 @@ if (isset($_SESSION['user_id'])) {
             <a href="add_user.php" class="btn primary" id="add-user-btn">
               <i class="fas fa-plus"></i> Ajouter
             </a>
-            <!-- User Profile Dropdown -->
-            <div class="profile-dropdown">
-              <img src="../../../Controller/get_image.php?file=<?= urlencode(($currentUser ? $currentUser->getImage() : 'default.png')) ?>" 
-                   alt="Profile" class="profile-pic">
-              <span><?= $currentUser ? htmlspecialchars($currentUser->getPrenom() . ' ' . $currentUser->getNom()) : 'User' ?></span>
-              <i class="fas fa-chevron-down"></i>
-              <div class="dropdown-menu">
-                <a href="view_profile.php"><i class="fas fa-user"></i> Voir mon profil</a>
-                <a href="edit_profile.php"><i class="fas fa-edit"></i> Modifier mon profil</a>
-                <a href="../../../index.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
-              </div>
-            </div>
+            <?php include '../assets/php/profile.php'; ?>
+
           </div>
         </div>
       </header>
@@ -478,9 +372,9 @@ if (isset($_SESSION['user_id'])) {
                       <tr>
                         <td><?= htmlspecialchars($user->getId()) ?></td>
                         <td>
-                          <img src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage() ?? 'default.png') ?>" 
-                               alt="Profile" 
-                               style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                          <img
+                            src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage() ?? 'default.png') ?>"
+                            alt="Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                         </td>
                         <td><?= htmlspecialchars($user->getNom()) ?></td>
                         <td><?= htmlspecialchars($user->getPrenom()) ?></td>
@@ -512,8 +406,8 @@ if (isset($_SESSION['user_id'])) {
               <?php foreach ($users as $user): ?>
                 <div class="user-card">
                   <div class="user-avatar">
-                    <img src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage() ?? 'default.png') ?>" 
-                         alt="User Avatar">
+                    <img src="../../../Controller/get_image.php?file=<?= urlencode($user->getImage() ?? 'default.png') ?>"
+                      alt="User Avatar">
                   </div>
                   <div class="user-info">
                     <h3><?= htmlspecialchars($user->getPrenom() . ' ' . $user->getNom()) ?></h3>
@@ -1004,108 +898,8 @@ if (isset($_SESSION['user_id'])) {
       document.head.appendChild(modalStyle);
     });
   </script>
-  <!-- Add this right before the closing </body> tag -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Get the AI button and modal elements
-      const aiButton = document.getElementById('ai-assistance-btn');
-      const aiModal = document.getElementById('ai-modal');
-      const closeAiModal = aiModal.querySelector('.close-modal');
+  <script src="../assets/js/profile.js"></script>
 
-      // Add click event to open modal
-      aiButton.addEventListener('click', function () {
-        aiModal.style.display = 'flex';
-        aiModal.classList.add('active');
-        document.getElementById('ai-prompt').focus();
-      });
-
-      // Add click event to close modal
-      closeAiModal.addEventListener('click', function () {
-        aiModal.style.display = 'none';
-        aiModal.classList.remove('active');
-      });
-
-      // Close modal when clicking outside content
-      aiModal.addEventListener('click', function (e) {
-        if (e.target === aiModal) {
-          aiModal.style.display = 'none';
-          aiModal.classList.remove('active');
-        }
-      });
-    });
-
-    // Add this CSS to ensure modal displays properly
-    const modalStyle = document.createElement('style');
-    modalStyle.textContent = `
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        tbody td.actions {
-          white-space: nowrap;
-        }
-        
-        /* Style for profile image in table */
-        .users-table img {
-          object-fit: cover;
-          border: 2px solid #fff;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-          transition: transform 0.2s;
-        }
-        
-        .users-table img:hover {
-          transform: scale(1.1);
-        }
-        .modal.active {
-            display: flex;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            width: 80%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-    `;
-    document.head.appendChild(modalStyle);
-  </script>
-  <!-- Add profile dropdown script -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Get the profile button and menu
-      const profileButton = document.getElementById('profileButton');
-      const profileMenu = document.getElementById('profileMenu');
-      
-      // Toggle the profile menu when button is clicked
-      if (profileButton && profileMenu) {
-        profileButton.addEventListener('click', function(e) {
-          e.preventDefault();
-          if (profileMenu.style.display === 'block') {
-            profileMenu.style.display = 'none';
-          } else {
-            profileMenu.style.display = 'block';
-          }
-        });
-        
-        // Close the menu when clicking outside
-        document.addEventListener('click', function(e) {
-          if (!profileButton.contains(e.target) && !profileMenu.contains(e.target)) {
-            profileMenu.style.display = 'none';
-          }
-        });
-      }
-    });
-  </script>
 </body>
 
 </html>

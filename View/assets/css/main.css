@@ -44,11 +44,25 @@
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-5px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .shake {
@@ -105,6 +119,7 @@ ul {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(151, 195, 162, 0.6);
 }
+
 .btn-secondary {
   padding: 7.5px 18px;
   border-radius: 40px;
@@ -718,7 +733,6 @@ ul {
   }
 }
 
-
 .user-profile-dropdown {
   position: relative;
   display: inline-block;
@@ -728,16 +742,16 @@ ul {
 .user-profile-dropdown .profile-toggle {
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--bg-color);
   border: 1px solid #e0e0e0;
   border-radius: 50px;
   padding: 5px 15px 5px 5px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
 }
 
 .user-profile-dropdown .profile-toggle:hover {
-  background-color: #f8f9fa;
+  background-color: var(--bg-lighter);
 }
 
 .user-profile-dropdown .profile-pic {
@@ -748,19 +762,25 @@ ul {
   object-fit: cover;
 }
 
+/* Dropdown Content */
 .user-profile-dropdown .dropdown-content {
   display: none;
   position: absolute;
   right: 0;
   top: 45px;
-  background-color: #fff;
+  background-color: var(--bg-color);
   min-width: 200px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px var(--shadow-color);
   border-radius: 8px;
   z-index: 1000;
   animation: fadeIn 0.3s ease;
 }
 
+.user-profile-dropdown.show .dropdown-content {
+  display: block;
+}
+
+/* Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -773,30 +793,71 @@ ul {
   }
 }
 
+/* Dropdown Links */
 .user-profile-dropdown .dropdown-content a {
-  color: #333;
-  padding: 12px 16px;
+  color: var(--text-dark);
+  padding: 14px 18px;
   text-decoration: none;
   display: flex;
   align-items: center;
-  transition: background-color 0.2s;
+  font-weight: 500;
+  font-size: 0.95rem;
+  position: relative;
+  transition: all var(--transition-fast);
 }
 
 .user-profile-dropdown .dropdown-content a:hover {
-  background-color: #f1f1f1;
+  background-color: var(--bg-lighter);
+  color: var(--secondary-dark);
+  padding-left: 22px;
 }
 
 .user-profile-dropdown .dropdown-content a i {
-  margin-right: 10px;
-  color: #4a6cf7;
+  margin-right: 12px;
+  color: var(--secondary-dark);
   width: 20px;
-  text-align: center;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: transform var(--transition-fast);
+}
+
+.user-profile-dropdown .dropdown-content a:hover i {
+  transform: scale(1.15);
 }
 
 .user-profile-dropdown .dropdown-content a:not(:last-child) {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.user-profile-dropdown.show .dropdown-content {
-  display: block;
+.user-profile-dropdown .dropdown-content a:first-child {
+  margin-top: 6px;
+}
+
+.user-profile-dropdown .dropdown-content a:last-child {
+  margin-bottom: 6px;
+  color: var(--primary);
+}
+
+.user-profile-dropdown .dropdown-content a:last-child i {
+  color: var(--primary);
+}
+
+/* Subtle Hover Indicator */
+.user-profile-dropdown .dropdown-content a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background-color: var(--secondary-dark);
+  opacity: 0.1;
+  transition: width var(--transition-fast);
+}
+
+.user-profile-dropdown .dropdown-content a:hover::after {
+  width: 4px;
 }
