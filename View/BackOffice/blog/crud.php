@@ -97,7 +97,7 @@ $topArticles = $articleC->getMostCommentedArticles();
               aria-label="Rechercher un article">
             <button><i class="fas fa-search"></i></button>
           </div>
-<button id="open-chart-modal" class="btn primary" style="font-size: 1.1rem; height: 45px;">
+          <button id="open-chart-modal" class="btn primary" style="font-size: 1.1rem; height: 45px;">
             <i class="fas fa-chart-pie"></i>
             Statistiques
           </button>
@@ -256,26 +256,29 @@ $topArticles = $articleC->getMostCommentedArticles();
       <input type="hidden" name="id_article" id="delete-id">
     </form>
   </div>
-  <!-- View Modal -->
-  <div id="content-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-headerr">
-        <h2>Détails de l'article</h2>
-        <button class="close-modal"><i class="fas fa-times"></i></button>
+<!-- View Modal -->
+<div id="content-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-headerr">
+      <h2>Détails de l'article</h2>
+      <button class="close-modal"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="article-modal-photo" id="modalPhoto"></div>
+      <div class="article-meta-grid">
+        <div><i class="fas fa-heading"></i> <span id="modalTitre"></span></div>
+        <div><i class="fas fa-user"></i> <span id="modalAuteur"></span></div>
+        <div><i class="fas fa-calendar-alt"></i> <span id="modalDate"></span></div>
+        <div><i class="fas fa-folder"></i> <span id="modalCategorie"></span></div>
+        <div><i class="fas fa-tags"></i> <span id="modalTags"></span></div>
       </div>
-      <div class="modal-body">
-        <p><strong>Titre:</strong> <span id="modalTitre"></span></p>
-        <p><strong>Auteur:</strong> <span id="modalAuteur"></span></p>
-        <p><strong>Date:</strong> <span id="modalDate"></span></p>
-        <p><strong>Catégorie:</strong> <span id="modalCategorie"></span></p>
-        <p><strong>Tags:</strong> <span id="modalTags"></span></p>
-        <p><strong>Contenu:</strong></p>
-        <p id="modalContentText"></p>
-        <p><strong>Photo:</strong></p>
-        <div id="modalPhoto"></div>
+      <div class="article-content-section">
+        <h3><i class="fas fa-align-left"></i> Contenu</h3>
+        <div id="modalContentText"></div>
       </div>
     </div>
   </div>
+</div>
   <!-- Comments Modal -->
   <div id="comments-modal" class="modal">
     <div class="modal-content">

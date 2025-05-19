@@ -159,11 +159,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('modalTags').textContent = tags || '';
         document.getElementById('modalContentText').textContent = contenu || '';
 
-        const photoTd = document.getElementById('modalPhoto');
+        const modalPhotoDiv = document.getElementById('modalPhoto');
         if (photo) {
-          photoTd.innerHTML = `<img src="../../assets/uploads/${photo}" alt="Photo Article" style="max-width:120px;">`;
+          modalPhotoDiv.innerHTML = `<img src="../../assets/uploads/${photo}" alt="Photo Article">`;
         } else {
-          photoTd.textContent = 'Aucune image';
+          modalPhotoDiv.innerHTML = `<div style="color:#888;text-align:center;width:100%;">Aucune image</div>`;
         }
 
         document.getElementById('content-modal').classList.add('active');
