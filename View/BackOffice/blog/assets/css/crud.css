@@ -828,7 +828,28 @@
   color: #e74c3c;
 }
 /* Stylish Comments Modal */
-#comments-modal .modal-content {
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
   background: #f8fafc;
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(31, 79, 101, 0.13);
@@ -840,7 +861,7 @@
   animation: modalPop 0.25s cubic-bezier(.4,2,.6,1) both;
 }
 
-#comments-modal .modal-headerr {
+.modal-headerr {
   background: linear-gradient(90deg, #4d7aa3 0%, #86b391 100%);
   color: #fff;
   padding: 1.2rem 1.5rem;
@@ -850,14 +871,14 @@
   justify-content: space-between;
 }
 
-#comments-modal .modal-headerr h2 {
+.modal-headerr h2 {
   font-size: 1.2rem;
   font-weight: 700;
   margin: 0;
   color: #fff;
 }
 
-#comments-modal .close-modal {
+.close-modal {
   color: #fff;
   font-size: 1.4rem;
   background: none;
@@ -866,21 +887,21 @@
   transition: color 0.2s;
 }
 
-#comments-modal .close-modal:hover {
+.close-modal:hover {
   color: #222;
 }
 
-#comments-modal .modal-body {
+.modal-body {
   padding: 2rem 1.5rem 1.5rem 1.5rem;
   min-height: 120px;
   background: #f8fafc;
 }
 
-#comments-modal .comments-list {
+modal .comments-list {
   margin-top: 0.5rem;
 }
 
-#comments-modal .comment {
+.comment {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -890,24 +911,23 @@
   margin-bottom: 0.7rem;
   box-shadow: 0 1px 4px rgba(31, 79, 101, 0.06);
 }
-
-#comments-modal .comment-content {
+.comment-content {
   flex: 1;
 }
 
-#comments-modal .comment-text {
+.comment-text {
   color: #333;
   font-size: 1rem;
   display: block;
   margin-bottom: 0.2rem;
 }
 
-#comments-modal .comment-date {
+.comment-date {
   color: #888;
   font-size: 0.85rem;
 }
 
-#comments-modal .delete-comment-btn {
+.delete-comment-btn {
   width: 30px;
   height: 30px;
   border-radius: 4px;
@@ -923,15 +943,15 @@
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
-#comments-modal .delete-comment-btn:hover {
+.delete-comment-btn:hover {
   background-color: #e74c3c;
   color: #fff;
   box-shadow: 0 4px 16px rgba(220, 53, 69, 0.15);
   transform: scale(1.08);
 }
 
-#comments-modal .no-comments,
-#comments-modal .error-message {
+.no-comments,
+.error-message {
   color: #888;
   text-align: center;
   margin: 1.5rem 0;

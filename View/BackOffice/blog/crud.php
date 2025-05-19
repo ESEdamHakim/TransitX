@@ -260,17 +260,15 @@ $topArticles = $articleC->getMostCommentedArticles();
         <button class="close-modal"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
-        <div class="bus-info">
-          <p><strong>Titre:</strong> <span id="modalTitre"></span></p>
-          <p><strong>Auteur:</strong> <span id="modalAuteur"></span></p>
-          <p><strong>Date:</strong> <span id="modalDate"></span></p>
-          <p><strong>Catégorie:</strong> <span id="modalCategorie"></span></p>
-          <p><strong>Tags:</strong> <span id="modalTags"></span></p>
-          <p><strong>Contenu:</strong></p>
-          <p id="modalContentText"></p>
-          <p><strong>Photo:</strong></p>
-          <div id="modalPhoto"></div>
-        </div>
+        <p><strong>Titre:</strong> <span id="modalTitre"></span></p>
+        <p><strong>Auteur:</strong> <span id="modalAuteur"></span></p>
+        <p><strong>Date:</strong> <span id="modalDate"></span></p>
+        <p><strong>Catégorie:</strong> <span id="modalCategorie"></span></p>
+        <p><strong>Tags:</strong> <span id="modalTags"></span></p>
+        <p><strong>Contenu:</strong></p>
+        <p id="modalContentText"></p>
+        <p><strong>Photo:</strong></p>
+        <div id="modalPhoto"></div>
       </div>
     </div>
   </div>
@@ -283,32 +281,29 @@ $topArticles = $articleC->getMostCommentedArticles();
       </div>
       <div class="modal-body">
         <div id="comments-list">
-          <div class="bus-info">
 
-            <!-- Les commentaires seront chargés ici -->
-          </div>
         </div>
       </div>
     </div>
   </div>
   <!-- Delete Comment Confirmation Modal -->
-<div class="modal" id="delete-comment-modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Confirmer la suppression du commentaire</h2>
-      <button class="close-modal"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="modal-body">
-      <p>Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.</p>
-      <div class="form-actions">
-        <button type="button" class="btn secondary cancel-btn">Annuler</button>
-        <button type="button" class="btn danger" id="confirm-delete-comment-btn">Supprimer</button>
+  <div class="modal" id="delete-comment-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirmer la suppression du commentaire</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.</p>
+        <div class="form-actions">
+          <button type="button" class="btn secondary cancel-btn">Annuler</button>
+          <button type="button" class="btn danger" id="confirm-delete-comment-btn">Supprimer</button>
+        </div>
       </div>
     </div>
+    <!-- Hidden form for deletion (optional, but not needed with AJAX) -->
+    <input type="hidden" id="delete-comment-id">
   </div>
-  <!-- Hidden form for deletion (optional, but not needed with AJAX) -->
-  <input type="hidden" id="delete-comment-id">
-</div>
 
   <script src="assets/js/main.js"></script>
 
