@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function setupCloseModalHandlers() {
     document.querySelectorAll('.close-modal, .cancel-btn').forEach(button => {
       button.addEventListener('click', function () {
-        const modal = this.closest('.modal');
+        const modal = this.closest('.modal, .delete-modal');
         if (modal) modal.classList.remove('active');
       });
     });
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const deleteFormIdInput = document.getElementById('delete-id');
         if (deleteFormIdInput) deleteFormIdInput.value = id;
 
-        const modalBodyText = document.querySelector('#delete-modal .modal-body p');
+        const modalBodyText = document.querySelector('#delete-modal .delete-modal-body p');
         if (modalBodyText) {
           modalBodyText.textContent = `Êtes-vous sûr de vouloir supprimer le bus ${id} ? Cette action est irréversible.`;
         }
@@ -189,41 +189,98 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-function setupDeleteCommentHandlers() {
-  document.querySelectorAll('.delete-comment-btn').forEach(btn => {
-    btn.addEventListener('click', function () {
-      // Store the comment ID to delete
-      const commentId = this.getAttribute('data-comment-id');
-      document.getElementById('delete-comment-id').value = commentId;
-      // Show the confirmation modal
-      document.getElementById('delete-comment-modal').classList.add('active');
+  function setupDeleteCommentHandlers() {
+    document.querySelectorAll('.delete-comment-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        // Store the comment ID to delete
+        const commentId = this.getAttribute('data-comment-id');
+        document.getElementById('delete-comment-id').value = commentId;
+        // Show the confirmation modal
+        document.getElementById('delete-comment-modal').classList.add('active');
+      });
     });
+
+    // Confirm delete
+    const confirmBtn = document.getElementById('confirm-delete-comment-btn');
+    if (confirmBtn) {
+      confirmBtn.onclick = function () {
+        const commentId = document.getElementById('delete-comment-id').value;
+        fetch('delete_comment.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'id_commentaire=' + encodeURIComponent(commentId)
+        })
+          .then(res => res.text())
+          .then(response => {
+            if (response.trim() === 'success') {
+              // Remove the comment from the DOM
+              const commentDiv = document.querySelector(`.delete-comment-btn[data-comment-id="${commentId}"]`)?.closest('.comment');
+              if (commentDiv) commentDiv.remove();
+              document.getElementById('delete-comment-modal').classList.remove('active');
+            } else {
+              alert('Erreur lors de la suppression.');
+            }
+          });
+      };
+    }
+  }
+  // Chart.js modal logic
+  document.getElementById('open-chart-modal').addEventListener('click', function () {
+    // Prepare data
+    const chartColors = [
+      "#3a5e7c",  // dark blue
+      "#4d7aa3", // soft blue
+      "#7fc7b5", // teal
+      "#5e8c6a", // muted green
+      "#86b391", // light green
+      "#A2D729", // lime green
+      "#FFC107", // amber-yellow
+      "#FFD700", // yellow
+    ];
+
+    const labels = articlesWithComments.map(a => a.titre.length > 25 ? a.titre.slice(0, 25) + '…' : a.titre);
+    const data = articlesWithComments.map(a => a.comment_count);
+    const total = data.reduce((a, b) => a + b, 0);
+    const percentages = data.map(count => total ? Math.round((count / total) * 100) : 0);
+
+    // Destroy previous chart if exists
+    if (window.commentsChartInstance) window.commentsChartInstance.destroy();
+
+    // Create chart
+    const ctx = document.getElementById('commentsChart').getContext('2d');
+    window.commentsChartInstance = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: percentages,
+          backgroundColor: chartColors,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const idx = context.dataIndex;
+                return `${labels[idx]}: ${data[idx]} commentaire(s) (${percentages[idx]}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    document.getElementById('chart-modal').classList.add('active');
   });
 
-  // Confirm delete
-  const confirmBtn = document.getElementById('confirm-delete-comment-btn');
-  if (confirmBtn) {
-    confirmBtn.onclick = function () {
-      const commentId = document.getElementById('delete-comment-id').value;
-      fetch('delete_comment.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'id_commentaire=' + encodeURIComponent(commentId)
-      })
-        .then(res => res.text())
-        .then(response => {
-          if (response.trim() === 'success') {
-            // Remove the comment from the DOM
-            const commentDiv = document.querySelector(`.delete-comment-btn[data-comment-id="${commentId}"]`)?.closest('.comment');
-            if (commentDiv) commentDiv.remove();
-            document.getElementById('delete-comment-modal').classList.remove('active');
-          } else {
-            alert('Erreur lors de la suppression.');
-          }
-        });
-    };
-  }
-}
+  // Ensure close works for chart modal
+  document.querySelectorAll('#chart-modal .close-modal').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.getElementById('chart-modal').classList.remove('active');
+    });
+  });
 
   function initializeModalHandlers() {
     setupCloseModalHandlers();

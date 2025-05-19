@@ -97,6 +97,10 @@ $topArticles = $articleC->getMostCommentedArticles();
               aria-label="Rechercher un article">
             <button><i class="fas fa-search"></i></button>
           </div>
+<button id="open-chart-modal" class="btn primary" style="font-size: 1.1rem; height: 45px;">
+            <i class="fas fa-chart-pie"></i>
+            Statistiques
+          </button>
           <div class="actions">
             <a href="addarticle.php" class="btn primary"><i class="fas fa-plus"></i> Ajouter un Article</a>
           </div>
@@ -232,13 +236,13 @@ $topArticles = $articleC->getMostCommentedArticles();
     </main>
   </div>
   <!-- Modal -->
-  <div class="modal" id="delete-modal">
-    <div class="modal-content">
-      <div class="modal-header">
+  <div class="delete-modal" id="delete-modal">
+    <div class="delete-modal-content">
+      <div class="delete-modal-header">
         <h2>Confirmer la suppression</h2>
         <button class="close-modal"><i class="fas fa-times"></i></button>
       </div>
-      <div class="modal-body">
+      <div class="delete-modal-body">
         <p>Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.</p>
         <div class="form-actions">
           <button type="button" class="btn secondary cancel-btn">Annuler</button>
@@ -287,13 +291,13 @@ $topArticles = $articleC->getMostCommentedArticles();
     </div>
   </div>
   <!-- Delete Comment Confirmation Modal -->
-  <div class="modal" id="delete-comment-modal">
-    <div class="modal-content">
-      <div class="modal-header">
+  <div class="delete-modal" id="delete-comment-modal">
+    <div class="delete-modal-content">
+      <div class="delete-modal-header">
         <h2>Confirmer la suppression du commentaire</h2>
         <button class="close-modal"><i class="fas fa-times"></i></button>
       </div>
-      <div class="modal-body">
+      <div class="delete-modal-body">
         <p>Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.</p>
         <div class="form-actions">
           <button type="button" class="btn secondary cancel-btn">Annuler</button>
@@ -305,6 +309,33 @@ $topArticles = $articleC->getMostCommentedArticles();
     <input type="hidden" id="delete-comment-id">
   </div>
 
+  <!-- Chart Modal -->
+  <div id="chart-modal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2>Répartition des commentaires (%)</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <canvas id="commentsChart" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Pass PHP data to JS
+    const articlesWithComments = <?php
+    // Get articles and their comment counts
+    $articlesData = [];
+    foreach ($list as $article) {
+      $articlesData[] = [
+        'titre' => $article['titre'],
+        'id_article' => $article['id_article'],
+        'comment_count' => $articleC->getCommentCountByArticle($article['id_article'])
+      ];
+    }
+    echo json_encode($articlesData);
+    ?>;
+  </script>
   <script src="assets/js/main.js"></script>
 
 </body>
