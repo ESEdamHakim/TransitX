@@ -595,6 +595,7 @@
   border: none;
   color: var(--text-medium);
   font-size: 30px;
+  font-weight: bold;
   cursor: pointer;
   transition: all var(--transition-fast);
   z-index: 10;

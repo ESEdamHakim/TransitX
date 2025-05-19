@@ -15,15 +15,17 @@ $isModal = isset($_GET['modal']); // Check if modal mode
 $userController = new UserC();
 
 // Determine which profile to view
-if (isset($_GET['id']) && !empty($_GET['id'])) {
-    $profileUser = $userController->showUser($_GET['id']);
-    $viewingOtherProfile = true;
+$id = null;
+if (isset($_GET['id']) && is_numeric($_GET['id']) && intval($_GET['id']) > 0) {
+    $id = intval($_GET['id']);
+    $viewingOtherProfile = ($id !== intval($_SESSION['user_id']));
 } else {
-    $profileUser = $userController->showUser($_SESSION['user_id']);
+    $id = intval($_SESSION['user_id']);
     $viewingOtherProfile = false;
 }
 
-$currentUser = $userController->showUser($_SESSION['user_id']);
+$profileUser = $userController->showUser($id);
+$currentUser = $userController->showUser(intval($_SESSION['user_id']));
 
 if (!$profileUser || !$currentUser) {
     header('Location: ../index.php');

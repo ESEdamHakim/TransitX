@@ -382,7 +382,8 @@ if (isset($_SESSION['user_id'])) {
                         <td><?= htmlspecialchars($user->getTelephone()) ?></td>
                         <td><?= ucfirst(htmlspecialchars($user->getType())) ?></td>
                         <td class="actions">
-                          <a href="view_profile.php?id=<?= $user->getId() ?>" class="action-btn view" title="Voir profil">
+                          <a href="#" class="action-btn view open-view-profile" data-user-id="<?= $user->getId() ?>"
+                            title="Voir profil">
                             <i class="fas fa-user"></i>
                           </a>
                           <a href="edit_user.php?id=<?= $user->getId() ?>" class="action-btn edit" title="Modifier">
