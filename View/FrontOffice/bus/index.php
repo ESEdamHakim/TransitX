@@ -294,54 +294,52 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
                 <button class="btn btn-primary toggle-info-btn" type="button" data-id="<?= $trajet['id_trajet'] ?>">
                   Informations sur les bus
                 </button>
-
-                <div id="bus-info-modal-<?= $trajet['id_trajet'] ?>" class="modal">
-                  <div class="modal-content">
-                    <span class="close-btn"
-                      onclick="closeModal('bus-info-modal-<?= $trajet['id_trajet'] ?>')">&times;</span>
-                    <div class="modal-header">
-                      <h2>Informations sur les bus</h2>
-                    </div>
-                    <div class="modal-body">
-                      <?php
-                      $buses = $controller_trajet->getBusesByTrajetId($trajet['id_trajet'], $_SESSION['user_id']);
-                      if (!empty($buses)) {
-                        foreach ($buses as $bus): ?>
-                          <div class="bus-info">
-                            <p><strong>Statut:</strong> <?= htmlspecialchars($bus['statut']) ?></p>
-                            <p><strong>Numéro de bus:</strong> <?= htmlspecialchars($bus['num_bus']) ?></p>
-                            <p><strong>Capacité:</strong> <?= htmlspecialchars($bus['capacite']) ?> personnes</p>
-                            <p><strong>Places disponibles:</strong>
-                              <span class="nbplacesdispo" data-bus-id="<?= $bus['id_bus'] ?>">
-                                <?= htmlspecialchars($bus['nbplacesdispo']) ?>
-                              </span> personnes
-                            </p>
-                            <p><strong>Type de bus:</strong> <?= htmlspecialchars($bus['type_bus']) ?></p>
-                            <p><strong>Marque:</strong> <?= htmlspecialchars($bus['marque']) ?></p>
-                            <p><strong>Modèle:</strong> <?= htmlspecialchars($bus['modele']) ?></p>
-                            <p><strong>Date de mise en service:</strong> <?= htmlspecialchars($bus['date_mise_en_service']) ?>
-                            </p>
-                            <?php if ($bus['reserved']): ?>
-                              <button class="annuler-btn" data-bus-id="<?= $bus['id_bus'] ?>"
-                                data-bus-num="<?= $bus['num_bus'] ?>">Annuler la réservation</button>
-                            <?php else: ?>
-                              <button class="reserver-btn" data-bus-id="<?= $bus['id_bus'] ?>"
-                                data-bus-num="<?= $bus['num_bus'] ?>">Réserver ce bus</button>
-                            <?php endif; ?>
-                          </div>
-                        <?php endforeach;
-                      } else {
-                        echo "<p>Aucun bus associé à ce trajet.</p>";
-                      }
-                      ?>
-                    </div>
+              </div>
+              <div id="bus-info-modal-<?= $trajet['id_trajet'] ?>" class="modal">
+                <div class="modal-content">
+                  <span class="close-btn"
+                    onclick="closeModal('bus-info-modal-<?= $trajet['id_trajet'] ?>')">&times;</span>
+                  <div class="modal-header">
+                    <h2>Informations sur les bus</h2>
+                  </div>
+                  <div class="modal-body">
+                    <?php
+                    $buses = $controller_trajet->getBusesByTrajetId($trajet['id_trajet'], $_SESSION['user_id']);
+                    if (!empty($buses)) {
+                      foreach ($buses as $bus): ?>
+                        <div class="bus-info">
+                          <p><strong>Statut:</strong> <?= htmlspecialchars($bus['statut']) ?></p>
+                          <p><strong>Numéro de bus:</strong> <?= htmlspecialchars($bus['num_bus']) ?></p>
+                          <p><strong>Capacité:</strong> <?= htmlspecialchars($bus['capacite']) ?> personnes</p>
+                          <p><strong>Places disponibles:</strong>
+                            <span class="nbplacesdispo" data-bus-id="<?= $bus['id_bus'] ?>">
+                              <?= htmlspecialchars($bus['nbplacesdispo']) ?>
+                            </span> personnes
+                          </p>
+                          <p><strong>Type de bus:</strong> <?= htmlspecialchars($bus['type_bus']) ?></p>
+                          <p><strong>Marque:</strong> <?= htmlspecialchars($bus['marque']) ?></p>
+                          <p><strong>Modèle:</strong> <?= htmlspecialchars($bus['modele']) ?></p>
+                          <p><strong>Date de mise en service:</strong> <?= htmlspecialchars($bus['date_mise_en_service']) ?>
+                          </p>
+                          <?php if ($bus['reserved']): ?>
+                            <button class="annuler-btn" data-bus-id="<?= $bus['id_bus'] ?>"
+                              data-bus-num="<?= $bus['num_bus'] ?>">Annuler la réservation</button>
+                          <?php else: ?>
+                            <button class="reserver-btn" data-bus-id="<?= $bus['id_bus'] ?>"
+                              data-bus-num="<?= $bus['num_bus'] ?>">Réserver ce bus</button>
+                          <?php endif; ?>
+                        </div>
+                      <?php endforeach;
+                    } else {
+                      echo "<p>Aucun bus associé à ce trajet.</p>";
+                    }
+                    ?>
                   </div>
                 </div>
-
               </div>
+
             </div>
-          <?php endforeach; ?>
-        </div>
+        <?php endforeach; ?>
       </div>
     </section>
 
@@ -370,7 +368,7 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
         </div>
       </div>
     </div>
-    
+
     <section class="faq">
       <div class="container">
         <div class="section-header">
@@ -416,8 +414,8 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
     </section>
   </main>
 
- <?php include '../../assets/footer.php'; ?>
- 
+  <?php include '../../assets/footer.php'; ?>
+
   <script src="assets/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"> </script>
