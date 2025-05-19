@@ -77,6 +77,9 @@
   text-align: left;
   border-bottom: 1px solid var(--gray-light);
 }
+.buses-table tr:hover {
+  background-color: #f8f9fa;
+}
 
 .buses-table th {
   font-weight: 600;
