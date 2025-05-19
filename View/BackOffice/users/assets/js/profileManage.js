@@ -89,4 +89,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         }
     });
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.id === 'modifierProfileBtn') {
+            // Close the view modal
+            document.getElementById('viewProfileModal').classList.remove('active');
+            document.getElementById('viewProfileContent').innerHTML = '';
+            // Open the edit modal via AJAX
+            fetch('edit_profile.php?modal=1')
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('editProfileContent').innerHTML = html;
+                    document.getElementById('editProfileModal').classList.add('active');
+                });
+        }
+    });
 });
