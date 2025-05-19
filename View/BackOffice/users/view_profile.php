@@ -118,7 +118,7 @@ if (!$profileUser || !$currentUser) {
                         <h3>Date d'inscription</h3>
                         <p><?= $profileUser->getDateInscription()->format('d/m/Y') ?></p>
                     </div>
-                    <button id="modifierProfileBtn" class="btn btn-primary">Modifier</button>
+                    <button id="modifierProfileBtn" class="btn primary">Modifier</button>
                 </div>
                 <?php if (!$isModal): ?>
                 </div>
