@@ -488,6 +488,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
     </div>
   </div>
+  <?php include '../assets/php/profileManage.php'; ?>
 
   <script>
     // Initialize jsPDF
@@ -899,6 +900,7 @@ if (isset($_SESSION['user_id'])) {
     });
   </script>
   <script src="../assets/js/profile.js"></script>
+  <script src="../assets/js/profileManage.js"></script>
 
 </body>
 
