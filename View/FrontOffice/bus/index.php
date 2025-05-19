@@ -337,7 +337,6 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
                   </div>
                 </div>
               </div>
-
             </div>
         <?php endforeach; ?>
       </div>
