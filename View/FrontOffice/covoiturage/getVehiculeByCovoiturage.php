@@ -21,10 +21,11 @@ if (isset($_GET['id_covoiturage'])) {
                 $vehicule = $vehiculeController->getVehiculeById($id_vehicule);
 
                 if ($vehicule) {
-                    // Add the directory path to the photo_vehicule field
+
+                    $baseUrl = dirname($_SERVER['SCRIPT_NAME'], 3); // This gives you /XTransitX
                     $vehicule['photo_vehicule'] = !empty($vehicule['photo_vehicule'])
-                        ? '../../assets/uploads/' . $vehicule['photo_vehicule']
-                        : null;// Use null if no photo is available
+                        ? $baseUrl . '/View/assets/uploads/' . $vehicule['photo_vehicule']
+                        : null;
 
                     echo json_encode(['success' => true, 'vehicule' => $vehicule]);
                 } else {
