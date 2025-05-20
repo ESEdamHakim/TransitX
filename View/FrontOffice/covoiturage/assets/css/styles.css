@@ -558,3 +558,13 @@
   background-color: #f44336;
   color: white;
 }
+.driver-profile-img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #4CAF50;
+    margin: 0 auto 15px auto;
+    display: block;
+    background: #fff;
+}

@@ -251,7 +251,7 @@ public function searchCovoiturages($departure, $destination, $date)
 }
 public function getUserById($id_user)
 {
-    $sql = "SELECT nom, prenom, email, telephone FROM user WHERE id = :id_user";
+    $sql = "SELECT nom, prenom, email, telephone, image FROM user WHERE id = :id_user";
     $db = config::getConnexion();
 
     try {

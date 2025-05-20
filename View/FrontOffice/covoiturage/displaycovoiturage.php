@@ -181,6 +181,9 @@ function isBadWeather($city)
 <div id="user-modal" class="user-modal">
     <div class="user-modal-content">
         <span class="close-user-modal">&times;</span>
+         <div style="display: flex; justify-content: center;">
+            <img id="user-image" src="" alt="Photo du conducteur" class="driver-profile-img" />
+        </div>
         <h2 class="user-modal-title">Détails du Conducteur</h2>
         <p><strong>Nom:</strong> <span id="user-nom"></span></p>
         <p><strong>Prénom:</strong> <span id="user-prenom"></span></p>

@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById("user-prenom").textContent = user.prenom;
                     document.getElementById("user-email").textContent = user.email;
                     document.getElementById("user-telephone").textContent = user.telephone;
-
+                    document.getElementById("user-image").src = user.image
+    ? '../../../Controller/get_image.php?file=' + encodeURIComponent(user.image)
+    : '../../../Controller/get_image.php?file=default.png';
                     userModal.style.display = "block";
                 } else {
                     alert("Utilisateur introuvable.");
