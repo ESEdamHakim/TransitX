@@ -411,7 +411,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
   </main>
 
- <?php include '../../assets/footer.php'; ?>
+  <?php include '../../assets/footer.php'; ?>
 
   <div id="notificationModal" class="notimodal-overlay hidden">
     <div class="notimodal-content">
@@ -448,7 +448,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <script src="assets/js/colisValidation.js"></script>
   <!-- Replace with your actual API key -->
-  <script src="https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v6.9/mapsJavaScriptAPI.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v7.0/mapsJavaScriptAPI.js" async
+    defer></script>
   <script>
     const notifyBtn = document.querySelector('.notify-button');
     const modal = document.getElementById('notificationModal');
