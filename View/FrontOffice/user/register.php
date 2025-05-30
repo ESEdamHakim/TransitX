@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Attempt to add client to DB
     if ($clientController->addClient($client)) {
-      header('Location: ../../../index.php'); // Redirect after successful signup
+      header('Location: ../../../login.php'); // Redirect after successful signup
       exit();
     } else {
       $error = "Erreur lors de l'inscription.";
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div class="auth-footer">
-          <p>Vous avez déjà un compte? <a href="../../../index.php">Se connecter</a></p>
+          <p>Vous avez déjà un compte? <a href="../../../login.php">Se connecter</a></p>
         </div>
       </div>
     </div>

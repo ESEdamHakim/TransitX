@@ -105,10 +105,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($userController->updatePassword($email, $new_password)) {
                 $success = "Votre mot de passe a été réinitialisé avec succès.";
                 unset($_SESSION['reset_password']);
-                header('Location: ../../../index.php');
+                header('Location: ../../../login.php');
                 exit;
                 $success = "Votre mot de passe a été mis à jour avec succès.";
-                header("refresh:3;url=../../../index.php");
+                header("refresh:3;url=../../../login.php");
             } else {
                 $error = "Erreur lors de la mise à jour du mot de passe.";
             }
@@ -254,7 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </form>
                 <?php endif; ?>
                 <div class="auth-footer">
-                    <p>Vous vous souvenez de votre mot de passe? <a href="../../../index.php">Se connecter</a></p>
+                    <p>Vous vous souvenez de votre mot de passe? <a href="../../../login.php">Se connecter</a></p>
                 </div>
             </div>
         </div>

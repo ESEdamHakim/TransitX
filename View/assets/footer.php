@@ -2,7 +2,7 @@
     <div class="container">
       <div class="footer-top">
         <div class="footer-logo">
-          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="footer-logo-img">
+          <img src="View/assets/images/logo.png" alt="TransitX Logo" class="footer-logo-img">
           <span>TransitX</span>
         </div>
         <div class="footer-slogan">
@@ -19,16 +19,16 @@
         <div class="footer-column">
           <h4>Services</h4>
           <ul>
-            <li><a href="../bus/index.php">Bus</a></li>
-            <li><a href="../covoiturage/index.php">Covoiturage</a></li>
-            <li><a href="index.php">Colis</a></li>
+            <li><a href="View/FrontOffice/bus/index.php">Bus</a></li>
+            <li><a href="View/FrontOffice/covoiturage/index.php">Covoiturage</a></li>
+            <li><a href="View/FrontOffice/colis/index.php">Colis</a></li>
           </ul>
         </div>
         <div class="footer-column">
           <h4>À propos</h4>
           <ul>
-            <li><a href="../about.php">Notre mission</a></li>
-            <li><a href="../blog/index.php">Blog</a></li>
+            <li><a href="#">Notre mission</a></li>
+            <li><a href="View/FrontOffice/blog/index.php">Blog</a></li>
           </ul>
         </div>
         <div class="footer-column">
