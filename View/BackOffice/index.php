@@ -1,3 +1,21 @@
+<?php
+require_once __DIR__ . '/../../Controller/UserC.php';
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,6 +23,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/profile.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -226,7 +245,10 @@
             <button><i class="fas fa-search"></i></button>
           </div>
         </div>
-      </header>
+         <div class="actions-container">
+            <?php include 'assets/php/profile.php'; ?>
+          </div>
+      </header>   
 
       <div class="dashboard-content">
         <!-- Stats Cards -->
@@ -654,7 +676,7 @@
       </div>
     </main>
   </div>
-
+  <?php include '../assets/php/profileManage.php'; ?>
   <script>
     // Sidebar Toggle
     document.querySelector('.sidebar-toggle').addEventListener('click', function () {
@@ -742,6 +764,8 @@
       }
     });
   </script>
+    <script src="assets/js/profile.js"></script>
+  <script src="assets/js/profileManage.js"></script>
 </body>
 
 </html>
