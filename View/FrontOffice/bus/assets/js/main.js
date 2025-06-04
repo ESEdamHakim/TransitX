@@ -167,35 +167,6 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         });
       }
-      // Attach submit event listener every time modal opens (prevents missing handler)
-      const creditCardForm = document.getElementById('creditCardForm');
-      if (creditCardForm && !creditCardForm.hasListener) {
-        creditCardForm.addEventListener('submit', function (e) {
-          e.preventDefault();
-          if (pendingReservation) {
-            fetch('reserver_bus.php', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: `id_bus=${pendingReservation.busId}&payment=card`
-            })
-              .then(response => response.json())
-              .then(data => {
-                closeModal('creditCardModal');
-                if (data.success) {
-                  openModal('successModal', `Votre réservation a été confirmée pour le bus ${pendingReservation.busNum}.`, 'Réservation réussie !');
-                  if (pendingReservation.button) {
-                    pendingReservation.button.outerHTML = `<button class="annuler-btn" data-bus-id="${pendingReservation.busId}" data-bus-num="${pendingReservation.busNum}">Annuler la réservation</button>`;
-                  }
-                  updateNbPlacesDispo(pendingReservation.busId, -1);
-                } else {
-                  openModal('errorModal', data.message);
-                }
-                pendingReservation = null;
-              });
-          }
-        });
-        creditCardForm.hasListener = true;
-      }
     }
   }
 
@@ -264,10 +235,20 @@ document.addEventListener('DOMContentLoaded', function () {
   const payByCashBtn = document.getElementById('payByCashBtn');
 
   if (payByCardBtn) {
-    payByCardBtn.addEventListener('click', function () {
-      closeModal('paymentChoiceModal');
-      openModal('creditCardModal');
-    });
+payByCardBtn.addEventListener('click', function () {
+  closeModal('paymentChoiceModal');
+  openModal('creditCardModal');
+  setTimeout(() => {
+    const creditCardForm = document.getElementById('creditCardForm');
+    if (creditCardForm) {
+      creditCardForm.reset();
+      // Optionally clear Card.js UI as well
+      const cardInputs = creditCardForm.querySelectorAll('input');
+      cardInputs.forEach(input => input.value = '');
+      // ... re-attach submit handler ...
+    }
+  }, 100);
+});
   }
 
   if (payByCashBtn) {
@@ -284,6 +265,36 @@ document.addEventListener('DOMContentLoaded', function () {
           .then(data => {
             if (data.success) {
               openModal('successModal', `Votre réservation (paiement en espèces) a été confirmée pour le bus ${pendingReservation.busNum}.`, 'Réservation réussie !');
+              if (pendingReservation.button) {
+                pendingReservation.button.outerHTML = `<button class="annuler-btn" data-bus-id="${pendingReservation.busId}" data-bus-num="${pendingReservation.busNum}">Annuler la réservation</button>`;
+              }
+              updateNbPlacesDispo(pendingReservation.busId, -1);
+            } else {
+              openModal('errorModal', data.message);
+            }
+            pendingReservation = null;
+          });
+      }
+    });
+  }
+
+  // Handle credit card form submission
+  const creditCardForm = document.getElementById('creditCardForm');
+  if (creditCardForm) {
+    creditCardForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      // You can add Card.js validation here if you want
+      if (pendingReservation) {
+        fetch('reserver_bus.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `id_bus=${pendingReservation.busId}&payment=card`
+        })
+          .then(response => response.json())
+          .then(data => {
+            closeModal('creditCardModal');
+            if (data.success) {
+              openModal('successModal', `Votre réservation a été confirmée pour le bus ${pendingReservation.busNum}.`, 'Réservation réussie !');
               if (pendingReservation.button) {
                 pendingReservation.button.outerHTML = `<button class="annuler-btn" data-bus-id="${pendingReservation.busId}" data-bus-num="${pendingReservation.busNum}">Annuler la réservation</button>`;
               }
