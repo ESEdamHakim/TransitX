@@ -23,6 +23,8 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/card@2.5.4/lib/card.css">
+  <script src="https://cdn.jsdelivr.net/npm/card@2.5.4/dist/card.js"></script>
 </head>
 
 <body>
@@ -338,8 +340,8 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
                 </div>
               </div>
             </div>
-        <?php endforeach; ?>
-      </div>
+          <?php endforeach; ?>
+        </div>
     </section>
 
     <!-- Success Modal -->
@@ -364,6 +366,48 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
             <h2>Erreur</h2>
             <p id="errorMessage"></p>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- Payment Choice Modal -->
+<div id="paymentChoiceModal" class="modal">
+  <div class="modal-content" style="max-width:340px; text-align:center;">
+    <div class="modal-header" style="justify-content:center;">
+      <h2 style="font-size:1.2rem;">Choisissez le mode de paiement</h2>
+      <button class="close-btn" onclick="closeModal('paymentChoiceModal')">&times;</button>
+    </div>
+    <div class="modal-body" style="padding:2rem 1.5rem 1.5rem;">
+      <button id="payByCardBtn" class="btn btn-primary" style="width:100%;margin-bottom:1rem;font-size:0.9rem;">Paiement par carte</button>
+      <button id="payByCashBtn" class="btn btn-primary" style="width:100%;font-size:0.9rem;">Paiement en espèces</button>
+    </div>
+  </div>
+</div>
+    <!-- Credit Card Modal -->
+    <div id="creditCardModal" class="modal">
+      <div class="modal-content" style="max-width:420px;">
+        <div class="modal-header">
+          <h2>Paiement par carte</h2>
+          <button class="close-btn" onclick="closeModal('creditCardModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="card-wrapper">
+          </div>
+          <form id="creditCardForm" autocomplete="off">
+            <div class="form-group">
+              <input placeholder="Numéro de carte" type="tel" name="number" id="cc-number" required>
+            </div>
+            <div class="form-group">
+              <input placeholder="Nom sur la carte" type="text" name="name" id="cc-name" required>
+            </div>
+            <div class="form-group" style="display:flex;gap:1rem;">
+              <input placeholder="MM/AA" type="tel" name="expiry" id="cc-expiry" required style="flex:1;">
+            </div>
+            <div class="form-group" style="display:flex;gap:1rem;">
+              <input placeholder="CVC" type="tel" name="cvc" id="cc-cvc" required style="flex:1;">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1.5rem;">Valider le
+              paiement</button>
+          </form>
         </div>
       </div>
     </div>
@@ -413,7 +457,61 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
     </section>
   </main>
 
-  <?php include '../../assets/footer.php'; ?>
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">
+          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="footer-logo-img">
+          <span>TransitX</span>
+        </div>
+        <div class="footer-slogan">
+          <p>Move Green, Live Clean</p>
+        </div>
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-middle">
+        <div class="footer-column">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="View/FrontOffice/bus/index.php">Bus</a></li>
+            <li><a href="View/FrontOffice/covoiturage/index.php">Covoiturage</a></li>
+            <li><a href="View/FrontOffice/colis/index.php">Colis</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>À propos</h4>
+          <ul>
+            <li><a href="#">Notre mission</a></li>
+            <li><a href="View/FrontOffice/blog/index.php">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Légal</h4>
+          <ul>
+            <li><a href="#">Conditions d'utilisation</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contact</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> 123 Avenue Habib Bourguiba, Tunis</li>
+            <li><i class="fas fa-phone"></i> +216 26 216 216</li>
+            <li><i class="fas fa-envelope"></i> contact@transitx.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 TransitX. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="assets/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
