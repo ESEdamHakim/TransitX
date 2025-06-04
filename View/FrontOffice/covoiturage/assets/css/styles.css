@@ -58,22 +58,70 @@
   gap: 1.5rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
+/* Create Ride Section */
+.create-ride-section {
+  padding: 3rem 5%;
+  background-color: var(--gray-light);
 }
 
-.form-group label {
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+.create-ride-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.create-ride-section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
   color: var(--secondary-1);
 }
 
+.create-ride-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.create-ride-form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; /* pushes buttons to the right */
+  gap: 10px; /* space between buttons */
+  margin-top: 20px; /* optional: adds space above buttons */
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #1f4f65;
+}
+
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
+  width: 100%;
   padding: 0.8rem;
   border: 1px solid var(--gray);
   border-radius: 4px;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
 
 .search-form button {
@@ -173,43 +221,6 @@
 
 .driver-rating i {
   color: var(--highlight);
-}
-
-/* Create Ride Section */
-.create-ride-section {
-  padding: 5rem 5%;
-  background-color: var(--gray-light);
-}
-
-.create-ride-section h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--secondary-1);
-}
-
-.create-ride-container {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.create-ride-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-.create-ride-form button {
-  margin-top: 1rem;
 }
 
 /* How It Works */
@@ -411,16 +422,6 @@
   margin-top: 10px;
 }
 
-.form-actions {
-  position: sticky; /* Keep buttons visible at the bottom */
-  bottom: 0;
-  background-color: #fff;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
 .vehicule-modal {
   display: none;
   position: fixed;

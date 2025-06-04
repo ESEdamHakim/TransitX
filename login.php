@@ -126,9 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $_SESSION['user_type'] = $user->getType();
           $_SESSION['user_name'] = $user->getNom() . ' ' . $user->getPrenom();
 
-          header('Location: View/' .
-            ($user->getType() === 'employe' ? 'BackOffice' : 'FrontOffice') .
-            '/index.php');
+          header('Location: View/FrontOffice/index.php');
           exit();
         }
       }
