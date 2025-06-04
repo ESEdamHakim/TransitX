@@ -238,16 +238,6 @@ document.addEventListener('DOMContentLoaded', function () {
 payByCardBtn.addEventListener('click', function () {
   closeModal('paymentChoiceModal');
   openModal('creditCardModal');
-  setTimeout(() => {
-    const creditCardForm = document.getElementById('creditCardForm');
-    if (creditCardForm) {
-      creditCardForm.reset();
-      // Optionally clear Card.js UI as well
-      const cardInputs = creditCardForm.querySelectorAll('input');
-      cardInputs.forEach(input => input.value = '');
-      // ... re-attach submit handler ...
-    }
-  }, 100);
 });
   }
 
