@@ -130,20 +130,6 @@ function isBadWeather($city)
     <?php endif; ?>
 </div>
 
-<!-- Modal Structure -->
-<!-- Modal Structure -->
-<div id="vehicule-modal" class="vehicule-modal">
-    <div class="vehicule-modal-content">
-        <span class="close-modal">&times;</span>
-        <h2 class="vehicule-modal-title">Détails du Véhicule</h2>
-        <img id="vehicule-photo" src="" alt="Photo du véhicule" />
-        <p><strong>Marque:</strong> <span id="vehicule-marque"></span></p>
-        <p><strong>Modèle:</strong> <span id="vehicule-modele"></span></p>
-        <p><strong>Matricule:</strong> <span id="vehicule-matricule"></span></p>
-        <p><strong>Couleur:</strong> <span id="vehicule-couleur"></span></p>
-        <p><strong>Nombre de places:</strong> <span id="vehicule-places"></span></p>
-    </div>
-</div>
 <!-- Weather Modal -->
 <div id="weatherModal" class="modal">
     <div class="modal-content">
@@ -176,19 +162,46 @@ function isBadWeather($city)
         </div>
     </div>
 </div>
+
+<!-- User Modal -->
 <div id="user-modal" class="user-modal">
-    <div class="user-modal-content">
-        <span class="close-user-modal">&times;</span>
-        <div style="display: flex; justify-content: center;">
-            <img id="user-image" src="" alt="Photo du conducteur" class="driver-profile-img" />
-        </div>
-        <h2 class="user-modal-title">Détails du Conducteur</h2>
-        <p><strong>Nom:</strong> <span id="user-nom"></span></p>
-        <p><strong>Prénom:</strong> <span id="user-prenom"></span></p>
-        <p><strong>Email:</strong> <span id="user-email"></span></p>
-        <p><strong>Téléphone:</strong> <span id="user-telephone"></span></p>
+  <div class="user-modal-content">
+    <div class="modal-header">
+      <h2>Détails du Conducteur</h2>
+      <span class="close-user-modal">&times;</span>
     </div>
+    <div class="modal-body">
+      <img id="user-image" src="" alt="Photo du conducteur" class="driver-profile-img" />
+      <div class="article-meta-grid">
+      <div><strong>Nom:</strong> <span id="user-nom"></span></div>
+      <div><strong>Prénom:</strong> <span id="user-prenom"></span></div>
+      <div><strong>Email:</strong> <span id="user-email"></span></div>
+      <div><strong>Téléphone:</strong> <span id="user-telephone"></span></div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Vehicule Modal -->
+<div id="vehicule-modal" class="vehicule-modal">
+  <div class="vehicule-modal-content">
+    <div class="modal-header">
+      <h2>Détails du Véhicule</h2>
+      <span class="close-modal">&times;</span>
+    </div>
+    <div class="modal-body">
+      <img id="vehicule-photo" src="" alt="Photo du véhicule" class="vehicle-img" />
+      <div class="article-meta-grid">
+      <div><strong>Marque:</strong> <span id="vehicule-marque"></span></div>
+      <div><strong>Modèle:</strong> <span id="vehicule-modele"></span></div>
+      <div><strong>Matricule:</strong> <span id="vehicule-matricule"></span></div>
+      <div><strong>Couleur:</strong> <span id="vehicule-couleur"></span></div>
+      <div><strong>Nombre de places:</strong> <span id="vehicule-places"></span></div>
+    </div>
+    </div>
+  </div>
+</div>
+
 <script>
     document.querySelectorAll('.weather-icon-btn').forEach(btn => {
     btn.addEventListener('click', function() {
