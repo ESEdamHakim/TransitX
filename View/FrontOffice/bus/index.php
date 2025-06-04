@@ -392,6 +392,7 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
         <div class="modal-body">
           <div id="card-wrapper">
           </div>
+          <br>
           <form id="creditCardForm" autocomplete="off">
             <div class="form-group">
               <input placeholder="Numéro de carte" type="tel" name="number" id="cc-number" required>
