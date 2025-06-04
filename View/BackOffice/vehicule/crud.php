@@ -1,6 +1,22 @@
 <?php
 // Include the display logic
 include 'BdisplayVehicule.php';
+require_once __DIR__ . '/../../../Controller/UserC.php';
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -9,6 +25,7 @@ include 'BdisplayVehicule.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Gestion des Véhicules</title>
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/crud.css">
@@ -111,9 +128,14 @@ include 'BdisplayVehicule.php';
             <input type="text" placeholder="Rechercher un véhicule...">
             <button><i class="fas fa-search"></i></button>
           </div>
-          <button id="add-vehicule-btn" style="display: none;">
-            <i class="fas fa-plus"></i> Ajouter un Véhicule
-          </button>
+          <div class="actions">
+            <button id="add-vehicule-btn" style="display: none;">
+              <i class="fas fa-plus"></i> Ajouter un Véhicule
+            </button>
+            <div class="actions-container">
+              <?php include '../assets/php/profile.php'; ?>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -278,8 +300,11 @@ include 'BdisplayVehicule.php';
       </div>
     </div>
   </div>
+  <?php include '../assets/php/profileManage.php'; ?>
 
   <script src="BvalidVehicule.js"></script>
+  <script src="../assets/js/profile.js"></script>
+  <script src="assets/js/profileManage.js"></script>
 </body>
 
 </html>

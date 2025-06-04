@@ -1,5 +1,22 @@
 <?php
 require_once "../../../Controller/buscontroller.php";
+require_once __DIR__ . '/../../../Controller/UserC.php';
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
+
 $busController = new BusController();
 $buslist = $busController->listBuses();
 ?>
@@ -10,6 +27,7 @@ $buslist = $busController->listBuses();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Gestion des Bus</title>
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/crud.css">
@@ -33,6 +51,9 @@ $buslist = $busController->listBuses();
           </div>
           <div class="actions">
             <a href="addbus.php" class="btn primary"><i class="fas fa-plus"></i> Ajouter un Bus</a>
+            <div class="actions-container">
+              <?php include '../assets/php/profile.php'; ?>
+            </div>
           </div>
         </div>
       </header>
@@ -129,13 +150,17 @@ $buslist = $busController->listBuses();
         </div>
       </div>
     </div>
-
-    <!-- Hidden Delete Form -->
-    <form method="POST" action="deletebus.php" style="display:none;" id="delete-form">
-      <input type="hidden" name="id_bus" id="delete-id">
-    </form>
   </div>
+  <!-- Hidden Delete Form -->
+  <form method="POST" action="deletebus.php" style="display:none;" id="delete-form">
+    <input type="hidden" name="id_bus" id="delete-id">
+  </form>
+
+  <?php include '../assets/php/profileManage.php'; ?>
+
   <script src="assets/js/main.js"></script>
+  <script src="../assets/js/profile.js"></script>
+  <script src="assets/js/profileManage.js"></script>
 </body>
 
 </html>

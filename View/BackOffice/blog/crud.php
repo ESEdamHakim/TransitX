@@ -3,6 +3,22 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../../../Controller/ArticleC.php';
+require_once __DIR__ . '/../../../Controller/UserC.php';
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
 
 
 $articleC = new ArticleC();
@@ -77,6 +93,7 @@ $topArticles = $articleC->getMostCommentedArticles();
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/crud.css">
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -103,6 +120,9 @@ $topArticles = $articleC->getMostCommentedArticles();
           </button>
           <div class="actions">
             <a href="addarticle.php" class="btn primary"><i class="fas fa-plus"></i> Ajouter un Article</a>
+            <div class="actions-container">
+              <?php include '../assets/php/profile.php'; ?>
+            </div>
           </div>
         </div>
       </header>
@@ -256,29 +276,29 @@ $topArticles = $articleC->getMostCommentedArticles();
       <input type="hidden" name="id_article" id="delete-id">
     </form>
   </div>
-<!-- View Modal -->
-<div id="content-modal" class="modal">
-  <div class="modal-content">
-    <div class="modal-headerr">
-      <h2>Détails de l'article</h2>
-      <button class="close-modal"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="modal-body">
-      <div class="article-modal-photo" id="modalPhoto"></div>
-      <div class="article-meta-grid">
-        <div><i class="fas fa-heading"></i> <span id="modalTitre"></span></div>
-        <div><i class="fas fa-user"></i> <span id="modalAuteur"></span></div>
-        <div><i class="fas fa-calendar-alt"></i> <span id="modalDate"></span></div>
-        <div><i class="fas fa-folder"></i> <span id="modalCategorie"></span></div>
-        <div><i class="fas fa-tags"></i> <span id="modalTags"></span></div>
+  <!-- View Modal -->
+  <div id="content-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-headerr">
+        <h2>Détails de l'article</h2>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
       </div>
-      <div class="article-content-section">
-        <h3><i class="fas fa-align-left"></i> Contenu</h3>
-        <div id="modalContentText"></div>
+      <div class="modal-body">
+        <div class="article-modal-photo" id="modalPhoto"></div>
+        <div class="article-meta-grid">
+          <div><i class="fas fa-heading"></i> <span id="modalTitre"></span></div>
+          <div><i class="fas fa-user"></i> <span id="modalAuteur"></span></div>
+          <div><i class="fas fa-calendar-alt"></i> <span id="modalDate"></span></div>
+          <div><i class="fas fa-folder"></i> <span id="modalCategorie"></span></div>
+          <div><i class="fas fa-tags"></i> <span id="modalTags"></span></div>
+        </div>
+        <div class="article-content-section">
+          <h3><i class="fas fa-align-left"></i> Contenu</h3>
+          <div id="modalContentText"></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
   <!-- Comments Modal -->
   <div id="comments-modal" class="modal">
     <div class="modal-content">
@@ -324,6 +344,7 @@ $topArticles = $articleC->getMostCommentedArticles();
       </div>
     </div>
   </div>
+  <?php include '../assets/php/profileManage.php'; ?>
   <script>
     // Pass PHP data to JS
     const articlesWithComments = <?php
@@ -340,6 +361,8 @@ $topArticles = $articleC->getMostCommentedArticles();
     ?>;
   </script>
   <script src="assets/js/main.js"></script>
+  <script src="../assets/js/profile.js"></script>
+  <script src="assets/js/profileManage.js"></script>
 
 </body>
 
