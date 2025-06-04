@@ -145,6 +145,20 @@ class TrajetController
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getEmailByUserId($user_id)
+{
+    $sql = "SELECT email FROM user WHERE id_user = :user_id LIMIT 1";
+    try {
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['email'] : null;
+    } catch (Exception $e) {
+        die('Error: ' . $e->getMessage());
+    }
+}
+
       
 }
 ?>
