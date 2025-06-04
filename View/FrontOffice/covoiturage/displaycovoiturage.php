@@ -52,12 +52,10 @@ function isBadWeather($city)
                 <div class="route-card">
                     <div class="top-buttons">
                         <!-- Add Voir Météo Button if bad weather -->
-                        <?php if (isBadWeather($covoiturage['lieu_arrivee'])): ?>
-                            <button class="icon-btn weather-icon-btn" data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
-                                data-date="<?= htmlspecialchars($covoiturage['date_depart']) ?>">
-                                <i class="fa-solid fa-circle-exclamation"></i>
-                            </button>
-                        <?php endif; ?>
+                        <button class="icon-btn weather-icon-btn" data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
+                            data-date="<?= htmlspecialchars($covoiturage['date_depart']) ?>">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </button>
 
                         <!-- Add Voir Véhicule Button -->
                         <?php if (!empty($covoiturage['id_vehicule'])): ?>
@@ -181,7 +179,7 @@ function isBadWeather($city)
 <div id="user-modal" class="user-modal">
     <div class="user-modal-content">
         <span class="close-user-modal">&times;</span>
-         <div style="display: flex; justify-content: center;">
+        <div style="display: flex; justify-content: center;">
             <img id="user-image" src="" alt="Photo du conducteur" class="driver-profile-img" />
         </div>
         <h2 class="user-modal-title">Détails du Conducteur</h2>
@@ -191,7 +189,20 @@ function isBadWeather($city)
         <p><strong>Téléphone:</strong> <span id="user-telephone"></span></p>
     </div>
 </div>
-
+<script>
+    document.querySelectorAll('.weather-icon-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const city = btn.getAttribute('data-city');
+        // Show loading spinner or modal here if you want
+        fetch(`getWeather.php?city=${encodeURIComponent(city)}`)
+            .then(res => res.json())
+            .then(data => {
+                // Show weather info in your modal
+                // Example: document.querySelector('.temp').textContent = data.temp + '°C';
+            });
+    });
+});
+</script>
 <script src="voirvehicule.js"></script>
 <script src="driver.js"></script>
 <script src="manageRequests.js"></script>
