@@ -1,7 +1,24 @@
 <?php
 require_once '../../../Controller/ReclamationController.php';
+require_once __DIR__ . '/../../../Controller/userC.php';
 
-session_start();
+session_start(); // Important : Démarrer la session en haut du fichier
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
+
 // Check if an ID is provided in the URL
 if (!isset($_GET['id_rec'])) {
     die("Invalid Request");
@@ -55,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>TransitX - Réclamation</title>
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="../../assets/css/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
@@ -86,13 +104,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </ul>
             </nav>
             <div class="header-right">
-                <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-                    <a href="../../BackOffice/index.php" class="btn btn-outline">Dashboard</a>
-                <?php endif; ?>
-                <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <div class="actions">
+                    <div class="actions-container">
+                        <?php include '../assets/php/profile.php'; ?>
+                    </div>
+                    <button class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -225,63 +244,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php include '../../assets/footer.php'; ?>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Mobile menu toggle
-    document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
-      document.querySelector('.main-nav').classList.toggle('active');
-    });
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Mobile menu toggle
+            document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+                document.querySelector('.main-nav').classList.toggle('active');
+            });
 
-    // Tab navigation
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabPanes = document.querySelectorAll('.tab-pane');
+            // Tab navigation
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
 
-    tabButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        const tabId = button.getAttribute('data-tab');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const tabId = button.getAttribute('data-tab');
 
-        // Remove active class from all buttons and panes
-        tabButtons.forEach(btn => btn.classList.remove('active'));
-        tabPanes.forEach(pane => pane.classList.remove('active'));
+                    // Remove active class from all buttons and panes
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
 
-        // Add active class to current button and pane
-        button.classList.add('active');
-        document.getElementById(tabId + '-reclamation').classList.add('active');
-      });
-    });
+                    // Add active class to current button and pane
+                    button.classList.add('active');
+                    document.getElementById(tabId + '-reclamation').classList.add('active');
+                });
+            });
 
-    // FAQ toggles
-    const faqItems = document.querySelectorAll('.faq-item');
-    faqItems.forEach(item => {
-      const question = item.querySelector('.faq-question');
-      question.addEventListener('click', () => {
-        item.classList.toggle('active');
-      });
-    });
+            // FAQ toggles
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                });
+            });
 
-    // Show tracking result on submit (demo purpose)
-    const trackingForm = document.querySelector('.tracking-form');
-    const trackingResult = document.querySelector('.tracking-result');
+            // Show tracking result on submit (demo purpose)
+            const trackingForm = document.querySelector('.tracking-form');
+            const trackingResult = document.querySelector('.tracking-result');
 
-    if (trackingForm) {
-      trackingForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        trackingResult.style.display = 'block';
-        trackingForm.querySelector('input').value = '';
-        // Scroll to results
-        trackingResult.scrollIntoView({ behavior: 'smooth' });
-      });
-    }
+            if (trackingForm) {
+                trackingForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    trackingResult.style.display = 'block';
+                    trackingForm.querySelector('input').value = '';
+                    // Scroll to results
+                    trackingResult.scrollIntoView({ behavior: 'smooth' });
+                });
+            }
 
-    // Ensure dashboard button is visible
-    document.querySelector('.dashboard-btn').style.display = 'inline-flex';
-    document.querySelector('.logout-btn').style.display = 'inline-flex';
-  });
-</script>
+            // Ensure dashboard button is visible
+            document.querySelector('.dashboard-btn').style.display = 'inline-flex';
+            document.querySelector('.logout-btn').style.display = 'inline-flex';
+        });
+    </script>
 
     <script src="assets/js/recValidation.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="assets/js/chatbot.js"> </script>
+    <script src="../assets/js/profile.js"></script>
 </body>
 
 </html>

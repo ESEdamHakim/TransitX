@@ -1,6 +1,22 @@
 <?php
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
 require_once __DIR__ . '/../../../appConfig.php';
+require_once __DIR__ . '/../../../Controller/userC.php';
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($id_user)) {
+  $currentUser = $userController->showUser($id_user);
+}
 
 // Ensure the user is logged in
 if (!isset($id_user)) {
@@ -22,6 +38,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/weatherstyles.css">
   <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
@@ -51,13 +68,14 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
         </ul>
       </nav>
       <div class="header-right">
-         <?php if (isset($user_type) && $user_type !== 'client'): ?>
-          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
-        <?php endif; ?>
-        <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-        <button class="mobile-menu-btn">
-          <i class="fas fa-bars"></i>
-        </button>
+        <div class="actions">
+          <div class="actions-container">
+            <?php include '../assets/php/profile.php'; ?>
+          </div>
+          <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -359,7 +377,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"></script>
   <script src="../vehicule/menuToggle.js"></script>
-
+<script src="../assets/js/profile.js"></script>
 
 </body>
 

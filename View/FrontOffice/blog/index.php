@@ -1,5 +1,22 @@
 <?php
-session_start();
+require_once __DIR__ . '/../../../Controller/userC.php';
+
+session_start(); // Important : Démarrer la session en haut du fichier
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,6 +29,7 @@ session_start();
   <!-- Feuilles de style -->
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
@@ -227,18 +245,15 @@ session_start();
         </ul>
       </nav>
       <div class="header-right">
-        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-          <a href="../../BackOffice/index.php" class="btn secondary">Dashboard</a>
-        <?php endif; ?>
-        <a href="../../../index.php" class="btn primary">Déconnexion</a>
-        <a href="calendrier.php" class="calen-button">
-          <i class="fas fa-calendar-alt" style="color: #86b391;"></i>
-        </a>
-        <button class="mobile-menu-btn">
-          <i class="fas fa-bars"></i>
-        </button>
+        <div class="actions">
+          <div class="actions-container">
+            <?php include '../assets/php/profile.php'; ?>
+          </div>
+          <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
       </div>
-    </div>
   </header>
   <main>
     <section class="blog-hero">
@@ -279,6 +294,7 @@ session_start();
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"> </script>
+  <script src="../assets/js/profile.js"></script>
 
 </body>
 

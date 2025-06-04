@@ -1,7 +1,25 @@
 <?php
 include("../../../Controller/trajetcontroller.php");
 include("../../../Controller/buscontroller.php");
-session_start();
+require_once __DIR__ . '/../../../Controller/userC.php';
+
+session_start(); // Important : Démarrer la session en haut du fichier
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
+
 $controller_trajet = new TrajetController();
 $trajetlist = $controller_trajet->listTrajets();
 $favorisList = $controller_trajet->getFavorisByUserId($_SESSION['user_id']);
@@ -20,6 +38,7 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
   <title>TransitX - Services de Bus</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
@@ -49,10 +68,9 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
         </ul>
       </nav>
       <div class="header-right">
-        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-          <a href="../../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
-        <?php endif; ?>
-        <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+        <div class="actions-container">
+          <?php include '../assets/php/profile.php'; ?>
+        </div>
         <!-- Notification Button -->
         <div class="notification-container">
           <button id="notifBtn" class="notify-button">
@@ -370,18 +388,20 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
       </div>
     </div>
     <!-- Payment Choice Modal -->
-<div id="paymentChoiceModal" class="modal">
-  <div class="modal-content" style="max-width:340px; text-align:center;">
-    <div class="modal-header" style="justify-content:center;">
-      <h2 style="font-size:1.2rem;">Choisissez le mode de paiement</h2>
-      <button class="close-btn" onclick="closeModal('paymentChoiceModal')">&times;</button>
+    <div id="paymentChoiceModal" class="modal">
+      <div class="modal-content" style="max-width:340px; text-align:center;">
+        <div class="modal-header" style="justify-content:center;">
+          <h2 style="font-size:1.2rem;">Choisissez le mode de paiement</h2>
+          <button class="close-btn" onclick="closeModal('paymentChoiceModal')">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:2rem 1.5rem 1.5rem;">
+          <button id="payByCardBtn" class="btn btn-primary"
+            style="width:100%;margin-bottom:1rem;font-size:0.9rem;">Paiement par carte</button>
+          <button id="payByCashBtn" class="btn btn-primary" style="width:100%;font-size:0.9rem;">Paiement en
+            espèces</button>
+        </div>
+      </div>
     </div>
-    <div class="modal-body" style="padding:2rem 1.5rem 1.5rem;">
-      <button id="payByCardBtn" class="btn btn-primary" style="width:100%;margin-bottom:1rem;font-size:0.9rem;">Paiement par carte</button>
-      <button id="payByCashBtn" class="btn btn-primary" style="width:100%;font-size:0.9rem;">Paiement en espèces</button>
-    </div>
-  </div>
-</div>
     <!-- Credit Card Modal -->
     <div id="creditCardModal" class="modal">
       <div class="modal-content" style="max-width:420px;">
@@ -517,7 +537,7 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
   <script src="assets/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"> </script>
-
+  <script src="../assets/js/profile.js"></script>
 
 </body>
 

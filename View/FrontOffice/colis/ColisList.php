@@ -1,7 +1,24 @@
 <?php
 require_once __DIR__ . '/../../../Controller/ColisController.php';
+require_once __DIR__ . '/../../../Controller/userC.php';
 
-session_start();
+session_start(); // Important : Démarrer la session en haut du fichier
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
+
 
 $ColisC = new ColisController();
 $list = $ColisC->listColis();
@@ -22,6 +39,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/colis.css">
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
@@ -229,10 +247,9 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
         </ul>
       </nav>
       <div class="header-right">
-        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-          <a href="../../BackOffice/index.php" class="btn btn-outline">Dashboard</a>
-        <?php endif; ?>
-        <a href="../../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
+        <div class="actions-container">
+          <?php include '../assets/php/profile.php'; ?>
+        </div>
         <!-- Notification Button -->
         <button class="notify-button position-relative" title="Notifications">
           <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
@@ -646,6 +663,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
       }
     });
   </script>
+  <script src="../assets/js/profile.js"></script>
 
 </body>
 

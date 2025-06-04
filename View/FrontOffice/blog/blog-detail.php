@@ -1,5 +1,23 @@
 <?php
+require_once __DIR__ . '/../../../Controller/userC.php';
+
 session_start(); // Important : Démarrer la session en haut du fichier
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
+
 $isLoggedIn = isset($_SESSION['user_id']);
 
 require_once __DIR__ . '/../../assets/fpdf186/fpdf.php';
@@ -85,6 +103,7 @@ function getReplies($pdo, $parentId)
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/blog.css">
+    <link rel="stylesheet" href="../../assets/css/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -117,13 +136,14 @@ function getReplies($pdo, $parentId)
                 </ul>
             </nav>
             <div class="header-right">
-                <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-                    <a href="../../BackOffice/index.php" class="btn secondary">Dashboard</a>
-                <?php endif; ?>
-                <a href="../../../index.php" class="btn primary logout-btn">Déconnexion</a>
-                <a href="calendrier.php" class="calen-button">
-                    <i class="fas fa-calendar-alt" style="color: #86b391;"></i>
-                </a>
+                <div class="actions">
+                    <div class="actions-container">
+                        <?php include '../assets/php/profile.php'; ?>
+                    </div>
+                    <button class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -553,13 +573,14 @@ function getReplies($pdo, $parentId)
                             } else {
                                 btn.querySelector('.dislike-count').innerText = data.nb_dislikes;
                             }
-                             
-                        }          
+
+                        }
                     });
-                    window.location.reload();
+                window.location.reload();
             });
         });
     </script>
+    <script src="../assets/js/profile.js"></script>
 
 </body>
 
