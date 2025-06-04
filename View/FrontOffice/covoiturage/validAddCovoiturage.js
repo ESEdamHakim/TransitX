@@ -74,30 +74,41 @@ document.addEventListener("DOMContentLoaded", () => {
         const details = rideDetails.value.trim();
         const idVehicule = document.getElementById("id_vehicule").value.trim();
         let hasError = false;
-
+        console.log({
+            lieuDepart,
+            lieuArrivee,
+            dateDepart,
+            tempsDepart,
+            placesDispo,
+            prix,
+            accepteColis,
+            colisComplet,
+            details,
+            idVehicule
+        });
         // Validate required fields for departure
-if (!lieuDepart) {
-    document.getElementById("start-point-error").textContent = "Veuillez remplir le point de départ.";
-    hasError = true;
-} else {
-    // Validate the departure city
-    const isCityValid = await validateCity(lieuDepart, document.getElementById("start-point-error"));
-    if (!isCityValid) {
-        hasError = true;
-    }
-}
+        if (!lieuDepart) {
+            document.getElementById("start-point-error").textContent = "Veuillez remplir le point de départ.";
+            hasError = true;
+        } else {
+            // Validate the departure city
+            const isCityValid = await validateCity(lieuDepart, document.getElementById("start-point-error"));
+            if (!isCityValid) {
+                hasError = true;
+            }
+        }
 
-// Validate required fields for destination
-if (!lieuArrivee) {
-    document.getElementById("end-point-error").textContent = "Veuillez remplir le point d'arrivée.";
-    hasError = true;
-} else {
-    // Validate the destination city
-    const isDestinationValid = await validateCity(lieuArrivee, document.getElementById("end-point-error"));
-    if (!isDestinationValid) {
-        hasError = true;
-    }
-}
+        // Validate required fields for destination
+        if (!lieuArrivee) {
+            document.getElementById("end-point-error").textContent = "Veuillez remplir le point d'arrivée.";
+            hasError = true;
+        } else {
+            // Validate the destination city
+            const isDestinationValid = await validateCity(lieuArrivee, document.getElementById("end-point-error"));
+            if (!isDestinationValid) {
+                hasError = true;
+            }
+        }
 
         if (!dateDepart) {
             document.getElementById("ride-date-create-error").textContent = "Veuillez sélectionner une date.";

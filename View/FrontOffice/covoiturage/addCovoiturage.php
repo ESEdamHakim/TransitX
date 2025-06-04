@@ -8,7 +8,7 @@ if (!isset($id_user)) {
     exit;
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+
     $dateDepart = filter_input(INPUT_POST, 'date_depart', FILTER_SANITIZE_STRING);
     $lieuDepart = filter_input(INPUT_POST, 'lieu_depart', FILTER_SANITIZE_STRING);
     $lieuArrivee = filter_input(INPUT_POST, 'lieu_arrivee', FILTER_SANITIZE_STRING);
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-   
+
     // Validate the matricule and fetch the corresponding vehicle
     $vehiculeController = new VehiculeC();
     $vehicule = $vehiculeController->getVehiculesByUser($id_user);
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tempsDepart,
         $placesDispo
     );
-    $covoiturage->setIdUser($id_user); 
+    $covoiturage->setIdUser($id_user);
     $covoiturage->setIdVehicule($id_vehicule);
     // Call the controller to add the covoiturage
     $covoiturageController = new CovoiturageC();
@@ -86,9 +86,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo $result; // Display the error message
     }
 }
-
-// Debugging: Log the submitted data
-var_dump($_POST);
-file_put_contents('log.txt', print_r($_POST, true));
-exit;
 ?>
