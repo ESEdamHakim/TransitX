@@ -207,7 +207,6 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
                 <option value="non">Non</option>
               </select>
               <span id="accept-parcels-error" class="error-message"></span>
-
             </div>
             <div class="form-group">
               <label for="full-parcels">Colis complet</label>
@@ -378,7 +377,6 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <script src="meteo-card.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"></script>
-  <script src="../vehicule/menuToggle.js"></script>
   <script src="../assets/js/profile.js"></script>
 
 </body>
