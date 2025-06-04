@@ -8,6 +8,7 @@
     <div class="dropdown-content" id="profileDropdown">
         <a href="#" class="open-view-profile"><i class="fas fa-user"></i> Voir mon profil</a>
         <a href="#" class="open-edit-profile"><i class="fas fa-edit"></i> Modifier mon profil</a>
+        <a href="../FrontOffice/index.php"><i class="fas fa-home"></i> Home</a>
         <a href="../../index.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
     </div>
 </div>
