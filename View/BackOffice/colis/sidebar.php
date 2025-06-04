@@ -4,7 +4,7 @@
             <a href="../../FrontOffice/index.php" class="logoback-link">
                 <div class="logoback">
                     <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logo">
-                    <span>Transit</span><span class="highlight">X</span>
+                    <span class="logo-text">Transit</span><span class="highlight logo-text">X</span>
                 </div>
             </a>
             <button class="sidebar-toggle">

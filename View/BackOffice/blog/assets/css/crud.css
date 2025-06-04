@@ -690,7 +690,9 @@
 .stat-box.scolaire {
   border-left: 4px solid #ffc107;
 }
-
+.stat-box.autre {
+  border-left: 4px solid #dc3545;
+}
 
 .search-bar {
   display: flex;

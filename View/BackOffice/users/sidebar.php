@@ -4,7 +4,7 @@
         <a href="../../FrontOffice/index.php" class="logoback-link">
           <div class="logoback">
             <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logoback">
-            <span>Transit</span><span class="highlight">X</span>
+            <span class="logo-text">Transit</span><span class="highlight logo-text">X</span>
           </div>
         </a>
         <button class="sidebar-toggle">
@@ -71,9 +71,3 @@
     </aside>
 </div>
 
-<script>
-    document.querySelector('.sidebar-toggle').addEventListener('click', () => {
-        document.querySelector('.sidebar').classList.toggle('collapsed');
-        document.querySelector('.main-content').classList.toggle('expanded');
-    });
-</script>

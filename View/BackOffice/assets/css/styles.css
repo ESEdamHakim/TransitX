@@ -11,7 +11,7 @@
   --gray-light: #f1f1f1;
   --gray: #ddd;
   --sidebar-width: 260px;
-  --sidebar-collapsed-width: 70px;
+  --sidebar-collapsed-width: 85px;
   --header-height: 70px;
   --success: #28a745;
   --warning: #ffc107;
@@ -65,6 +65,10 @@ ul {
   position: fixed;
   height: 100vh;
   z-index: 1000;
+}
+
+.sidebar.collapsed .logo-text {
+  display: none;
 }
 
 .sidebar.collapsed {

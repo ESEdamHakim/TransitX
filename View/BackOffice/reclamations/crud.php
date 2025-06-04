@@ -1,5 +1,21 @@
 <?php
 require_once __DIR__ . '/../../../Controller/ReclamationController.php';
+require_once __DIR__ . '/../../../Controller/UserC.php';
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
 
 $ReclamationC = new ReclamationController();
 $list = $ReclamationC->listReclamation();
@@ -14,6 +30,7 @@ $clients = $ReclamationC->getAllClients();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Gestion des Réclamations</title>
+  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/reclamation.css">
   <link rel="stylesheet" href="assets/css/crud.css">
@@ -40,8 +57,11 @@ $clients = $ReclamationC->getAllClients();
               <i class="fas fa-download"></i> Exporter
             </a>
             <a href="addRec.php" class="btn primary">
-              <i class="fas fa-plus"></i> Ajouter une réclamation
+              <i class="fas fa-plus"></i> Réclamation
             </a>
+            <div class="actions-container">
+              <?php include '../assets/php/profile.php'; ?>
+            </div>
           </div>
         </div>
       </header>
@@ -219,6 +239,7 @@ $clients = $ReclamationC->getAllClients();
       </div>
     </div>
   </div>
+  <?php include '../assets/php/profileManage.php'; ?>
 
   <!-- Hidden Delete Form -->
   <form method="POST" action="deleteRec.php" style="display:none;" id="delete-form">
@@ -239,6 +260,8 @@ $clients = $ReclamationC->getAllClients();
     });
   </script>
   <script src="assets/js/recFilters.js"></script>
+  <script src="../assets/js/profile.js"></script>
+  <script src="assets/js/profileManage.js"></script>
 </body>
 
 </html>
