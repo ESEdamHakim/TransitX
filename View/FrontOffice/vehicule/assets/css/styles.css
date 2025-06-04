@@ -65,10 +65,7 @@
   background-color: var(--gray-light);
 }
 
-.create-ride-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+
 
 .create-ride-section h2 {
   text-align: center;
@@ -76,10 +73,14 @@
   color: var(--secondary-1);
 }
 
+
 .create-ride-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .create-ride-form {
@@ -538,16 +539,6 @@
   border-radius: 8px;
 }
 
-.form-actions {
-  position: sticky; /* Keep buttons visible at the bottom */
-  bottom: 0;
-  background-color: #fff;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
 
 /* Buttons */
 

@@ -151,6 +151,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
           <?php include 'UserDisplayCovoiturage.php'; ?>
         </div>
       </div>
+    </section>
       <section id="create-ride" class="create-ride-section">
         <div class="container">
           <div class="section-header">
