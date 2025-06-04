@@ -255,78 +255,79 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
           </form>
         </div>
       </section>
-      <section class="how-it-works">
-        <div class="container">
-          <div class="section-header">
-            <span class="badge">Fonctionnement</span>
-            <h2>Comment ça marche</h2>
-            <p>Découvrez comment fonctionne notre service de covoiturage en 3 étapes simples.</p>
+    </section>
+    <section class="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <span class="badge">Fonctionnement</span>
+          <h2>Comment ça marche</h2>
+          <p>Découvrez comment fonctionne notre service de covoiturage en 3 étapes simples.</p>
+        </div>
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3>Recherchez</h3>
+            <p>Trouvez un trajet qui correspond à vos besoins en quelques clics.</p>
           </div>
-          <div class="steps-container">
-            <div class="step">
-              <div class="step-icon">
-                <i class="fas fa-search"></i>
-              </div>
-              <h3>Recherchez</h3>
-              <p>Trouvez un trajet qui correspond à vos besoins en quelques clics.</p>
+          <div class="step">
+            <div class="step-icon">
+              <i class="fas fa-calendar-check"></i>
             </div>
-            <div class="step">
-              <div class="step-icon">
-                <i class="fas fa-calendar-check"></i>
-              </div>
-              <h3>Réservez</h3>
-              <p>Réservez votre place et payez en ligne en toute sécurité.</p>
+            <h3>Réservez</h3>
+            <p>Réservez votre place et payez en ligne en toute sécurité.</p>
+          </div>
+          <div class="step">
+            <div class="step-icon">
+              <i class="fas fa-car"></i>
             </div>
-            <div class="step">
-              <div class="step-icon">
-                <i class="fas fa-car"></i>
-              </div>
-              <h3>Voyagez</h3>
-              <p>Rejoignez votre conducteur au point de rendez-vous et profitez du trajet.</p>
-            </div>
+            <h3>Voyagez</h3>
+            <p>Rejoignez votre conducteur au point de rendez-vous et profitez du trajet.</p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="benefits">
-        <div class="container">
-          <div class="section-header">
-            <span class="badge">Avantages</span>
-            <h2>Avantages du Covoiturage</h2>
-            <p>Découvrez pourquoi le covoiturage est bénéfique pour vous et pour l'environnement.</p>
+    <section class="benefits">
+      <div class="container">
+        <div class="section-header">
+          <span class="badge">Avantages</span>
+          <h2>Avantages du Covoiturage</h2>
+          <p>Découvrez pourquoi le covoiturage est bénéfique pour vous et pour l'environnement.</p>
+        </div>
+        <div class="benefits-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <h3>Écologique</h3>
+            <p>Réduisez votre empreinte carbone en partageant un véhicule plutôt que de conduire seul.</p>
           </div>
-          <div class="benefits-grid">
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fas fa-leaf"></i>
-              </div>
-              <h3>Écologique</h3>
-              <p>Réduisez votre empreinte carbone en partageant un véhicule plutôt que de conduire seul.</p>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-euro-sign"></i>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fas fa-euro-sign"></i>
-              </div>
-              <h3>Économique</h3>
-              <p>Partagez les frais de transport et économisez sur vos déplacements quotidiens.</p>
+            <h3>Économique</h3>
+            <p>Partagez les frais de transport et économisez sur vos déplacements quotidiens.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fas fa-users"></i>
-              </div>
-              <h3>Social</h3>
-              <p>Rencontrez de nouvelles personnes et rendez vos trajets plus agréables.</p>
+            <h3>Social</h3>
+            <p>Rencontrez de nouvelles personnes et rendez vos trajets plus agréables.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-road"></i>
             </div>
-            <div class="feature-card">
-              <div class="feature-icon">
-                <i class="fas fa-road"></i>
-              </div>
-              <h3>Moins de Trafic</h3>
-              <p>Contribuez à réduire la congestion routière dans votre ville.</p>
-            </div>
+            <h3>Moins de Trafic</h3>
+            <p>Contribuez à réduire la congestion routière dans votre ville.</p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
   </main>
 
   <?php include '../../assets/footer.php'; ?>

@@ -75,12 +75,6 @@
   color: var(--secondary-1);
 }
 
-.create-ride-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-}
-
 .create-ride-form {
   background-color: white;
   padding: 2rem;
