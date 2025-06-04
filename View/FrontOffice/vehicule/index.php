@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../../Controller/userC.php';
 $userController = new UserC();
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
-  session_start();
+    session_start();
 }
 
 // For testing - use the first user from the list instead of session user
@@ -13,7 +13,7 @@ $currentUser = null;
 $currentUser = null;
 
 if (isset($_SESSION['user_id'])) {
-  $currentUser = $userController->showUser($_SESSION['user_id']);
+    $currentUser = $userController->showUser($_SESSION['user_id']);
 }
 ?>
 <!DOCTYPE html>
@@ -74,8 +74,8 @@ if (isset($_SESSION['user_id'])) {
             <div class="hero-content">
                 <h1>Véhicule</h1>
                 <p>Partagez vos trajets, économisez de l'argent et réduisez votre empreinte carbone.</p>
-                <div class="hero-buttons">
-                    <a href="#create-ride" class="btn btn-outline">Ajouter votre voiture</a>
+                <div style="text-align: center; display: flex; justify-content: center; gap: 1rem;">
+                    <a href="#create-ride" class="btn btn-primary">Ajouter votre voiture</a>
                 </div>
             </div>
         </section>
@@ -158,7 +158,7 @@ if (isset($_SESSION['user_id'])) {
                         <span id="confort-error" class="error-message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="photo-vehicule">Ajouter une Photo :</label>
+                        <label for="photo-vehicule">Ajouter une Photo</label>
                         <input type="file" id="photo-vehicule" name="photo_vehicule" accept="image/*">
                         <span class="error-message" id="photo-vehicule-error"></span>
                     </div>
@@ -167,16 +167,13 @@ if (isset($_SESSION['user_id'])) {
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
-                <script src="validAddVehicule.js"></script>
-                <script src="validDeleteVehicule.js"></script>
-                <script src="validEditVehicule.js"></script>
-                <script src="menuToggle.js"></script>
             </div>
         </section>
     </main>
 
     <?php include '../../assets/footer.php'; ?>
 
+    <script src="menuToggle.js"></script>
     <script src="validAddVehicule.js"></script>
     <script src="validDeleteVehicule.js"></script>
     <script src="validEditVehicule.js"></script>

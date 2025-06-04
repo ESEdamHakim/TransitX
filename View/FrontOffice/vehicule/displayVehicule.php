@@ -1,18 +1,18 @@
- <?php
-    require_once __DIR__ . '/../../../Controller/vehiculeC.php';
-    require_once __DIR__ . '/../../../appConfig.php';
-    if (!isset($id_user)) {
+<?php
+require_once __DIR__ . '/../../../Controller/vehiculeC.php';
+require_once __DIR__ . '/../../../appConfig.php';
+if (!isset($id_user)) {
     echo "Erreur : Utilisateur non connecté.";
     exit;
 }
-    $vehiculeController = new VehiculeC();
-    try {
-        $userVehicules = $vehiculeController->listUserVehicules($id_user);
-    } catch (Exception $e) {
-        echo "Erreur : " . $e->getMessage();
-        exit;
-    }
-    ?>
+$vehiculeController = new VehiculeC();
+try {
+    $userVehicules = $vehiculeController->listUserVehicules($id_user);
+} catch (Exception $e) {
+    echo "Erreur : " . $e->getMessage();
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,10 +21,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Véhicules</title>
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
 
 <body>
-   
+
 
     <div class="user-route-cards">
         <h2>Vos Véhicules</h2>
@@ -39,8 +40,8 @@
                     <p><strong>Confort:</strong> <?= htmlspecialchars($vehicule['confort']) ?></p>
                     <p><strong>Photo:</strong>
                         <?php if (!empty($vehicule['photo_vehicule'])): ?>
-                            <img src="../../assets/uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>" alt="Photo du véhicule"
-                                style="width: 100px;">
+                            <img src="../../assets/uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>"
+                                alt="Photo du véhicule" style="width: 100px;">
                         <?php else: ?>
                             Aucune photo disponible.
                         <?php endif; ?>
@@ -61,6 +62,7 @@
                         </button>
                     </div>
                 </div>
+                <br>
             <?php endforeach; ?>
         <?php else: ?>
             <p>Vous n'avez ajouté aucun véhicule pour le moment.</p>
@@ -76,7 +78,7 @@
                     <form id="ride-form" method="POST" action="updateVehicule.php" enctype="multipart/form-data">
                         <input type="hidden" id="id_vehicule" name="id_vehicule">
                         <input type="hidden" id="existing-photo" name="existing_photo">
-                        
+
                         <div class="form-group">
                             <label for="ride-matricule">Matricule</label>
                             <input type="text" id="ride-matricule" name="matricule" required>
@@ -117,15 +119,33 @@
                             <input type="file" id="ride-photo" name="photo_vehicule" accept="image/*">
                             <span id="ride-photo-error" class="error-message"></span>
                         </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn secondary cancel-btn">Annuler</button>
-                            <button type="submit" class="btn primary">Enregistrer</button>
-                        </div>
+                        <button type="button" class="btn btn-outline">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        const modal = document.getElementById('ride-modal');
+        const closeBtn = modal.querySelector('.close-modal');
+        const cancelBtn = modal.querySelector('.btn.btn-outline'); // the "Annuler" button
+
+        // Show modal (call this from your "Edit" button)
+        function openRideModal() {
+            modal.classList.add('active');
+        }
+
+        // Close modal on close button or cancel
+        function closeRideModal() {
+            modal.classList.remove('active');
+        }
+
+        // Event Listeners
+        closeBtn.addEventListener('click', closeRideModal);
+        cancelBtn.addEventListener('click', closeRideModal);
+    </script>
+
 </body>
 
 </html>
