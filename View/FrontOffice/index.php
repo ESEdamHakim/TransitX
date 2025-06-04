@@ -2,11 +2,19 @@
 session_start();
 require_once __DIR__ . '/../../Controller/userC.php';
 
-// Get user information if logged in
-$profileUser = null;
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
 if (isset($_SESSION['user_id'])) {
-  $userController = new UserC();
-  $profileUser = $userController->showUser($_SESSION['user_id']);
+  $currentUser = $userController->showUser($_SESSION['user_id']);
 }
 ?>
 <!DOCTYPE html>
@@ -17,6 +25,7 @@ if (isset($_SESSION['user_id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TransitX - Mobilité Urbaine Durable</title>
   <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
@@ -46,30 +55,14 @@ if (isset($_SESSION['user_id'])) {
         </ul>
       </nav>
       <div class="header-right">
-        <?php if (isset($_SESSION['user_id']) && $profileUser): ?>
-          <div class="user-profile-dropdown" id="userProfileDropdown">
-            <div class="profile-toggle" id="profileToggle">
-              <img src="../../Controller/get_image.php?file=<?= urlencode($profileUser->getImage() ?? 'default.png') ?>"
-                alt="Profile" class="profile-pic">
-              <span><?= htmlspecialchars($profileUser->getPrenom()) ?></span>
-              <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="dropdown-content" id="profileDropdown">
-              <a href="user/view_profile.php"><i class="fas fa-user"></i> Mon Profil</a>
-              <a href="user/edit_profile.php"><i class="fas fa-edit"></i> Modifier Profil</a>
-              <a href="../../index.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
-            </div>
+        <div class="actions">
+          <div class="actions-container">
+            <?php include 'assets/php/indexprofile.php'; ?>
           </div>
-        <?php else: ?>
-          <a href="../../index.php" class="btn btn-primary logout-btn">Déconnexion</a>
-        <?php endif; ?>
-
-        <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
-          <a href="../BackOffice/index.php" class="btn btn-outline dashboard-btn">Dashboard</a>
-        <?php endif; ?>
-        <button class="mobile-menu-btn">
-          <i class="fas fa-bars"></i>
-        </button>
+          <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -327,25 +320,6 @@ if (isset($_SESSION['user_id'])) {
   <script src="../assets/chatbot/chatbot.js"> </script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Profile dropdown functionality
-      const profileToggle = document.getElementById('profileToggle');
-      const profileDropdown = document.getElementById('profileDropdown');
-      const userProfileDropdown = document.getElementById('userProfileDropdown');
-
-      if (profileToggle && profileDropdown) {
-        profileToggle.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          userProfileDropdown.classList.toggle('show');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function (e) {
-          if (!userProfileDropdown.contains(e.target)) {
-            userProfileDropdown.classList.remove('show');
-          }
-        });
-      }
       // Mobile menu toggle
       document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
         document.querySelector('.main-nav').classList.toggle('active');
@@ -356,6 +330,7 @@ if (isset($_SESSION['user_id'])) {
       document.querySelector('.logout-btn').style.display = 'inline-flex';
     });
   </script>
+  <script src="assets/js/profile.js"></script>
 
 </body>
 

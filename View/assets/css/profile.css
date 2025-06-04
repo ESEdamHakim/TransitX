@@ -130,7 +130,7 @@
 .user-profile-dropdown .profile-toggle {
   display: flex;
   align-items: center;
-  background-color: var(--text-light);
+  background-color: #fff;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xs) var(--spacing-md) var(--spacing-xs) var(--spacing-xs);
@@ -383,7 +383,7 @@
 
 .user-type.employe {
   background-color: var(--secondary-light);
-  color: var(--text-light);
+  color: #fff;
 }
 
 .user-type.admin {
