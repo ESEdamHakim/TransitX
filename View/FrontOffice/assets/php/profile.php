@@ -12,6 +12,6 @@
         <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] !== 'client'): ?>
             <a href="../../BackOffice/index.php"><i class="fas fa-chart-bar"></i> Dashboard</a>
         <?php endif; ?>
-        <a href="../../index.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+        <a href="../../../index.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
     </div>
 </div>

@@ -1,4 +1,23 @@
 <?php
+require_once __DIR__ . '/../../../../Controller/userC.php';
+
+session_start(); // Important : Démarrer la session en haut du fichier
+
+$userController = new UserC();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// For testing - use the first user from the list instead of session user
+// Comment this out once testing is complete
+$currentUser = null;
+$currentUser = null;
+
+if (isset($_SESSION['user_id'])) {
+  $currentUser = $userController->showUser($_SESSION['user_id']);
+}
+
 $apiKey = 'FitXplCVELZM84MwY8fo9JwsUejXs9fO';
 $countryCode = 'TN';
 $year = filter_input(INPUT_GET, 'year', FILTER_VALIDATE_INT) ?: date("Y");
@@ -18,7 +37,7 @@ $nextYear = date("Y", $nextDate);
 $url = "https://calendarific.com/api/v2/holidays?api_key=$apiKey&country=$countryCode&year=$year&month=$month";
 
 // Add caching here
-$cacheFile = __DIR__ . "/assets/cache/cache_{$year}_{$month}.json";
+$cacheFile = __DIR__ . "/../cache/cache_{$year}_{$month}.json";
 if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < 86400) { // 1 day cache
   $response = file_get_contents($cacheFile);
 } else {
@@ -102,6 +121,7 @@ function generateCalendar($year, $month, $holidays)
   <link rel="stylesheet" href="../../../assets/css/main.css">
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../css/calendar.css">
+    <link rel="stylesheet" href="../../../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
@@ -112,26 +132,29 @@ function generateCalendar($year, $month, $holidays)
     <div class="container">
       <div class="header-left">
         <div class="logo">
-          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="main-logo">
+          <img src="../../../assets/images/logo.png" alt="TransitX Logo" class="main-logo">
           <span class="logo-text">TransitX</span>
         </div>
       </div>
       <nav class="main-nav">
         <ul>
-          <li><a href="../index.php">Accueil</a></li>
-          <li><a href="../bus/index.php">Bus</a></li>
-          <li><a href="../colis/index.php">Colis</a></li>
-          <li><a href="../covoiturage/index.php">Covoiturage</a></li>
-          <li class="active"><a href="index.php">Blog</a></li>
-          <li><a href="../reclamation/index.php">Réclamation</a></li>
+          <li><a href="../../index.php">Accueil</a></li>
+          <li><a href="../../bus/index.php">Bus</a></li>
+          <li><a href="../../colis/index.php">Colis</a></li>
+          <li><a href="../../covoiturage/index.php">Covoiturage</a></li>
+          <li><a href="../../blog/index.php">Blog</a></li>
+          <li><a href="../../reclamation/index.php">Réclamation</a></li>
         </ul>
       </nav>
-      <div class="header-right">
-        <a href="../../BackOffice/index.php" class="btn secondary">Dashboard</a>
-        <a href="../../../index.php" class="btn primary">Déconnexion</a>
-        <button class="mobile-menu-btn">
-          <i class="fas fa-bars"></i>
-        </button>
+       <div class="header-right">
+        <div class="actions">
+          <div class="actions-container">
+            <?php include 'calendarprofile.php'; ?>
+          </div>
+          <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -167,7 +190,7 @@ function generateCalendar($year, $month, $holidays)
     </div>
   </div>
 
-  <?php include '../../assets/footer.php'; ?>
+  <?php include '../../../assets/footer.php'; ?>
 
   <script>
     function showHolidayDetails(name) {
@@ -186,6 +209,7 @@ function generateCalendar($year, $month, $holidays)
       }
     }
   </script>
+  <script src="../js/profile.js"></script>
 </body>
 
 </html>
