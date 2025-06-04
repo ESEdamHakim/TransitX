@@ -46,7 +46,7 @@ if (isset($_SESSION['user_id'])) {
         <a href="../../FrontOffice/index.php" class="logo-link">
           <div class="logoback">
             <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logoback">
-            <span>Transit</span><span class="highlight">X</span>
+            <span class="logo-text">Transit</span><span class="highlight logo-text">X</span>
           </div>
         </a>
         <button class="sidebar-toggle">

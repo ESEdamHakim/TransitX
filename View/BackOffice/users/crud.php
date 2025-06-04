@@ -664,11 +664,7 @@ if (isset($_SESSION['user_id'])) {
       doc.save(`Utilisateurs_TransitX_${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.pdf`);
     });
 
-    // Sidebar Toggle
-    document.querySelector('.sidebar-toggle').addEventListener('click', function () {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-content').classList.toggle('expanded');
-    });
+
 
     // Tab Switching
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -898,6 +894,12 @@ if (isset($_SESSION['user_id'])) {
             }
         `;
       document.head.appendChild(modalStyle);
+    });
+  </script>
+  <script>
+    document.querySelector('.sidebar-toggle').addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+      document.querySelector('.main-content').classList.toggle('expanded');
     });
   </script>
   <script src="../assets/js/profile.js"></script>
