@@ -121,7 +121,7 @@ function generateCalendar($year, $month, $holidays)
   <link rel="stylesheet" href="../../../assets/css/main.css">
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../css/calendar.css">
-    <link rel="stylesheet" href="../../../assets/css/profile.css">
+  <link rel="stylesheet" href="../../../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
@@ -144,9 +144,10 @@ function generateCalendar($year, $month, $holidays)
           <li><a href="../../covoiturage/index.php">Covoiturage</a></li>
           <li><a href="../../blog/index.php">Blog</a></li>
           <li><a href="../../reclamation/index.php">Réclamation</a></li>
+          <li><a href="../../vehicule/index.php">Véhicule</a></li>
         </ul>
       </nav>
-       <div class="header-right">
+      <div class="header-right">
         <div class="actions">
           <div class="actions-container">
             <?php include 'calendarprofile.php'; ?>
@@ -190,7 +191,7 @@ function generateCalendar($year, $month, $holidays)
     </div>
   </div>
 
-  <?php include '../../../assets/footer.php'; ?>
+  <?php include '../../../assets/calendarfooter.php'; ?>
 
   <script>
     function showHolidayDetails(name) {

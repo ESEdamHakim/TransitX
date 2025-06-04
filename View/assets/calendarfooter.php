@@ -2,7 +2,7 @@
     <div class="container">
       <div class="footer-top">
         <div class="footer-logo">
-          <img src="../../assets/images/logo.png" alt="TransitX Logo" class="footer-logo-img">
+          <img src="../../../assets/images/logo.png" alt="TransitX Logo" class="footer-logo-img">
           <span>TransitX</span>
         </div>
         <div class="footer-slogan">

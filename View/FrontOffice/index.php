@@ -51,7 +51,6 @@ if (isset($_SESSION['user_id'])) {
           <li><a href="blog/index.php">Blog</a></li>
           <li><a href="reclamation/index.php">Réclamation</a></li>
           <li><a href="vehicule/index.php">Véhicule</a></li>
-
         </ul>
       </nav>
       <div class="header-right">
@@ -315,7 +314,7 @@ if (isset($_SESSION['user_id'])) {
     </section>
   </main>
 
-  <?php include '../assets/footer.php'; ?>
+  <?php include '../assets/indexfooter.php'; ?>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../assets/chatbot/chatbot.js"> </script>
   <script>

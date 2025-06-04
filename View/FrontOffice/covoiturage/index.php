@@ -85,10 +85,9 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       <div class="hero-content">
         <h1>Covoiturage Écologique</h1>
         <p>Partagez vos trajets, économisez de l'argent et réduisez votre empreinte carbone.</p>
-        <div class="hero-buttons">
+        <div style="text-align: center; display: flex; justify-content: center; gap: 1rem;">
           <a href="#search-rides" class="btn btn-primary">Rechercher un trajet</a>
           <a href="#create-ride" class="btn btn-outline">Proposer un trajet</a>
-
         </div>
       </div>
     </section>
@@ -185,7 +184,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
             <div class="form-row">
               <div class="form-group">
                 <label for="seats">Places disponibles</label>
-                <select id="seats" name="places_dispo">
+                <select id="seats" name="places_dispo" class="form-control">
                   <option value="1">1 place</option>
                   <option value="2">2 places</option>
                   <option value="3">3 places</option>
@@ -202,7 +201,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
             <div class="form-row">
               <div class="form-group">
                 <label for="accept-parcels">Accepte les colis</label>
-                <select id="accept-parcels" name="accepte_colis">
+                <select id="accept-parcels" name="accepte_colis" class="form-control">
                   <option value="oui">Oui</option>
                   <option value="non">Non</option>
                 </select>
@@ -210,7 +209,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
               </div>
               <div class="form-group">
                 <label for="full-parcels">Colis complet</label>
-                <select id="full-parcels" name="colis_complet">
+                <select id="full-parcels" name="colis_complet" class="form-control">
                   <option value="oui">Oui</option>
                   <option value="non">Non</option>
                 </select>
@@ -235,7 +234,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
             <div class="form-group">
               <label for="id_vehicule">Sélectionnez un véhicule</label>
               <?php if (!empty($vehicules)): ?>
-                <select id="id_vehicule" name="id_vehicule">
+                <select id="id_vehicule" name="id_vehicule" class="form-control">
                   <option value="">-- Sélectionnez un véhicule --</option>
                   <?php foreach ($vehicules as $vehicule): ?>
                     <option value="<?= htmlspecialchars($vehicule['id_vehicule']) ?>">
@@ -377,7 +376,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"></script>
   <script src="../vehicule/menuToggle.js"></script>
-<script src="../assets/js/profile.js"></script>
+  <script src="../assets/js/profile.js"></script>
 
 </body>
 
