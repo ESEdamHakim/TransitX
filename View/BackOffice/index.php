@@ -246,7 +246,7 @@ if (isset($_SESSION['user_id'])) {
           </div>
         </div>
          <div class="actions-container">
-            <?php include 'assets/php/profile.php'; ?>
+            <?php include 'assets/php/indexprofile.php'; ?>
           </div>
       </header>   
 
@@ -676,7 +676,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
     </main>
   </div>
-  <?php include '../assets/php/profileManage.php'; ?>
+  <?php include 'assets/php/profileManage.php'; ?>
   <script>
     // Sidebar Toggle
     document.querySelector('.sidebar-toggle').addEventListener('click', function () {
