@@ -968,7 +968,7 @@
   background: #f8fafc;
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(31, 79, 101, 0.13);
-  max-width: 520px;
+  max-width: 600px; /* Use the largest width you want for any modal */
   width: 97%;
   margin: 0 auto;
   padding: 0;
@@ -976,7 +976,7 @@
   animation: modalPop 0.25s cubic-bezier(.4,2,.6,1) both;
 }
 
-.modal-headerr {
+.modal-header, .modal-headerr {
   background: linear-gradient(90deg, #4d7aa3 0%, #86b391 100%);
   color: #fff;
   padding: 1.2rem 1.5rem;
@@ -986,7 +986,7 @@
   justify-content: space-between;
 }
 
-.modal-headerr h2 {
+.modal-header h2, .modal-headerr h2 {
   font-size: 1.2rem;
   font-weight: 700;
   margin: 0;
@@ -1010,79 +1010,27 @@
   padding: 2rem 1.5rem 1.5rem 1.5rem;
   min-height: 120px;
   background: #f8fafc;
-}
-
-modal .comments-list {
-  margin-top: 0.5rem;
-}
-
-
-#chart-modal .modal-content {
-  background: #f8fafc;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(31, 79, 101, 0.13);
-  max-width: 600px;
-  width: 97%;
-  margin: 0 auto;
-  padding: 0;
-  overflow: hidden;
-  animation: modalPop 0.25s cubic-bezier(.4,2,.6,1) both;
-}
-#chart-modal .modal-header {
-  background: linear-gradient(90deg, #4d7aa3 0%, #86b391 100%);
-  color: #fff;
-  padding: 1.2rem 1.5rem;
-  border-bottom: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-#chart-modal .modal-header h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0;
-  color: #fff;
-}
-#chart-modal .close-modal {
-  color: #fff;
-  font-size: 1.4rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-#chart-modal .close-modal:hover {
-  color: #222;
-}
-#chart-modal .modal-body {
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
-  background: #f8fafc;
-}
-
-/* Allow scrolling in content modal if content is long */
-#content-modal .modal-body {
   max-height: 70vh;
   overflow-y: auto;
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
-  background: #f8fafc;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Keeps the scrollbar styled and visible only when needed */
   scrollbar-width: thin;
   scrollbar-color: #b2c7d9 #eaf3f7;
 }
 
-/* Optional: Custom scrollbar for Webkit browsers */
-#content-modal .modal-body::-webkit-scrollbar {
+/* Custom scrollbar for Webkit browsers */
+.modal-body::-webkit-scrollbar {
   width: 8px;
   background: #eaf3f7;
   border-radius: 8px;
 }
-#content-modal .modal-body::-webkit-scrollbar-thumb {
+.modal-body::-webkit-scrollbar-thumb {
   background: #b2c7d9;
   border-radius: 8px;
 }
+
+/* Modal photo, meta, and content section styles */
 .article-modal-photo {
   width: 100%;
   max-width: 320px;
@@ -1144,3 +1092,4 @@ modal .comments-list {
   line-height: 1.7;
   word-break: break-word;
 }
+
