@@ -318,5 +318,16 @@ public function listCovoituragesCalendrier($id_user)
         throw new Exception('Erreur : ' . $e->getMessage());
     }
 }
+public function getUserFuturetBookings($id_user)
+{
+    $sql = "SELECT b.id_covoiturage
+            FROM bookings b
+            INNER JOIN covoiturage c ON b.id_covoiturage = c.id_covoit
+            WHERE b.id_user = :id_user AND c.date_depart >= CURDATE()";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_user' => $id_user]);
+    return array_column($query->fetchAll(PDO::FETCH_ASSOC), 'id_covoiturage');
+}
 }
 ?>
