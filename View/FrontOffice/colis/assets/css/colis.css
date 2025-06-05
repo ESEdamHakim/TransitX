@@ -1,7 +1,7 @@
 /* Colis Module Specific Styles */
 .colis-hero {
   height: 50vh;
-  background-image: linear-gradient(rgba(233, 245, 238, 0.9), rgba(241, 247, 245 ,0.9)),
+  background-image: linear-gradient(rgba(233, 245, 238, 0.9), rgba(241, 247, 245, 0.9)),
     url("/placeholder.svg?height=800&width=1600");
   background-size: cover;
   background-position: center;
@@ -20,8 +20,10 @@
   color: #1f4f65;
   font-size: 1.55rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 35%; /* Reverted to original border-radius */
-  padding: 7px 7px; /* Reverted to original padding */
+  border-radius: 35%;
+  /* Reverted to original border-radius */
+  padding: 7px 7px;
+  /* Reverted to original padding */
   width: 42px;
   height: 42px;
   display: flex;
@@ -29,13 +31,16 @@
   justify-content: center;
   transition: all 0.2s ease;
   position: relative;
-  outline: none; /* Remove default outline */
+  outline: none;
+  /* Remove default outline */
 }
 
 /* Improved hover state */
 .notify-button:hover {
-  background-color: #ddf7d7; /* Reverted to original hover color */
-  transform: scale(1.1); /* Reverted to original scale effect */
+  background-color: #ddf7d7;
+  /* Reverted to original hover color */
+  transform: scale(1.1);
+  /* Reverted to original scale effect */
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -51,6 +56,7 @@
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .notif-badge {
   position: absolute;
   top: -4px;
@@ -71,7 +77,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,13 +96,12 @@
 }
 
 .notimodal-header {
-  padding: 15px;
-  border-bottom: 1px solid #ddd;
+  background: linear-gradient(90deg, #4d7aa3 0%, #86b391 100%);
+  color: #fff;
+  padding: 1.2rem 1.5rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: #1f4f65;
-  color: white;
+  justify-content: space-between;
 }
 
 .notimodal-body {
@@ -115,25 +120,20 @@
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .close-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
   color: white;
+   background: none;
+  border: none;
   cursor: pointer;
-  border-radius: 35%;
-  padding: 5px 8px;
+  font-size: 1.8rem;
   transition: all 0.3s ease;
 }
 
 .close-btn:hover {
-  background-color: #86b391; /* soft red hover */
-  color: white;
-  transform: scale(1.1);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  color: #4f7ca3;
 }
 
 .hidden {
@@ -165,7 +165,7 @@
   margin-bottom: 0.5rem;
   padding: 0.75rem 1rem;
   background-color: var(--primary);
-  border-bottom: 2px solid  var(--primary);
+  border-bottom: 2px solid var(--primary);
   border-radius: 8px 8px 0 0;
   transition: background-color 0.3s ease;
   display: flex;
@@ -184,6 +184,7 @@
   color: white;
   transform: scale(1.1);
 }
+
 /* Rotate the icon when active */
 .collapsible-header.active .icon {
   transform: rotate(180deg);
@@ -203,8 +204,10 @@
 
 /* Active state with scrollable content */
 .collapsible-content.active {
-  max-height: 400px; /* set a fixed max height for scroll */
-  overflow-y: auto; /* enables vertical scrolling */
+  max-height: 400px;
+  /* set a fixed max height for scroll */
+  overflow-y: auto;
+  /* enables vertical scrolling */
   opacity: 1;
   transform: scaleY(1);
   padding: 1rem;
@@ -694,7 +697,8 @@
 .faq-question h3 {
   font-size: 1.1rem;
   color: var(--secondary);
-  text-align: left; /* Keep question alignment left for better readability */
+  text-align: left;
+  /* Keep question alignment left for better readability */
 }
 
 .faq-question i {
