@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <!-- Registration face capture -->
           <div class="form-group" style="text-align:center;">
-            <label>Enregistrez votre visage (optionnel)</label><br>
+            <label style="text-align:left;">Enregistrez votre visage (optionnel)</label><br>
             <video id="regFaceVideo" width="220" height="160" autoplay
               style="border-radius:10px; margin-bottom:8px;"></video><br>
             <button type="button" id="regCaptureFaceBtn" class="btn btn-secondary" style="margin-bottom:8px;">Capturer
@@ -172,14 +172,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       const captureFaceBtn = document.getElementById('regCaptureFaceBtn');
       const faceDescriptorInput = document.getElementById('face_descriptor');
       const faceStatus = document.getElementById('regFaceStatus');
-
-      faceStatus.textContent = "Chargement des modèles de reconnaissance...";
       try {
         await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
         await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
         await faceapi.nets.faceRecognitionNet.loadFromUri('./models');
-        faceStatus.textContent = "Modèles chargés. Vous pouvez capturer votre visage.";
-        faceStatus.style.color = "#2d8659";
       } catch (err) {
         faceStatus.textContent = "Erreur lors du chargement des modèles : " + err;
         faceStatus.style.color = "#c0392b";
