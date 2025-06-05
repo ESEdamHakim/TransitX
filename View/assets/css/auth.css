@@ -19,9 +19,9 @@
   position: relative;
   display: none;
   min-height: 100vh;
-  background-image: linear-gradient(120deg, #1f4f65, #86b391, #86b391, #1f4f65);
-  background-size: 400% 400%;
-  animation: flowGradient 10s ease-in-out infinite;
+  background: linear-gradient(135deg, #4d7aa3 0%, #86b391 50%, #4d7aa3 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
 }
 
 @media (min-width: 768px) {
