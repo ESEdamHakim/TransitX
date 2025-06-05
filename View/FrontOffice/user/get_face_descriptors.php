@@ -1,5 +1,5 @@
 <?php
-require_once 'Controller/userC.php';
+require_once __DIR__ . '/../../../Controller/UserC.php';
 header('Content-Type: application/json');
 $userController = new UserC();
 $users = $userController->getAllUsersWithDescriptors(); // Implement this method to return id, nom, prenom, face_descriptor
