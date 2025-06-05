@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../../../Controller/userC.php';
-
+require_once __DIR__ . '/../../../../Controller/CovoiturageC.php';
 session_start(); // Important : Démarrer la session en haut du fichier
 
 $userController = new UserC();
@@ -9,14 +9,20 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 
-// For testing - use the first user from the list instead of session user
-// Comment this out once testing is complete
-$currentUser = null;
-$currentUser = null;
+// Set $id_user from session
+$id_user = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-if (isset($_SESSION['user_id'])) {
-  $currentUser = $userController->showUser($_SESSION['user_id']);
+$userController = new UserC();
+
+// Only get currentUser if you need it
+$currentUser = null;
+if ($id_user) {
+  $currentUser = $userController->showUser($id_user);
 }
+
+$covoiturageC = new CovoiturageC();
+$userCovoiturages = $covoiturageC->listCovoituragesCalendrier($id_user);
+
 
 $apiKey = 'FitXplCVELZM84MwY8fo9JwsUejXs9fO';
 $countryCode = 'TN';
@@ -68,8 +74,20 @@ foreach ($data['response']['holidays'] ?? [] as $holiday) {
 }
 
 // Calendar generation function
-function generateCalendar($year, $month, $holidays)
+
+
+function generateCalendar($year, $month, $holidays, $userCovoiturages)
 {
+  // Prepare covoiturage days for quick lookup
+  $covoitDays = [];
+  foreach ($userCovoiturages as $covoit) {
+    $date = strtotime($covoit['date_depart']);
+    if (date('Y', $date) == $year && date('n', $date) == $month) {
+      $day = (int)date('j', $date);
+      $covoitDays[$day][] = $covoit;
+    }
+  }
+
   $firstDay = strtotime("$year-$month-01");
   $daysInMonth = date('t', $firstDay);
   $calendar = "<table class='calendar'><thead><tr>";
@@ -85,13 +103,60 @@ function generateCalendar($year, $month, $holidays)
     $calendar .= "<td></td>";
   }
 
+  $today = strtotime(date('Y-m-d'));
+
   // Fill days
   for ($day = 1; $day <= $daysInMonth; $day++) {
     $weekday = date('w', strtotime("$year-$month-$day"));
     $isHoliday = isset($holidays[$day]);
     $holidayName = $holidays[$day] ?? '';
-    $class = $isHoliday ? " class='holiday' onclick='showHolidayDetails(\"$holidayName\")'" : '';
-    $calendar .= "<td$class>$day</td>";
+    $isCovoit = isset($covoitDays[$day]);
+
+    $class = [];
+    $onclick = '';
+    $details = [];
+    $hasFutureCovoit = false;
+    $hasPastOrFullCovoit = false;
+
+    // Gather covoiturage details and check their status
+    if ($isCovoit) {
+      foreach ($covoitDays[$day] as $covoit) {
+        $covoitDate = strtotime($covoit['date_depart']);
+        if ($covoitDate >= $today && $covoit['places_dispo'] > 0) {
+          $hasFutureCovoit = true;
+        } else {
+          $hasPastOrFullCovoit = true;
+        }
+        $details[] = "De {$covoit['lieu_depart']} à {$covoit['lieu_arrivee']} à {$covoit['temps_depart']}";
+      }
+    }
+
+    // 1. Only holiday
+    if ($isHoliday && !$isCovoit) {
+      $class[] = 'holiday';
+      $onclick = "onclick='showHolidayDetails(" . json_encode($holidayName) . ")'";
+    }
+    // 2. Only future covoiturage(s)
+    elseif (!$isHoliday && $hasFutureCovoit) {
+      $class[] = 'covoiturage-future';
+      $detailsStr = implode('<br>', $details);
+      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+    }
+    // 3. Only past or full covoiturage(s)
+    elseif (!$isHoliday && !$hasFutureCovoit && $hasPastOrFullCovoit) {
+      $class[] = 'covoiturage-past';
+      $detailsStr = implode('<br>', $details);
+      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+    }
+    // 4. Both holiday and covoiturage (any kind)
+    elseif ($isHoliday && $isCovoit) {
+      $class[] = 'holiday';
+      $detailsStr = "<span style=\"color:#7ba987;font-weight:bold;\">$holidayName</span><br>" . implode('<br>', $details);
+      $onclick = "onclick='showHolidayCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+    }
+
+    $classAttr = $class ? " class='" . implode(' ', $class) . "'" : '';
+    $calendar .= "<td$classAttr $onclick>$day</td>";
 
     if ($weekday == 6 && $day !== $daysInMonth) {
       $calendar .= "</tr><tr>";
@@ -176,7 +241,7 @@ function generateCalendar($year, $month, $holidays)
     </div>
     <?php
     // Afficher le calendrier du mois avec les jours fériés
-    echo generateCalendar($year, $month, $holidays);
+   echo generateCalendar($year, $month, $holidays, $userCovoiturages);
     ?>
 
   </section>
@@ -190,7 +255,22 @@ function generateCalendar($year, $month, $holidays)
       <p id="holidayDescription"></p>
     </div>
   </div>
-
+  <!-- Modale pour afficher les détails du covoiturage -->
+<div id="covoiturageModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeCovoiturageModal()">&times;</span>
+    <h2>Détails du covoiturage</h2>
+    <p id="covoiturageDescription"></p>
+  </div>
+</div>
+<!-- Modale pour afficher les détails du jour férié + covoiturage -->
+<div id="holidayCovoiturageModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeHolidayCovoiturageModal()">&times;</span>
+    <h2>jour férié et covoiturage</h2>
+    <p id="holidayCovoiturageDescription"></p>
+  </div>
+</div>
   <?php include '../../../assets/calendarfooter.php'; ?>
 
   <script>
@@ -211,6 +291,7 @@ function generateCalendar($year, $month, $holidays)
     }
   </script>
   <script src="../js/profile.js"></script>
+  <script src="../js/calendrierCovoiturage.js"></script>
 </body>
 
 </html>

@@ -200,23 +200,23 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group">
-              <label for="accept-parcels">Accepte les colis</label>
-              <select id="accept-parcels" name="accepte_colis" class="form-control">
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-              <span id="accept-parcels-error" class="error-message"></span>
+              <div class="form-group">
+                <label for="accept-parcels">Accepte les colis</label>
+                <select id="accept-parcels" name="accepte_colis">
+                  <option value="oui">Oui</option>
+                  <option value="non">Non</option>
+                </select>
+                <span id="accept-parcels-error" class="error-message"></span>
+              </div>
+              <div class="form-group">
+                <label for="full-parcels">Colis complet</label>
+                <select id="full-parcels" name="colis_complet">
+                  <option value="oui">Oui</option>
+                  <option value="non">Non</option>
+                </select>
+                <span id="full-parcels-error" class="error-message"></span>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="full-parcels">Colis complet</label>
-              <select id="full-parcels" name="colis_complet" class="form-control">
-                <option value="oui">Oui</option>
-                <option value="non">Non</option>
-              </select>
-              <span id="full-parcels-error" class="error-message"></span>
-            </div>
-          </div>
           <div class="form-group">
             <label for="ride-details">Détails supplémentaires</label>
             <select id="details-options" class="form-control">

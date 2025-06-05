@@ -301,5 +301,22 @@ public function getBookingRequests($id_user) {
 
     return $bookingRequests;
 }
+
+
+public function listCovoituragesCalendrier($id_user)
+{
+    $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, temps_depart, places_dispo
+            FROM covoiturage 
+            WHERE id_user = :id_user";
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([':id_user' => $id_user]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
 }
 ?>

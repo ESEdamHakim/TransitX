@@ -8,7 +8,7 @@ if (!isset($id_user)) {
     exit;
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+      
     $dateDepart = filter_input(INPUT_POST, 'date_depart', FILTER_SANITIZE_STRING);
     $lieuDepart = filter_input(INPUT_POST, 'lieu_depart', FILTER_SANITIZE_STRING);
     $lieuArrivee = filter_input(INPUT_POST, 'lieu_arrivee', FILTER_SANITIZE_STRING);
