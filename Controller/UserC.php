@@ -4,8 +4,10 @@ require_once __DIR__ . '/../Model/client.php';
 require_once __DIR__ . '/../Model/employe.php';
 require_once __DIR__ . '/../config.php';
 
-class UserC {
-    public function updatePassword($email, $newPassword) {
+class UserC
+{
+    public function updatePassword($email, $newPassword)
+    {
         try {
             $db = config::getConnexion();
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
@@ -19,7 +21,8 @@ class UserC {
             return false;
         }
     }
-    public function listUsers($sort = 'id', $order = 'ASC', $search = '') {
+    public function listUsers($sort = 'id', $order = 'ASC', $search = '')
+    {
         try {
             $sql = "SELECT u.*, 
                     c.date_naissance,
@@ -27,32 +30,32 @@ class UserC {
                     FROM user u
                     LEFT JOIN client c ON u.id = c.user_id AND u.type = 'client'
                     LEFT JOIN employe e ON u.id = e.user_id AND u.type = 'employe'";
-            
+
             // Add search condition
             if (!empty($search)) {
                 $sql .= " WHERE (u.nom LIKE :search OR u.prenom LIKE :search OR u.email LIKE :search)";
             }
-            
+
             // Validate sort column to prevent SQL injection
             $allowedSortColumns = ['id', 'nom', 'prenom', 'email', 'type', 'date_inscription'];
             $sort = in_array($sort, $allowedSortColumns) ? $sort : 'id';
-            
+
             // Validate order direction
             $order = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
-            
+
             $sql .= " ORDER BY u.$sort $order";
-            
+
             $db = config::getConnexion();
             $query = $db->prepare($sql);
-            
+
             if (!empty($search)) {
                 $searchTerm = "%$search%";
                 $query->bindValue(':search', $searchTerm, PDO::PARAM_STR);
             }
-            
+
             $query->execute();
             $results = $query->fetchAll(PDO::FETCH_ASSOC);
-            
+
             $users = [];
             foreach ($results as $row) {
                 if ($row['type'] === 'client') {
@@ -83,21 +86,22 @@ class UserC {
                 $user->setDateInscription(new DateTime($row['date_inscription']));
                 $users[] = $user;
             }
-            
+
             return $users;
-            
+
         } catch (Exception $e) {
             error_log('Error in listUsers: ' . $e->getMessage());
             return [];
         }
     }
 
-    public function deleteUser(int $id): bool {
+    public function deleteUser(int $id): bool
+    {
         $sql = "DELETE FROM user WHERE id = :id";
         $db = config::getConnexion();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        
+
         try {
             return $stmt->execute();
         } catch (Exception $e) {
@@ -105,12 +109,13 @@ class UserC {
         }
     }
 
-    public function addUser(User $user): bool {
+    public function addUser(User $user): bool
+    {
         $db = config::getConnexion();
-    
+
         try {
             $db->beginTransaction();
-            
+
             // Insert into user table
             $sql = "INSERT INTO user (nom, prenom, email, password, telephone, image, type, date_inscription) 
                    VALUES (:nom, :prenom, :email, :password, :telephone, :image, :type, :date_inscription)";
@@ -125,9 +130,9 @@ class UserC {
                 ':type' => $user->getType(),
                 ':date_inscription' => $user->getDateInscription()->format('Y-m-d H:i:s')
             ]);
-    
+
             $userId = $db->lastInsertId();
-    
+
             // Insert into specific table based on type
             if ($user instanceof Client) {
                 $sql = "INSERT INTO client (user_id, date_naissance)
@@ -149,7 +154,7 @@ class UserC {
                     ':role' => $user->getRole()
                 ]);
             }
-    
+
             $db->commit();
             return true;
         } catch (Exception $e) {
@@ -157,9 +162,10 @@ class UserC {
             die('Error:' . $e->getMessage());
         }
     }
-    
 
-    public function showUser(int $id): ?User {
+
+    public function showUser(int $id): ?User
+    {
         $sql = "SELECT u.*, 
                 c.date_naissance,
                 e.date_embauche, e.poste, e.salaire, e.role
@@ -170,13 +176,14 @@ class UserC {
         $db = config::getConnexion();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-    
+
         try {
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-            if (!$row) return null;
-    
+
+            if (!$row)
+                return null;
+
             if ($row['type'] === 'client') {
                 $user = new Client(
                     $row['nom'],
@@ -187,7 +194,7 @@ class UserC {
                     $row['date_naissance'] ? new DateTime($row['date_naissance']) : null,
                     $row['image'] ?? 'default.png' // Add image parameter
                 );
-            }else {
+            } else {
                 $user = new Employe(
                     $row['nom'],
                     $row['prenom'],
@@ -204,20 +211,21 @@ class UserC {
             $user->setId($row['id']);
             $user->setDateInscription(new DateTime($row['date_inscription']));
             $user->setPassword($row['password']); // Store hashed password
-    
+
             return $user;
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
         }
     }
-    
 
-    public function updateUser(User $user): bool {
+
+    public function updateUser(User $user): bool
+    {
         $db = config::getConnexion();
-        
+
         try {
             $db->beginTransaction();
-            
+
             // Update user table
             $sql = "UPDATE user SET 
                     nom = :nom, 
@@ -235,7 +243,7 @@ class UserC {
                 ':telephone' => $user->getTelephone(),
                 ':image' => $user->getImage()
             ]);
-            
+
             // Update specific table based on type
             if ($user instanceof Client) {
                 $sql = "UPDATE client SET 
@@ -262,7 +270,7 @@ class UserC {
                     ':role' => $user->getRole()
                 ]);
             }
-            
+
             $db->commit();
             return true;
         } catch (Exception $e) {
@@ -271,7 +279,8 @@ class UserC {
         }
     }
 
-    public function getUserByEmail(string $email): ?User {
+    public function getUserByEmail(string $email): ?User
+    {
         $sql = "SELECT u.*, 
                 c.date_naissance,
                 e.date_embauche, e.poste, e.salaire, e.role
@@ -279,17 +288,18 @@ class UserC {
                 LEFT JOIN client c ON u.id = c.user_id AND u.type = 'client'
                 LEFT JOIN employe e ON u.id = e.user_id AND u.type = 'employe'
                 WHERE u.email = :email";
-        
+
         $db = config::getConnexion();
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':email', $email);
-    
+
         try {
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-            if (!$row) return null;
-    
+
+            if (!$row)
+                return null;
+
             if ($row['type'] === 'client') {
                 $user = new Client(
                     $row['nom'],
@@ -314,15 +324,21 @@ class UserC {
                     $row['image'] ?? 'default.png'
                 );
             }
-            
+
             $user->setId($row['id']);
             return $user;
-            
+
         } catch (Exception $e) {
             error_log("Error in getUserByEmail: " . $e->getMessage());
             return null;
         }
     }
 
+    public function getAllUsersWithDescriptors()
+    {
+        $db = config::getConnexion();
+        $sql = "SELECT id, nom, prenom, face_descriptor FROM user WHERE face_descriptor IS NOT NULL";
+        return $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
     // Remove the duplicate listUsers method and listUsersWithFilters method
 }

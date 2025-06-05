@@ -292,50 +292,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       style="background:white; padding:24px; border-radius:12px; max-width:350px; margin:auto; text-align:center; position:relative;">
       <h3>Connexion Face ID</h3>
       <!-- Face ID Modal -->
-      <video id="loginFaceVideo" width="280" height="210" autoplay style="border-radius:10px; margin-bottom:10px;"></video>
+      <video id="loginFaceVideo" width="280" height="210" autoplay
+        style="border-radius:10px; margin-bottom:10px;"></video>
       <br>
-      <button id="loginCaptureFaceBtn" class="btn btn-primary" style="margin-bottom:10px;">Capturer et se connecter</button>
+      <button id="loginCaptureFaceBtn" class="btn btn-primary" style="margin-bottom:10px;">Capturer et se
+        connecter</button>
       <button id="closeFaceModal" class="btn btn-secondary" type="button">Annuler</button>
       <canvas id="loginFaceCanvas" width="280" height="210" style="display:none;"></canvas>
       <input type="hidden" name="face_image" id="face_image">
     </div>
   </div>
 
-   <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-   
-  <script>
-    const faceIdBtn = document.getElementById('faceIdBtn');
-    const faceIdModal = document.getElementById('faceIdModal');
-    const closeFaceModal = document.getElementById('closeFaceModal');
-    const faceVideo = document.getElementById('faceVideo');
-    const captureFaceBtn = document.getElementById('captureFaceBtn');
-    const faceCanvas = document.getElementById('faceCanvas');
-    const faceLoginForm = document.getElementById('faceLoginForm');
-    const faceImageInput = document.getElementById('face_image');
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script defer>
+    window.addEventListener('DOMContentLoaded', async function () {
+      const faceIdBtn = document.getElementById('faceIdBtn');
+      const faceIdModal = document.getElementById('faceIdModal');
+      const closeFaceModal = document.getElementById('closeFaceModal');
+      const faceVideo = document.getElementById('loginFaceVideo');
+      const captureFaceBtn = document.getElementById('loginCaptureFaceBtn');
+      const faceCanvas = document.getElementById('loginFaceCanvas');
+      let stream = null;
 
-    let stream = null;
+      // Load models (adjust path if needed)
+      await faceapi.nets.tinyFaceDetector.loadFromUri('./View/FrontOffice/user/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('./View/FrontOffice/user/models');
+      await faceapi.nets.faceRecognitionNet.loadFromUri('./View/FrontOffice/user/models');
 
-    faceIdBtn.onclick = function () {
-      faceIdModal.style.display = 'flex';
-      navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
-        stream = s;
-        faceVideo.srcObject = stream;
-      });
-    };
+      faceIdBtn.onclick = function () {
+        faceIdModal.style.display = 'flex';
+        navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
+          stream = s;
+          faceVideo.srcObject = stream;
+        });
+      };
 
-    closeFaceModal.onclick = function () {
-      faceIdModal.style.display = 'none';
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    };
+      closeFaceModal.onclick = function () {
+        faceIdModal.style.display = 'none';
+        if (stream) {
+          stream.getTracks().forEach(track => track.stop());
+        }
+      };
 
-    captureFaceBtn.onclick = function () {
-      faceCanvas.getContext('2d').drawImage(faceVideo, 0, 0, faceCanvas.width, faceCanvas.height);
-      const dataUrl = faceCanvas.toDataURL('image/png');
-      faceImageInput.value = dataUrl;
-      faceLoginForm.submit();
-    };
+      captureFaceBtn.onclick = async function () {
+        console.log("Capture button clicked");
+        faceCanvas.getContext('2d').drawImage(faceVideo, 0, 0, faceCanvas.width, faceCanvas.height);
+
+        // Detect face and get descriptor
+        const detection = await faceapi.detectSingleFace(faceCanvas, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
+        console.log("Detection result:", detection);
+
+        if (!detection || !detection.descriptor) {
+          alert("Aucun visage détecté. Essayez à nouveau.");
+          return;
+        }
+
+        // Fetch all user descriptors from backend
+        const response = await fetch('./View/FrontOffice/user/get_face_descriptors.php');
+        const users = await response.json();
+        console.log("Fetched users:", users);
+
+        // Find best match
+        const queryDescriptor = new Float32Array(detection.descriptor);
+        let bestMatch = null;
+        let minDistance = 1;
+
+        users.forEach(user => {
+          if (!user.descriptor) return;
+          const dbDescriptor = new Float32Array(user.descriptor);
+          const distance = faceapi.euclideanDistance(queryDescriptor, dbDescriptor);
+          if (distance < minDistance) {
+            minDistance = distance;
+            bestMatch = user;
+          }
+        });
+
+        console.log("Best match:", bestMatch, "Distance:", minDistance);
+
+        if (bestMatch && minDistance < 0.5) {
+          await fetch('./View/FrontOffice/user/face_login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: bestMatch.id })
+          });
+          window.location.href = 'View/FrontOffice/index.php';
+        } else {
+          alert("Visage non reconnu.");
+        }
+      };
+    });
   </script>
 
   <!-- Load hCaptcha API at the end of the body -->
