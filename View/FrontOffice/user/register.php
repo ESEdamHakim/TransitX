@@ -204,6 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           if (detection && detection.descriptor) {
             faceDescriptor = Array.from(detection.descriptor);
             faceDescriptorInput.value = JSON.stringify(faceDescriptor);
+            console.log("Descriptor saved:", faceDescriptorInput.value); // <-- AJOUTE CE LOG
             faceStatus.textContent = "Visage enregistré avec succès !";
             faceStatus.style.color = "#2d8659";
           } else {
