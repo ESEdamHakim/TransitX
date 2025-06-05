@@ -266,7 +266,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="form-group">
             <div class="h-captcha" data-sitekey="3bde0e2e-31d0-4140-bf90-10b6a89c299c"></div>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+          <div class="form-row">
+            <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            <!-- Face ID Login Button -->
+            <button type="button" id="faceIdBtn" class="btn btn-primary btn-block">
+              <i class="fas fa-face-smile"></i> Face ID
+            </button>
+          </div>
         </form>
 
         <div class="auth-footer">
@@ -278,6 +284,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="overlay"></div>
     </div>
   </div>
+
+  <!-- Face ID Modal -->
+  <div id="faceIdModal"
+    style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
+    <div
+      style="background:white; padding:24px; border-radius:12px; max-width:350px; margin:auto; text-align:center; position:relative;">
+      <h3>Connexion Face ID</h3>
+      <!-- Face ID Modal -->
+      <video id="loginFaceVideo" width="280" height="210" autoplay style="border-radius:10px; margin-bottom:10px;"></video>
+      <br>
+      <button id="loginCaptureFaceBtn" class="btn btn-primary" style="margin-bottom:10px;">Capturer et se connecter</button>
+      <button id="closeFaceModal" class="btn btn-secondary" type="button">Annuler</button>
+      <canvas id="loginFaceCanvas" width="280" height="210" style="display:none;"></canvas>
+      <input type="hidden" name="face_image" id="face_image">
+    </div>
+  </div>
+
+   <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+   
+  <script>
+    const faceIdBtn = document.getElementById('faceIdBtn');
+    const faceIdModal = document.getElementById('faceIdModal');
+    const closeFaceModal = document.getElementById('closeFaceModal');
+    const faceVideo = document.getElementById('faceVideo');
+    const captureFaceBtn = document.getElementById('captureFaceBtn');
+    const faceCanvas = document.getElementById('faceCanvas');
+    const faceLoginForm = document.getElementById('faceLoginForm');
+    const faceImageInput = document.getElementById('face_image');
+
+    let stream = null;
+
+    faceIdBtn.onclick = function () {
+      faceIdModal.style.display = 'flex';
+      navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
+        stream = s;
+        faceVideo.srcObject = stream;
+      });
+    };
+
+    closeFaceModal.onclick = function () {
+      faceIdModal.style.display = 'none';
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+
+    captureFaceBtn.onclick = function () {
+      faceCanvas.getContext('2d').drawImage(faceVideo, 0, 0, faceCanvas.width, faceCanvas.height);
+      const dataUrl = faceCanvas.toDataURL('image/png');
+      faceImageInput.value = dataUrl;
+      faceLoginForm.submit();
+    };
+  </script>
 
   <!-- Load hCaptcha API at the end of the body -->
   <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
