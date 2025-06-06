@@ -148,17 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
             hasError = true;
         }
 
-        // Validate select fields
-        if (!accepteColis) {
-            document.getElementById("accept-parcels-error").textContent = "Veuillez indiquer si vous acceptez les colis.";
-            hasError = true;
-        }
-
-        if (!colisComplet) {
-            document.getElementById("full-parcels-error").textContent = "Veuillez indiquer si les colis sont complets.";
-            hasError = true;
-        }
-
         if (!idVehicule) {
             document.getElementById("id-vehicule-error").textContent = "Veuillez sélectionner un véhicule.";
             hasError = true;
@@ -166,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // If no errors, submit the form
         if (!hasError) {
+            console.log("hasError:", hasError);
             createRideForm.submit();
         }
     });
