@@ -82,6 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // For employees, we don't allow editing role-specific info in the frontend
     }
 
+    if (isset($_POST['face_descriptor']) && $_POST['face_descriptor']) {
+        $currentUser->setFaceDescriptor($_POST['face_descriptor']);
+    }
     // Save changes
     if (empty($error_message)) {
         if ($userController->updateUser($currentUser)) {
@@ -103,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>TransitX - Modifier Mon Profil</title>
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/frontprofile.css">
+    <link rel="stylesheet" href="FaceID.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
@@ -271,6 +275,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span>Image actuelle</span>
                         </div>
                     </div>
+                    <div class="form-group" style="max-width: 300px;">
+                        <button type="button" id="openEditFaceIdModal" class="btn btn-primary btn-block">
+                            <i class="fas fa-face-smile"></i> (Re)capturer mon visage
+                        </button>
+                    </div>
+                    <input type="hidden" name="face_descriptor" id="edit_face_descriptor">
 
                     <div class="profile-actions">
                         <a href="../index.php" class="btn btn-secondary"><i class="fas fa-home"></i> Retour à
@@ -283,8 +293,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
+    <div id="editFaceIdModal" class="faceid-modal-overlay">
+        <div class="faceid-modal-content">
+            <div class="faceid-modal-header">
+                <h3>Enregistrement Face ID</h3>
+            </div>
+            <div id="editFaceIdError" class="faceid-error-message" style="display:none;"></div>
+            <video id="editFaceIdVideo" width="600" height="500" autoplay></video>
+            <br>
+            <div class="faceid-modal-buttons">
+                <button id="editCaptureFaceIdBtn" class="btn btn-primary">
+                    <i class="fas fa-camera"></i> Capturer et enregistrer
+                </button>
+                <button id="closeEditFaceIdModal" class="btn btn-secondary" type="button">
+                    <i class="fas fa-xmark"></i> Annuler
+                </button>
+            </div>
+            <canvas id="editFaceIdCanvas" width="600" height="500" style="display:none;"></canvas>
+        </div>
+    </div>
+
     <?php include '../../assets/footer.php'; ?>
     <script src="../assets/js/profile.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script defer>
+        window.addEventListener('DOMContentLoaded', function () {
+            // Elements
+            const openEditFaceIdModal = document.getElementById('openEditFaceIdModal');
+            const editFaceIdModal = document.getElementById('editFaceIdModal');
+            const closeEditFaceIdModal = document.getElementById('closeEditFaceIdModal');
+            const editFaceIdVideo = document.getElementById('editFaceIdVideo');
+            const editCaptureFaceIdBtn = document.getElementById('editCaptureFaceIdBtn');
+            const editFaceIdCanvas = document.getElementById('editFaceIdCanvas');
+            const editFaceDescriptorInput = document.getElementById('edit_face_descriptor');
+            const editFaceIdError = document.getElementById('editFaceIdError');
+            let editStream = null;
+
+            function showEditFaceIdError(msg) {
+                editFaceIdError.textContent = msg;
+                editFaceIdError.classList.add('show');
+                editFaceIdError.style.display = 'block';
+                setTimeout(() => {
+                    editFaceIdError.classList.remove('show');
+                    editFaceIdError.style.display = 'none';
+                }, 3500);
+            }
+
+            openEditFaceIdModal.onclick = function () {
+                editFaceIdModal.classList.add('show');
+                navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
+                    editStream = s;
+                    editFaceIdVideo.srcObject = editStream;
+                });
+            };
+
+            closeEditFaceIdModal.onclick = function () {
+                editFaceIdModal.classList.remove('show');
+                if (editStream) {
+                    editStream.getTracks().forEach(track => track.stop());
+                }
+            };
+
+            editCaptureFaceIdBtn.onclick = async function () {
+                editFaceIdCanvas.getContext('2d').drawImage(editFaceIdVideo, 0, 0, editFaceIdCanvas.width, editFaceIdCanvas.height);
+                showEditFaceIdError("Analyse du visage...");
+                try {
+                    await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
+                    await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
+                    await faceapi.nets.faceRecognitionNet.loadFromUri('./models');
+                    const detection = await faceapi.detectSingleFace(editFaceIdCanvas, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
+                    if (detection && detection.descriptor) {
+                        editFaceDescriptorInput.value = JSON.stringify(Array.from(detection.descriptor));
+                        showEditFaceIdError("Visage enregistré avec succès !");
+                        editFaceIdError.style.color = "#2d8659";
+                        setTimeout(() => {
+                            editFaceIdModal.classList.remove('show');
+                            if (editStream) editStream.getTracks().forEach(track => track.stop());
+                        }, 1200);
+                    } else {
+                        showEditFaceIdError("Aucun visage détecté. Essayez à nouveau.");
+                        editFaceIdError.style.color = "#c0392b";
+                    }
+                } catch (err) {
+                    showEditFaceIdError("Erreur lors de l'analyse du visage.");
+                    editFaceIdError.style.color = "#c0392b";
+                }
+            };
+        });
+    </script>
 </body>
 
 </html>

@@ -217,8 +217,6 @@ class UserC
             die('Error: ' . $e->getMessage());
         }
     }
-
-
     public function updateUser(User $user): bool
     {
         $db = config::getConnexion();
@@ -226,14 +224,15 @@ class UserC
         try {
             $db->beginTransaction();
 
-            // Update user table
+            // Update user table, now including face_descriptor
             $sql = "UPDATE user SET 
-                    nom = :nom, 
-                    prenom = :prenom, 
-                    email = :email, 
-                    telephone = :telephone,
-                    image = :image
-                    WHERE id = :id";
+                nom = :nom, 
+                prenom = :prenom, 
+                email = :email, 
+                telephone = :telephone,
+                image = :image,
+                face_descriptor = :face_descriptor
+                WHERE id = :id";
             $stmt = $db->prepare($sql);
             $stmt->execute([
                 ':id' => $user->getId(),
@@ -241,14 +240,15 @@ class UserC
                 ':prenom' => $user->getPrenom(),
                 ':email' => $user->getEmail(),
                 ':telephone' => $user->getTelephone(),
-                ':image' => $user->getImage()
+                ':image' => $user->getImage(),
+                ':face_descriptor' => $user->getFaceDescriptor()
             ]);
 
             // Update specific table based on type
             if ($user instanceof Client) {
                 $sql = "UPDATE client SET 
-                        date_naissance = :date_naissance
-                        WHERE user_id = :user_id";
+                    date_naissance = :date_naissance
+                    WHERE user_id = :user_id";
                 $stmt = $db->prepare($sql);
                 $stmt->execute([
                     ':user_id' => $user->getId(),
@@ -256,11 +256,11 @@ class UserC
                 ]);
             } elseif ($user instanceof Employe) {
                 $sql = "UPDATE employe SET 
-                        date_embauche = :date_embauche,
-                        poste = :poste,
-                        salaire = :salaire,
-                        role = :role
-                        WHERE user_id = :user_id";
+                    date_embauche = :date_embauche,
+                    poste = :poste,
+                    salaire = :salaire,
+                    role = :role
+                    WHERE user_id = :user_id";
                 $stmt = $db->prepare($sql);
                 $stmt->execute([
                     ':user_id' => $user->getId(),
