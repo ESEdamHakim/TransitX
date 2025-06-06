@@ -118,17 +118,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
           </div>
 
-          <!-- Registration face capture -->
-          <div class="form-group" style="text-align:center;">
-            <label style="text-align:left;">Enregistrez votre visage (optionnel)</label><br>
-            <video id="regFaceVideo" width="220" height="160" autoplay
-              style="border-radius:10px; margin-bottom:8px;"></video><br>
-            <button type="button" id="regCaptureFaceBtn" class="btn btn-secondary" style="margin-bottom:8px;">Capturer
-              le visage</button>
-            <canvas id="regFaceCanvas" width="220" height="160" style="display:none;"></canvas>
-            <input type="hidden" name="face_descriptor" id="face_descriptor">
-            <div id="regFaceStatus" style="font-size:13px; color:#2d8659; margin-top:4px;"></div>
-          </div>
+          <button type="button" id="openRegFaceIdModal" class="btn btn-primary btn-block">
+            <i class="fas fa-face-smile"></i> Enregistrer mon visage (Face ID)
+          </button>
+          <input type="hidden" name="face_descriptor" id="face_descriptor">
 
           <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
         </form>
@@ -143,73 +136,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 
-  <!-- Face ID Modal -->
-  <div id="faceIdModal"
-    style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
-    <div
-      style="background:white; padding:24px; border-radius:12px; max-width:350px; margin:auto; text-align:center; position:relative;">
-      <h3>Connexion Face ID</h3>
-      <video id="faceVideo" width="280" height="210" autoplay style="border-radius:10px; margin-bottom:10px;"></video>
+  <div id="regFaceIdModal" class="faceid-modal-overlay">
+    <div class="faceid-modal-content">
+      <div class="faceid-modal-header">
+        <h3>Enregistrement Face ID</h3>
+      </div>
+      <div id="regFaceIdError" class="faceid-error-message" style="display:none;"></div>
+      <video id="regFaceIdVideo" width="600" height="500" autoplay></video>
       <br>
-      <button id="captureFaceBtn" class="btn btn-primary" style="margin-bottom:10px;">Capturer et se connecter</button>
-      <button id="closeFaceModal" class="btn btn-secondary" type="button">Annuler</button>
-      <canvas id="faceCanvas" width="280" height="210" style="display:none;"></canvas>
-      <form id="faceLoginForm" method="POST" action="face_login.php" style="display:none;">
-        <input type="hidden" name="face_image" id="face_image">
-      </form>
+      <div class="faceid-modal-buttons">
+        <button id="regCaptureFaceIdBtn" class="btn btn-primary">
+          <i class="fas fa-camera"></i> Capturer et enregistrer
+        </button>
+        <button id="closeRegFaceIdModal" class="btn btn-secondary" type="button">
+          <i class="fas fa-xmark"></i> Annuler
+        </button>
+      </div>
+      <canvas id="regFaceIdCanvas" width="600" height="500" style="display:none;"></canvas>
     </div>
   </div>
 
   <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 
   <script defer>
-    document.addEventListener('DOMContentLoaded', async function () {
-      let faceStream = null;
-      let faceDescriptor = null;
+    window.addEventListener('DOMContentLoaded', function () {
+      // Elements
+      const openRegFaceIdModal = document.getElementById('openRegFaceIdModal');
+      const regFaceIdModal = document.getElementById('regFaceIdModal');
+      const closeRegFaceIdModal = document.getElementById('closeRegFaceIdModal');
+      const regFaceIdVideo = document.getElementById('regFaceIdVideo');
+      const regCaptureFaceIdBtn = document.getElementById('regCaptureFaceIdBtn');
+      const regFaceIdCanvas = document.getElementById('regFaceIdCanvas');
+      const regFaceDescriptorInput = document.getElementById('face_descriptor');
+      const regFaceIdError = document.getElementById('regFaceIdError');
+      let regStream = null;
 
-      const faceVideo = document.getElementById('regFaceVideo');
-      const faceCanvas = document.getElementById('regFaceCanvas');
-      const captureFaceBtn = document.getElementById('regCaptureFaceBtn');
-      const faceDescriptorInput = document.getElementById('face_descriptor');
-      const faceStatus = document.getElementById('regFaceStatus');
-      try {
-        await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
-        await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
-        await faceapi.nets.faceRecognitionNet.loadFromUri('./models');
-      } catch (err) {
-        faceStatus.textContent = "Erreur lors du chargement des modèles : " + err;
-        faceStatus.style.color = "#c0392b";
-        console.error("Erreur lors du chargement des modèles :", err);
-        return;
+      function showRegFaceIdError(msg) {
+        regFaceIdError.textContent = msg;
+        regFaceIdError.classList.add('show');
+        regFaceIdError.style.display = 'block';
+        setTimeout(() => {
+          regFaceIdError.classList.remove('show');
+          regFaceIdError.style.display = 'none';
+        }, 3500);
       }
 
-      try {
-        faceStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        faceVideo.srcObject = faceStream;
-      } catch (err) {
-        faceStatus.textContent = "Webcam non disponible ou refusée.";
-        faceStatus.style.color = "#c0392b";
-        return;
-      }
+      openRegFaceIdModal.onclick = function () {
+        regFaceIdModal.classList.add('show');
+        navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
+          regStream = s;
+          regFaceIdVideo.srcObject = regStream;
+        });
+      };
 
-      captureFaceBtn.onclick = async function () {
-        faceCanvas.getContext('2d').drawImage(faceVideo, 0, 0, faceCanvas.width, faceCanvas.height);
-        faceStatus.textContent = "Analyse du visage...";
+      closeRegFaceIdModal.onclick = function () {
+        regFaceIdModal.classList.remove('show');
+        if (regStream) {
+          regStream.getTracks().forEach(track => track.stop());
+        }
+      };
+
+      regCaptureFaceIdBtn.onclick = async function () {
+        regFaceIdCanvas.getContext('2d').drawImage(regFaceIdVideo, 0, 0, regFaceIdCanvas.width, regFaceIdCanvas.height);
+        showRegFaceIdError("Analyse du visage...");
         try {
-          const detection = await faceapi.detectSingleFace(faceCanvas, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
+          await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
+          await faceapi.nets.faceLandmark68Net.loadFromUri('./models');
+          await faceapi.nets.faceRecognitionNet.loadFromUri('./models');
+          const detection = await faceapi.detectSingleFace(regFaceIdCanvas, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
           if (detection && detection.descriptor) {
-            faceDescriptor = Array.from(detection.descriptor);
-            faceDescriptorInput.value = JSON.stringify(faceDescriptor);
-            console.log("Descriptor saved:", faceDescriptorInput.value); // <-- AJOUTE CE LOG
-            faceStatus.textContent = "Visage enregistré avec succès !";
-            faceStatus.style.color = "#2d8659";
+            regFaceDescriptorInput.value = JSON.stringify(Array.from(detection.descriptor));
+            showRegFaceIdError("Visage enregistré avec succès !");
+            regFaceIdError.style.color = "#2d8659";
+            setTimeout(() => {
+              regFaceIdModal.classList.remove('show');
+              if (regStream) regStream.getTracks().forEach(track => track.stop());
+            }, 1200);
           } else {
-            faceStatus.textContent = "Aucun visage détecté. Essayez à nouveau.";
-            faceStatus.style.color = "#c0392b";
+            showRegFaceIdError("Aucun visage détecté. Essayez à nouveau.");
+            regFaceIdError.style.color = "#c0392b";
           }
         } catch (err) {
-          faceStatus.textContent = "Erreur lors de l'analyse du visage.";
-          faceStatus.style.color = "#c0392b";
+          showRegFaceIdError("Erreur lors de l'analyse du visage.");
+          regFaceIdError.style.color = "#c0392b";
         }
       };
     });
