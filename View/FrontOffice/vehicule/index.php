@@ -148,7 +148,7 @@ if (isset($_SESSION['user_id'])) {
                             <option value="Vitres teintées (fumées)">Vitres teintées (fumées).</option>
                             <option value="Toit ouvrant / panoramique">Toit ouvrant / panoramique.</option>
                             <option value="Sièges chauffants">Sièges chauffants.</option>
-                            <option value="Chargeurs USB intégrés.">Chargeurs USB intégrés.</option>
+                            <option value="Chargeurs USB intégrés">Chargeurs USB intégrés.</option>
                             <option value="Climatisation">Climatisation.</option>
                             <option value="other">Autre...</option>
                         </select>

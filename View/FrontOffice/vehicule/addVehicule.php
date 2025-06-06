@@ -17,41 +17,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $marque = filter_input(INPUT_POST, 'marque', FILTER_SANITIZE_STRING);
     $modele = filter_input(INPUT_POST, 'modele', FILTER_SANITIZE_STRING);
     $confort = filter_input(INPUT_POST, 'confort', FILTER_SANITIZE_STRING);
-    $photoVehicule = $_FILES['photo_vehicule']['name'];
-    
-     // Debugging: Echo each attribute
-     echo "Type de Véhicule: " . ($typeVehicule ?: "Non soumis") . "<br>";
-     echo "Matricule: " . ($matricule ?: "Non soumis") . "<br>";
-     echo "Nombre de Places: " . ($nbPlaces ?: "Non soumis") . "<br>";
-     echo "Couleur: " . ($couleur ?: "Non soumis") . "<br>";
-     echo "Marque: " . ($marque ?: "Non soumis") . "<br>";
-     echo "Modèle: " . ($modele ?: "Non soumis") . "<br>";
-     echo "Confort: " . ($confort ?: "Non soumis") . "<br>";
-     echo "Photo du Véhicule: " . ($photoVehicule ?: "Non soumis") . "<br>";
-    // Validate required fields
-    if (empty($matricule) || empty($typeVehicule) || empty($nbPlaces) || empty($couleur) || empty($marque) || empty($modele) || empty($confort)) {
-        echo "Erreur : Tous les champs sont obligatoires.";
-        exit;
+    $customConfort = filter_input(INPUT_POST, 'custom_confort', FILTER_SANITIZE_STRING);
+
+    if ($confort === 'other') {
+        $confort = $customConfort ?: null;
     }
+    
+    $photoVehicule = $_FILES['photo_vehicule']['name'];
 
     // Handle file upload
     if (isset($_FILES['photo_vehicule']) && $_FILES['photo_vehicule']['error'] === UPLOAD_ERR_OK) {
 
         $photoTmpPath = $_FILES['photo_vehicule']['tmp_name'];
         $photoName = uniqid() . '_' . basename($_FILES['photo_vehicule']['name']);
-        $uploadDir = __DIR__ . '/../../assets/uploads/'. $photo_name;
+        $uploadDir = __DIR__ . '/../../assets/uploads/' . $photoName;
 
-        if (move_uploaded_file($photoTmpPath, $uploadDir . $photoName)) {
-            echo "Photo uploaded successfully: " . $photoName;
-        } else {
-            echo "Erreur : Échec du téléchargement de la photo.";
-            exit;
-        }
+        move_uploaded_file($photoTmpPath, $uploadDir . $photoName);
+
     } else {
         $photoName = null; // No photo uploaded
     }
 
-   
+
     $vehicule = new Vehicule(
         $matricule,
         $typeVehicule,
