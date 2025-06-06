@@ -585,3 +585,19 @@
     transform: rotate(360deg);
   }
 }
+
+.faceid-error-message {
+  color: #c0392b;
+  background: #ffeaea;
+  border: 1px solid #ffb3b3;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-size: 1em;
+  display: none;
+  transition: opacity 0.3s;
+}
+.faceid-error-message.show {
+  display: block;
+  opacity: 1;
+}

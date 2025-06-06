@@ -293,6 +293,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="faceid-modal-header">
         <h3>Connexion Face ID</h3>
       </div>
+      <div id="faceIdError" class="faceid-error-message" style="display:none;"></div>
       <video id="loginFaceVideo" width="600" height="500" autoplay></video>
       <br>
       <div class="faceid-modal-buttons">
@@ -324,6 +325,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       await faceapi.nets.faceLandmark68Net.loadFromUri('./View/FrontOffice/user/models');
       await faceapi.nets.faceRecognitionNet.loadFromUri('./View/FrontOffice/user/models');
 
+      function showFaceIdError(msg) {
+        const errorDiv = document.getElementById('faceIdError');
+        errorDiv.textContent = msg;
+        errorDiv.classList.add('show');
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+          errorDiv.classList.remove('show');
+          errorDiv.style.display = 'none';
+        }, 3500); // Hide after 3.5 seconds
+      }
+
       faceIdBtn.onclick = function () {
         faceIdModal.classList.add('show');
         navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
@@ -348,7 +360,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         console.log("Detection result:", detection);
 
         if (!detection || !detection.descriptor) {
-          alert("Aucun visage détecté. Essayez à nouveau.");
+          showFaceIdError("Aucun visage détecté. Essayez à nouveau.");
           return;
         }
 
@@ -382,7 +394,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           });
           window.location.href = 'View/FrontOffice/index.php';
         } else {
-          alert("Visage non reconnu.");
+          showFaceIdError("Visage non reconnu.");
         }
       };
     });
