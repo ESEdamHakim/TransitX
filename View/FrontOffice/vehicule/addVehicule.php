@@ -16,13 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $couleur = filter_input(INPUT_POST, 'couleur', FILTER_SANITIZE_STRING);
     $marque = filter_input(INPUT_POST, 'marque', FILTER_SANITIZE_STRING);
     $modele = filter_input(INPUT_POST, 'modele', FILTER_SANITIZE_STRING);
-    $confort = filter_input(INPUT_POST, 'confort', FILTER_SANITIZE_STRING);
+    $confort = filter_input(INPUT_POST, 'confort_final', FILTER_SANITIZE_STRING);
     $customConfort = filter_input(INPUT_POST, 'custom_confort', FILTER_SANITIZE_STRING);
 
     if ($confort === 'other') {
         $confort = $customConfort ?: null;
     }
-    
+
     $photoVehicule = $_FILES['photo_vehicule']['name'];
 
     // Handle file upload

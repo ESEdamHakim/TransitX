@@ -162,6 +162,7 @@ if (isset($_SESSION['user_id'])) {
                         <input type="file" id="photo-vehicule" name="photo_vehicule" accept="image/*">
                         <span class="error-message" id="photo-vehicule-error"></span>
                     </div>
+                    <input type="hidden" name="confort_final" id="confort-final">
                     <button type="submit" class="btn btn-primary">
                         Ajouter le Véhicule
                         <i class="fas fa-paper-plane"></i>

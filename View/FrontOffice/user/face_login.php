@@ -1,11 +1,23 @@
 <?php
+require_once '../../../Controller/UserC.php';
 session_start();
+
 $data = json_decode(file_get_contents('php://input'), true);
-if (isset($data['user_id'])) {
-    $_SESSION['user_id'] = $data['user_id'];
-    // Set other session vars as needed
-    http_response_code(200);
+$userId = $data['user_id'] ?? null;
+
+if ($userId) {
+    $_SESSION['user_id'] = $userId;
+
+    // Fetch user type from DB
+    $userController = new UserC();
+    $user = $userController->showUser($userId); // Adjust this to your method
+
+    if ($user) {
+        $_SESSION['user_type'] = $user->getType(); // Or whatever method/field gives the type
+    }
+    echo json_encode(['success' => true]);
     exit;
 }
-http_response_code(401);
+echo json_encode(['success' => false]);
+exit;
 ?>
