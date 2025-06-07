@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="hero-content">
         <h1>Service de Réclamations</h1>
         <p>Votre satisfaction est notre priorité. Nous sommes à votre écoute pour résoudre tout problème rencontré.</p>
-        <a href="RecList.php" class="btn btn-primary">Mes Réclamations</a>
+        <a href="RecList.php" class="btn btn-primary btn-reclamation-large">Mes Réclamations</a>
       </div>
     </section>
 

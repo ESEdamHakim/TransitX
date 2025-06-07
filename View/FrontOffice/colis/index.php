@@ -183,8 +183,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Service de Livraison de Colis</h1>
         <p>Envoyez vos colis de manière écologique et économique partout en Tunisie.</p>
         <div style="text-align: center;">
-          <a href="ColisList.php" class="btn btn-primary">Mes Colis</a>
-        </div>
+  <a href="ColisList.php" class="btn btn-primary btn-colis-large">Mes Colis</a>
+</div>
       </div>
     </section>
 

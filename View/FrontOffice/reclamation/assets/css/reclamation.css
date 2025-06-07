@@ -11,6 +11,12 @@
   text-align: center;
 }
 
+.btn-reclamation-large {
+  font-size: 1.25rem;
+  border-radius: 18px;
+  min-width: 150px;
+  margin: 18px 0;
+}
 
 .priority {
   display: inline-block;
