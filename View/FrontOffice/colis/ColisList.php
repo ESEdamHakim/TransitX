@@ -423,6 +423,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
                 <?php endforeach; ?>
               </div>
             <?php endif; ?>
+            <br>
           </div>
         </div>
         <div class="collapsible-section">
@@ -521,8 +522,8 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
                     </button>
                   </div>
                 </div>
+                <br>
               </div>
-              <br>
             <?php endforeach; ?>
           </div>
         </div>
