@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../Controller/UserC.php';
 
 $userController = new UserC();
+$serviceCounts = $userController->getServicesDistributionCounts();
+$dashboardStats = $userController->getDashboardStats();
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
@@ -29,6 +31,7 @@ if (isset($_SESSION['user_id'])) {
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    
     .reports-section {
       margin-top: 2rem;
       background-color: white;
@@ -248,13 +251,14 @@ if (isset($_SESSION['user_id'])) {
 
       <div class="dashboard-content">
         <!-- Stats Cards -->
+        <!-- Stats Cards -->
         <div class="stats-cards">
           <div class="stat-card">
             <div class="stat-icon users">
               <i class="fas fa-users"></i>
             </div>
             <div class="stat-details">
-              <h3>1,423</h3>
+              <h3><?= $dashboardStats['utilisateurs'] ?></h3>
               <p>Utilisateurs</p>
               <div class="stat-progress">
                 <i class="fas fa-arrow-up"></i>
@@ -268,7 +272,7 @@ if (isset($_SESSION['user_id'])) {
               <i class="fas fa-car-side"></i>
             </div>
             <div class="stat-details">
-              <h3>856</h3>
+              <h3><?= $dashboardStats['trajets'] ?></h3>
               <p>Trajets</p>
               <div class="stat-progress">
                 <i class="fas fa-arrow-up"></i>
@@ -282,7 +286,7 @@ if (isset($_SESSION['user_id'])) {
               <i class="fas fa-box"></i>
             </div>
             <div class="stat-details">
-              <h3>128</h3>
+              <h3><?= $dashboardStats['colis'] ?></h3>
               <p>Colis</p>
               <div class="stat-progress negative">
                 <i class="fas fa-arrow-down"></i>
@@ -296,7 +300,7 @@ if (isset($_SESSION['user_id'])) {
               <i class="fas fa-exclamation-circle"></i>
             </div>
             <div class="stat-details">
-              <h3>24</h3>
+              <h3><?= $dashboardStats['reclamations'] ?></h3>
               <p>Réclamations</p>
               <div class="stat-progress">
                 <i class="fas fa-arrow-up"></i>
@@ -310,18 +314,10 @@ if (isset($_SESSION['user_id'])) {
         <div class="charts-section">
           <div class="chart-container">
             <div class="chart-header">
-              <h3>Statistiques mensuelles</h3>
-              <div class="chart-actions">
-                <select>
-                  <option>Dernier mois</option>
-                  <option>Derniers 3 mois</option>
-                  <option>Derniers 6 mois</option>
-                  <option>Dernière année</option>
-                </select>
-              </div>
+              <h3>Top Services utilisés</h3>
             </div>
             <div class="chart">
-              <canvas id="monthlyStats"></canvas>
+              <canvas id="topServices"></canvas>
             </div>
           </div>
 
@@ -329,12 +325,6 @@ if (isset($_SESSION['user_id'])) {
             <div class="chart-header">
               <h3>Répartition des services</h3>
               <div class="chart-actions">
-                <select>
-                  <option>Tous</option>
-                  <option>Bus</option>
-                  <option>Covoiturage</option>
-                  <option>Colis</option>
-                </select>
               </div>
             </div>
             <div class="chart">
@@ -346,93 +336,92 @@ if (isset($_SESSION['user_id'])) {
     </main>
   </div>
   <?php include 'assets/php/profileManage.php'; ?>
-  <script>
-    // Sidebar Toggle
-    document.querySelector('.sidebar-toggle').addEventListener('click', function () {
-      document.querySelector('.sidebar').classList.toggle('collapsed');
-      document.querySelector('.main-content').classList.toggle('expanded');
-    });
+<script>
+  // Sidebar Toggle
+  document.addEventListener('DOMContentLoaded', function () {
+    // Sidebar toggle
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', function () {
+        document.querySelector('.sidebar').classList.toggle('collapsed');
+        document.querySelector('.main-content').classList.toggle('expanded');
+      });
+    }
 
-    // Report Tabs
+    // Report Tabs (if present)
     const reportTabs = document.querySelectorAll('.report-tab');
     const reportContents = document.querySelectorAll('.report-content');
-
-    reportTabs.forEach(tab => {
-      tab.addEventListener('click', function () {
-        // Remove active class from all tabs and contents
-        reportTabs.forEach(t => t.classList.remove('active'));
-        reportContents.forEach(c => c.classList.remove('active'));
-
-        // Add active class to clicked tab
-        this.classList.add('active');
-
-        // Show corresponding content
-        const reportType = this.getAttribute('data-report');
-        document.getElementById(`${reportType}-report`).classList.add('active');
+    if (reportTabs.length && reportContents.length) {
+      reportTabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+          reportTabs.forEach(t => t.classList.remove('active'));
+          reportContents.forEach(c => c.classList.remove('active'));
+          this.classList.add('active');
+          const reportType = this.getAttribute('data-report');
+          document.getElementById(`${reportType}-report`).classList.add('active');
+        });
       });
-    });
+    }
 
     // Charts
-    const monthlyStatsCtx = document.getElementById('monthlyStats').getContext('2d');
-    const monthlyStatsChart = new Chart(monthlyStatsCtx, {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil'],
-        datasets: [
-          {
-            label: 'Utilisateurs',
-            data: [650, 730, 810, 890, 950, 1020, 1150],
-            borderColor: '#17a2b8',
-            backgroundColor: 'rgba(23, 162, 184, 0.1)',
-            fill: true,
-            tension: 0.4
-          },
-          {
-            label: 'Trajets',
-            data: [320, 380, 420, 480, 520, 580, 650],
-            borderColor: '#28a745',
-            backgroundColor: 'rgba(40, 167, 69, 0.1)',
-            fill: true,
-            tension: 0.4
-          },
-          {
-            label: 'Colis',
-            data: [85, 95, 105, 115, 125, 120, 128],
-            borderColor: '#ffc107',
-            backgroundColor: 'rgba(255, 193, 7, 0.1)',
-            fill: true,
-            tension: 0.4
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+    // Only initialize if the canvas exists
+    const servicesDistribution = document.getElementById('servicesDistribution');
+    if (servicesDistribution) {
+      const servicesDistributionCtx = servicesDistribution.getContext('2d');
+      new Chart(servicesDistributionCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Bus', 'Covoiturage', 'Colis'],
+          datasets: [{
+            data: [
+              <?= $serviceCounts['bus'] ?>,
+              <?= $serviceCounts['covoiturage'] ?>,
+              <?= $serviceCounts['colis'] ?>
+            ],
+            backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83'],
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
         }
-      }
-    });
+      });
+    }
 
-    const servicesDistributionCtx = document.getElementById('servicesDistribution').getContext('2d');
-    const servicesDistributionChart = new Chart(servicesDistributionCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Bus', 'Covoiturage', 'Colis'],
-        datasets: [{
-          data: [35, 45, 20],
-          backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83'],
-          hoverOffset: 4
-        }]
+   const topServices = document.getElementById('topServices');
+if (topServices) {
+  const topServicesCtx = topServices.getContext('2d');
+  new Chart(topServicesCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Bus', 'Covoiturage', 'Colis'],
+      datasets: [{
+        // label removed to hide "Nombre total" at the top of the chart
+        data: [
+          <?= $serviceCounts['bus'] ?>,
+          <?= $serviceCounts['covoiturage'] ?>,
+          <?= $serviceCounts['colis'] ?>
+        ],
+        backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false } // Hide legend if no label
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
+      scales: {
+        x: { beginAtZero: true }
       }
-    });
-  </script>
+    }
+  });
+}
+
+  });
+</script>
   <script src="assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
 </body>

@@ -340,5 +340,55 @@ class UserC
         $sql = "SELECT id, nom, prenom, face_descriptor FROM user WHERE face_descriptor IS NOT NULL";
         return $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
-    // Remove the duplicate listUsers method and listUsersWithFilters method
+    public function getServicesDistributionCounts()
+    {
+        $db = config::getConnexion();
+        $counts = [
+            'bus' => 0,
+            'covoiturage' => 0,
+            'colis' => 0
+        ];
+
+        // Count buses
+        $stmt = $db->query("SELECT COUNT(*) as total FROM bus");
+        $counts['bus'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+        // Count covoiturage
+        $stmt = $db->query("SELECT COUNT(*) as total FROM covoiturage");
+        $counts['covoiturage'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+        // Count colis
+        $stmt = $db->query("SELECT COUNT(*) as total FROM colis");
+        $counts['colis'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+        return $counts;
+    }
+    public function getDashboardStats()
+{
+    $db = config::getConnexion();
+    $stats = [
+        'utilisateurs' => 0,
+        'trajets' => 0,
+        'colis' => 0,
+        'reclamations' => 0
+    ];
+
+    // Utilisateurs
+    $stmt = $db->query("SELECT COUNT(*) as total FROM user");
+    $stats['utilisateurs'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    // Trajets
+    $stmt = $db->query("SELECT COUNT(*) as total FROM trajet");
+    $stats['trajets'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    // Colis
+    $stmt = $db->query("SELECT COUNT(*) as total FROM colis");
+    $stats['colis'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    // Réclamations
+    $stmt = $db->query("SELECT COUNT(*) as total FROM reclamation");
+    $stats['reclamations'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    return $stats;
+}
 }
