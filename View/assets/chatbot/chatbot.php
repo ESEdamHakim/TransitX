@@ -52,6 +52,19 @@
                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>
             </button>
+            <button id="voiceInputButton" title="Parler">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="11" r="4"></circle>
+                    <path d="M19 11a7 7 0 0 1-14 0"></path>
+                    <line x1="12" y1="15" x2="12" y2="19"></line>
+                    <line x1="8" y1="19" x2="16" y2="19"></line>
+                </svg>
+            </button>
+            <select id="chatLangSelect" style="margin-left:8px; border-radius:8px; padding:4px;">
+                <option value="en-US">English</option>
+                <option value="fr-FR">Français</option>
+            </select>
         </div>
     </div>
 </div>
