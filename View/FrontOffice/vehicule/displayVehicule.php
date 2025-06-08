@@ -55,10 +55,10 @@ try {
                             data-marque="<?= htmlspecialchars($vehicule['marque']) ?>"
                             data-modele="<?= htmlspecialchars($vehicule['modele']) ?>"
                             data-confort="<?= htmlspecialchars($vehicule['confort']) ?>">
-                            <i class="fas fa-edit"></i> Modifier
+                            <i class="fas fa-edit"></i> 
                         </button>
                         <button class="btn delete" data-id="<?= $vehicule['id_vehicule'] ?>">
-                            <i class="fas fa-trash"></i> Supprimer
+                            <i class="fas fa-trash"></i> 
                         </button>
                     </div>
                 </div>
