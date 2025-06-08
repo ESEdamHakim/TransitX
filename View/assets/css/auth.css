@@ -233,11 +233,14 @@
 }
 
 .social-btn.google {
-  background-color: #db4437;
+  background-color: #1f4f65;
 }
 
 .social-btn.twitter {
   background-color: #1da1f2;
+}
+.social-btn.faceid {
+  background-color: #97c3a2;
 }
 
 .auth-footer {

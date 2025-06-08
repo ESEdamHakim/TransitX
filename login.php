@@ -266,16 +266,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="form-group">
             <div class="h-captcha" data-sitekey="3bde0e2e-31d0-4140-bf90-10b6a89c299c"></div>
           </div>
-          <div class="form-row">
             <button type="submit" class="btn btn-primary btn-block">
               <i class="fas fa-right-to-bracket"></i> Se connecter
             </button>
-            <!-- Face ID Login Button -->
-            <button type="button" id="faceIdBtn" class="btn btn-primary btn-block">
-              <i class="fas fa-face-smile"></i> Face ID
-            </button>
-            <a href="View/FrontOffice/user/google_login.php" class="forgot-password"
-                style="color: #86b391; text-decoration: none; font-size: 0.9em;">Google Login</a>
+          <div class="social-login">
+            <p>Ou connectez-vous avec</p>
+            <div class="social-buttons">
+              <button type="button" id="faceIdBtn" class="social-btn faceid">
+                <i class="fas fa-face-smile"></i>
+              </button>
+              <a href="View/FrontOffice/user/google_login.php" class="social-btn google">
+                <i class="fab fa-google"></i>
+              </a>
+            </div>
           </div>
         </form>
 
