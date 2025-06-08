@@ -92,10 +92,6 @@
                         <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>">
                             <i class="fas fa-trash"></i>
                         </button>
-                        <a href="../vehicule/index.php?id_vehicule=<?= htmlspecialchars($covoiturage['id_vehicule']) ?>"
-                            class="btn btn-primary">
-                            Modifier Vehicule
-                        </a>
                     </div>
                 </div>
             <?php endforeach; ?>
