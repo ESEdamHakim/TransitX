@@ -649,12 +649,20 @@ textarea::placeholder {
   justify-content: center;
   transition: background 0.2s;
 }
+
 #voiceInputButton:hover {
   background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+  transform: translateY(-2px);
+
 }
+
 #voiceInputButton.listening {
   background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
   animation: pulse-status 1s infinite;
+}
+
+#voiceInputButton:active {
+  transform: translateY(1px);
 }
 
 #chatLangSelect {
@@ -678,7 +686,9 @@ textarea::placeholder {
   border: 2px solid #97c3a2;
   box-shadow: 0 0 0 3px rgba(151, 195, 162, 0.15);
 }
-
+#chatLangSelect:hover {
+  transform: translateY(-2px);
+}
 .read-aloud-btn {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   border: none;
@@ -694,15 +704,22 @@ textarea::placeholder {
 }
 
 .read-aloud-btn:hover {
-background: var(--secondary-dark);
+  background: var(--secondary-dark);
+  transform: translateY(-2px);
+
   opacity: 1;
 }
 
 .read-aloud-btn svg {
-  stroke: #fff;      /* white icon */
+  stroke: #fff;
+  /* white icon */
   fill: none;
   display: block;
   width: 22px;
   height: 22px;
   transition: stroke 0.2s;
+}
+
+.read-aloud-btn:active {
+  transform: translateY(1px);
 }
