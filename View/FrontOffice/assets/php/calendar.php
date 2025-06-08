@@ -20,9 +20,8 @@ if ($id_user) {
   $currentUser = $userController->showUser($id_user);
 }
 
-$covoiturageC = new CovoiturageC();
-$userCovoiturages = $covoiturageC->listCovoituragesCalendrier($id_user);
-$userFutureBookings = $covoiturageC->getUserFuturetBookings($id_user);
+
+
 
 $apiKey = 'FitXplCVELZM84MwY8fo9JwsUejXs9fO';
 $countryCode = 'TN';
@@ -30,7 +29,8 @@ $year = filter_input(INPUT_GET, 'year', FILTER_VALIDATE_INT) ?: date("Y");
 $month = filter_input(INPUT_GET, 'month', FILTER_VALIDATE_INT) ?: date("n");
 
 $month = max(1, min(12, (int) $month));
-
+$covoiturageC = new CovoiturageC();
+$userCovoiturages = $covoiturageC->getAllCovoituragesForMonth($year, $month);
 // Previous and next month/year logic
 $prevDate = strtotime("-1 month", strtotime("$year-$month-01"));
 $nextDate = strtotime("+1 month", strtotime("$year-$month-01"));
@@ -73,17 +73,25 @@ foreach ($data['response']['holidays'] ?? [] as $holiday) {
   $holidays[$day] = $holiday['name'];
 }
 
+// Get user bookings
+$userAcceptedBookings = $covoiturageC->getUserAcceptedBookings($id_user);
+
+$bookedDays = [];
+foreach ($userAcceptedBookings as $booking) {
+  $date = date('Y-m-d', strtotime($booking['date_depart']));
+  $bookedDays[$date][] = $booking['id_covoiturage'];
+}
+
+
 // Calendar generation function
-
-
-function generateCalendar($year, $month, $holidays, $userCovoiturages, $userPastBookings)
+function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDays)
 {
   // Prepare covoiturage days for quick lookup
   $covoitDays = [];
   foreach ($userCovoiturages as $covoit) {
     $date = strtotime($covoit['date_depart']);
     if (date('Y', $date) == $year && date('n', $date) == $month) {
-      $day = (int)date('j', $date);
+      $day = (int) date('j', $date);
       $covoitDays[$day][] = $covoit;
     }
   }
@@ -112,14 +120,16 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $userPast
     $holidayName = $holidays[$day] ?? '';
     $isCovoit = isset($covoitDays[$day]);
 
+
     $class = [];
     $onclick = '';
     $details = [];
     $hasFutureCovoit = false;
     $hasPastOrFullCovoit = false;
-    $isUserPastBooking = false;
-
-    // Gather covoiturage details and check their status
+    $isUserPastAcceptedBooking = false;
+    $isUserFutureAcceptedBooking = false;
+    $dayDate = date('Y-m-d', strtotime("$year-$month-$day"));
+    $timestampDay = strtotime($dayDate);
     if ($isCovoit) {
       foreach ($covoitDays[$day] as $covoit) {
         $covoitDate = strtotime($covoit['date_depart']);
@@ -130,18 +140,26 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $userPast
           $hasPastOrFullCovoit = true;
         }
         $details[] = "De {$covoit['lieu_depart']} à {$covoit['lieu_arrivee']} à {$covoit['temps_depart']}";
-        // Booking logic: check if this covoiturage is booked by the user
-        if (!empty($userPastBookings) && in_array($covoit['id_covoit'], $userPastBookings)) {
-          $isUserPastBooking = true;
+        // Booking logic: check if this covoiturage is booked by the user for this day
+        if (!empty($bookedDays[$dayDate]) && in_array($covoit['id_covoit'], $bookedDays[$dayDate], true)) {
+          if ($timestampDay < $today) {
+            $isUserPastAcceptedBooking = true;
+          } else {
+            $isUserFutureAcceptedBooking = true;
+          }
         }
       }
     }
 
     // 1. "Votre covoiturage" (user has a booking for this day) - takes priority
-    if ($isUserPastBooking) {
+    if ($isUserFutureAcceptedBooking) {
       $class[] = 'votre-covoiturage';
-      $detailsStr = "<span style=\"color:#fff;font-weight:bold;\">Votre covoiturage</span><br>" . implode('<br>', $details);
-      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+      $detailsStr = "<span style=\"color:#fff;font-weight:bold;\">Votre covoiturage réservé</span><br>" . implode('<br>', $details);
+      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ", \"Votre covoiturage réservé\")'";
+    } elseif ($isUserPastAcceptedBooking) {
+      $class[] = 'votre-covoiturage-past';
+      $detailsStr = "<span style=\"color:#fff;font-weight:bold;\">Votre covoiturage passé</span><br>" . implode('<br>', $details);
+      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ", \"Votre covoiturage passé\")'";
     }
     // 2. Only holiday
     elseif ($isHoliday && !$isCovoit) {
@@ -253,7 +271,7 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $userPast
     </div>
     <?php
     // Afficher le calendrier du mois avec les jours fériés
-   echo generateCalendar($year, $month, $holidays, $userCovoiturages, $userFutureBookings);
+    echo generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDays);
     ?>
 
   </section>
@@ -268,22 +286,22 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $userPast
     </div>
   </div>
   <!-- Modale pour afficher les détails du covoiturage -->
-<div id="covoiturageModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeCovoiturageModal()">&times;</span>
-    <h2>Détails du covoiturage</h2>
-    <p id="covoiturageDescription"></p>
+  <div id="covoiturageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCovoiturageModal()">&times;</span>
+      <h2>Détails du covoiturage</h2>
+      <p id="covoiturageDescription"></p>
+    </div>
   </div>
-</div>
-<!-- Modale pour afficher les détails du jour férié + covoiturage -->
-<div id="holidayCovoiturageModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeHolidayCovoiturageModal()">&times;</span>
-    <h2>jour férié et covoiturage</h2>
-    <p id="holidayCovoiturageDescription"></p>
+  <!-- Modale pour afficher les détails du jour férié + covoiturage -->
+  <div id="holidayCovoiturageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeHolidayCovoiturageModal()">&times;</span>
+      <h2>jour férié et covoiturage</h2>
+      <p id="holidayCovoiturageDescription"></p>
+    </div>
+
   </div>
- 
-</div>
   <?php include '../../../assets/calendarfooter.php'; ?>
 
   <script>

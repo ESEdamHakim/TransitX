@@ -320,14 +320,37 @@ public function listCovoituragesCalendrier($id_user)
 }
 public function getUserFuturetBookings($id_user)
 {
-    $sql = "SELECT b.id_covoiturage
+    $sql = "SELECT b.id_covoiturage, c.date_depart
             FROM bookings b
             INNER JOIN covoiturage c ON b.id_covoiturage = c.id_covoit
             WHERE b.id_user = :id_user AND c.date_depart >= CURDATE()";
     $db = config::getConnexion();
     $query = $db->prepare($sql);
     $query->execute([':id_user' => $id_user]);
-    return array_column($query->fetchAll(PDO::FETCH_ASSOC), 'id_covoiturage');
+    return $query->fetchAll(PDO::FETCH_ASSOC); // returns array of ['id_covoiturage' => ..., 'date_depart' => ...]
+}
+
+public function getUserAcceptedBookings($id_user)
+{
+    $sql = "SELECT b.id_covoiturage, c.date_depart
+            FROM bookings b
+            INNER JOIN covoiturage c ON b.id_covoiturage = c.id_covoit
+            WHERE b.id_user = :id_user 
+              AND b.notification_status = 'accepted'";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_user' => $id_user]);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+public function getAllCovoituragesForMonth($year, $month)
+{
+    $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, temps_depart, places_dispo
+            FROM covoiturage
+            WHERE YEAR(date_depart) = :year AND MONTH(date_depart) = :month";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':year' => $year, ':month' => $month]);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 }
 ?>
