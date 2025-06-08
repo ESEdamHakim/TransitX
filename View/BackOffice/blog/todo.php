@@ -14,7 +14,7 @@ $user_id = $_SESSION['user_id'];
 // Suppression d'une tâche
 if (isset($_GET['delete'])) {
     $stmt = $pdo->prepare("DELETE FROM taches WHERE id = ? AND id_utilisateur = ?");
-    $stmt->execute([(int)$_GET['delete'], $user_id]);
+    $stmt->execute([(int) $_GET['delete'], $user_id]);
     header("Location: todo.php");
     exit;
 }
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Mise à jour du contenu (via AJAX)
     if (!empty($_POST['update_task_id']) && isset($_POST['new_contenu'])) {
-        $update_task_id = (int)$_POST['update_task_id'];
+        $update_task_id = (int) $_POST['update_task_id'];
         $new_contenu = htmlspecialchars(trim($_POST['new_contenu']));
 
         if ($new_contenu !== '') {
@@ -61,84 +61,234 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do avec Drag & Drop</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/crud.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body { font-family: Arial; background: #f5f5f5; padding: 20px; }
-        .container { display: flex; gap: 20px; justify-content: space-between; }
-        .column { background: white; flex: 1; padding: 10px; border-radius: 8px; box-shadow: 0 0 5px #aaa; min-height: 300px; }
-        .task { background: #eee; margin: 5px 0; padding: 10px; border-radius: 5px; cursor: move; position: relative; }
-        .done { text-decoration: line-through; color: #999; }
-        .form input[type="text"] { width: 75%; padding: 8px; }
-        .form input[type="submit"] { padding: 8px 12px; }
-        .delete-btn { position: absolute; right: 8px; top: 8px; color: red; text-decoration: none; font-weight: bold; }
+        .header-left h1 {
+            color: #1f4f65;
+            /* Blue color for the title */
+        }
+
+        .column {
+            background: rgb(219, 240, 243);
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px #aaa;
+            min-height: 300px;
+        }
+
+        .task {
+            background: rgb(190, 230, 235);
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: move;
+            position: relative;
+        }
+
+        .done {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .form input[type="text"] {
+            width: 75%;
+            padding: 8px;
+        }
+
+        .form input[type="submit"] {
+            padding: 8px 12px;
+        }
+
+        .delete-btn {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            color: red;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
         /* Styles pour le formulaire d'édition inline */
-        .edit-form { display: inline-block; margin-left: 5px; }
-        .edit-form input[type="text"] { padding: 4px; font-size: 1em; }
-        .edit-form input[type="submit"], .edit-form button { padding: 4px 8px; font-size: 0.9em; margin-left: 5px; }
+        .edit-form {
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .edit-form input[type="text"] {
+            padding: 4px;
+            font-size: 1em;
+        }
+
+        .edit-form input[type="submit"],
+        .edit-form button {
+            padding: 4px 8px;
+            font-size: 0.9em;
+            margin-left: 5px;
+        }
     </style>
 </head>
+
 <body>
-
-<h1 style="text-align:center;">📋 To-Do List</h1>
-
-<form method="POST" class="form">
-    <input type="text" name="contenu" placeholder="Ajouter une tâche..." required>
-    <input type="submit" value="Ajouter" style="background-color:#003366; color:#fff; border:none; cursor:pointer;">
-</form>
-
-<hr>
-
-<div class="container">
-    <div class="column" ondrop="drop(event, 'a_faire')" ondragover="allowDrop(event)">
-        <h2>📝 À faire</h2>
-        <?php foreach ($a_faire as $t): ?>
-            <div class="task" draggable="true" ondragstart="drag(event)" id="task-<?= $t['id'] ?>" ondblclick="editTask(<?= $t['id'] ?>)">
-                <span id="task-content-<?= $t['id'] ?>"><?= htmlspecialchars($t['contenu']) ?></span>
-                <form method="POST" class="edit-form" id="edit-form-<?= $t['id'] ?>" style="display:none;" onsubmit="return submitEdit(event, <?= $t['id'] ?>)">
-                    <input type="hidden" name="update_task_id" value="<?= $t['id'] ?>">
-                    <input type="text" name="new_contenu" value="<?= htmlspecialchars($t['contenu']) ?>" required>
-                    <input type="submit" value="OK">
-                    <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
-                </form>
-                <a href="?delete=<?= $t['id'] ?>" class="delete-btn" onclick="return confirm('Supprimer cette tâche ?')">❌</a>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../../FrontOffice/index.php" class="logo-link">
+                    <div class="logoback">
+                        <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logoback">
+                        <span>Transit</span><span class="highlight">X</span>
+                    </div>
+                </a>
+                <button class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-        <?php endforeach; ?>
-    </div>
 
-    <div class="column" ondrop="drop(event, 'en_cours')" ondragover="allowDrop(event)">
-        <h2>🔧 En cours</h2>
-        <?php foreach ($en_cours as $t): ?>
-            <div class="task" draggable="true" ondragstart="drag(event)" id="task-<?= $t['id'] ?>" ondblclick="editTask(<?= $t['id'] ?>)">
-                <span id="task-content-<?= $t['id'] ?>"><?= htmlspecialchars($t['contenu']) ?></span>
-                <form method="POST" class="edit-form" id="edit-form-<?= $t['id'] ?>" style="display:none;" onsubmit="return submitEdit(event, <?= $t['id'] ?>)">
-                    <input type="hidden" name="update_task_id" value="<?= $t['id'] ?>">
-                    <input type="text" name="new_contenu" value="<?= htmlspecialchars($t['contenu']) ?>" required>
-                    <input type="submit" value="OK">
-                    <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
-                </form>
-                <a href="?delete=<?= $t['id'] ?>" class="delete-btn" onclick="return confirm('Supprimer cette tâche ?')">❌</a>
-            </div>
-        <?php endforeach; ?>
-    </div>
+            <div class="sidebar-content">
+                <nav class="sidebar-menu">
+                    <ul>
+                        <li>
+                            <a href="../index.php">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../users/crud.php">
+                                <i class="fas fa-users"></i>
+                                <span>Utilisateurs</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../bus/crud.php">
+                                <i class="fas fa-bus"></i>
+                                <span>Bus</span>
+                            </a>
+                        </li>
+                        <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
 
-    <div class="column" ondrop="drop(event, 'terminee')" ondragover="allowDrop(event)">
-        <h2>✅ Terminées</h2>
-        <?php foreach ($terminees as $t): ?>
-            <div class="task done" draggable="true" ondragstart="drag(event)" id="task-<?= $t['id'] ?>" ondblclick="editTask(<?= $t['id'] ?>)">
-                <span id="task-content-<?= $t['id'] ?>"><?= htmlspecialchars($t['contenu']) ?></span>
-                <form method="POST" class="edit-form" id="edit-form-<?= $t['id'] ?>" style="display:none;" onsubmit="return submitEdit(event, <?= $t['id'] ?>)">
-                    <input type="hidden" name="update_task_id" value="<?= $t['id'] ?>">
-                    <input type="text" name="new_contenu" value="<?= htmlspecialchars($t['contenu']) ?>" required>
-                    <input type="submit" value="OK">
-                    <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
-                </form>
-                <a href="?delete=<?= $t['id'] ?>" class="delete-btn" onclick="return confirm('Supprimer cette tâche ?')">❌</a>
+                        <li>
+                            <a href="../colis/crud.php">
+                                <i class="fas fa-box"></i>
+                                <span>Colis</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../reclamations/crud.php">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Réclamations</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="crud.php">
+                                <i class="fas fa-car-side"></i>
+                                <span>Covoiturage</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../blog/crud.php">
+                                <i class="fas fa-blog"></i>
+                                <span>Blog</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../vehicule/crud.php">
+                                <i class="fas fa-car"></i>
+                                <span>Véhicules</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="../../../index.php" class="logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Déconnexion</span>
+                    </a>
+                </nav>
             </div>
-        <?php endforeach; ?>
+        </aside>
+        <main class="main-content">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>To Do List</h1>
+                    <p>Ajoutez, modifiez et supprimez des tâches</p>
+                </div>
+            </header>
+            <div class="dashboard-content">
+                <form method="POST" class="form">
+                    <input type="text" name="contenu" placeholder="Ajouter une tâche..." required>
+                    <input type="submit" value="Ajouter"
+                        style="background-color:#97c3a2; color:#fff; border:none; cursor:pointer;">
+                </form>
+                <div class="column" ondrop="drop(event, 'a_faire')" ondragover="allowDrop(event)">
+                    <h2>À faire</h2>
+                    <?php foreach ($a_faire as $t): ?>
+                        <div class="task" draggable="true" ondragstart="drag(event)" id="task-<?= $t['id'] ?>"
+                            ondblclick="editTask(<?= $t['id'] ?>)">
+                            <span id="task-content-<?= $t['id'] ?>"><?= htmlspecialchars($t['contenu']) ?></span>
+                            <form method="POST" class="edit-form" id="edit-form-<?= $t['id'] ?>" style="display:none;"
+                                onsubmit="return submitEdit(event, <?= $t['id'] ?>)">
+                                <input type="hidden" name="update_task_id" value="<?= $t['id'] ?>">
+                                <input type="text" name="new_contenu" value="<?= htmlspecialchars($t['contenu']) ?>"
+                                    required>
+                                <input type="submit" value="OK">
+                                <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
+                            </form>
+                            <a href="?delete=<?= $t['id'] ?>" class="delete-btn"
+                                onclick="return confirm('Supprimer cette tâche ?')">❌</a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <div class="column" ondrop="drop(event, 'en_cours')" ondragover="allowDrop(event)">
+                    <h2>En cours</h2>
+                    <?php foreach ($en_cours as $t): ?>
+                        <div class="task" draggable="true" ondragstart="drag(event)" id="task-<?= $t['id'] ?>"
+                            ondblclick="editTask(<?= $t['id'] ?>)">
+                            <span id="task-content-<?= $t['id'] ?>"><?= htmlspecialchars($t['contenu']) ?></span>
+                            <form method="POST" class="edit-form" id="edit-form-<?= $t['id'] ?>" style="display:none;"
+                                onsubmit="return submitEdit(event, <?= $t['id'] ?>)">
+                                <input type="hidden" name="update_task_id" value="<?= $t['id'] ?>">
+                                <input type="text" name="new_contenu" value="<?= htmlspecialchars($t['contenu']) ?>"
+                                    required>
+                                <input type="submit" value="OK">
+                                <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
+                            </form>
+                            <a href="?delete=<?= $t['id'] ?>" class="delete-btn"
+                                onclick="return confirm('Supprimer cette tâche ?')">❌</a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <div class="column" ondrop="drop(event, 'terminee')" ondragover="allowDrop(event)">
+                    <h2>Terminées</h2>
+                    <?php foreach ($terminees as $t): ?>
+                        <div class="task done" draggable="true" ondragstart="drag(event)" id="task-<?= $t['id'] ?>"
+                            ondblclick="editTask(<?= $t['id'] ?>)">
+                            <span id="task-content-<?= $t['id'] ?>"><?= htmlspecialchars($t['contenu']) ?></span>
+                            <form method="POST" class="edit-form" id="edit-form-<?= $t['id'] ?>" style="display:none;"
+                                onsubmit="return submitEdit(event, <?= $t['id'] ?>)">
+                                <input type="hidden" name="update_task_id" value="<?= $t['id'] ?>">
+                                <input type="text" name="new_contenu" value="<?= htmlspecialchars($t['contenu']) ?>"
+                                    required>
+                                <input type="submit" value="OK">
+                                <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
+                            </form>
+                            <a href="?delete=<?= $t['id'] ?>" class="delete-btn"
+                                onclick="return confirm('Supprimer cette tâche ?')">❌</a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </main>
     </div>
-</div>
+</body>
+
 
 <script>
     let draggedId;
@@ -188,7 +338,7 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
         xhr.open("POST", "todo.php", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status === 200) {
                 document.getElementById('task-content-' + id).textContent = newContent;
                 cancelEdit(id);
@@ -203,4 +353,5 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
 </script>
 
 </body>
+
 </html>
