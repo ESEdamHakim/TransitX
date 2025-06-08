@@ -336,3 +336,10 @@
   vertical-align: top;
   z-index: 2;
 }
+.colis-info {
+  background: #f8f8f8;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px 0;
+  font-size: 0.95em;
+}

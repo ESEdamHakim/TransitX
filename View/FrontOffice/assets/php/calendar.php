@@ -168,9 +168,9 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDa
    $icons = '';
 if (!empty($colisDays[$dayDate])) {
     $statut = $colisDays[$dayDate];
-    $color = '#0e142f'; // default for "en transit"
+    $color = '#3eb7e0'; // default for "en transit"
     if ($statut === 'en attente') {
-        $color = '#3eb7e0';
+        $color = '#0e142f';
     } elseif ($statut === 'livré') {
         $color = '#279e25';
     }
@@ -186,6 +186,13 @@ if (!empty($colisDays[$dayDate])) {
           $hasPastOrFullCovoit = true;
         }
         $details[] = "De {$covoit['lieu_depart']} à {$covoit['lieu_arrivee']} à {$covoit['temps_depart']}";
+       // Add colis info to details (for modal only)
+$colisList = $covoiturageC->getColisForCovoiturage($covoit['id_covoit']);
+if (!empty($colisList)) {
+    foreach ($colisList as $colis) {
+        $details[] = "<br><span style=\"color:#1b485f;font-weight:bold;\">Colis : Propriétaire: {$colis['prenom']} {$colis['nom']} | Tél: {$colis['telephone']} | Statut: {$colis['statut']}</span>";
+    }
+}
         // Booking logic: check if this covoiturage is booked by the user for this day
         if (!empty($bookedDays[$dayDate]) && in_array($covoit['id_covoit'], $bookedDays[$dayDate], true)) {
           // Fetch vehicle and driver info for this covoiturage
@@ -253,13 +260,13 @@ if (!empty($colisDays[$dayDate])) {
     elseif (!$isHoliday && !$hasFutureCovoit && $hasPastOrFullCovoit) {
       $class[] = 'covoiturage-past';
       $detailsStr = implode('<br>', $details);
-      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+     $onclick = 'onclick="showCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ')"';
     }
     // 8. Both holiday and covoiturage (not booked)
     elseif ($isHoliday && $isCovoit) {
       $class[] = 'holiday';
       $detailsStr = "<span style=\"color:#7ba987;font-weight:bold;\">$holidayName</span><br>" . implode('<br>', $details);
-      $onclick = "onclick='showHolidayCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+      $onclick = 'onclick="showCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ')"';
     }
     // 2. Only holiday
     elseif ($isHoliday && !$isCovoit) {
@@ -270,19 +277,19 @@ if (!empty($colisDays[$dayDate])) {
     elseif (!$isHoliday && $hasFutureCovoit) {
       $class[] = 'covoiturage-future';
       $detailsStr = implode('<br>', $details);
-      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+     $onclick = 'onclick="showCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ')"';
     }
     // 4. Only past or full covoiturage(s)
     elseif (!$isHoliday && !$hasFutureCovoit && $hasPastOrFullCovoit) {
       $class[] = 'covoiturage-past';
       $detailsStr = implode('<br>', $details);
-      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+      $onclick = 'onclick="showCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ')"';
     }
     // 5. Both holiday and covoiturage (any kind)
     elseif ($isHoliday && $isCovoit) {
       $class[] = 'holiday';
       $detailsStr = "<span style=\"color:#7ba987;font-weight:bold;\">$holidayName</span><br>" . implode('<br>', $details);
-      $onclick = "onclick='showHolidayCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+      $onclick = 'onclick="showHolidayCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ')"';
     }
 
     $classAttr = $class ? " class='" . implode(' ', $class) . "'" : '';

@@ -373,6 +373,16 @@ public function getUserColisForMonth($id_user, $year, $month) {
     $query->execute([':id_user' => $id_user, ':year' => $year, ':month' => $month]);
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
+public function getColisForCovoiturage($id_covoit) {
+    $sql = "SELECT c.*, u.nom, u.prenom, u.telephone
+            FROM colis c
+            INNER JOIN user u ON c.id_client = u.id
+            WHERE c.id_covoit = :id_covoit";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_covoit' => $id_covoit]);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
 
 }
 ?>
