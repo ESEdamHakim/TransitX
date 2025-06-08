@@ -464,8 +464,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <script src="assets/js/colisValidation.js"></script>
   <!-- Replace with your actual API key -->
-  <script src="https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v7.0/mapsJavaScriptAPI.js" async
-    defer></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRqtevb1ZGEqlL_tceScv_8nI-XccCsrI&libraries=places&callback=initMap"
+    async defer></script>
   <script>
     const notifyBtn = document.querySelector('.notify-button');
     const modal = document.getElementById('notificationModal');

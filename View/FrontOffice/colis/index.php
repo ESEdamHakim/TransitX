@@ -183,8 +183,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Service de Livraison de Colis</h1>
         <p>Envoyez vos colis de manière écologique et économique partout en Tunisie.</p>
         <div style="text-align: center;">
-  <a href="ColisList.php" class="btn btn-primary btn-colis-large">Mes Colis</a>
-</div>
+          <a href="ColisList.php" class="btn btn-primary btn-colis-large">Mes Colis</a>
+        </div>
       </div>
     </section>
 
@@ -447,8 +447,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/gh/somanchiu/Keyless-Google-Maps-API@v7.0/mapsJavaScriptAPI.js" async
-    defer></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRqtevb1ZGEqlL_tceScv_8nI-XccCsrI&libraries=places&callback=initMap"
+    async defer></script>
   <script src="assets/js/colisValidation.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"> </script>
