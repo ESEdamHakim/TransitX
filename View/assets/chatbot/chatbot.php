@@ -58,7 +58,7 @@
                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>
             </button>
-            <button id="voiceInputButton" title="Parler">
+            <button id="voiceInputButton">
                 <!-- Microphone icon (looks like a classic mic) -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor"
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

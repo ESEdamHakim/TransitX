@@ -498,6 +498,7 @@ textarea::placeholder {
   height: 40px;
   display: block;
 }
+
 /* Chatbot container */
 #chatbotContainer {
   position: fixed;
@@ -626,15 +627,17 @@ textarea::placeholder {
   margin-right: 8px;
   opacity: 0.6;
 }
+
 .chat-box::before,
 .chat-box::after {
   display: none !important;
   content: none !important;
 }
+
 /* Add to chatbot.css */
 #voiceInputButton {
-  background: linear-gradient(135deg, #d7dd83, #97c3a2);
-  color: #1f4f65;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
   border: none;
   width: 48px;
   height: 48px;
@@ -646,17 +649,19 @@ textarea::placeholder {
   justify-content: center;
   transition: background 0.2s;
 }
+
 #voiceInputButton.listening {
-  background: #ffc107;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
   animation: pulse-status 1s infinite;
 }
+
 #chatLangSelect {
   margin-left: 8px;
   border-radius: 10px;
   padding: 8px 16px;
   font-size: 15px;
-  background: linear-gradient(135deg, #f5f7f6, #eaf6f0 80%);
-  color: #1f4f65;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
   border: 1px solid #97c3a2;
   outline: none;
   transition: border 0.2s, box-shadow 0.2s;
@@ -675,4 +680,30 @@ textarea::placeholder {
   background: #fff;
   color: #1f4f65;
   font-size: 15px;
+}
+.read-aloud-btn {
+  background: transparent;
+  border: none;
+  margin-left: 8px;
+  cursor: pointer;
+  vertical-align: middle;
+  padding: 2px;
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  border-radius: 8px;
+}
+
+.read-aloud-btn:hover {
+  opacity: 50;
+  background: var(--primary-light);
+}
+
+.read-aloud-btn svg {
+  stroke: var(--primary-color);
+  fill: none;
+  display: block;
+  width: 22px;
+  height: 22px;
 }
