@@ -653,6 +653,8 @@ textarea::placeholder {
 #voiceInputButton:hover {
   background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
   transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+
 
 }
 
@@ -688,6 +690,8 @@ textarea::placeholder {
 }
 #chatLangSelect:hover {
   transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+
 }
 .read-aloud-btn {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
@@ -706,7 +710,7 @@ textarea::placeholder {
 .read-aloud-btn:hover {
   background: var(--secondary-dark);
   transform: translateY(-2px);
-
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   opacity: 1;
 }
 
