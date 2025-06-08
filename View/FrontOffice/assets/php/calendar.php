@@ -173,14 +173,51 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDa
       }
     }
 
-    // 1. "Votre covoiturage" (user has a booking for this day) - takes priority
-    if ($isUserFutureAcceptedBooking) {
-      $class[] = 'votre-covoiturage';
-     $onclick = 'onclick="showBookedCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ', \'Votre covoiturage réservé\')"';
-    } elseif ($isUserPastAcceptedBooking) {
-      $class[] = 'votre-covoiturage-past';
-      $onclick = 'onclick="showBookedCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ', \'Votre covoiturage réservé\')"';
-    }
+   // 1. Booked covoiturage (past) + holiday
+if ($isUserPastAcceptedBooking && $isHoliday) {
+    $class[] = 'votre-covoiturage-past';
+    $detailsStr .= "<br><span style=\"color:#7ba987;font-weight:bold;\">Jour férié : $holidayName</span>";
+    $onclick = 'onclick="showBookedCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ', \'Votre covoiturage réservé\')"';
+}
+// 2. Booked covoiturage (future) + holiday
+elseif ($isUserFutureAcceptedBooking && $isHoliday) {
+    $class[] = 'votre-covoiturage';
+    $detailsStr .= "<br><span style=\"color:#7ba987;font-weight:bold;\">Jour férié : $holidayName</span>";
+    $onclick = 'onclick="showBookedCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ', \'Votre covoiturage réservé\')"';
+}
+// 3. Booked covoiturage (past) only
+elseif ($isUserPastAcceptedBooking && !$isHoliday) {
+    $class[] = 'votre-covoiturage-past';
+    $onclick = 'onclick="showBookedCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ', \'Votre covoiturage réservé\')"';
+}
+// 4. Booked covoiturage (future) only
+elseif ($isUserFutureAcceptedBooking && !$isHoliday) {
+    $class[] = 'votre-covoiturage';
+    $onclick = 'onclick="showBookedCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ', \'Votre covoiturage réservé\')"';
+}
+// 5. Only holiday
+elseif ($isHoliday && !$isCovoit) {
+    $class[] = 'holiday';
+    $onclick = "onclick='showHolidayDetails(" . json_encode($holidayName) . ")'";
+}
+// 6. Only future covoiturage(s)
+elseif (!$isHoliday && $hasFutureCovoit) {
+    $class[] = 'covoiturage-future';
+    $detailsStr = implode('<br>', $details);
+    $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+}
+// 7. Only past or full covoiturage(s)
+elseif (!$isHoliday && !$hasFutureCovoit && $hasPastOrFullCovoit) {
+    $class[] = 'covoiturage-past';
+    $detailsStr = implode('<br>', $details);
+    $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+}
+// 8. Both holiday and covoiturage (not booked)
+elseif ($isHoliday && $isCovoit) {
+    $class[] = 'holiday';
+    $detailsStr = "<span style=\"color:#7ba987;font-weight:bold;\">$holidayName</span><br>" . implode('<br>', $details);
+    $onclick = "onclick='showHolidayCovoiturageDetails(" . json_encode($detailsStr) . ")'";
+}
     // 2. Only holiday
     elseif ($isHoliday && !$isCovoit) {
       $class[] = 'holiday';
