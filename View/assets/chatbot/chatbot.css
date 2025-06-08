@@ -649,7 +649,9 @@ textarea::placeholder {
   justify-content: center;
   transition: background 0.2s;
 }
-
+#voiceInputButton:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+}
 #voiceInputButton.listening {
   background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
   animation: pulse-status 1s infinite;
@@ -672,15 +674,11 @@ textarea::placeholder {
 }
 
 #chatLangSelect:focus {
+  color: var(--text-dark);
   border: 2px solid #97c3a2;
   box-shadow: 0 0 0 3px rgba(151, 195, 162, 0.15);
 }
 
-#chatLangSelect option {
-  background: #fff;
-  color: #1f4f65;
-  font-size: 15px;
-}
 .read-aloud-btn {
   background: transparent;
   border: none;
@@ -691,13 +689,14 @@ textarea::placeholder {
   display: inline-flex;
   align-items: center;
   opacity: 0.7;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, background 0.2s;
   border-radius: 8px;
 }
 
 .read-aloud-btn:hover {
-  opacity: 50;
-  background: var(--primary-light);
+  background: var(--secondary-dark);
+  stroke: var(--secondary-dark);
+  opacity: 1;
 }
 
 .read-aloud-btn svg {
