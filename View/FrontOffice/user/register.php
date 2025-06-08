@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
 
           <button type="button" id="openRegFaceIdModal" class="btn btn-primary btn-block">
-            <i class="fas fa-face-smile"></i> Enregistrer mon visage (Face ID)
+            <i class="fas fa-face-smile"></i> Enregistrer mon visage (optionnel)
           </button>
           <input type="hidden" name="face_descriptor" id="face_descriptor">
 
