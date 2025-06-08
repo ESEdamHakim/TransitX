@@ -274,6 +274,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="button" id="faceIdBtn" class="btn btn-primary btn-block">
               <i class="fas fa-face-smile"></i> Face ID
             </button>
+            <a href="View/FrontOffice/user/google_login.php" class="forgot-password"
+                style="color: #86b391; text-decoration: none; font-size: 0.9em;">Google Login</a>
           </div>
         </form>
 
