@@ -344,7 +344,7 @@ public function getUserAcceptedBookings($id_user)
 }
 public function getAllCovoituragesForMonth($year, $month)
 {
-    $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, temps_depart, places_dispo
+    $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, temps_depart, places_dispo, id_user
             FROM covoiturage
             WHERE YEAR(date_depart) = :year AND MONTH(date_depart) = :month";
     $db = config::getConnexion();
@@ -363,5 +363,16 @@ public function getDriverByCovoiturageId($id_covoiturage)
     $query->execute([':id_covoiturage' => $id_covoiturage]);
     return $query->fetch(PDO::FETCH_ASSOC);
 }
+public function getUserColisForMonth($id_user, $year, $month) {
+    $sql = "SELECT id_colis, date_colis, statut FROM colis 
+            WHERE id_client = :id_user 
+              AND YEAR(date_colis) = :year 
+              AND MONTH(date_colis) = :month";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_user' => $id_user, ':year' => $year, ':month' => $month]);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }
 ?>

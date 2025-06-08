@@ -327,3 +327,12 @@
 .booked-covoit-modal p {
   margin: 2px 0;
 }
+.colis-icon {
+  font-size: 1.1em;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  margin: 0;
+  vertical-align: top;
+  z-index: 2;
+}
