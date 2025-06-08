@@ -55,11 +55,14 @@ if (isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="assets/css/users.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script src='https://meet.jit.si/external_api.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
   <style>
     .sort-icon {
       font-size: 0.8em;
@@ -277,6 +280,8 @@ if (isset($_SESSION['user_id'])) {
 </head>
 
 <body>
+    <?php include '../../assets/chatbot/chatbot.php'; ?>
+
   <div class="dashboard">
     <?php include 'sidebar.php'; ?>
     <main class="main-content">
@@ -904,6 +909,8 @@ if (isset($_SESSION['user_id'])) {
   </script>
   <script src="../assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="assets/js/chatbot.js"> </script>
 
 </body>
 

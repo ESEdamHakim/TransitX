@@ -30,6 +30,8 @@ if (isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+
   <style>
     .header-left h1 {
       color: #1f4f65;
@@ -39,6 +41,8 @@ if (isset($_SESSION['user_id'])) {
 </head>
 
 <body>
+    <?php include '../../assets/chatbot/chatbot.php'; ?>
+
   <!--the dashboard +color logo..-->
   <div class="dashboard">
     <aside class="sidebar">
@@ -305,6 +309,8 @@ if (isset($_SESSION['user_id'])) {
   <script src="BvalidVehicule.js"></script>
   <script src="../assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="assets/js/chatbot.js"> </script>
 </body>
 
 </html>

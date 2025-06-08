@@ -33,9 +33,13 @@ if (isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+
 </head>
 
 <body>
+    <?php include '../../assets/chatbot/chatbot.php'; ?>
+
   <div class="dashboard">
     <?php include 'sidebar.php'; ?>
     <!-- Main Content -->
@@ -154,6 +158,9 @@ if (isset($_SESSION['user_id'])) {
   <script src="assets/js/main.js"></script>
   <script src="../assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="assets/js/chatbot.js"> </script>
+
 </body>
 
 </html>

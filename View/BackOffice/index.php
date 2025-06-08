@@ -30,6 +30,8 @@ if (isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../assets/chatbot/chatbot.css">
+
   <style>
     
     .reports-section {
@@ -162,6 +164,8 @@ if (isset($_SESSION['user_id'])) {
 </head>
 
 <body>
+    <?php include '../assets/chatbot/chatbot.php'; ?>
+
   <div class="dashboard">
     <aside class="sidebar">
       <div class="sidebar-header">
@@ -424,6 +428,8 @@ if (topServices) {
 </script>
   <script src="assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../assets/chatbot/chatbot.js"> </script>
 </body>
 
 </html>
