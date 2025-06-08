@@ -77,21 +77,29 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function initMap() {
-  // Fixed "current location" (you are treating this as the always-current point)
-  const currentLocation = { lat: 36.8980431, lng: 10.1888733 };
+  // Try to use user's real location, fallback to fixed location
+  const defaultLocation = { lat: 36.897248, lng: 10.193377 };
+  let currentLocation = defaultLocation;
 
   geocoder = new google.maps.Geocoder();
   directionsRenderer = new google.maps.DirectionsRenderer();
 
-  // Initialize map with the fixed location
   map = new google.maps.Map(document.getElementById("gmap_canvas"), {
-    center: currentLocation,
+    center: defaultLocation,
     zoom: 13,
   });
 
   directionsRenderer.setMap(map);
 
-  // Red marker at the fixed location (treated as "current location")
+  // Red marker for current location
+  let userMarker = new google.maps.Marker({
+    position: defaultLocation,
+    map: map,
+    icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+    title: "Votre position par défaut"
+  });
+
+  // Try geolocation for better UX
   new google.maps.Marker({
     position: currentLocation,
     map: map,
@@ -99,82 +107,125 @@ function initMap() {
     title: "Votre position par défaut"
   });
 
-  // Automatically trigger a random click around the fixed location
-  triggerRandomClick();
+  // --- Autocomplete for pickup and delivery ---
+  const pickupInput = document.getElementById('autocomplete-pickup');
+  const deliveryInput = document.getElementById('autocomplete-delivery');
+  const pickupAutocomplete = new google.maps.places.Autocomplete(pickupInput);
+  const deliveryAutocomplete = new google.maps.places.Autocomplete(deliveryInput);
 
-  function triggerRandomClick() {
-    // Generate a random point within ~1km of the fixed location
-    const randomLat = (Math.random() - 0.5) * 0.02 + currentLocation.lat;
-    const randomLng = (Math.random() - 0.5) * 0.02 + currentLocation.lng;
-
-    const randomLocation = new google.maps.LatLng(randomLat, randomLng);
-    clickStep = -1;
-    handleMapClick(randomLocation);
-  }
-
-  function handleMapClick(location) {
-    const warningBox = document.getElementById("map-warning");
-
-    if (clickStep === -1) {
-      document.getElementById("latitude_ram").value = location.lat();
-      document.getElementById("longitude_ram").value = location.lng();
-      getCityFromCoordinates(location.lat(), location.lng(), "lieu_ram");
-      clickStep = 0;
-      return;
+  pickupAutocomplete.addListener('place_changed', function () {
+    const place = pickupAutocomplete.getPlace();
+    if (place.geometry) {
+      map.panTo(place.geometry.location);
+      setPickupMarker(place.geometry.location, place.formatted_address);
     }
+  });
 
-    if (clickStep === 0) {
-      if (pickupMarker) pickupMarker.setMap(null);
-      pickupMarker = new google.maps.Marker({
-        position: location,
-        map: map,
-        label: "A",
-        icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-      });
-
-      document.getElementById("latitude_ram").value = location.lat();
-      document.getElementById("longitude_ram").value = location.lng();
-      getCityFromCoordinates(location.lat(), location.lng(), "lieu_ram");
-
-      clickStep = 1;
-      warningBox.textContent = "📍 Pickup set. Cliquez pour définir la livraison.";
-      warningBox.style.color = "#333333";
-      warningBox.classList.add("text-warning");
-      warningBox.classList.remove("text-success");
-    } else if (clickStep === 1) {
-      if (deliveryMarker) deliveryMarker.setMap(null);
-      deliveryMarker = new google.maps.Marker({
-        position: location,
-        map: map,
-        label: "B",
-        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-      });
-
-      document.getElementById("latitude_dest").value = location.lat();
-      document.getElementById("longitude_dest").value = location.lng();
-      getCityFromCoordinates(location.lat(), location.lng(), "lieu_dest");
-
-      clickStep = 0;
-      warningBox.classList.remove("text-warning");
-      warningBox.classList.remove("text-success");
-      warningBox.textContent = "";
-      drawRoute();
+  deliveryAutocomplete.addListener('place_changed', function () {
+    const place = deliveryAutocomplete.getPlace();
+    if (place.geometry) {
+      map.panTo(place.geometry.location);
+      setDeliveryMarker(place.geometry.location, place.formatted_address);
     }
-  }
-  // Listener for user clicks to set the delivery location
+  });
+
+  // --- Map click logic ---
   map.addListener("click", function (event) {
     const clickedLocation = event.latLng;
-    handleMapClick(clickedLocation);
+    if (clickStep === 0) {
+      setPickupMarker(clickedLocation);
+      document.getElementById("autocomplete-pickup").value = "";
+    } else if (clickStep === 1) {
+      setDeliveryMarker(clickedLocation);
+      document.getElementById("autocomplete-delivery").value = "";
+    }
+  });
+
+  // --- Reset button ---
+  const resetBtn = document.getElementById("reset-map");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      if (pickupMarker) pickupMarker.setMap(null);
+      if (deliveryMarker) deliveryMarker.setMap(null);
+      pickupMarker = null;
+      deliveryMarker = null;
+      directionsRenderer.set('directions', null);
+      clickStep = 0;
+      document.getElementById("latitude_ram").value = "";
+      document.getElementById("longitude_ram").value = "";
+      document.getElementById("latitude_dest").value = "";
+      document.getElementById("longitude_dest").value = "";
+      document.getElementById("lieu_ram").value = "";
+      document.getElementById("lieu_dest").value = "";
+      document.getElementById("route-info").style.display = "none";
+      document.getElementById("map-warning").textContent = "";
+      document.getElementById("autocomplete-pickup").value = "";
+      document.getElementById("autocomplete-delivery").value = "";
+    });
+  }
+
+  function setPickupMarker(location, address = null) {
+    if (pickupMarker) pickupMarker.setMap(null);
+    pickupMarker = new google.maps.Marker({
+      position: location,
+      map: map,
+      label: "A",
+      icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+      animation: google.maps.Animation.DROP
+    });
+    document.getElementById("latitude_ram").value = location.lat();
+    document.getElementById("longitude_ram").value = location.lng();
+
+    if (address) {
+      document.getElementById("lieu_ram").value = address;
+      document.getElementById("autocomplete-pickup").value = address; // Auto-fill input
+    } else {
+      getCityFromCoordinates(location.lat(), location.lng(), "lieu_ram", "autocomplete-pickup");
+    }
+    clickStep = 1;
+    const warningBox = document.getElementById("map-warning");
+    warningBox.textContent = "📍 Ramassage défini. Cliquez ou recherchez la livraison.";
+    warningBox.style.color = "#333333";
+    warningBox.classList.add("text-warning");
+    warningBox.classList.remove("text-success");
+  }
+
+  function setDeliveryMarker(location, address = null) {
+    if (deliveryMarker) deliveryMarker.setMap(null);
+    deliveryMarker = new google.maps.Marker({
+      position: location,
+      map: map,
+      label: "B",
+      icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+      animation: google.maps.Animation.DROP
+    });
+    document.getElementById("latitude_dest").value = location.lat();
+    document.getElementById("longitude_dest").value = location.lng();
+
+    if (address) {
+      document.getElementById("lieu_dest").value = address;
+      document.getElementById("autocomplete-delivery").value = address; // Auto-fill input
+    } else {
+      getCityFromCoordinates(location.lat(), location.lng(), "lieu_dest", "autocomplete-delivery");
+    }
+    clickStep = 0;
+    const warningBox = document.getElementById("map-warning");
+    warningBox.textContent = "";
+    warningBox.classList.remove("text-warning");
+    warningBox.classList.remove("text-success");
+    drawRoute();
+  }
+
+  // --- Responsive map ---
+  window.addEventListener('resize', function () {
+    google.maps.event.trigger(map, "resize");
   });
 }
 
-console.log("📦 lieu_ram:", lieuRam);
-function getCityFromCoordinates(lat, lng, targetFieldId) {
+// Update getCityFromCoordinates to optionally fill the visible input too
+function getCityFromCoordinates(lat, lng, targetFieldId, visibleInputId = null) {
   const latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
   geocoder.geocode({ location: latlng }, (results, status) => {
-    console.log("Geocoder status:", status);
-    console.log("Geocoder results:", results);
-  
     if (status === "OK" && results[0]) {
       let city = null;
       for (const comp of results[0].address_components) {
@@ -187,20 +238,23 @@ function getCityFromCoordinates(lat, lng, targetFieldId) {
           break;
         }
       }
-  
       const field = document.getElementById(targetFieldId);
       if (field) {
         field.value = city || results[0].formatted_address;
-        console.log(`✅ Set ${targetFieldId} to:`, field.value);
-      } else {
-        console.warn("⚠️ Target field not found:", targetFieldId);
+      }
+      if (visibleInputId) {
+        const visibleInput = document.getElementById(visibleInputId);
+        if (visibleInput) {
+          visibleInput.value = city || results[0].formatted_address;
+        }
       }
     } else {
       document.getElementById(targetFieldId).value = "Adresse non trouvée";
-      console.error("Geocoder failed due to:", status);
+      if (visibleInputId) {
+        document.getElementById(visibleInputId).value = "Adresse non trouvée";
+      }
     }
   });
-  
 }
 
 function drawRoute() {
@@ -264,23 +318,23 @@ function showError(fieldId, message) {
   if (field) {
     const existingError = field.parentNode.querySelector(".error-message");
     if (existingError) existingError.remove();
-  
+
     const error = document.createElement('div');
     error.className = 'error-message';
     error.style.color = 'red';
     error.style.fontSize = '0.85em';
-    error.style.textAlign = 'left'; 
+    error.style.textAlign = 'left';
     error.textContent = message;
-  
+
     field.parentNode.appendChild(error);
     field.classList.add('shake');
   }
-  }
-  
-  function clearAllErrors() {
+}
+
+function clearAllErrors() {
   document.querySelectorAll(".error-message").forEach(el => el.remove());
   document.querySelectorAll(".shake").forEach(el => el.classList.remove("shake"));
-  
+
   const dimensionsError = document.getElementById("dimensions-error");
   if (dimensionsError) {
     dimensionsError.innerHTML = "";
@@ -289,8 +343,8 @@ function showError(fieldId, message) {
   if (mapWarning) {
     mapWarning.textContent = "";
   }
-  }
-  // Setup Delete Button click to open the confirmation modal
+}
+// Setup Delete Button click to open the confirmation modal
 document.querySelectorAll('.open-delete-modal').forEach(button => {
   button.addEventListener('click', function () {
     const colisId = this.dataset.id;  // only id_colis available

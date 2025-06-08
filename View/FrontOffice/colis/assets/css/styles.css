@@ -570,3 +570,16 @@
   box-shadow: 0 4px 8px rgba(31, 79, 101, 0.4);
   transform: translateY(-2px);
 }
+
+/* In your CSS */
+.map-container #gmap_canvas {
+  width: 100% !important;
+  max-width: 400px;
+  height: 300px;
+}
+@media (max-width: 600px) {
+  .map-container #gmap_canvas {
+    max-width: 100vw;
+    height: 200px;
+  }
+}

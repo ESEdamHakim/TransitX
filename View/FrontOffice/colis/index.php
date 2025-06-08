@@ -199,7 +199,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="colis-form-container">
           <form class="colis-form" method="POST">
             <input type="hidden" name="id_client" id="id_client" value="<?php echo $_SESSION['user_id']; ?>">
-
             <input type="hidden" name="id_covoit" id="id_covoit" value="">
             <br>
 
@@ -210,7 +209,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <br>
             <input type="hidden" name="statut" id="statut" value="en attente">
 
-
             <div class="form-group">
               <label for="dimensions">Dimensions (cm)</label>
               <div class="dimensions-inputs">
@@ -220,7 +218,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span>×</span>
                 <input type="number" name="hauteur" id="hauteur" placeholder="H" step="1">
               </div>
-              <!-- Place to show error for dimensions -->
               <div id="dimensions-error" class="error-message-container"></div>
             </div>
             <br>
@@ -228,29 +225,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <label for="poids">Poids (kg)</label>
               <input type="number" name="poids" id="poids" placeholder="Poids" step="0.1">
             </div>
-
             <br>
 
-            <br>
+            <!-- Google Maps Autocomplete Inputs -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="autocomplete-pickup">Adresse de ramassage</label>
+                <input id="autocomplete-pickup" type="text" placeholder="Saisir l'adresse de ramassage"
+                  autocomplete="off" style="width:100%;margin-bottom:8px;">
+              </div>
+              <div class="form-group">
+                <label for="autocomplete-delivery">Adresse de livraison</label>
+                <input id="autocomplete-delivery" type="text" placeholder="Saisir l'adresse de livraison"
+                  autocomplete="off" style="width:100%;margin-bottom:8px;">
+              </div>
+            </div>
             <input type="hidden" name="lieu_ram" id="lieu_ram">
             <input type="hidden" name="lieu_dest" id="lieu_dest">
             <input type="hidden" name="latitude_ram" id="latitude_ram">
             <input type="hidden" name="longitude_ram" id="longitude_ram">
             <input type="hidden" name="latitude_dest" id="latitude_dest">
             <input type="hidden" name="longitude_dest" id="longitude_dest">
-            <input type="hidden" name="prix" id="prix"> <!-- You can calculate this via JS later -->
+            <input type="hidden" name="prix" id="prix">
             <br>
             <div class="form-actions text-center">
               <button type="submit" class="btn btn-primary">
                 Valider
                 <i class="fas fa-add"></i>
               </button>
+              <button type="button" id="reset-map" class="btn btn-primary" style="margin-left:10px;">
+                Réinitialiser la carte
+                <i class="fas fa-undo"></i>
+              </button>
             </div>
           </form>
 
           <div class="map-container">
             <h3>Localisation</h3>
-            <div id="gmap_canvas" style="height: 400px; width: 400px;">
+            <div id="gmap_canvas" style="height: 400px; min-width: 400px;">
               <!-- La carte Google Maps s'affichera ici -->
             </div>
             <div class="map-info"
@@ -260,8 +272,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span style="font-weight: 600; color: #555;">Instructions:</span>
                 <br>
                 <span>
-                  <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
-                  <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
+                  <strong>1:</strong> Utilisez la recherche ou cliquez sur la carte pour l'adresse de
+                  <strong>ramassage</strong><br>
+                  <strong>2:</strong> Utilisez la recherche ou cliquez encore pour l'adresse de
+                  <strong>livraison</strong>.
                 </span>
               </p>
             </div>
