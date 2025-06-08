@@ -3,12 +3,11 @@ require_once __DIR__ . '/../../assets/vendor/google-api-php-client/vendor/autolo
 require_once '../../../Controller/UserC.php';
 
 require_once 'google_oauth_config.php';
-$client->setClientId(GOOGLE_CLIENT_ID);
-$client->setClientSecret(GOOGLE_CLIENT_SECRET);
 session_start();
 
 $client = new Google_Client();
-
+$client->setClientId(GOOGLE_CLIENT_ID);
+$client->setClientSecret(GOOGLE_CLIENT_SECRET);
 $client->setRedirectUri('http://localhost/TransitX/View/FrontOffice/user/google_callback.php');
 
 if (isset($_GET['code'])) {
