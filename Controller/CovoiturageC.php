@@ -352,5 +352,16 @@ public function getAllCovoituragesForMonth($year, $month)
     $query->execute([':year' => $year, ':month' => $month]);
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
+public function getDriverByCovoiturageId($id_covoiturage)
+{
+    $sql = "SELECT u.nom, u.prenom, u.image
+            FROM covoiturage c
+            INNER JOIN user u ON c.id_user = u.id
+            WHERE c.id_covoit = :id_covoiturage";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_covoiturage' => $id_covoiturage]);
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
 }
 ?>

@@ -312,3 +312,18 @@
   border: 2px solid #e2b77a;
   cursor: pointer;
 }
+.booked-covoit-modal {
+  text-align: center;
+}
+.booked-covoit-modal img.vehicle-img {
+  width: 120px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.booked-covoit-modal h3 {
+  margin: 10px 0 5px 0;
+  color: #3b7a57;
+}
+.booked-covoit-modal p {
+  margin: 2px 0;
+}

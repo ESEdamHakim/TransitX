@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../../../Controller/userC.php';
 require_once __DIR__ . '/../../../../Controller/CovoiturageC.php';
+require_once __DIR__ . '/../../../../Controller/vehiculeC.php';
 session_start(); // Important : Démarrer la session en haut du fichier
 
 $userController = new UserC();
@@ -30,7 +31,9 @@ $month = filter_input(INPUT_GET, 'month', FILTER_VALIDATE_INT) ?: date("n");
 
 $month = max(1, min(12, (int) $month));
 $covoiturageC = new CovoiturageC();
+$vehiculeC = new VehiculeC();
 $userCovoiturages = $covoiturageC->getAllCovoituragesForMonth($year, $month);
+
 // Previous and next month/year logic
 $prevDate = strtotime("-1 month", strtotime("$year-$month-01"));
 $nextDate = strtotime("+1 month", strtotime("$year-$month-01"));
@@ -84,7 +87,7 @@ foreach ($userAcceptedBookings as $booking) {
 
 
 // Calendar generation function
-function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDays)
+function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDays, $covoiturageC, $vehiculeC)
 {
   // Prepare covoiturage days for quick lookup
   $covoitDays = [];
@@ -142,11 +145,30 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDa
         $details[] = "De {$covoit['lieu_depart']} à {$covoit['lieu_arrivee']} à {$covoit['temps_depart']}";
         // Booking logic: check if this covoiturage is booked by the user for this day
         if (!empty($bookedDays[$dayDate]) && in_array($covoit['id_covoit'], $bookedDays[$dayDate], true)) {
+          // Fetch vehicle and driver info for this covoiturage
+          $id_vehicule = $covoiturageC->getVehiculeIdByCovoiturageId($covoit['id_covoit']);
+          $vehicule = $vehiculeC->getVehiculeById($id_vehicule);
+          $driver = $covoiturageC->getDriverByCovoiturageId($covoit['id_covoit']);
+
+          // Build the modal content for this booking
+          $modalContent = "
+          <div class='booked-covoit-modal'>
+          <img id='vehicule-photo' src='../../../assets/uploads/{$vehicule['photo_vehicule']}' alt='Photo du véhicule' class='vehicle-img' />
+          <h3>Conducteur: {$driver['prenom']} {$driver['nom']}</h3>
+          <p><strong>Départ:</strong> {$covoit['lieu_depart']} à {$covoit['temps_depart']}</p>
+          <p><strong>Arrivée:</strong> {$covoit['lieu_arrivee']}</p>
+          </div>
+    ";
+
+          // Set booking flags and detailsStr for the modal
           if ($timestampDay < $today) {
             $isUserPastAcceptedBooking = true;
+            $detailsStr = $modalContent;
           } else {
             $isUserFutureAcceptedBooking = true;
+            $detailsStr = $modalContent;
           }
+
         }
       }
     }
@@ -154,12 +176,10 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDa
     // 1. "Votre covoiturage" (user has a booking for this day) - takes priority
     if ($isUserFutureAcceptedBooking) {
       $class[] = 'votre-covoiturage';
-      $detailsStr = "<span style=\"color:#fff;font-weight:bold;\">Votre covoiturage réservé</span><br>" . implode('<br>', $details);
-      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ", \"Votre covoiturage réservé\")'";
+     $onclick = 'onclick="showBookedCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ', \'Votre covoiturage réservé\')"';
     } elseif ($isUserPastAcceptedBooking) {
       $class[] = 'votre-covoiturage-past';
-      $detailsStr = "<span style=\"color:#fff;font-weight:bold;\">Votre covoiturage passé</span><br>" . implode('<br>', $details);
-      $onclick = "onclick='showCovoiturageDetails(" . json_encode($detailsStr) . ", \"Votre covoiturage passé\")'";
+      $onclick = 'onclick="showBookedCovoiturageDetails(' . htmlspecialchars(json_encode($detailsStr), ENT_QUOTES) . ', \'Votre covoiturage réservé\')"';
     }
     // 2. Only holiday
     elseif ($isHoliday && !$isCovoit) {
@@ -186,6 +206,7 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDa
     }
 
     $classAttr = $class ? " class='" . implode(' ', $class) . "'" : '';
+    //$calendar .= "<td$classAttr " . htmlspecialchars($onclick, ENT_QUOTES) . ">$day</td>";
     $calendar .= "<td$classAttr $onclick>$day</td>";
 
     if ($weekday == 6 && $day !== $daysInMonth) {
@@ -271,7 +292,7 @@ function generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDa
     </div>
     <?php
     // Afficher le calendrier du mois avec les jours fériés
-    echo generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDays);
+    echo generateCalendar($year, $month, $holidays, $userCovoiturages, $bookedDays, $covoiturageC, $vehiculeC);
     ?>
 
   </section>

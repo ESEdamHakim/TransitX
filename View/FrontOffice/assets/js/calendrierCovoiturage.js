@@ -1,8 +1,10 @@
-function showCovoiturageDetails(details) {
+function showCovoiturageDetails(details, title = "Détails du covoiturage") {
   let modal = document.getElementById("covoiturageModal");
   let desc = document.getElementById("covoiturageDescription");
-  if (modal && desc) {
+  let modalTitle = modal.querySelector("h2");
+  if (modal && desc && modalTitle) {
     desc.innerHTML = details;
+    modalTitle.innerText = title;
     modal.style.display = "block";
   }
 }
@@ -41,3 +43,13 @@ window.addEventListener("click", function (e) {
     closeHolidayCovoiturageModal();
   }
 });
+function showBookedCovoiturageDetails(details, title = "Votre covoiturage réservé") {
+  let modal = document.getElementById("covoiturageModal");
+  let desc = document.getElementById("covoiturageDescription");
+  let modalTitle = modal.querySelector("h2");
+  if (modal && desc && modalTitle) {
+    desc.innerHTML = details;
+    modalTitle.innerText = title;
+    modal.style.display = "block";
+  }
+}
