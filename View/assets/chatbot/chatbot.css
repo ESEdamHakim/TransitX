@@ -475,8 +475,8 @@ textarea::placeholder {
   color: white;
   border: none;
   border-radius: 20px;
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(31, 79, 101, 0.4);
   z-index: 1000;
@@ -484,6 +484,7 @@ textarea::placeholder {
   align-items: center;
   justify-content: center;
   transition: var(--transition-bounce);
+  padding: 0;
 }
 
 #openChatbotButton:hover {
@@ -493,12 +494,10 @@ textarea::placeholder {
 }
 
 #openChatbotButton svg {
-  width: 26px;
-  height: 26px;
-  stroke: white;
-  stroke-width: 2;
+  width: 40px;
+  height: 40px;
+  display: block;
 }
-
 /* Chatbot container */
 #chatbotContainer {
   position: fixed;

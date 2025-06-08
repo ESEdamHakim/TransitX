@@ -1,8 +1,14 @@
 <button id="openChatbotButton">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-    </svg>
+  <!-- Robot head icon, extra large and centered -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48" style="display:block; margin:auto;">
+    <rect x="9" y="15" width="30" height="21" rx="10" fill="#97c3a2" stroke="#1f4f65"/>
+    <circle cx="18" cy="26" r="3" fill="#1f4f65"/>
+    <circle cx="30" cy="26" r="3" fill="#1f4f65"/>
+    <rect x="20" y="36" width="8" height="3" rx="1.5" fill="#1f4f65"/>
+    <rect x="22" y="8" width="4" height="6" rx="2" fill="#d7dd83" stroke="#1f4f65"/>
+    <line x1="9" y1="19" x2="3" y2="19" stroke="#1f4f65" stroke-width="3"/>
+    <line x1="39" y1="19" x2="45" y2="19" stroke="#1f4f65" stroke-width="3"/>
+  </svg>
 </button>
 
 <div id="chatbotContainer">
@@ -53,12 +59,11 @@
                 </svg>
             </button>
             <button id="voiceInputButton" title="Parler">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor"
+                <!-- Microphone icon (looks like a classic mic) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor"
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="11" r="4"></circle>
-                    <path d="M19 11a7 7 0 0 1-14 0"></path>
-                    <line x1="12" y1="15" x2="12" y2="19"></line>
-                    <line x1="8" y1="19" x2="16" y2="19"></line>
+                    <rect x="9" y="2" width="6" height="12" rx="3" />
+                    <path d="M12 18v2M8 22h8M19 10a7 7 0 0 1-14 0" />
                 </svg>
             </button>
             <select id="chatLangSelect" style="margin-left:8px; border-radius:8px; padding:4px;">

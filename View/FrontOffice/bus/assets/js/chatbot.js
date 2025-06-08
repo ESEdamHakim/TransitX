@@ -144,6 +144,20 @@ document.addEventListener('DOMContentLoaded', function () {
             chatBox.scrollTop = chatBox.scrollHeight;
         }
         
+
+             // === Voice and Language Selection ===
+    const voiceInputButton = document.getElementById('voiceInputButton');
+    const langSelect = document.getElementById('chatLangSelect');
+    let currentLang = langSelect ? langSelect.value : 'fr-FR';
+
+    // Update language when user changes dropdown
+    if (langSelect) {
+        langSelect.addEventListener('change', function () {
+            currentLang = this.value;
+            if (recognition) recognition.lang = currentLang;
+        });
+    }
+
     function addBotMessage(text) {
         const container = document.createElement('div');
         container.className = 'message-container bot-container';
@@ -169,5 +183,46 @@ document.addEventListener('DOMContentLoaded', function () {
         container.appendChild(messageDiv);
         chatBox.appendChild(container);
         chatBox.scrollTop = chatBox.scrollHeight;
+         // Text-to-Speech
+       if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = currentLang;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+    // Speech-to-Text
+    let recognition;
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = currentLang;
+        recognition.maxAlternatives = 1;
+
+        voiceInputButton.addEventListener('click', function () {
+            recognition.lang = currentLang; // Always use latest selected lang
+            recognition.start();
+            voiceInputButton.disabled = true;
+            voiceInputButton.classList.add('listening');
+        });
+
+        recognition.onresult = function (event) {
+            const transcript = event.results[0][0].transcript;
+            inputMessage.value = transcript;
+            inputMessage.focus();
+            voiceInputButton.disabled = false;
+            voiceInputButton.classList.remove('listening');
+        };
+
+        recognition.onerror = function () {
+            voiceInputButton.disabled = false;
+            voiceInputButton.classList.remove('listening');
+        };
+
+        recognition.onend = function () {
+            voiceInputButton.disabled = false;
+            voiceInputButton.classList.remove('listening');
+        };
+    } else if (voiceInputButton) {
+        voiceInputButton.style.display = 'none'; // Hide if not supported
     }
 });

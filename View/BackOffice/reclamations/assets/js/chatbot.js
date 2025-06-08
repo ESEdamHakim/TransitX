@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const avatar = document.createElement('div');
         avatar.className = 'avatar bot-avatar';
         const img = document.createElement('img');
-        img.src = '../assets/images/logo.png';
+        img.src = '../../assets/images/logo.png';
         img.alt = 'Bot';
         img.className = 'avatar-img';
         avatar.appendChild(img);
