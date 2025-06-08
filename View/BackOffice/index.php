@@ -255,7 +255,6 @@ if (isset($_SESSION['user_id'])) {
 
       <div class="dashboard-content">
         <!-- Stats Cards -->
-        <!-- Stats Cards -->
         <div class="stats-cards">
           <div class="stat-card">
             <div class="stat-icon users">
@@ -264,10 +263,6 @@ if (isset($_SESSION['user_id'])) {
             <div class="stat-details">
               <h3><?= $dashboardStats['utilisateurs'] ?></h3>
               <p>Utilisateurs</p>
-              <div class="stat-progress">
-                <i class="fas fa-arrow-up"></i>
-                <span>+12.5%</span>
-              </div>
             </div>
           </div>
 
@@ -278,10 +273,6 @@ if (isset($_SESSION['user_id'])) {
             <div class="stat-details">
               <h3><?= $dashboardStats['trajets'] ?></h3>
               <p>Trajets</p>
-              <div class="stat-progress">
-                <i class="fas fa-arrow-up"></i>
-                <span>+8.2%</span>
-              </div>
             </div>
           </div>
 
@@ -292,10 +283,6 @@ if (isset($_SESSION['user_id'])) {
             <div class="stat-details">
               <h3><?= $dashboardStats['colis'] ?></h3>
               <p>Colis</p>
-              <div class="stat-progress negative">
-                <i class="fas fa-arrow-down"></i>
-                <span>-3.1%</span>
-              </div>
             </div>
           </div>
 
@@ -306,10 +293,6 @@ if (isset($_SESSION['user_id'])) {
             <div class="stat-details">
               <h3><?= $dashboardStats['reclamations'] ?></h3>
               <p>Réclamations</p>
-              <div class="stat-progress">
-                <i class="fas fa-arrow-up"></i>
-                <span>+5.7%</span>
-              </div>
             </div>
           </div>
         </div>
