@@ -138,38 +138,57 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function addBotMessage(text) {
-        const container = document.createElement('div');
-        container.className = 'message-container bot-container';
+function addBotMessage(text) {
+    const container = document.createElement('div');
+    container.className = 'message-container bot-container';
 
-        const avatar = document.createElement('div');
-        avatar.className = 'avatar bot-avatar';
-        const img = document.createElement('img');
-        img.src = '../../assets/images/logo.png';
-        img.alt = 'Bot';
-        img.className = 'avatar-img';
-        avatar.appendChild(img);
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar bot-avatar';
+    const img = document.createElement('img');
+    img.src = '../../assets/images/logo.png';
+    img.alt = 'Bot';
+    img.className = 'avatar-img';
+    avatar.appendChild(img);
 
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message bot-message';
-        messageDiv.textContent = text;
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message bot-message';
+    messageDiv.textContent = text;
 
-        const timeDiv = document.createElement('div');
-        timeDiv.className = 'message-time';
-        timeDiv.textContent = getCurrentTime();
-        messageDiv.appendChild(timeDiv);
-
-        container.appendChild(avatar); // bot avatar on the left
-        container.appendChild(messageDiv);
-        chatBox.appendChild(container);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        // Text-to-Speech
-       if ('speechSynthesis' in window) {
+    // Read Aloud button
+    const readBtn = document.createElement('button');
+    readBtn.className = 'read-aloud-btn';
+    readBtn.title = 'Read aloud';
+    readBtn.innerHTML = `
+      <svg viewBox="0 0 24 24">
+        <polygon points="3,9 9,9 13,5 13,19 9,15 3,15" />
+        <path d="M16 8.82a5 5 0 0 1 0 6.36" />
+        <path d="M19 5a9 9 0 0 1 0 14" />
+      </svg>
+    `;
+    readBtn.onclick = function() {
+        if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = currentLang;
             window.speechSynthesis.speak(utterance);
         }
-    }
+    };
+
+    // Time
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'message-time';
+    timeDiv.textContent = getCurrentTime();
+    messageDiv.appendChild(timeDiv);
+
+    // Add read button after message
+    messageDiv.appendChild(readBtn);
+
+    container.appendChild(avatar); // bot avatar on the left
+    container.appendChild(messageDiv);
+    chatBox.appendChild(container);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
     // Speech-to-Text
     let recognition;
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
