@@ -364,31 +364,81 @@ class UserC
         return $counts;
     }
     public function getDashboardStats()
-{
-    $db = config::getConnexion();
-    $stats = [
-        'utilisateurs' => 0,
-        'trajets' => 0,
-        'colis' => 0,
-        'reclamations' => 0
-    ];
+    {
+        $db = config::getConnexion();
+        $stats = [
+            'utilisateurs' => 0,
+            'trajets' => 0,
+            'colis' => 0,
+            'reclamations' => 0
+        ];
 
-    // Utilisateurs
-    $stmt = $db->query("SELECT COUNT(*) as total FROM user");
-    $stats['utilisateurs'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+        // Utilisateurs
+        $stmt = $db->query("SELECT COUNT(*) as total FROM user");
+        $stats['utilisateurs'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-    // Trajets
-    $stmt = $db->query("SELECT COUNT(*) as total FROM trajet");
-    $stats['trajets'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+        // Trajets
+        $stmt = $db->query("SELECT COUNT(*) as total FROM trajet");
+        $stats['trajets'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-    // Colis
-    $stmt = $db->query("SELECT COUNT(*) as total FROM colis");
-    $stats['colis'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+        // Colis
+        $stmt = $db->query("SELECT COUNT(*) as total FROM colis");
+        $stats['colis'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-    // Réclamations
-    $stmt = $db->query("SELECT COUNT(*) as total FROM reclamation");
-    $stats['reclamations'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+        // Réclamations
+        $stmt = $db->query("SELECT COUNT(*) as total FROM reclamation");
+        $stats['reclamations'] = (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-    return $stats;
-}
+        return $stats;
+    }
+
+    public function registerGoogleUser($google_user)
+    {
+        $db = config::getConnexion();
+        try {
+            $db->beginTransaction();
+
+            // Use Google info to create a new Client user
+            $nom = $google_user->familyName ?? $google_user->name ?? 'GoogleUser';
+            $prenom = $google_user->givenName ?? '';
+            $email = $google_user->email;
+            $image = $google_user->picture ?? 'default.png';
+            $password = password_hash(bin2hex(random_bytes(8)), PASSWORD_DEFAULT); // random password
+            $type = 'client';
+            $date_inscription = (new DateTime())->format('Y-m-d H:i:s');
+            $telephone = '';
+
+            // Insert into user table
+            $sql = "INSERT INTO user (nom, prenom, email, password, telephone, image, type, date_inscription)
+                VALUES (:nom, :prenom, :email, :password, :telephone, :image, :type, :date_inscription)";
+            $stmt = $db->prepare($sql);
+            $stmt->execute([
+                ':nom' => $nom,
+                ':prenom' => $prenom,
+                ':email' => $email,
+                ':password' => $password,
+                ':telephone' => $telephone,
+                ':image' => $image,
+                ':type' => $type,
+                ':date_inscription' => $date_inscription
+            ]);
+
+            $userId = $db->lastInsertId();
+
+            // Insert into client table
+            $sql = "INSERT INTO client (user_id) VALUES (:user_id)";
+            $stmt = $db->prepare($sql);
+            $stmt->execute([':user_id' => $userId]);
+
+            $db->commit();
+
+            // Return the new user object
+            return $this->getUserByEmail($email);
+
+        } catch (Exception $e) {
+            $db->rollBack();
+            error_log('Erreur lors de l\'enregistrement Google: ' . $e->getMessage());
+            return null;
+        }
+    }
 }
