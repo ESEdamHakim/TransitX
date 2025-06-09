@@ -293,6 +293,11 @@
 
         <script src="manageRequests.js"></script>
         <script>
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    modal.style.display = "none";
+                });
+            });
             const modal = document.getElementById('ride-modal');
             const cancelBtn = modal.querySelector('.cancel-btn');
             const closeBtn = modal.querySelector('.close-modal');
