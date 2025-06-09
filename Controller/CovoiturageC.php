@@ -49,30 +49,21 @@ class CovoiturageC
 
 
     // Delete a covoiturage by ID (with user verification for FrontOffice)
-    public function deleteCovoiturage($id_covoit, $id_user = null, $isAdmin = false)
-    {
-        $db = config::getConnexion();
+   public function deleteCovoiturage($id_covoit)
+{
+    $db = config::getConnexion();
 
-        try {
-            if ($isAdmin) {
-                // Admin can delete any covoiturage
-                $sql = "DELETE FROM covoiturage WHERE id_covoit = :id_covoit";
-                $query = $db->prepare($sql);
-                $query->execute([':id_covoit' => $id_covoit]);
-            } else {
-                // Regular user can only delete their own covoiturage
-                $sql = "DELETE FROM covoiturage WHERE id_covoit = :id_covoit AND id_user = :id_user";
-                $query = $db->prepare($sql);
-                $query->execute([
-                    ':id_covoit' => $id_covoit,
-                    ':id_user' => $id_user
-                ]);
-            }
-            return "Trajet supprimé avec succès.";
-        } catch (Exception $e) {
-            throw new Exception('Erreur : ' . $e->getMessage());
-        }
+    try {
+        $sql = "DELETE FROM covoiturage WHERE id_covoit = :id_covoit";
+        $query = $db->prepare($sql);
+        $query->execute([':id_covoit' => $id_covoit]);
+
+        return "Trajet supprimé avec succès.";
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
     }
+}
+
     // Update an existing covoiturage (with user verification for FrontOffice)
     public function updateCovoiturage(Covoiturage $covoit, $id_user = null, $isAdmin = false)
     {

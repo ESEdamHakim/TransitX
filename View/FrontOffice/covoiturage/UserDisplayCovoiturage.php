@@ -97,7 +97,8 @@
                             data-id-vehicule="<?= htmlspecialchars($covoiturage['id_vehicule'] ?? '') ?>">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn delete" data-id="<?= $covoiturage['id_covoit'] ?>">
+                        <button type="button" class="btn delete open-delete-modal"
+                            data-covoit="<?= $covoiturage['id_covoit'] ?>">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -150,19 +151,19 @@
                             </div>
                         </div>
                         <div class="form-row">
-                        <div class="form-group">
-                            <label for="ride-seats"><i class="fas fa-user-friends"
-                                    style="color:#86b391; margin-right:6px;"></i>Places disponibles</label>
-                            <input type="number" id="ride-seats" name="seats" min="1">
-                            <span class="error-message" id="ride-seats-error"></span>
-                        </div>
+                            <div class="form-group">
+                                <label for="ride-seats"><i class="fas fa-user-friends"
+                                        style="color:#86b391; margin-right:6px;"></i>Places disponibles</label>
+                                <input type="number" id="ride-seats" name="seats" min="1">
+                                <span class="error-message" id="ride-seats-error"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="ride-price"><i class="fas fa-coins"
-                                    style="color:#86b391; margin-right:6px;"></i>Prix par place (TND)</label>
-                            <input type="number" id="ride-price" name="price" min="0" step="1">
-                            <span class="error-message" id="ride-price-error"></span>
-                        </div>
+                            <div class="form-group">
+                                <label for="ride-price"><i class="fas fa-coins"
+                                        style="color:#86b391; margin-right:6px;"></i>Prix par place (TND)</label>
+                                <input type="number" id="ride-price" name="price" min="0" step="1">
+                                <span class="error-message" id="ride-price-error"></span>
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
@@ -238,6 +239,57 @@
                 </div>
             </div>
         </div>
+        <!-- Delete Confirmation Modal -->
+        <div id="delete-confirm-modal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Confirmer la suppression</h2>
+                    <button class="close-delete-modal"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer ce trajet ? Cette action est irréversible.</p>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary cancel-delete-btn">Annuler</button>
+                    <form id="delete-form" method="POST" action="UserDeleteCovoiturage.php" style="display:inline;">
+                        <input type="hidden" name="id_covoit" id="delete-covoit-id">
+                        <button type="submit" class="btn btn-primary">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const deleteModal = document.getElementById("delete-confirm-modal");
+                const deleteForm = document.getElementById("delete-form");
+                const deleteCovoitIdInput = document.getElementById("delete-covoit-id");
+
+                // Open the delete modal
+                document.querySelectorAll(".open-delete-modal").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const covoitId = this.getAttribute("data-covoit");
+                        deleteCovoitIdInput.value = covoitId;
+                        deleteModal.style.display = "block";
+                    });
+                });
+
+                // Close modal with close or cancel buttons
+                document.querySelector(".close-delete-modal").addEventListener("click", () => {
+                    deleteModal.style.display = "none";
+                });
+
+                document.querySelector(".cancel-delete-btn").addEventListener("click", () => {
+                    deleteModal.style.display = "none";
+                });
+
+                // Close modal when clicking outside
+                window.addEventListener("click", (e) => {
+                    if (e.target === deleteModal) {
+                        deleteModal.style.display = "none";
+                    }
+                });
+            });
+        </script>
 
         <script src="manageRequests.js"></script>
         <script>
