@@ -97,49 +97,58 @@ try {
                     <form id="ride-form" method="POST" action="updateVehicule.php" enctype="multipart/form-data">
                         <input type="hidden" id="id_vehicule" name="id_vehicule">
                         <input type="hidden" id="existing-photo" name="existing_photo">
-
-                        <div class="form-group">
-                            <label for="ride-matricule">Matricule</label>
-                            <input type="text" id="ride-matricule" name="matricule" required>
-                            <span id="ride-matricule-error" class="error-message"></span>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ride-matricule">Matricule</label>
+                                <input type="text" id="ride-matricule" name="matricule" required>
+                                <span id="ride-matricule-error" class="error-message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="ride-type">Type de Véhicule</label>
+                                <input type="text" id="ride-type" name="type_vehicule" required>
+                                <span id="ride-type-error" class="error-message"></span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="ride-type">Type de Véhicule</label>
-                            <input type="text" id="ride-type" name="type_vehicule" required>
-                            <span id="ride-type-error" class="error-message"></span>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ride-seats">Nombre de Places</label>
+                                <input type="number" id="ride-seats" name="nb_places" required>
+                                <span id="ride-seats-error" class="error-message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="ride-color">Couleur</label>
+                                <input type="text" id="ride-color" name="couleur" required>
+                                <span id="ride-color-error" class="error-message"></span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="ride-seats">Nombre de Places</label>
-                            <input type="number" id="ride-seats" name="nb_places" required>
-                            <span id="ride-seats-error" class="error-message"></span>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ride-marque">Marque</label>
+                                <input type="text" id="ride-marque" name="marque" required>
+                                <span id="ride-marque-error" class="error-message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="ride-modele">Modèle</label>
+                                <input type="text" id="ride-modele" name="modele" required>
+                                <span id="ride-modele-error" class="error-message"></span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="ride-color">Couleur</label>
-                            <input type="text" id="ride-color" name="couleur" required>
-                            <span id="ride-color-error" class="error-message"></span>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ride-confort">Confort</label>
+                                <input type="text" id="ride-confort" name="confort" required>
+                                <span id="ride-confort-error" class="error-message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="ride-photo">Photo</label>
+                                <input type="file" id="ride-photo" name="photo_vehicule" accept="image/*">
+                                <span id="ride-photo-error" class="error-message"></span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="ride-marque">Marque</label>
-                            <input type="text" id="ride-marque" name="marque" required>
-                            <span id="ride-marque-error" class="error-message"></span>
+                        <div class="modal-buttons">
+                            <button type="button" class="btn btn-secondary cancel-btn">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
                         </div>
-                        <div class="form-group">
-                            <label for="ride-modele">Modèle</label>
-                            <input type="text" id="ride-modele" name="modele" required>
-                            <span id="ride-modele-error" class="error-message"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="ride-confort">Confort</label>
-                            <input type="text" id="ride-confort" name="confort" required>
-                            <span id="ride-confort-error" class="error-message"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="ride-photo">Photo</label>
-                            <input type="file" id="ride-photo" name="photo_vehicule" accept="image/*">
-                            <span id="ride-photo-error" class="error-message"></span>
-                        </div>
-                        <button type="button" class="btn btn-outline">Annuler</button>
-                        <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </form>
                 </div>
             </div>
