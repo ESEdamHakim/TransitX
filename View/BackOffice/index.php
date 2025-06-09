@@ -420,7 +420,18 @@ if (isset($_SESSION['user_id'])) {
           }
         });
       }
-      
+      // Open Messagerie Modal
+      document.getElementById('openMessagerieBtn').addEventListener('click', function () {
+        document.getElementById('messagerieModal').style.display = 'block';
+        document.getElementById('messagerieFrame').src = 'messagerie.php'; 
+      });
+
+      // Close Messagerie Modal
+      document.getElementById('closeMessagerieModal').addEventListener('click', function () {
+        document.getElementById('messagerieModal').style.display = 'none';
+        document.getElementById('messagerieFrame').src = '';
+      });
+
     });
   </script>
 
