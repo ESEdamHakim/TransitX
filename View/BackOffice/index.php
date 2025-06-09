@@ -246,16 +246,6 @@ if (isset($_SESSION['user_id'])) {
           <p>Bienvenue sur le tableau de bord TransitX</p>
         </div>
         <div class="header-right">
-          <?php if (!empty($_SESSION['active_meeting_room'])): ?>
-            <button id="joinMeetingBtn" class="btn-outline" style="margin-left: 12px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="#1f4f65" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;">
-                <rect x="3" y="7" width="14" height="10" rx="2" />
-                <path d="M17 9l4 3-4 3V9z" />
-              </svg>
-              <span>Rejoindre la réunion</span>
-            </button>
-          <?php endif; ?>
           <button id="hostMeetingBtn" class="btn-outline"
             style="margin-left: 12px; display: flex; align-items: center;">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="#1f4f65" stroke-width="2"
@@ -422,76 +412,6 @@ if (isset($_SESSION['user_id'])) {
           }
         });
       }
-
-      // --- Meet Modal Logic (Jitsi) ---
-      const hostBtn = document.getElementById('hostMeetingBtn');
-      const meetModal = document.getElementById('meetModal');
-      const closeMeetModal = document.getElementById('closeMeetModal');
-      const meetContainer = document.getElementById('meetContainer');
-      let api = null;
-
-      if (hostBtn && meetModal && closeMeetModal && meetContainer) {
-        hostBtn.onclick = function () {
-          // Generate a unique room name and save it via AJAX
-          const roomName = "TransitXMeeting_" + Date.now();
-          fetch('save_meeting_room.php?room=' + roomName)
-            .then(() => {
-              // After saving, reload the page so everyone (including host) uses the same session value
-              location.reload();
-            });
-        };
-
-        closeMeetModal.onclick = function () {
-          meetModal.style.display = 'none';
-          if (api) {
-            api.dispose();
-            api = null;
-          }
-          meetContainer.innerHTML = "";
-        };
-
-        // Optional: Close modal on outside click
-        meetModal.addEventListener('click', function (e) {
-          if (e.target === meetModal) {
-            closeMeetModal.click();
-          }
-        });
-      }
-
-      const joinBtn = document.getElementById('joinMeetingBtn');
-      if (joinBtn && meetModal && meetContainer) {
-        joinBtn.onclick = function () {
-          meetModal.style.display = 'flex';
-          meetContainer.innerHTML = "";
-          const domain = "meet.jit.si";
-          const options = {
-            roomName: "<?= $_SESSION['active_meeting_room'] ?? '' ?>",
-            width: "100%",
-            height: 600,
-            parentNode: meetContainer,
-            userInfo: { displayName: "Participant" }
-          };
-          api = new JitsiMeetExternalAPI(domain, options);
-        };
-      }
-
-      // When the host reloads, show the modal and join as host if they just created the meeting
-      <?php if (!empty($_SESSION['active_meeting_room']) && isset($_GET['hosted'])): ?>
-        document.addEventListener('DOMContentLoaded', function () {
-          setTimeout(function () {
-            const domain = "meet.jit.si";
-            const options = {
-              roomName: "<?= $_SESSION['active_meeting_room'] ?>",
-              width: "100%",
-              height: 600,
-              parentNode: document.getElementById('meetContainer'),
-              userInfo: { displayName: "Hôte" }
-            };
-            document.getElementById('meetModal').style.display = 'flex';
-            api = new JitsiMeetExternalAPI(domain, options);
-          }, 300);
-        });
-      <?php endif; ?>
     });
   </script>
 
