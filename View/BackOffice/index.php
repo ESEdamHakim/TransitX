@@ -30,10 +30,9 @@ if (isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="../assets/chatbot/chatbot.css">
+  <link rel="stylesheet" href="../assets/chatbot/chatbot.css">
 
   <style>
-    
     .reports-section {
       margin-top: 2rem;
       background-color: white;
@@ -164,7 +163,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 
 <body>
-    <?php include '../assets/chatbot/chatbot.php'; ?>
+  <?php include '../assets/chatbot/chatbot.php'; ?>
 
   <div class="dashboard">
     <aside class="sidebar">
@@ -247,6 +246,25 @@ if (isset($_SESSION['user_id'])) {
           <p>Bienvenue sur le tableau de bord TransitX</p>
         </div>
         <div class="header-right">
+          <?php if (!empty($_SESSION['active_meeting_room'])): ?>
+            <button id="joinMeetingBtn" class="btn-outline" style="margin-left: 12px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="#1f4f65" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;">
+                <rect x="3" y="7" width="14" height="10" rx="2" />
+                <path d="M17 9l4 3-4 3V9z" />
+              </svg>
+              <span>Rejoindre la réunion</span>
+            </button>
+          <?php endif; ?>
+          <button id="hostMeetingBtn" class="btn-outline"
+            style="margin-left: 12px; display: flex; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="#1f4f65" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;">
+              <rect x="3" y="7" width="14" height="10" rx="2" />
+              <path d="M17 9l4 3-4 3V9z" />
+            </svg>
+            <span>Héberger une réunion</span>
+          </button>
           <div class="actions-container">
             <?php include 'assets/php/indexprofile.php'; ?>
           </div>
@@ -323,96 +341,173 @@ if (isset($_SESSION['user_id'])) {
     </main>
   </div>
   <?php include 'assets/php/profileManage.php'; ?>
-<script>
-  // Sidebar Toggle
-  document.addEventListener('DOMContentLoaded', function () {
-    // Sidebar toggle
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    if (sidebarToggle) {
-      sidebarToggle.addEventListener('click', function () {
-        document.querySelector('.sidebar').classList.toggle('collapsed');
-        document.querySelector('.main-content').classList.toggle('expanded');
-      });
-    }
-
-    // Report Tabs (if present)
-    const reportTabs = document.querySelectorAll('.report-tab');
-    const reportContents = document.querySelectorAll('.report-content');
-    if (reportTabs.length && reportContents.length) {
-      reportTabs.forEach(tab => {
-        tab.addEventListener('click', function () {
-          reportTabs.forEach(t => t.classList.remove('active'));
-          reportContents.forEach(c => c.classList.remove('active'));
-          this.classList.add('active');
-          const reportType = this.getAttribute('data-report');
-          document.getElementById(`${reportType}-report`).classList.add('active');
+  <script>
+    // Sidebar, Tabs, and Charts
+    document.addEventListener('DOMContentLoaded', function () {
+      // Sidebar toggle
+      const sidebarToggle = document.querySelector('.sidebar-toggle');
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function () {
+          document.querySelector('.sidebar').classList.toggle('collapsed');
+          document.querySelector('.main-content').classList.toggle('expanded');
         });
-      });
-    }
-
-    // Charts
-    // Only initialize if the canvas exists
-    const servicesDistribution = document.getElementById('servicesDistribution');
-    if (servicesDistribution) {
-      const servicesDistributionCtx = servicesDistribution.getContext('2d');
-      new Chart(servicesDistributionCtx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Bus', 'Covoiturage', 'Colis'],
-          datasets: [{
-            data: [
-              <?= $serviceCounts['bus'] ?>,
-              <?= $serviceCounts['covoiturage'] ?>,
-              <?= $serviceCounts['colis'] ?>
-            ],
-            backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83'],
-            hoverOffset: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        }
-      });
-    }
-
-   const topServices = document.getElementById('topServices');
-if (topServices) {
-  const topServicesCtx = topServices.getContext('2d');
-  new Chart(topServicesCtx, {
-    type: 'bar',
-    data: {
-      labels: ['Bus', 'Covoiturage', 'Colis'],
-      datasets: [{
-        // label removed to hide "Nombre total" at the top of the chart
-        data: [
-          <?= $serviceCounts['bus'] ?>,
-          <?= $serviceCounts['covoiturage'] ?>,
-          <?= $serviceCounts['colis'] ?>
-        ],
-        backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83']
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      indexAxis: 'y',
-      plugins: {
-        legend: { display: false } // Hide legend if no label
-      },
-      scales: {
-        x: { beginAtZero: true }
       }
-    }
-  });
-}
 
-  });
-</script>
+      // Report Tabs (if present)
+      const reportTabs = document.querySelectorAll('.report-tab');
+      const reportContents = document.querySelectorAll('.report-content');
+      if (reportTabs.length && reportContents.length) {
+        reportTabs.forEach(tab => {
+          tab.addEventListener('click', function () {
+            reportTabs.forEach(t => t.classList.remove('active'));
+            reportContents.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            const reportType = this.getAttribute('data-report');
+            document.getElementById(`${reportType}-report`).classList.add('active');
+          });
+        });
+      }
+
+      // Charts
+      const servicesDistribution = document.getElementById('servicesDistribution');
+      if (servicesDistribution) {
+        const servicesDistributionCtx = servicesDistribution.getContext('2d');
+        new Chart(servicesDistributionCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Bus', 'Covoiturage', 'Colis'],
+            datasets: [{
+              data: [
+                <?= $serviceCounts['bus'] ?>,
+                <?= $serviceCounts['covoiturage'] ?>,
+                <?= $serviceCounts['colis'] ?>
+              ],
+              backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83'],
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          }
+        });
+      }
+
+      const topServices = document.getElementById('topServices');
+      if (topServices) {
+        const topServicesCtx = topServices.getContext('2d');
+        new Chart(topServicesCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Bus', 'Covoiturage', 'Colis'],
+            datasets: [{
+              data: [
+                <?= $serviceCounts['bus'] ?>,
+                <?= $serviceCounts['covoiturage'] ?>,
+                <?= $serviceCounts['colis'] ?>
+              ],
+              backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: { beginAtZero: true }
+            }
+          }
+        });
+      }
+
+      // --- Meet Modal Logic (Jitsi) ---
+      const hostBtn = document.getElementById('hostMeetingBtn');
+      const meetModal = document.getElementById('meetModal');
+      const closeMeetModal = document.getElementById('closeMeetModal');
+      const meetContainer = document.getElementById('meetContainer');
+      let api = null;
+
+      if (hostBtn && meetModal && closeMeetModal && meetContainer) {
+        hostBtn.onclick = function () {
+          // Generate a unique room name and save it via AJAX
+          const roomName = "TransitXMeeting_" + Date.now();
+          fetch('save_meeting_room.php?room=' + roomName)
+            .then(() => {
+              // After saving, reload the page so everyone (including host) uses the same session value
+              location.reload();
+            });
+        };
+
+        closeMeetModal.onclick = function () {
+          meetModal.style.display = 'none';
+          if (api) {
+            api.dispose();
+            api = null;
+          }
+          meetContainer.innerHTML = "";
+        };
+
+        // Optional: Close modal on outside click
+        meetModal.addEventListener('click', function (e) {
+          if (e.target === meetModal) {
+            closeMeetModal.click();
+          }
+        });
+      }
+
+      const joinBtn = document.getElementById('joinMeetingBtn');
+      if (joinBtn && meetModal && meetContainer) {
+        joinBtn.onclick = function () {
+          meetModal.style.display = 'flex';
+          meetContainer.innerHTML = "";
+          const domain = "meet.jit.si";
+          const options = {
+            roomName: "<?= $_SESSION['active_meeting_room'] ?? '' ?>",
+            width: "100%",
+            height: 600,
+            parentNode: meetContainer,
+            userInfo: { displayName: "Participant" }
+          };
+          api = new JitsiMeetExternalAPI(domain, options);
+        };
+      }
+
+      // When the host reloads, show the modal and join as host if they just created the meeting
+      <?php if (!empty($_SESSION['active_meeting_room']) && isset($_GET['hosted'])): ?>
+        document.addEventListener('DOMContentLoaded', function () {
+          setTimeout(function () {
+            const domain = "meet.jit.si";
+            const options = {
+              roomName: "<?= $_SESSION['active_meeting_room'] ?>",
+              width: "100%",
+              height: 600,
+              parentNode: document.getElementById('meetContainer'),
+              userInfo: { displayName: "Hôte" }
+            };
+            document.getElementById('meetModal').style.display = 'flex';
+            api = new JitsiMeetExternalAPI(domain, options);
+          }, 300);
+        });
+      <?php endif; ?>
+    });
+  </script>
+
+  <!-- Add this modal markup just before </body> -->
+  <div id="meetModal" class="meet-modal" style="display:none;">
+    <div class="meet-modal-content">
+      <button class="meet-modal-close" id="closeMeetModal" title="Fermer">&times;</button>
+      <div id="meetContainer" style="width:100%; height:600px;"></div>
+    </div>
+  </div>
+
   <script src="assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../assets/chatbot/chatbot.js"> </script>
+  <script src='https://meet.jit.si/external_api.js'></script>
 </body>
 
 </html>
