@@ -8,7 +8,7 @@
   --accent: #f9d86d;
   --text-dark: #2c3e50;
   --text-light: #7f8c8d;
-  --border-light: #e0e0e0;
+  --border-light: #e0e0e0; 
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --radius: 12px;
   --transition: all 0.3s ease;
@@ -285,3 +285,61 @@
   font-size: 0.9rem;
   color: var(--text-dark);
 }        
+.calendar-holiday-detail {
+  display: block;
+  color: #7ba987;
+  font-weight: bold;
+  margin-top: 12px;
+  font-size: 1.1em;
+}
+.covoiturage-future {
+  background-color: #9ecfdf !important;
+  border: 2px solid #7ba987;
+  cursor: pointer;
+}
+.covoiturage-past {
+  background-color: #f6adad !important;
+  border: 2px solid #e57373;
+  cursor: pointer;
+}
+.votre-covoiturage {
+  background-color: #bcf2d3 !important;
+  border: 2px solid #82de9e;
+  cursor: pointer;
+}
+.votre-covoiturage-past {
+  background-color: #f5d5af !important;
+  border: 2px solid #e2b77a;
+  cursor: pointer;
+}
+.booked-covoit-modal {
+  text-align: center;
+}
+.booked-covoit-modal img.vehicle-img {
+  width: 120px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.booked-covoit-modal h3 {
+  margin: 10px 0 5px 0;
+  color: #ade0ec;
+}
+.booked-covoit-modal p {
+  margin: 2px 0;
+}
+.colis-icon {
+  font-size: 1.1em;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  margin: 0;
+  vertical-align: top;
+  z-index: 2;
+}
+.colis-info {
+  background: #f8f8f8;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px 0;
+  font-size: 0.95em;
+}
