@@ -111,79 +111,93 @@
         <div class="modal" id="ride-modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 id="modal-title">Modifier un Trajet</h2>
+                    <h2 id="modal-title">
+                        Modifier un Trajet
+                    </h2>
                     <button class="close-modal" aria-label="Fermer la fenêtre"><i class="fas fa-times"></i></button>
                 </div>
-
                 <div class="modal-body">
                     <form id="edit-ride-form" method="POST" action="UserUpdateCovoiturage.php">
                         <input type="hidden" id="id_covoit" name="id_covoit">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ride-departure"><i class="fas fa-location-dot"
+                                        style="color:#86b391; margin-right:6px;"></i>Départ</label>
+                                <input type="text" id="ride-departure" name="departure">
+                                <span class="error-message" id="ride-departure-error"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="ride-departure">Départ</label>
-                            <input type="text" id="ride-departure" name="departure">
-                            <span class="error-message" id="ride-departure-error"></span>
+                            <div class="form-group">
+                                <label for="ride-destination"><i class="fas fa-location-dot"
+                                        style="color:#86b391; margin-right:6px;"></i>Destination</label>
+                                <input type="text" id="ride-destination" name="destination">
+                                <span class="error-message" id="ride-destination-error"></span>
+                            </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ride-date-edit"><i class="fas fa-calendar-alt"
+                                        style="color:#86b391; margin-right:6px;"></i>Date</label>
+                                <input type="date" id="ride-date-edit" name="date">
+                                <span class="error-message" id="ride-date-error"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="ride-destination">Destination</label>
-                            <input type="text" id="ride-destination" name="destination">
-                            <span class="error-message" id="ride-destination-error"></span>
+                            <div class="form-group">
+                                <label for="ride-time-edit"><i class="fas fa-clock"
+                                        style="color:#86b391; margin-right:6px;"></i>Heure</label>
+                                <input type="time" id="ride-time-edit" name="time">
+                                <span class="error-message" id="ride-time-error"></span>
+                            </div>
                         </div>
-
+                        <div class="form-row">
                         <div class="form-group">
-                            <label for="ride-date-edit">Date</label>
-                            <input type="date" id="ride-date-edit" name="date">
-                            <span class="error-message" id="ride-date-error"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="ride-time-edit">Heure</label>
-                            <input type="time" id="ride-time-edit" name="time">
-                            <span class="error-message" id="ride-time-error"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="ride-seats">Places disponibles</label>
+                            <label for="ride-seats"><i class="fas fa-user-friends"
+                                    style="color:#86b391; margin-right:6px;"></i>Places disponibles</label>
                             <input type="number" id="ride-seats" name="seats" min="1">
                             <span class="error-message" id="ride-seats-error"></span>
                         </div>
 
                         <div class="form-group">
-                            <label for="ride-price">Prix par place (TND)</label>
+                            <label for="ride-price"><i class="fas fa-coins"
+                                    style="color:#86b391; margin-right:6px;"></i>Prix par place (TND)</label>
                             <input type="number" id="ride-price" name="price" min="0" step="1">
                             <span class="error-message" id="ride-price-error"></span>
                         </div>
-
-                        <div class="form-group">
-                            <label for="accept-parcels">Accepte les colis</label>
-                            <select id="accept-parcels" name="accept_parcels">
-                                <option value="">-- Sélectionnez une option --</option>
-                                <option value="1">Oui</option>
-                                <option value="0">Non</option>
-                            </select>
-                            <span class="error-message" id="accept-parcels-error"></span>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="accept-parcels"><i class="fas fa-box"
+                                        style="color:#86b391; margin-right:6px;"></i>Accepte les colis</label>
+                                <select id="accept-parcels" name="accept_parcels">
+                                    <option value="">-- Sélectionnez une option --</option>
+                                    <option value="1">Oui</option>
+                                    <option value="0">Non</option>
+                                </select>
+                                <span class="error-message" id="accept-parcels-error"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="full-parcels">Colis complet</label>
-                            <select id="full-parcels" name="full_parcels">
-                                <option value="">-- Sélectionnez une option --</option>
-                                <option value="1">Oui</option>
-                                <option value="0">Non</option>
-                            </select>
-                            <span class="error-message" id="full-parcels-error"></span>
+                            <div class="form-group">
+                                <label for="full-parcels"><i class="fas fa-boxes-stacked"
+                                        style="color:#86b391; margin-right:6px;"></i>Colis complet</label>
+                                <select id="full-parcels" name="full_parcels">
+                                    <option value="">-- Sélectionnez une option --</option>
+                                    <option value="1">Oui</option>
+                                    <option value="0">Non</option>
+                                </select>
+                                <span class="error-message" id="full-parcels-error"></span>
+                            </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="ride-description">Description</label>
+                            <label for="ride-description"><i class="fas fa-info-circle"
+                                    style="color:#86b391; margin-right:6px;"></i>Description</label>
                             <textarea id="ride-description" name="description" rows="3"
                                 placeholder="Détails supplémentaires..."></textarea>
                             <span class="error-message" id="ride-description-error"></span>
                         </div>
 
                         <div class="form-group">
-                            <label for="id_vehicule_edit">Sélectionnez un véhicule</label>
+                            <label for="id_vehicule_edit"><i class="fas fa-car"
+                                    style="color:#86b391; margin-right:6px;"></i>Sélectionnez un véhicule</label>
                             <?php if (!empty($vehicules)): ?>
                                 <select id="id_vehicule_edit" name="id_vehicule">
                                     <option value="">-- Sélectionnez un véhicule --</option>
@@ -200,8 +214,8 @@
                             <?php endif; ?>
                         </div>
 
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-outline cancel-btn">Annuler</button>
+                        <div class="modal-buttons">
+                            <button type="button" class="btn btn-secondary cancel-btn">Annuler</button>
                             <button type="submit" class="btn btn-primary">Enregistrer</button>
                         </div>
                     </form>
