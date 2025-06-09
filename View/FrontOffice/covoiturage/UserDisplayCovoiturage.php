@@ -43,14 +43,17 @@
     ?>
 
     <div class="user-route-cards">
-        <h2>Vos Trajets Populaires</h2>
         <?php if (!empty($userCovoiturages)): ?>
             <?php foreach ($userCovoiturages as $covoiturage): ?>
                 <br>
                 <div class="route-card">
-                    <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
-                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
-                    </h3>
+                    <div class="route-cities">
+                        <span class="departure"
+                            style="font-weight: bold;"><?= htmlspecialchars($covoiturage['lieu_depart']) ?></span>
+                        <i class="fas fa-long-arrow-alt-right" style="color: #86b391;"></i>
+                        <span class="arrival"
+                            style="font-weight: bold;"><?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></span>
+                    </div>
                     <!-- Show booking requests -->
                     <?php if (isset($bookingRequests[$covoiturage['id_covoit']])): ?>
                         <button class="icon-btn request-icon-btn"
@@ -59,11 +62,15 @@
                             <i class="fa-solid fa-bell" style="color: #f52424;"></i>
                         </button>
                     <?php endif; ?>
-                    <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
-                    <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
-                    <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
-                    <p><strong>Prix:</strong> <?= htmlspecialchars($covoiturage['prix']) ?> TND</p>
-                    <p><strong>Colis:</strong>
+                    <p><i class="fas fa-calendar-alt" style="color: #86b391;"></i> <strong>Date:</strong>
+                        <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
+                    <p><i class="fas fa-clock" style="color: #86b391;"></i> <strong>Heure:</strong>
+                        <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
+                    <p><i class="fas fa-user-friends" style="color: #86b391;"></i> <strong>Places disponibles:</strong>
+                        <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
+                    <p><i class="fas fa-money-bill-wave" style="color: #86b391;"></i> <strong>Prix:</strong>
+                        <?= htmlspecialchars($covoiturage['prix']) ?> TND</p>
+                    <p><i class="fas fa-box-open" style="color: #86b391;"></i> <strong>Colis:</strong>
                         <?php
                         if ($covoiturage['accepte_colis'] == 0) {
                             echo "Colis non acceptés.";
@@ -74,7 +81,8 @@
                         }
                         ?>
                     </p>
-                    <p><strong>Détails:</strong> <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
+                    <p><i class="fas fa-info-circle" style="color: #86b391;"></i> <strong>Détails:</strong>
+                        <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
                     <div class="actions">
                         <button class="btn edit" data-id="<?= $covoiturage['id_covoit'] ?>"
                             data-departure="<?= htmlspecialchars($covoiturage['lieu_depart']) ?>"
@@ -222,7 +230,7 @@
             const modal = document.getElementById('ride-modal');
             const cancelBtn = modal.querySelector('.cancel-btn');
             const closeBtn = modal.querySelector('.close-modal');
-            
+
 
             function openRideModal() {
                 modal.classList.add('active');

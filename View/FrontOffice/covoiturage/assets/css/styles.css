@@ -134,32 +134,57 @@
   margin-bottom: 3rem;
   color: var(--secondary-1);
 }
-
 .route-cards {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 1000px;
+  max-width: 2500px;
   margin: 0 auto;
+  padding: 1rem;
 }
 
 .route-card {
   background-color: white;
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   display: grid;
   grid-template-columns: 2fr 2fr 1fr auto;
   align-items: center;
   gap: 1.5rem;
+  transition: 
+    box-shadow 0.3s ease, 
+    border 0.3s ease, 
+    transform 0.3s cubic-bezier(.4,2,.6,1);
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid #eaf4ed; /* Subtle border for better separation */
 }
 
+.route-card:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 10px 25px rgba(151, 195, 162, 0.18);
+  border: 2px solid #97c3a2; /* More visible border on hover */
+}
+
+.route-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary-1));
+  opacity: 0.8;
+}
 .route-cities {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: 600;
+  margin-top: 0;
 }
 
 .departure,
@@ -167,30 +192,133 @@
   color: var(--secondary-1);
 }
 
+
 .route-details {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.8rem;
+  padding-left: 0.5rem;
 }
 
 .departure-date,
 .available-seats {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
   color: #666;
+  font-size: 0.95rem;
 }
 
 .departure-date i,
 .available-seats i {
   color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.low-seats .available-seats {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.low-seats .available-seats i {
+  color: #e74c3c;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
 }
 
 .price {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--primary);
+  text-align: center;
+  position: relative;
+  padding: 0.5rem 0;
 }
+
+.price::before {
+  content: "à partir de";
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #999;
+  margin-bottom: 0.2rem;
+}
+
+.route-card .btn {
+  align-self: center;
+  padding: 0.8rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.route-card .btn:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .route-card {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1.5rem 2rem;
+  }
+
+  .price {
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .route-card {
+    grid-template-columns: 1fr;
+    padding: 1.2rem;
+  }
+
+  .route-cities {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+  }
+
+  .route-cities::after {
+    width: 2px;
+    height: 1.5rem;
+    left: 0.5rem;
+    top: calc(50% - 0.75rem);
+  }
+
+  .route-cities::before {
+    transform: translate(-50%, -50%) rotate(90deg);
+    left: 0.5rem;
+    top: 50%;
+  }
+
+  .price::before {
+    display: inline;
+    margin-right: 0.5rem;
+  }
+
+  .route-card .btn {
+    width: 100%;
+  }
+}
+
+/* Add this class to route cards with few seats left */
+.route-card.low-seats::after {
+  background: linear-gradient(to bottom, #e74c3c, #c0392b);
+}
+
 
 .driver-info {
   display: flex;
@@ -654,4 +782,14 @@
   background-color: #183b4c;
   box-shadow: 0 4px 8px rgba(31, 79, 101, 0.4);
   transform: translateY(-2px);
+}
+.top-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 0.2rem; /* Reduce space below buttons */
+  padding: 0;            /* Remove any default padding */
+  min-height: 0;         /* Prevent extra height */
+  margin-top: 0;
 }

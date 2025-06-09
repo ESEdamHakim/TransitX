@@ -50,6 +50,35 @@ function isBadWeather($city)
         <?php foreach ($covoiturages as $covoiturage): ?>
             <?php if ($covoiturage['date_depart'] >= $currentDate): // Only display future or recent covoiturages ?>
                 <div class="route-card">
+                    <div class="route-cities">
+                        <span class="departure"
+                            style="font-weight: bold;"><?= htmlspecialchars($covoiturage['lieu_depart']) ?></span>
+                        <i class="fas fa-long-arrow-alt-right" style="color: #86b391;"></i>
+                        <span class="arrival"
+                            style="font-weight: bold;"><?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></span>
+                    </div>
+
+                    <p><i class="fas fa-calendar-alt" style="color: #86b391;"></i> <strong>Date:</strong>
+                        <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
+                    <p><i class="fas fa-clock" style="color: #86b391;"></i> <strong>Heure:</strong>
+                        <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
+                    <p><i class="fas fa-user-friends" style="color: #86b391;"></i> <strong>Places disponibles:</strong>
+                        <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
+                    <p><i class="fas fa-money-bill-wave" style="color: #86b391;"></i> <strong>Prix:</strong>
+                        <?= htmlspecialchars($covoiturage['prix']) ?> TND</p>
+                    <p><i class="fas fa-box-open" style="color: #86b391;"></i> <strong>Colis:</strong>
+                        <?php
+                        if ($covoiturage['accepte_colis'] == 0) {
+                            echo "Colis non acceptés.";
+                        } elseif ($covoiturage['accepte_colis'] == 1 && $covoiturage['colis_complet'] == 1) {
+                            echo "Livraison de colis possible.";
+                        } else {
+                            echo "Colis acceptés.";
+                        }
+                        ?>
+                    </p>
+                    <p><i class="fas fa-info-circle" style="color: #86b391;"></i> <strong>Détails:</strong>
+                        <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
                     <div class="top-buttons">
                         <!-- Add Voir Météo Button if bad weather -->
                         <button class="icon-btn weather-icon-btn" data-city="<?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>"
@@ -102,26 +131,6 @@ function isBadWeather($city)
                             <?php endif; ?>
                         <?php endif; ?>
                     </div>
-
-                    <h3>Trajet de <?= htmlspecialchars($covoiturage['lieu_depart']) ?> à
-                        <?= htmlspecialchars($covoiturage['lieu_arrivee']) ?>
-                    </h3>
-                    <p><strong>Date:</strong> <?= htmlspecialchars($covoiturage['date_depart']) ?></p>
-                    <p><strong>Heure:</strong> <?= htmlspecialchars($covoiturage['temps_depart']) ?></p>
-                    <p><strong>Places disponibles:</strong> <?= htmlspecialchars($covoiturage['places_dispo']) ?></p>
-                    <p><strong>Prix:</strong> <?= htmlspecialchars($covoiturage['prix']) ?> TND</p>
-                    <p><strong>Colis:</strong>
-                        <?php
-                        if ($covoiturage['accepte_colis'] == 0) {
-                            echo "Colis non acceptés.";
-                        } elseif ($covoiturage['accepte_colis'] == 1 && $covoiturage['colis_complet'] == 1) {
-                            echo "Livraison de colis possible.";
-                        } else {
-                            echo "Colis acceptés.";
-                        }
-                        ?>
-                    </p>
-                    <p><strong>Détails:</strong> <?= htmlspecialchars($covoiturage['details'] ?? 'Aucun détail fourni') ?></p>
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>
@@ -165,56 +174,56 @@ function isBadWeather($city)
 
 <!-- User Modal -->
 <div id="user-modal" class="user-modal">
-  <div class="user-modal-content">
-    <div class="modal-header">
-      <h2>Détails du Conducteur</h2>
-      <span class="close-user-modal">&times;</span>
+    <div class="user-modal-content">
+        <div class="modal-header">
+            <h2>Détails du Conducteur</h2>
+            <span class="close-user-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <img id="user-image" src="" alt="Photo du conducteur" class="driver-profile-img" />
+            <div class="article-meta-grid">
+                <div><strong>Nom:</strong> <span id="user-nom"></span></div>
+                <div><strong>Prénom:</strong> <span id="user-prenom"></span></div>
+                <div><strong>Email:</strong> <span id="user-email"></span></div>
+                <div><strong>Téléphone:</strong> <span id="user-telephone"></span></div>
+            </div>
+        </div>
     </div>
-    <div class="modal-body">
-      <img id="user-image" src="" alt="Photo du conducteur" class="driver-profile-img" />
-      <div class="article-meta-grid">
-      <div><strong>Nom:</strong> <span id="user-nom"></span></div>
-      <div><strong>Prénom:</strong> <span id="user-prenom"></span></div>
-      <div><strong>Email:</strong> <span id="user-email"></span></div>
-      <div><strong>Téléphone:</strong> <span id="user-telephone"></span></div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- Vehicule Modal -->
 <div id="vehicule-modal" class="vehicule-modal">
-  <div class="vehicule-modal-content">
-    <div class="modal-header">
-      <h2>Détails du Véhicule</h2>
-      <span class="close-modal">&times;</span>
+    <div class="vehicule-modal-content">
+        <div class="modal-header">
+            <h2>Détails du Véhicule</h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <img id="vehicule-photo" src="" alt="Photo du véhicule" class="vehicle-img" />
+            <div class="article-meta-grid">
+                <div><strong>Marque:</strong> <span id="vehicule-marque"></span></div>
+                <div><strong>Modèle:</strong> <span id="vehicule-modele"></span></div>
+                <div><strong>Matricule:</strong> <span id="vehicule-matricule"></span></div>
+                <div><strong>Couleur:</strong> <span id="vehicule-couleur"></span></div>
+                <div><strong>Nombre de places:</strong> <span id="vehicule-places"></span></div>
+            </div>
+        </div>
     </div>
-    <div class="modal-body">
-      <img id="vehicule-photo" src="" alt="Photo du véhicule" class="vehicle-img" />
-      <div class="article-meta-grid">
-      <div><strong>Marque:</strong> <span id="vehicule-marque"></span></div>
-      <div><strong>Modèle:</strong> <span id="vehicule-modele"></span></div>
-      <div><strong>Matricule:</strong> <span id="vehicule-matricule"></span></div>
-      <div><strong>Couleur:</strong> <span id="vehicule-couleur"></span></div>
-      <div><strong>Nombre de places:</strong> <span id="vehicule-places"></span></div>
-    </div>
-    </div>
-  </div>
 </div>
 
 <script>
     document.querySelectorAll('.weather-icon-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const city = btn.getAttribute('data-city');
-        // Show loading spinner or modal here if you want
-        fetch(`getWeather.php?city=${encodeURIComponent(city)}`)
-            .then(res => res.json())
-            .then(data => {
-                // Show weather info in your modal
-                // Example: document.querySelector('.temp').textContent = data.temp + '°C';
-            });
+        btn.addEventListener('click', function () {
+            const city = btn.getAttribute('data-city');
+            // Show loading spinner or modal here if you want
+            fetch(`getWeather.php?city=${encodeURIComponent(city)}`)
+                .then(res => res.json())
+                .then(data => {
+                    // Show weather info in your modal
+                    // Example: document.querySelector('.temp').textContent = data.temp + '°C';
+                });
+        });
     });
-});
 </script>
 <script src="voirvehicule.js"></script>
 <script src="driver.js"></script>
