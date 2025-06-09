@@ -161,58 +161,92 @@ function initMap() {
       document.getElementById("autocomplete-delivery").value = "";
     });
   }
+function setPickupMarker(location, address = null, place = null) {
+  if (pickupMarker) pickupMarker.setMap(null);
+  pickupMarker = new google.maps.Marker({
+    position: location,
+    map: map,
+    label: "A",
+    icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+    animation: google.maps.Animation.DROP
+  });
+  document.getElementById("latitude_ram").value = location.lat();
+  document.getElementById("longitude_ram").value = location.lng();
 
-  function setPickupMarker(location, address = null) {
-    if (pickupMarker) pickupMarker.setMap(null);
-    pickupMarker = new google.maps.Marker({
-      position: location,
-      map: map,
-      label: "A",
-      icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-      animation: google.maps.Animation.DROP
-    });
-    document.getElementById("latitude_ram").value = location.lat();
-    document.getElementById("longitude_ram").value = location.lng();
-
-    if (address) {
-      document.getElementById("lieu_ram").value = address;
-      document.getElementById("autocomplete-pickup").value = address; // Auto-fill input
-    } else {
-      getCityFromCoordinates(location.lat(), location.lng(), "lieu_ram", "autocomplete-pickup");
-    }
-    clickStep = 1;
-    const warningBox = document.getElementById("map-warning");
-    warningBox.textContent = "📍 Ramassage défini. Cliquez ou recherchez la livraison.";
-    warningBox.style.color = "#333333";
-    warningBox.classList.add("text-warning");
-    warningBox.classList.remove("text-success");
+  if (place && place.address_components) {
+    // Extract city from place object
+    const city = getCityFromAddressComponents(place.address_components);
+    document.getElementById("lieu_ram").value = city || address || "";
+    document.getElementById("autocomplete-pickup").value = city || address || "";
+  } else if (address) {
+    // Fallback: use geocoder to get city
+    getCityFromCoordinates(location.lat(), location.lng(), "lieu_ram", "autocomplete-pickup");
+  } else {
+    getCityFromCoordinates(location.lat(), location.lng(), "lieu_ram", "autocomplete-pickup");
   }
+  clickStep = 1;
+  const warningBox = document.getElementById("map-warning");
+  warningBox.textContent = "📍 Ramassage défini. Cliquez ou recherchez la livraison.";
+  warningBox.style.color = "#333333";
+  warningBox.classList.add("text-warning");
+  warningBox.classList.remove("text-success");
+}
 
-  function setDeliveryMarker(location, address = null) {
-    if (deliveryMarker) deliveryMarker.setMap(null);
-    deliveryMarker = new google.maps.Marker({
-      position: location,
-      map: map,
-      label: "B",
-      icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-      animation: google.maps.Animation.DROP
-    });
-    document.getElementById("latitude_dest").value = location.lat();
-    document.getElementById("longitude_dest").value = location.lng();
+function setDeliveryMarker(location, address = null, place = null) {
+  if (deliveryMarker) deliveryMarker.setMap(null);
+  deliveryMarker = new google.maps.Marker({
+    position: location,
+    map: map,
+    label: "B",
+    icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+    animation: google.maps.Animation.DROP
+  });
+  document.getElementById("latitude_dest").value = location.lat();
+  document.getElementById("longitude_dest").value = location.lng();
 
-    if (address) {
-      document.getElementById("lieu_dest").value = address;
-      document.getElementById("autocomplete-delivery").value = address; // Auto-fill input
-    } else {
-      getCityFromCoordinates(location.lat(), location.lng(), "lieu_dest", "autocomplete-delivery");
-    }
-    clickStep = 0;
-    const warningBox = document.getElementById("map-warning");
-    warningBox.textContent = "";
-    warningBox.classList.remove("text-warning");
-    warningBox.classList.remove("text-success");
-    drawRoute();
+  if (place && place.address_components) {
+    const city = getCityFromAddressComponents(place.address_components);
+    document.getElementById("lieu_dest").value = city || address || "";
+    document.getElementById("autocomplete-delivery").value = city || address || "";
+  } else if (address) {
+    getCityFromCoordinates(location.lat(), location.lng(), "lieu_dest", "autocomplete-delivery");
+  } else {
+    getCityFromCoordinates(location.lat(), location.lng(), "lieu_dest", "autocomplete-delivery");
   }
+  clickStep = 0;
+  const warningBox = document.getElementById("map-warning");
+  warningBox.textContent = "";
+  warningBox.classList.remove("text-warning");
+  warningBox.classList.remove("text-success");
+  drawRoute();
+}
+
+// Helper to extract city from address_components
+function getCityFromAddressComponents(components) {
+  for (const comp of components) {
+    if (comp.types.includes("locality")) return comp.long_name;
+    if (comp.types.includes("administrative_area_level_1")) return comp.long_name;
+    if (comp.types.includes("administrative_area_level_2")) return comp.long_name;
+  }
+  return null;
+}
+
+// --- Update autocomplete listeners ---
+pickupAutocomplete.addListener('place_changed', function () {
+  const place = pickupAutocomplete.getPlace();
+  if (place.geometry) {
+    map.panTo(place.geometry.location);
+    setPickupMarker(place.geometry.location, place.formatted_address, place);
+  }
+});
+
+deliveryAutocomplete.addListener('place_changed', function () {
+  const place = deliveryAutocomplete.getPlace();
+  if (place.geometry) {
+    map.panTo(place.geometry.location);
+    setDeliveryMarker(place.geometry.location, place.formatted_address, place);
+  }
+});
 
   // --- Responsive map ---
   window.addEventListener('resize', function () {
