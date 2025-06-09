@@ -245,7 +245,7 @@ if (isset($_SESSION['user_id'])) {
           <h1>Dashboard</h1>
           <p>Bienvenue sur le tableau de bord TransitX</p>
         </div>
-                <div class="header-right">
+        <div class="header-right">
           <button id="hostMeetingBtn" class="btn-outline"
             style="margin-left: 12px; display: flex; align-items: center;">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="#1f4f65" stroke-width="2"
@@ -339,7 +339,7 @@ if (isset($_SESSION['user_id'])) {
   </div>
   <?php include 'assets/php/profileManage.php'; ?>
 
-    <script>
+  <script>
     // Sidebar, Tabs, and Charts
     document.addEventListener('DOMContentLoaded', function () {
       // Sidebar toggle
@@ -420,6 +420,7 @@ if (isset($_SESSION['user_id'])) {
           }
         });
       }
+      
     });
   </script>
 
