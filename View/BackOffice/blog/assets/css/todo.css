@@ -92,33 +92,60 @@
     transform: translateY(0);
 }
 
-/* === Improved Badges === */
+/* === Improved Badges (GitHub Board Style) === */
 .todo-badges {
     display: flex;
     justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 18px;
+    margin-bottom: 22px;
 }
 
 .column-badge {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     text-align: center;
-    padding: 15px 10px;
-    border-radius: 25px;
+    padding: 13px 0;
+    border-radius: 18px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.2px;
-    font-size: 0.9rem;
-    color: var(--text-light);
-    background: var(--primary);
-    box-shadow: 0 3px 10px rgba(31, 79, 101, 0.15);
-    transition: transform 0.2s ease;
+    font-size: 1rem;
+    color: #fff;
+    background: linear-gradient(90deg, #86b391 0%, #97c3a2 60%, #4d7aa3 100%);
+    box-shadow: 0 2px 8px rgba(31, 79, 101, 0.10);
+    border: 1.5px solid #e1e4e8;
+    transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+    cursor: pointer;
+    position: relative;
+    min-width: 120px;
 }
 
 .column-badge:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 18px rgba(31, 79, 101, 0.13);
+    background: linear-gradient(90deg, #97c3a2 0%, #86b391 80%, #4d7aa3 100%);
 }
 
+.column-badge i {
+    font-size: 1.1em;
+    opacity: 0.85;
+    margin-right: 5px;
+}
+
+/* Optional: Different colors for each badge */
+.column-badge.todo-badge-todo {
+    background: linear-gradient(90deg, #f9d86d 0%, #e0a800 100%);
+    color: #1f4f65;
+}
+.column-badge.todo-badge-progress {
+    background: linear-gradient(90deg, #97c3a2 0%, #17a2b8 100%);
+}
+.column-badge.todo-badge-done {
+    background: linear-gradient(90deg, #86b391 0%, #28a745 100%);
+}
 /* === Improved Columns === */
 .todo-columns {
     display: flex;
@@ -559,7 +586,7 @@
 
 .todo-progress-bar-inner {
   height: 100%;
-  background: linear-gradient(90deg, #86b391 0%, #f9d86d 60%, #1f4f65 100%);
+  background: linear-gradient(90deg, #97c3a2 0%, #86b391 60%, #4d7aa3 100%);
   border-radius: 6px;
   transition: width 0.4s;
   min-width: 2%;

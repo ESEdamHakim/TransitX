@@ -163,14 +163,6 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                     <input type="text" name="contenu" placeholder="Ajouter une tâche..." required>
                     <input type="submit" value="Ajouter">
                 </form>
-                <!-- BADGES ROW -->
-                <div class="todo-badges">
-                    <span class="column-badge">En attente</span>
-                    <span class="column-badge">en cours</span>
-                    <span class="column-badge">terminee</span>
-                </div>
-                <!-- COLUMNS ROW -->
-
                 <?php
                 $total = count($taches);
                 $done = count($terminees);
@@ -179,6 +171,13 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                 <div class="todo-progress-bar">
                     <div class="todo-progress-bar-inner" style="width:<?= $percent ?>%"></div>
                 </div>
+                <!-- BADGES ROW -->
+                <div class="todo-badges">
+                    <span class="column-badge">En attente</span>
+                    <span class="column-badge">en cours</span>
+                    <span class="column-badge">terminee</span>
+                </div>
+                <!-- COLUMNS ROW -->
                 <div class="todo-columns">
 
                     <div class="column" ondrop="drop(event, 'a_faire')" ondragover="allowDrop(event)">
