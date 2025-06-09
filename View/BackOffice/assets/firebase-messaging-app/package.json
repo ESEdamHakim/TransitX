@@ -1,0 +1,21 @@
+{
+  "name": "firebase-messaging-app",
+  "version": "1.0.0",
+  "description": "A real-time chat application using Firebase for messaging functionality.",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server public",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "firebase",
+    "chat",
+    "messaging",
+    "real-time"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^9.0.0"
+  }
+}
