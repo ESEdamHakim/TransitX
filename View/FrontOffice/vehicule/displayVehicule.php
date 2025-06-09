@@ -28,17 +28,36 @@ try {
 
 
     <div class="user-route-cards">
-        <h2>Vos Véhicules</h2>
         <?php if (!empty($userVehicules)): ?>
             <?php foreach ($userVehicules as $vehicule): ?>
                 <div class="route-card">
-                    <h3>Véhicule: <?= htmlspecialchars($vehicule['marque']) ?>         <?= htmlspecialchars($vehicule['modele']) ?></h3>
-                    <p><strong>Matricule:</strong> <?= htmlspecialchars($vehicule['matricule']) ?></p>
-                    <p><strong>Type:</strong> <?= htmlspecialchars($vehicule['type_vehicule']) ?></p>
-                    <p><strong>Nombre de Places:</strong> <?= htmlspecialchars($vehicule['nb_places']) ?></p>
-                    <p><strong>Couleur:</strong> <?= htmlspecialchars($vehicule['couleur']) ?></p>
-                    <p><strong>Confort:</strong> <?= htmlspecialchars($vehicule['confort']) ?></p>
-                    <p><strong>Photo:</strong>
+                    <h3>
+                        <i class="fas fa-car" style="color: #86b391;"></i>
+                        Véhicule: <?= htmlspecialchars($vehicule['marque']) ?>         <?= htmlspecialchars($vehicule['modele']) ?>
+                    </h3>
+                    <p>
+                        <i class="fas fa-id-card" style="color: #86b391;"></i>
+                        <strong>Matricule:</strong> <?= htmlspecialchars($vehicule['matricule']) ?>
+                    </p>
+                    <p>
+                        <i class="fas fa-car-side" style="color: #86b391;"></i>
+                        <strong>Type:</strong> <?= htmlspecialchars($vehicule['type_vehicule']) ?>
+                    </p>
+                    <p>
+                        <i class="fas fa-users" style="color: #86b391;"></i>
+                        <strong>Nombre de Places:</strong> <?= htmlspecialchars($vehicule['nb_places']) ?>
+                    </p>
+                    <p>
+                        <i class="fas fa-palette" style="color: #86b391;"></i>
+                        <strong>Couleur:</strong> <?= htmlspecialchars($vehicule['couleur']) ?>
+                    </p>
+                    <p>
+                        <i class="fas fa-couch" style="color: #86b391;"></i>
+                        <strong>Confort:</strong> <?= htmlspecialchars($vehicule['confort']) ?>
+                    </p>
+                    <p>
+                        <i class="fas fa-image" style="color: #86b391;"></i>
+                        <strong>Photo:</strong>
                         <?php if (!empty($vehicule['photo_vehicule'])): ?>
                             <img src="../../assets/uploads/<?= htmlspecialchars($vehicule['photo_vehicule']) ?>"
                                 alt="Photo du véhicule" style="width: 100px;">
@@ -55,10 +74,10 @@ try {
                             data-marque="<?= htmlspecialchars($vehicule['marque']) ?>"
                             data-modele="<?= htmlspecialchars($vehicule['modele']) ?>"
                             data-confort="<?= htmlspecialchars($vehicule['confort']) ?>">
-                            <i class="fas fa-edit"></i> 
+                            <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn delete" data-id="<?= $vehicule['id_vehicule'] ?>">
-                            <i class="fas fa-trash"></i> 
+                            <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 </div>

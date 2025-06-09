@@ -108,6 +108,12 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+.route-card:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 10px 25px rgba(151, 195, 162, 0.18);
+  border: 2px solid #97c3a2; /* More visible border on hover */
+}
+
 .route-info {
   flex: 1;
 }

@@ -53,7 +53,7 @@ function isBadWeather($city)
                     <div class="route-cities">
                         <span class="departure"
                             style="font-weight: bold;"><?= htmlspecialchars($covoiturage['lieu_depart']) ?></span>
-                        <i class="fas fa-long-arrow-alt-right" style="color: #86b391;"></i>
+                        <i class="fas fa-long-arrow-alt-right" style="color: #1f4f65;"></i>
                         <span class="arrival"
                             style="font-weight: bold;"><?= htmlspecialchars($covoiturage['lieu_arrivee']) ?></span>
                     </div>

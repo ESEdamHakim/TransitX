@@ -233,7 +233,7 @@ $notifications = $controller->getNotificationsForUser($_SESSION['user_id']);
                 <div class="route-info">
                   <div class="route-cities">
                     <span class="departure"><?= htmlspecialchars($trajet['place_depart']) ?></span>
-                    <i class="fas fa-long-arrow-alt-right"></i>
+                     <i class="fas fa-long-arrow-alt-right" style="color: #1f4f65;"></i>
                     <span class="arrival"><?= htmlspecialchars($trajet['place_arrivee']) ?></span>
                   </div>
                   <div class="route-details">
