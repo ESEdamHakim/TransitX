@@ -255,7 +255,7 @@ if (isset($_SESSION['user_id'])) {
             </svg>
             <span>Héberger une réunion</span>
           </button>
-          <button onclick="window.location.href='assets/php/todo.php'" class="btn primary" style="margin-left:10px;">
+          <button onclick="window.location.href='blog/todo.php'" class="btn primary" style="margin-left:10px;">
             <i class="fas fa-check-square"></i> To-Do List
           </button>
           <div class="actions-container">
