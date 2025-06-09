@@ -1,9 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../../../Controller/vehiculeC.php';
-
 require_once __DIR__ . '/../../../appConfig.php';
-header('Content-Type: application/json'); // Ensure the response is JSON
+
 
 // Check if the user is logged in
 if (!isset($id_user)) {
@@ -22,20 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_vehicule']) && !em
         // Attempt to delete the vehicle
         $deletionSuccessful = $vehiculeController->deleteVehicule($id_vehicule, $id_user, false);
 
-        if ($deletionSuccessful) {
-            echo json_encode(['success' => true, 'message' => 'Véhicule supprimé avec succès.']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Erreur : Impossible de supprimer le véhicule.']);
-        }
+        header('Location: index.php?success=Véhicule supprimé avec succès.');
         exit;
     } catch (Exception $e) {
         // Handle exceptions and return an error response
-        echo json_encode(['success' => false, 'message' => 'Erreur : ' . $e->getMessage()]);
+        header('Location: index.php?error=Erreur lors de la suppression du véhicule.');
         exit;
     }
 } else {
     // Invalid request
-    echo json_encode(['success' => false, 'message' => 'Requête invalide.']);
+    header('Location: index.php?error=Requête invalide.');
     exit;
 }
 ?>

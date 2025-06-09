@@ -154,6 +154,51 @@ try {
             </div>
         </div>
     </div>
+    <!-- Delete Confirmation Modal for Vehicle -->
+    <div id="delete-confirm-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirmer la suppression</h2>
+                <button class="close-delete-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer ce véhicule ? Cette action est irréversible.</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary cancel-delete-btn" type="button">Annuler</button>
+                <form id="delete-form" method="POST" action="DeleteVehicule.php" style="display:inline;">
+                    <input type="hidden" name="id_vehicule" id="delete-vehicule-id">
+                    <button type="submit" class="btn btn-primary">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Open delete modal and set vehicule ID
+        document.querySelectorAll('.btn.delete').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const vehiculeId = this.getAttribute('data-id');
+                document.getElementById('delete-vehicule-id').value = vehiculeId;
+                document.getElementById('delete-confirm-modal').style.display = 'block';
+            });
+        });
+
+        // Close modal on close or cancel
+        document.querySelector('.close-delete-modal').onclick =
+            document.querySelector('.cancel-delete-btn').onclick = function () {
+                document.getElementById('delete-confirm-modal').style.display = 'none';
+                document.getElementById('delete-vehicule-id').value = '';
+            };
+
+        // Optional: close modal when clicking outside modal-content
+        window.addEventListener('click', function (e) {
+            const modal = document.getElementById('delete-confirm-modal');
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.getElementById('delete-vehicule-id').value = '';
+            }
+        });
+    </script>
     <script>
         const modal = document.getElementById('ride-modal');
         const closeBtn = modal.querySelector('.close-modal');
