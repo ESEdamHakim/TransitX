@@ -233,7 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 value="<?php echo htmlspecialchars($colis['poids']); ?>">
             </div>
             <br>
-<div class="form-row">
+            <div class="form-row">
               <div class="form-group">
                 <label for="autocomplete-pickup">Adresse de ramassage</label>
                 <input id="autocomplete-pickup" type="text" value="<?php echo htmlspecialchars($colis['lieu_ram']); ?>"
@@ -241,8 +241,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
               <div class="form-group">
                 <label for="autocomplete-delivery">Adresse de livraison</label>
-                <input id="autocomplete-delivery" type="text" value="<?php echo htmlspecialchars($colis['lieu_dest']); ?>"
-                  autocomplete="off" style="width:100%;margin-bottom:8px;">
+                <input id="autocomplete-delivery" type="text"
+                  value="<?php echo htmlspecialchars($colis['lieu_dest']); ?>" autocomplete="off"
+                  style="width:100%;margin-bottom:8px;">
               </div>
             </div>
             <!-- Hidden coordinates -->

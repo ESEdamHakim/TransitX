@@ -149,6 +149,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
               </div>
 
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="autocomplete-pickup">Adresse de ramassage</label>
+                  <input id="autocomplete-pickup" type="text"
+                    value="<?php echo htmlspecialchars($colis['lieu_ram']); ?>" autocomplete="off"
+                    style="width:100%;margin-bottom:8px;">
+                </div>
+                <div class="form-group">
+                  <label for="autocomplete-delivery">Adresse de livraison</label>
+                  <input id="autocomplete-delivery" type="text"
+                    value="<?php echo htmlspecialchars($colis['lieu_dest']); ?>" autocomplete="off"
+                    style="width:100%;margin-bottom:8px;">
+                </div>
+              </div>
+
+
               <!-- Hidden fields for map coordinates and price -->
               <input type="hidden" name="lieu_ram" id="lieu_ram"
                 value="<?php echo htmlspecialchars($colis['lieu_ram']); ?>">
@@ -170,16 +186,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   Annuler
                   <i class="fas fa-times"></i>
                 </a>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" style="margin-left:10px;">
                   Mettre à jour
                   <i class="fas fa-sync-alt"></i>
+                </button>
+                <button type="button" id="reset-map" class="btn btn-primary" style="margin-left:10px;">
+                  Réinitialiser la carte
+                  <i class="fas fa-undo"></i>
                 </button>
               </div>
             </form>
 
             <div class="map-container">
               <h3>Localisation</h3>
-              <div id="gmap_canvas" style="height: 400px; width: 400px;">
+              <div id="gmap_canvas" style="height: 400px; min-width: 400px;">
                 <!-- La carte Google Maps s'affichera ici -->
               </div>
               <div class="map-info"
@@ -189,8 +209,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <span style="font-weight: 600; color: #555;">Instructions:</span>
                   <br>
                   <span>
-                    <strong>1:</strong> Cliquez sur la carte pour l'adresse de <strong>ramassage</strong><br>
-                    <strong>2:</strong> Cliquez encore pour l'adresse de <strong>livraison</strong>.
+                    <strong>1:</strong> Utilisez la recherche ou cliquez sur la carte pour l'adresse de
+                    <strong>ramassage</strong><br>
+                    <strong>2:</strong> Utilisez la recherche ou cliquez encore pour l'adresse de
+                    <strong>livraison</strong>.
                   </span>
                 </p>
               </div>
