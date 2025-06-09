@@ -132,7 +132,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       <div class="container">
         <div class="section-header">
           <span class="badge">Trajets</span>
-          <h2>Trajets </h2>
+          <h2 style="color: #1f4f65;">Trajets </h2>
           <p>Découvrez les trajets proposés par notre communauté.</p>
         </div>
         <div class="route-cards">
@@ -144,7 +144,7 @@ $vehicules = $vehiculeController->getVehiculesByUser($id_user);
       <div class="container">
         <div class="section-header">
           <span class="badge">Vos Trajets</span>
-          <h2 class="color: #000">Vos Trajets </h2>
+          <h2 >Vos Trajets</h2>
           <p>Voici les trajets que vous avez ajoutés récemment.</p>
         </div>
         <div class="route-cards">
