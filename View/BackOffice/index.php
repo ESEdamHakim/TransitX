@@ -255,9 +255,13 @@ if (isset($_SESSION['user_id'])) {
             </svg>
             <span>Héberger une réunion</span>
           </button>
+          <button onclick="window.location.href='assets/php/todo.php'" class="btn primary" style="margin-left:10px;">
+            <i class="fas fa-check-square"></i> To-Do List
+          </button>
           <div class="actions-container">
             <?php include 'assets/php/indexprofile.php'; ?>
           </div>
+          
         </div>
       </header>
 
