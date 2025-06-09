@@ -150,17 +150,27 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
             </div>
         </aside>
         <main class="main-content">
-            <header class="dashboard-header">
-                <div class="header-left">
-                    <h1>To Do List</h1>
-                    <p>Ajoutez, modifiez et supprimez des tâches</p>
+            <div class="container todo-header-container">
+                <div class="section-header todo-section-header">
+                    <h2>
+                        <i class="fas fa-list-check" style="color:#86b391;"></i>
+                        To Do List
+                    </h2>
+                    <span class="todo-subtitle">Organisez vos tâches par glisser-déposer</span>
                 </div>
-            </header>
-            <div class="dashboard-content">
+
                 <form method="POST" class="form">
                     <input type="text" name="contenu" placeholder="Ajouter une tâche..." required>
                     <input type="submit" value="Ajouter">
                 </form>
+                <?php
+                $total = count($taches);
+                $done = count($terminees);
+                $percent = $total > 0 ? round($done / $total * 100) : 0;
+                ?>
+                <div class="todo-progress-bar">
+                    <div class="todo-progress-bar-inner" style="width:<?= $percent ?>%"></div>
+                </div>
                 <!-- BADGES ROW -->
                 <div class="todo-badges">
                     <span class="column-badge">En attente</span>
@@ -175,6 +185,7 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                             <div class="task" draggable="true" ondragstart="drag(event)" id="task-<?= $t['id'] ?>"
                                 ondblclick="editTask(<?= $t['id'] ?>)">
                                 <span id="task-content-<?= $t['id'] ?>"><?= htmlspecialchars($t['contenu']) ?></span>
+                                <span class="task-status-dot"></span>
                                 <form method="POST" class="edit-form" id="edit-form-<?= $t['id'] ?>" style="display:none;"
                                     onsubmit="return submitEdit(event, <?= $t['id'] ?>)">
                                     <input type="hidden" name="update_task_id" value="<?= $t['id'] ?>">
@@ -183,9 +194,8 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                                     <input type="submit" value="OK">
                                     <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
                                 </form>
-                                <a href="?delete=<?= $t['id'] ?>" class="delete-btn"
-                                    onclick="return confirm('Supprimer cette tâche ?')">
-                                    <i class="fa-solid fa-xmark" style="color:#1f4f65;"></i>
+                                <a href="?delete=<?= $t['id'] ?>" class="delete-btn" title="Supprimer cette tâche">
+                                    <i class="fa-solid fa-xmark"></i>
                                 </a>
                             </div>
                         <?php endforeach; ?>
@@ -232,6 +242,7 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                         <?php endforeach; ?>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
@@ -263,6 +274,7 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
         xhr.open("POST", "todo.php", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send("task_id=" + taskId + "&new_status=" + newStatus);
+        window.location.reload();
     }
 
     // Edition inline du contenu
@@ -281,7 +293,6 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
         const form = event.target;
         const newContent = form.new_contenu.value.trim();
         if (!newContent) return false;
-
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "todo.php", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -297,6 +308,13 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
 
         xhr.send("update_task_id=" + id + "&new_contenu=" + encodeURIComponent(newContent));
         return false;
+    }
+    function updateTodoProgressBar() {
+        // Count all tasks and done tasks
+        const allTasks = document.querySelectorAll('.task');
+        const doneTasks = document.querySelectorAll('.task.done');
+        const percent = allTasks.length > 0 ? Math.round((doneTasks.length / allTasks.length) * 100) : 0;
+        document.getElementById('todo-progress-bar-inner').style.width = percent + '%';
     }
 </script>
 
