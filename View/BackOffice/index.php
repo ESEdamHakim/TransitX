@@ -245,7 +245,7 @@ if (isset($_SESSION['user_id'])) {
           <h1>Dashboard</h1>
           <p>Bienvenue sur le tableau de bord TransitX</p>
         </div>
-        <div class="header-right">
+                <div class="header-right">
           <button id="hostMeetingBtn" class="btn-outline"
             style="margin-left: 12px; display: flex; align-items: center;">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="#1f4f65" stroke-width="2"
@@ -258,19 +258,13 @@ if (isset($_SESSION['user_id'])) {
           <button onclick="window.location.href='blog/todo.php'" class="btn primary" style="margin-left:10px;">
             <i class="fas fa-check-square"></i> To-Do List
           </button>
-          <button id="openMessagerieButton" style="margin-left:16px;">
-            <!-- Envelope icon for messaging -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="none" stroke="currentColor"
-              stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 48 48"
-              style="display:block; margin:auto;">
-              <rect x="6" y="12" width="36" height="24" rx="6" fill="#f5e9b9" stroke="#1f4f65" />
-              <polyline points="6,12 24,30 42,12" fill="none" stroke="#1f4f65" stroke-width="3" />
-            </svg>
+          <!-- Messagerie Button -->
+          <button id="openMessagerieBtn" class="btn primary" style="margin-left:10px;">
+            <i class="fas fa-comments"></i> Messagerie
           </button>
           <div class="actions-container">
             <?php include 'assets/php/indexprofile.php'; ?>
           </div>
-
         </div>
       </header>
 
@@ -438,34 +432,13 @@ if (isset($_SESSION['user_id'])) {
   </div>
 
   <!-- Messagerie Modal -->
-<div id="messagerieModal"
-  style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:9999; align-items:center; justify-content:center;">
-  <div
-    style="background:#fff; border-radius:12px; width:400px; max-width:90vw; min-height:300px; box-shadow:0 4px 32px rgba(0,0,0,0.2); position:relative; padding:0;">
-    <button id="closeMessagerieModal"
-      style="position:absolute; top:8px; right:12px; background:none; border:none; font-size:2rem; color:#888; cursor:pointer;">&times;</button>
-    <div style="padding:24px 16px 16px 16px;">
-      <h2 style="margin-top:0;">Messagerie</h2>
-      <form id="sendMessageForm" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-        <select id="receiverSelect"
-          style="margin-bottom:8px; width:100%; border-radius:6px; border:1px solid #ccc; padding:6px;">
-          <!-- Options will be populated dynamically by JS -->
-        </select>
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="messageInput" placeholder="Votre message..."
-            style="flex:1; border-radius:6px; border:1px solid #ccc; padding:6px;">
-          <button type="submit"
-            style="border-radius:6px; background:#1f4f65; color:#fff; border:none; padding:6px 14px;">Envoyer</button>
-        </div>
-      </form>
-      <div id="messagesList"
-        style="height:180px; overflow-y:auto; border:1px solid #eee; border-radius:8px; padding:8px; background:#fafbfc;">
-      </div>
+  <div id="messagerieModal" class="meet-modal" style="display:none;">
+    <div class="meet-modal-content">
+      <button class="meet-modal-close" id="closeMessagerieModal" title="Fermer">&times;</button>
+      <iframe id="messagerieFrame" src="" style="width:100%; height:600px; border:none;"></iframe>
     </div>
   </div>
-</div>
 
-  <script src="assets/js/main.js"></script>
   <script src="assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
