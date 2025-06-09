@@ -591,3 +591,143 @@
   transition: width 0.4s;
   min-width: 2%;
 }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none; /* Only this! */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.active {
+  display: flex;   /* Use flex, not block! */
+  opacity: 1;
+}
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: modalAnimation 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content.large {
+  max-width: 800px;
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  color: var(--secondary);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+  color: var(--primary);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+/* Modal Buttons */
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 20px 20px;
+  flex-wrap: wrap;
+}
+
+.modal-buttons .btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 90px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-buttons .btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.modal-buttons .btn:hover::before {
+  left: 100%;
+}
+
+.modal-buttons .btn-primary {
+  background: linear-gradient(135deg, #4d7aa3, #86b391);
+  color: white;
+  box-shadow: 0 4px 16px rgba(77, 122, 163, 0.3);
+}
+
+.modal-buttons .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(77, 122, 163, 0.4);
+}
+
+.modal-buttons .btn-secondary {
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+  border: 2px solid rgba(108, 117, 125, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.modal-buttons .btn-secondary:hover {
+  background: rgba(108, 117, 125, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(108, 117, 125, 0.2);
+}
+
+.modal-buttons .btn:active {
+  transform: translateY(0);
+}
+
+.modal-buttons .btn i {
+  margin-right: 0;
+  font-size: 1.1em;
+}

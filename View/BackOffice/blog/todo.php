@@ -200,7 +200,7 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                                     <input type="submit" value="OK">
                                     <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
                                 </form>
-                                <a href="?delete=<?= $t['id'] ?>" class="delete-btn" title="Supprimer cette tâche">
+                                <a href="#" class="delete-btn" data-task-id="<?= $t['id'] ?>" title="Supprimer cette tâche">
                                     <i class="fa-solid fa-xmark"></i>
                                 </a>
                             </div>
@@ -220,9 +220,8 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                                     <input type="submit" value="OK">
                                     <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
                                 </form>
-                                <a href="?delete=<?= $t['id'] ?>" class="delete-btn"
-                                    onclick="return confirm('Supprimer cette tâche ?')">
-                                    <i class="fa-solid fa-xmark" style="color:#1f4f65;"></i>
+                                <a href="#" class="delete-btn" data-task-id="<?= $t['id'] ?>" title="Supprimer cette tâche">
+                                    <i class="fa-solid fa-xmark"></i>
                                 </a>
                             </div>
                         <?php endforeach; ?>
@@ -240,9 +239,8 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                                     <input type="submit" value="OK">
                                     <button type="button" onclick="cancelEdit(<?= $t['id'] ?>)">Annuler</button>
                                 </form>
-                                <a href="?delete=<?= $t['id'] ?>" class="delete-btn"
-                                    onclick="return confirm('Supprimer cette tâche ?')">
-                                    <i class="fa-solid fa-xmark" style="color:#1f4f65;"></i>
+                                <a href="#" class="delete-btn" data-task-id="<?= $t['id'] ?>" title="Supprimer cette tâche">
+                                    <i class="fa-solid fa-xmark"></i>
                                 </a>
                             </div>
                         <?php endforeach; ?>
@@ -252,8 +250,51 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
             </div>
         </main>
     </div>
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Supprimer la tâche</h3>
+                <button class="close-delete-modal" aria-label="Fermer"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cette tâche ? Cette action est irréversible.</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary cancel-delete-btn" type="button">Annuler</button>
+                <form id="delete-form" method="GET" action="todo.php" style="display:inline;">
+                    <input type="hidden" name="delete" id="delete-task-id">
+                    <button type="submit" class="btn btn-primary">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const taskId = this.getAttribute('data-task-id');
+            document.getElementById('delete-task-id').value = taskId;
+            document.getElementById('delete-modal').classList.add('active');
+        });
+    });
 
+    document.querySelector('.close-delete-modal').onclick =
+        document.querySelector('.cancel-delete-btn').onclick = function () {
+            document.getElementById('delete-modal').classList.remove('active');
+            document.getElementById('delete-task-id').value = '';
+        };
+
+    // Optional: close modal when clicking outside modal-content
+    window.addEventListener('click', function (e) {
+        const modal = document.getElementById('delete-modal');
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            document.getElementById('delete-task-id').value = '';
+        }
+    });
+</script>
 
 <script>
     let draggedId;
