@@ -160,6 +160,31 @@
   color: var(--primary);
 }
 
+/* Bus Info Section */
+.bus-info {
+  padding: 5rem 5%;
+  background-color: var(--gray-light);
+}
+
+.info-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.info-text h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--secondary-1);
+}
+
+.info-text p {
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
 .features-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -305,32 +330,6 @@
     flex-direction: column;
     gap: 0.5rem;
   }
-}
-
-
-/* Bus Info Section */
-.bus-info {
-  padding: 5rem 5%;
-  background-color: var(--gray-light);
-}
-
-.info-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.info-text h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: var(--secondary-1);
-}
-
-.info-text p {
-  margin-bottom: 2rem;
-  line-height: 1.8;
 }
 
 .modal {
