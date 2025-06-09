@@ -173,9 +173,15 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                 </div>
                 <!-- BADGES ROW -->
                 <div class="todo-badges">
-                    <span class="column-badge">En attente</span>
-                    <span class="column-badge">en cours</span>
-                    <span class="column-badge">terminee</span>
+                    <span class="column-badge">
+                        <i class="fas fa-hourglass-start"></i> En attente
+                    </span>
+                    <span class="column-badge">
+                        <i class="fas fa-spinner"></i> En cours
+                    </span>
+                    <span class="column-badge">
+                        <i class="fas fa-check-circle"></i> Terminée
+                    </span>
                 </div>
                 <!-- COLUMNS ROW -->
                 <div class="todo-columns">
