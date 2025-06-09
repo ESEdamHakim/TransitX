@@ -345,6 +345,90 @@ if (isset($_SESSION['user_id'])) {
   </div>
   <?php include 'assets/php/profileManage.php'; ?>
 
+    <script>
+    // Sidebar, Tabs, and Charts
+    document.addEventListener('DOMContentLoaded', function () {
+      // Sidebar toggle
+      const sidebarToggle = document.querySelector('.sidebar-toggle');
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function () {
+          document.querySelector('.sidebar').classList.toggle('collapsed');
+          document.querySelector('.main-content').classList.toggle('expanded');
+        });
+      }
+
+      // Report Tabs (if present)
+      const reportTabs = document.querySelectorAll('.report-tab');
+      const reportContents = document.querySelectorAll('.report-content');
+      if (reportTabs.length && reportContents.length) {
+        reportTabs.forEach(tab => {
+          tab.addEventListener('click', function () {
+            reportTabs.forEach(t => t.classList.remove('active'));
+            reportContents.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            const reportType = this.getAttribute('data-report');
+            document.getElementById(`${reportType}-report`).classList.add('active');
+          });
+        });
+      }
+
+      // Charts
+      const servicesDistribution = document.getElementById('servicesDistribution');
+      if (servicesDistribution) {
+        const servicesDistributionCtx = servicesDistribution.getContext('2d');
+        new Chart(servicesDistributionCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Bus', 'Covoiturage', 'Colis'],
+            datasets: [{
+              data: [
+                <?= $serviceCounts['bus'] ?>,
+                <?= $serviceCounts['covoiturage'] ?>,
+                <?= $serviceCounts['colis'] ?>
+              ],
+              backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83'],
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          }
+        });
+      }
+
+      const topServices = document.getElementById('topServices');
+      if (topServices) {
+        const topServicesCtx = topServices.getContext('2d');
+        new Chart(topServicesCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Bus', 'Covoiturage', 'Colis'],
+            datasets: [{
+              data: [
+                <?= $serviceCounts['bus'] ?>,
+                <?= $serviceCounts['covoiturage'] ?>,
+                <?= $serviceCounts['colis'] ?>
+              ],
+              backgroundColor: ['#1f4f65', '#97c3a2', '#d7dd83']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: { beginAtZero: true }
+            }
+          }
+        });
+      }
+    });
+  </script>
+
   <!-- Add this modal markup just before </body> -->
   <div id="meetModal" class="meet-modal" style="display:none;">
     <div class="meet-modal-content">
