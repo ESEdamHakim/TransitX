@@ -292,5 +292,85 @@ public function getBookingRequests($id_user) {
 
     return $bookingRequests;
 }
+public function listCovoituragesCalendrier($id_user)
+{
+    $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, temps_depart, places_dispo
+            FROM covoiturage 
+            WHERE id_user = :id_user";
+    $db = config::getConnexion();
+
+    try {
+        $query = $db->prepare($sql);
+        $query->execute([':id_user' => $id_user]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        throw new Exception('Erreur : ' . $e->getMessage());
+    }
+}
+public function getUserFuturetBookings($id_user)
+{
+    $sql = "SELECT b.id_covoiturage, c.date_depart
+            FROM bookings b
+            INNER JOIN covoiturage c ON b.id_covoiturage = c.id_covoit
+            WHERE b.id_user = :id_user AND c.date_depart >= CURDATE()";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_user' => $id_user]);
+    return $query->fetchAll(PDO::FETCH_ASSOC); // returns array of ['id_covoiturage' => ..., 'date_depart' => ...]
+}
+
+public function getUserAcceptedBookings($id_user)
+{
+    $sql = "SELECT b.id_covoiturage, c.date_depart
+            FROM bookings b
+            INNER JOIN covoiturage c ON b.id_covoiturage = c.id_covoit
+            WHERE b.id_user = :id_user 
+              AND b.notification_status = 'accepted'";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_user' => $id_user]);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+public function getAllCovoituragesForMonth($year, $month)
+{
+    $sql = "SELECT id_covoit, date_depart, lieu_depart, lieu_arrivee, temps_depart, places_dispo, id_user
+            FROM covoiturage
+            WHERE YEAR(date_depart) = :year AND MONTH(date_depart) = :month";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':year' => $year, ':month' => $month]);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+public function getDriverByCovoiturageId($id_covoiturage)
+{
+    $sql = "SELECT u.nom, u.prenom, u.image
+            FROM covoiturage c
+            INNER JOIN user u ON c.id_user = u.id
+            WHERE c.id_covoit = :id_covoiturage";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_covoiturage' => $id_covoiturage]);
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
+public function getUserColisForMonth($id_user, $year, $month) {
+    $sql = "SELECT id_colis, date_colis, statut FROM colis 
+            WHERE id_client = :id_user 
+              AND YEAR(date_colis) = :year 
+              AND MONTH(date_colis) = :month";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_user' => $id_user, ':year' => $year, ':month' => $month]);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+public function getColisForCovoiturage($id_covoit) {
+    $sql = "SELECT c.*, u.nom, u.prenom, u.telephone
+            FROM colis c
+            INNER JOIN user u ON c.id_client = u.id
+            WHERE c.id_covoit = :id_covoit";
+    $db = config::getConnexion();
+    $query = $db->prepare($sql);
+    $query->execute([':id_covoit' => $id_covoit]);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 ?>
