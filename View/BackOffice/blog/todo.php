@@ -69,146 +69,26 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/crud.css">
+    <link rel="stylesheet" href="assets/css/todo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-        .header-left h1 {
-            color: #1f4f65;
-            /* Blue color for the title */
-        }
 
-        .dashboard-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .todo-columns {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            width: 100%;
-        }
-
-        .column {
-            background: rgb(229, 245, 247);
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 0 5px #aaa;
-            min-height: 300px;
-            margin-bottom: 0;
-        }
-
-        .task {
-            background: rgb(215, 246, 223);
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: move;
-            position: relative;
-        }
-
-        .done {
-            text-decoration: line-through;
-            color: #999;
-        }
-
-        .form input[type="text"] {
-            width: 75%;
-            padding: 8px;
-            border-radius: 25px;
-            border: 1px solid #e0e0e0;
-            outline: none;
-            font-size: 1em;
-        }
-
-        .form input[type="submit"] {
-            background-color: #9bcbad;
-            color: #fff;
-            border: none;
-            border-radius: 25px;
-            padding: 8px 28px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .form input[type="submit"]:hover {
-            background-color: #7ebd97;
-        }
-
-        .delete-btn {
-            position: absolute;
-            right: 8px;
-            top: 8px;
-            color: red;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* Styles pour le formulaire d'édition inline */
-        .edit-form {
-            display: inline-block;
-            margin-left: 5px;
-        }
-
-        .edit-form input[type="text"] {
-            padding: 4px;
-            font-size: 1em;
-        }
-
-        .edit-form input[type="submit"],
-        .edit-form button {
-            padding: 4px 8px;
-            font-size: 0.9em;
-            margin-left: 5px;
-        }
-
-        .todo-badges {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            width: 100%;
-            margin-bottom: 0;
-            /* Reduce space below badges */
-            justify-content: space-between;
-        }
-
-        .column-badge {
-            display: block;
-            margin: 0 auto 8px auto;
-            /* Add only a small space below badge */
-            padding: 8px 28px;
-            border-radius: 20px;
-            background: #97c3a2;
-            color: #fff;
-            font-weight: 600;
-            font-size: 1em;
-            letter-spacing: 1px;
-            box-shadow: 0 2px 6px rgba(31, 79, 101, 0.08);
-            border: none;
-            pointer-events: none;
-        }
-    </style>
 </head>
 
 <body>
     <div class="dashboard">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <a href="../../FrontOffice/index.php" class="logo-link">
+                <a href="../../FrontOffice/index.php" class="logoback-link">
                     <div class="logoback">
-                        <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logoback">
-                        <span>Transit</span><span class="highlight">X</span>
+                        <img src="../../assets/images/logo.png" alt="TransitX Logoback" class="nav-logo">
+                        <span class="logo-text">Transit</span><span class="highlight logo-text">X</span>
                     </div>
                 </a>
                 <button class="sidebar-toggle">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
-
             <div class="sidebar-content">
                 <nav class="sidebar-menu">
                     <ul>
@@ -230,8 +110,11 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                                 <span>Bus</span>
                             </a>
                         </li>
-                        <li><a href="../trajets/crud.php"><i class="fas fa-road"></i><span>Trajets</span></a></li>
-
+                        <li><a href="../trajets/crud.php">
+                                <i class="fas fa-road"></i>
+                                <span>Trajets</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="../colis/crud.php">
                                 <i class="fas fa-box"></i>
@@ -244,24 +127,19 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                                 <span>Réclamations</span>
                             </a>
                         </li>
-                        <a href="crud.php">
-                            <i class="fas fa-car-side"></i>
-                            <span>Covoiturage</span>
-                        </a>
-
+                        <li>
+                            <a href="../covoiturage/crud.php">
+                                <i class="fas fa-car-side"></i>
+                                <span>Covoiturage</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="../blog/crud.php">
                                 <i class="fas fa-blog"></i>
                                 <span>Blog</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="../vehicule/crud.php">
-                                <i class="fas fa-car"></i>
-                                <span>Véhicules</span>
-                            </a>
-                        </li>
-
+                        <li><a href="../vehicule/crud.php"><i class="fas fa-car"></i><span>Véhicules</span></a></li>
 
                     </ul>
                     <a href="../../../index.php" class="logout">
@@ -281,8 +159,7 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
             <div class="dashboard-content">
                 <form method="POST" class="form">
                     <input type="text" name="contenu" placeholder="Ajouter une tâche..." required>
-                    <input type="submit" value="Ajouter"
-                        style="background-color:#97c3a2; color:#fff; border:none; cursor:pointer;">
+                    <input type="submit" value="Ajouter">
                 </form>
                 <!-- BADGES ROW -->
                 <div class="todo-badges">
@@ -355,6 +232,7 @@ $terminees = array_filter($taches, fn($t) => $t['statut'] === 'terminee');
                         <?php endforeach; ?>
                     </div>
                 </div>
+            </div>
         </main>
     </div>
 </body>
