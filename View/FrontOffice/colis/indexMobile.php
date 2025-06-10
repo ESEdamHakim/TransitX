@@ -39,7 +39,6 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/colis.css">
-  <link rel="stylesheet" href="../../assets/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
@@ -47,37 +46,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
   <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
 </head>
 <style>
-  /* Additional styles specific to colis list */
-  .colis-dashboard {
-    padding: 3rem 5%;
-    background-color: var(--background);
-  }
-
-  .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-
-  .dashboard-title {
-    color: var(--secondary);
-  }
-
-  .dashboard-title h1 {
-    font-size: 2.2rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .dashboard-title p {
-    color: #666;
-  }
-
-  .dashboard-actions {
-    display: flex;
-    gap: 1rem;
-  }
-
+ 
   .filters-section {
     background-color: white;
     border-radius: 8px;
@@ -245,18 +214,19 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
         </ul>
       </nav>
       <div class="header-right">
+
+        <!-- Notification Button -->
+        <button class="notify-button position-relative" title="Notifications">
+          <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
+          <!-- Notification Badge -->
+          <?php if (count($notifications) > 0): ?>
+            <span
+              class="notif-badge absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
+              <?= count($notifications) ?>
+            </span>
+          <?php endif; ?>
+        </button>
         <div class="actions">
-          <!-- Notification Button -->
-          <button class="notify-button position-relative" title="Notifications">
-            <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
-            <!-- Notification Badge -->
-            <?php if (count($notifications) > 0): ?>
-              <span
-                class="notif-badge absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
-                <?= count($notifications) ?>
-              </span>
-            <?php endif; ?>
-          </button>
           <button class="mobile-menu-btn">
             <i class="fas fa-bars"></i>
           </button>
@@ -268,7 +238,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
   <main>
     <section class="colis-dashboard">
       <div class="container">
-        <div class="colis-form">
+        <div class="colis-form" style="max-width: 350px;">
           <div style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
             <h2
               style="display: flex; align-items: center; text-align: center; font-size: 1.5rem; margin: 0; color: var(--secondary); font-weight: 1000;">
@@ -277,8 +247,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
               <i class="fas fa-map-marker-alt" style="margin-left: 10px; font-size: 1.3rem; color: var(--primary);"></i>
             </h2>
           </div>
-          <div id="colis-map" style="height:500px;height:500px;border-radius:12px;"></div>
-
+          <div id="colis-map" style="width:100%;height:500px;border-radius:12px;"></div>
         </div>
       </div>
     </section>
