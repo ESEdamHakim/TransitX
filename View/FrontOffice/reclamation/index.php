@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                   <label for="description">Description détaillée</label>
-                  <textarea name="description" id="description" rows="5"
+                  <textarea style="min-height: 300px"name="description" id="description" rows="12"
                     placeholder="Veuillez décrire votre problème en détail..."></textarea>
                   <button type="button" class="btn btn-secondary" id="auto-description-btn"
                     style="margin-top:5px;">Auto</button>
