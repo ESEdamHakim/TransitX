@@ -431,7 +431,7 @@
 .comment-content p {
   margin: 0;
   line-height: 1.6;
-  color: var(--text-light);
+  color: #7f8c8d;
 }
 
 .comment-likes {
@@ -756,7 +756,7 @@
   position: absolute;
   top: 15px;
   right: 20px;
-  color: var(--text-light);
+  color: #7f8c8d;
   font-size: 28px;
   font-weight: bold;
   transition: var(--transition);
