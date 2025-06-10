@@ -8,7 +8,7 @@
 header('Content-Type: image/jpeg');
 
 // Get the image filename from the query string
-$filename = isset($_GET['file']) ? $_GET['file'] : 'default.png';
+$filename = isset($_GET['file']) ? $_GET['file'] : '../assets/images/user-placeholder.png';
 
 // Define the profiles directory
 $profilesDir = __DIR__ . '/../View/assets/uploads/profiles/';

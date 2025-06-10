@@ -31,6 +31,7 @@ if (isset($_SESSION['user_id'])) {
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="../assets/chatbot/chatbot.css">
+  <link rel="stylesheet" href="../assets/messagerie/messagerie.css">
 
   <style>
     .reports-section {
@@ -164,6 +165,7 @@ if (isset($_SESSION['user_id'])) {
 
 <body>
   <?php include '../assets/chatbot/chatbot.php'; ?>
+  <?php include '../assets/messagerie/messagerie.php'; ?>
 
   <div class="dashboard">
     <aside class="sidebar">
@@ -257,10 +259,6 @@ if (isset($_SESSION['user_id'])) {
           </button>
           <button onclick="window.location.href='blog/todo.php'" class="btn primary" style="margin-left:10px;">
             <i class="fas fa-check-square"></i> To-Do List
-          </button>
-          <!-- Messagerie Button -->
-          <button id="openMessagerieBtn" class="btn primary" style="margin-left:10px;">
-            <i class="fas fa-comments"></i> Messagerie
           </button>
           <div class="actions-container">
             <?php include 'assets/php/indexprofile.php'; ?>
@@ -420,37 +418,11 @@ if (isset($_SESSION['user_id'])) {
           }
         });
       }
-      // Open Messagerie Modal
-      document.getElementById('openMessagerieBtn').addEventListener('click', function () {
-        document.getElementById('messagerieModal').style.display = 'block';
-        document.getElementById('messagerieFrame').src = 'messagerie.php'; 
-      });
-
-      // Close Messagerie Modal
-      document.getElementById('closeMessagerieModal').addEventListener('click', function () {
-        document.getElementById('messagerieModal').style.display = 'none';
-        document.getElementById('messagerieFrame').src = '';
-      });
-
+     
     });
   </script>
-
-  <!-- Add this modal markup just before </body> -->
-  <div id="meetModal" class="meet-modal" style="display:none;">
-    <div class="meet-modal-content">
-      <button class="meet-modal-close" id="closeMeetModal" title="Fermer">&times;</button>
-      <div id="meetContainer" style="width:100%; height:600px;"></div>
-    </div>
-  </div>
-
-  <!-- Messagerie Modal -->
-  <div id="messagerieModal" class="meet-modal" style="display:none;">
-    <div class="meet-modal-content">
-      <button class="meet-modal-close" id="closeMessagerieModal" title="Fermer">&times;</button>
-      <iframe id="messagerieFrame" src="" style="width:100%; height:600px; border:none;"></iframe>
-    </div>
-  </div>
-
+  
+  <script src="../assets/messagerie/messagerie.js"> </script>
   <script src="assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
