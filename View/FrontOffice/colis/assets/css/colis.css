@@ -815,3 +815,85 @@
   background-color: var(--primary);
   color: #fff;
 }
+@media (max-width: 600px) {
+    .colis-dashboard {
+      padding: 1.2rem 0.5rem;
+    }
+    .container {
+      padding: 0 0.5rem;
+      width: 100vw;
+      max-width: 100vw;
+    }
+    .colis-form {
+      padding: 0;
+    }
+    h2 {
+      font-size: 1.1rem !important;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+    #colis-map {
+      height: 300px !important;
+      min-height: 220px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .notimodal-content {
+      width: 98vw !important;
+      min-width: unset;
+      max-width: 98vw;
+      padding: 0.5rem;
+      border-radius: 10px;
+    }
+    .notimodal-header h3 {
+      font-size: 1.1rem;
+    }
+    .notification-item {
+      font-size: 0.95rem;
+      padding: 0.7rem !important;
+    }
+    .dashboard-header,
+    .dashboard-actions {
+      flex-direction: column;
+      gap: 0.7rem;
+      align-items: flex-start;
+    }
+    .main-logo {
+      width: 34px !important;
+      height: auto;
+    }
+    .logo-text {
+      font-size: 1.1rem;
+    }
+    .landing-header .container {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.5rem 0.5rem 0 0.5rem;
+    }
+    .main-nav ul {
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+    }
+    .main-nav ul li a {
+      font-size: 1rem;
+      padding: 0.7rem 0;
+      display: block;
+    }
+    .header-right {
+      margin-top: 0.5rem;
+      gap: 0.5rem;
+    }
+    .actions-container {
+      gap: 0.5rem;
+    }
+    .notif-badge {
+      font-size: 0.8rem !important;
+      padding: 0.1rem 0.4rem !important;
+    }
+    .notimodal-overlay {
+      align-items: flex-end !important;
+      padding-bottom: 0.5rem;
+    }
+  }

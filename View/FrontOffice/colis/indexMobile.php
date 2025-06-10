@@ -225,7 +225,6 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
 </head>
 
 <body>
-  <?php include '../../assets/chatbot/chatbot.php'; ?>
   <header class="landing-header">
     <div class="container">
       <div class="header-left">
@@ -239,13 +238,13 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
           <li class="active"><a href="../indexMobile.php">Accueil</a></li>
           <li><a href="../bus/indexMobile.php">Bus</a></li>
           <li><a href="indexMobile.php">Colis</a></li>
-          <li ><a href="../covoiturage/indexMobile.php">Covoiturage</a></li>
+          <li><a href="../covoiturage/indexMobile.php">Covoiturage</a></li>
           <div class="actions-container" style="text-align: right;">
             <?php include '../assets/php/profileMobile.php'; ?>
           </div>
         </ul>
       </nav>
-      <div class="header-right">
+      <div class="header-right">      
         <!-- Notification Button -->
         <button class="notify-button position-relative" title="Notifications">
           <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
@@ -257,6 +256,12 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
             </span>
           <?php endif; ?>
         </button>
+        <div class="actions">
+          
+          <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -264,292 +269,23 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
   <main>
     <section class="colis-dashboard">
       <div class="container">
-        <div class="dashboard-header">
-          <div class="dashboard-title">
-            <h1>Mes Colis</h1>
-            <p>Gérez et suivez tous vos envois de colis</p>
+        <div class="colis-form">
+          <div style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+            <h2
+              style="display: flex; align-items: center; text-align: center; font-size: 1.5rem; margin: 0; color: var(--secondary); font-weight: 1000;">
+              <i class="fas fa-box-open" style="margin-right: 10px; color: var(--primary);"></i>
+              Colis à livrer
+              <i class="fas fa-map-marker-alt" style="margin-left: 10px; font-size: 1.3rem; color: var(--primary);"></i>
+            </h2>
           </div>
-          <div class="dashboard-actions">
-            <a href="ColisMaps.php" class="btn btn-primary">
-              <i class="fas fa-eye"></i> Voir en Maps
-            </a>
-          </div>
-        </div>
+          <div id="colis-map" style="width:100%;height:500px;border-radius:12px;"></div>
 
-        <!-- FILTERS -->
-        <div class="filters-section">
-          <div class="filters-title">
-            <h3>Filtres</h3>
-            <button class="filters-toggle">
-              <i class="fas fa-sliders-h"></i> Afficher les filtres
-            </button>
-          </div>
-          <div class="filters-content">
-            <div class="filter-group">
-              <label for="status-filter">Statut</label>
-              <select id="status-filter">
-                <option value="all">Tous les statuts</option>
-                <option value="pending">En attente</option>
-                <option value="in-progress">En transit</option>
-                <option value="resolved">Livré</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label for="date-filter">Date d'envoi</label>
-              <input type="date" id="date-filter">
-            </div>
-            <div class="filter-group" style="display: none;">
-              <label for="search-filter">Recherche</label>
-              <input type="text" id="search-filter" placeholder="ID covoiturage">
-            </div>
-            <div class="filter-group">
-              <label for="price-sort">Tri par prix</label>
-              <select id="price-sort">
-                <option value="none">Aucun tri</option>
-                <option value="asc">Prix croissant</option>
-                <option value="desc">Prix décroissant</option>
-              </select>
-            </div>
-          </div>
-          <div class="filter-actions">
-            <button type="button" class="btn btn-outline reset-btn">Réinitialiser</button>
-            <button type="button" class="btn btn-primary apply-btn">Appliquer</button>
-          </div>
-        </div>
-
-        <!-- TABS -->
-        <div class="tabs-container">
-          <div class="tab" data-status="all">Tous</div>
-          <div class="tab" data-status="pending">En attente</div>
-          <div class="tab" data-status="in-progress">En transit</div>
-          <div class="tab" data-status="resolved">Livrés</div>
-        </div>
-        <div class="collapsible-section" id="affectes-covoiturage">
-          <div class="collapsible-header">
-            Colis Affectés à Mes Covoiturages
-            <span class="icon">▼</span>
-          </div>
-          <div class="collapsible-content">
-            <?php if (empty($listByCovoit)): ?>
-              <p style="text-align: center; padding: 20px; color: #555;">
-                Aucun colis n'est affecté à vos covoiturages pour le moment.
-              </p>
-            <?php else: ?>
-              <div class="route-cards">
-                <?php foreach ($listByCovoit as $colis):
-                  $covoit = null;
-                  $client = null;
-
-                  if (!empty($colis['id_covoit'])) {
-                    $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
-
-                    if ($covoit && isset($covoit['id_user'])) {
-                      $client = $ColisC->getClientById($colis['id_client']);
-                    }
-                  }
-
-                  $statusClassMap = [
-                    'en attente' => 'pending',
-                    'en transit' => 'in-progress',
-                    'livré' => 'resolved'
-                  ];
-
-                  $statut = trim($colis['statut']);
-                  $className = $statusClassMap[$statut] ?? 'default';
-                  ?>
-
-                  <div class="route-card" id="colis-<?= $colis['id_colis'] ?>" data-status="<?= $className ?>"
-                    data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
-                    data-price="<?= htmlspecialchars($colis['prix']) ?>">
-
-                    <div class="route-info">
-                      <div class="route-cities">
-                        <span class="departure"><?= htmlspecialchars($colis['lieu_ram']) ?></span>
-                        <i class="fas fa-long-arrow-alt-right"></i>
-                        <span class="arrival"><?= htmlspecialchars($colis['lieu_dest']) ?></span>
-                      </div>
-
-                      <div class="route-details">
-                        <div class="detail">
-                          <i class="fas fa-user"></i>
-                          <?php if ($client): ?>
-                            Expéditeur : <?= htmlspecialchars($client['nom']) ?>       <?= htmlspecialchars($client['prenom']) ?>
-                            (ID: <?= htmlspecialchars($client['id']) ?>)
-                          <?php else: ?>
-                            <em>Client inconnu</em>
-                          <?php endif; ?>
-                        </div>
-                        <div class="detail">
-                          <i class="fas fa-box"></i>
-                          <span>
-                            L: <?= number_format($colis['longueur'], 2) ?> ×
-                            l: <?= number_format($colis['largeur'], 2) ?> ×
-                            H: <?= number_format($colis['hauteur'], 2) ?> cm
-                          </span>
-                        </div>
-                        <div class="detail">
-                          <i class="fas fa-weight-hanging"></i>
-                          <span> <?= number_format($colis['poids'], 2) ?> kg</span>
-                        </div>
-                        <div class="detail">
-                          <i class="fas fa-calendar-alt"></i>
-                          <span> <?= htmlspecialchars($colis['date_colis']) ?></span>
-                        </div>
-                        <div class="detail">
-                          <i class="fas fa-info-circle"></i>
-                          <span class="status <?= $className ?>">
-                            <?= htmlspecialchars($colis['statut']) ?>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="route-price">
-                      <span class="price"><?= htmlspecialchars($colis['prix']) ?> DT</span>
-                      <div class="action" style="margin-top: 10px; display: flex; gap: 5px;">
-                        <form method="GET" action="updateColisOfCovoit.php" style="display:inline;">
-                          <input type="hidden" name="id_colis" value="<?= htmlspecialchars($colis['id_colis']) ?>">
-                          <button type="submit" class="action-btn edit" title="Modifier">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                <?php endforeach; ?>
-              </div>
-            <?php endif; ?>
-            <br>
-          </div>
-        </div>
-        <div class="collapsible-section">
-          <div class="collapsible-header">
-            Mes Colis
-            <span class="icon">▼</span>
-          </div>
-          <div class="collapsible-content">
-            <?php foreach ($list as $colis):
-              $covoit = null;
-              $client = null;
-
-              // Fetch covoiturage and client only if id_covoit is not empty
-              if (!empty($colis['id_covoit'])) {
-                $covoit = $ColisC->getCovoiturageById($colis['id_covoit']);
-
-                if ($covoit && isset($covoit['id_user'])) {
-                  $client = $ColisC->getClientById($covoit['id_user']);
-                }
-              }
-
-              // Skip if the client is not 
-              if ($colis['id_client'] != $_SESSION['user_id']) {
-                continue;
-              }
-              // Map the status to a class for styling
-              $statusClassMap = [
-                'en attente' => 'pending',
-                'en transit' => 'in-progress',
-                'livré' => 'resolved'
-              ];
-
-              $statut = trim($colis['statut']);
-              $className = isset($statusClassMap[$statut]) ? $statusClassMap[$statut] : 'default';
-              ?>
-
-              <div class="route-card" data-status="<?= $className ?>"
-                data-date="<?= htmlspecialchars($colis['date_colis']) ?>"
-                data-price="<?= htmlspecialchars($colis['prix']) ?>"
-                data-covoit-id="<?= $covoit ? htmlspecialchars($covoit['id_covoit']) : '' ?>">
-
-                <div class="route-info">
-                  <div class="route-cities">
-                    <span class="departure"><?= htmlspecialchars($colis['lieu_ram']) ?></span>
-                    <i class="fas fa-long-arrow-alt-right"></i>
-                    <span class="arrival"><?= htmlspecialchars($colis['lieu_dest']) ?></span>
-                  </div>
-
-                  <div class="route-details">
-                    <div class="detail">
-                      <i class="fas fa-user"></i>
-                      <?php if ($covoit): ?>
-                        <?= htmlspecialchars($client['nom']) ?>     <?= htmlspecialchars($client['prenom']) ?> (ID:
-                        <?= htmlspecialchars($client['id']) ?>)
-                      <?php else: ?>
-                        <em>Aucun covoiturage</em>
-                      <?php endif; ?>
-                    </div>
-                    <div class="detail">
-                      <i class="fas fa-box"></i>
-                      <span>
-                        L: <?= number_format($colis['longueur'], 2) ?> ×
-                        l: <?= number_format($colis['largeur'], 2) ?> ×
-                        H: <?= number_format($colis['hauteur'], 2) ?> cm
-                      </span>
-                    </div>
-                    <div class="detail">
-                      <i class="fas fa-weight-hanging"></i>
-                      <span> <?= number_format($colis['poids'], 2) ?> kg</span>
-                    </div>
-                    <div class="detail">
-                      <i class="fas fa-calendar-alt"></i>
-                      <span> <?= htmlspecialchars($colis['date_colis']) ?></span>
-                    </div>
-                    <div class="detail">
-                      <i class="fas fa-info-circle"></i>
-                      <span class="status <?= $className ?>">
-                        <?= htmlspecialchars($colis['statut']) ?>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="route-price">
-                  <span class="price"><?= htmlspecialchars($colis['prix']) ?> DT</span>
-                  <div class="action" style="margin-top: 10px; display: flex; gap: 5px;">
-                    <form method="GET" action="updateColis.php" style="display:inline;">
-                      <input type="hidden" name="id_colis" value="<?= htmlspecialchars($colis['id_colis']) ?>">
-                      <button type="submit" class="action-btn edit" title="Modifier">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </form>
-                    <button type="button" class="action-btn delete open-delete-modal"
-                      data-id="<?= htmlspecialchars($colis['id_colis']) ?>" title="Supprimer">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-                <br>
-              </div>
-            <?php endforeach; ?>
-          </div>
         </div>
       </div>
     </section>
   </main>
 
   <?php include '../../assets/footer.php'; ?>
-
-  <!-- Delete Confirmation Modal -->
-  <div class="modal" id="delete-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Confirmer la suppression</h2>
-        <button class="close-modal"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <p>Êtes-vous sûr de vouloir supprimer ce colis ? Cette action est irréversible.</p>
-        <div class="form-actions">
-          <button type="button" class="btn secondary cancel-btn">Annuler</button>
-          <button type="button" class="btn danger" id="confirm-delete-btn">Supprimer</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Hidden Delete Form -->
-  <form method="POST" action="deleteColis.php" style="display:none;" id="delete-form">
-    <input type="hidden" name="id_colis" id="delete-id">
-  </form>
 
   <div id="notificationModal" class="notimodal-overlay hidden">
     <div class="notimodal-content">
@@ -583,63 +319,26 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
       </div>
     </div>
   </div>
-
-  <script src="assets/js/colisValidation.js"></script>
-  <script src="assets/js/colisDelete.js"></script>
-  <script src="assets/js/colisFilters.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="assets/js/chatbot.js"> </script>
-
   <script>
-    // Filters toggle
-    document.querySelector('.filters-toggle').addEventListener('click', function () {
-      const filtersContent = document.querySelector('.filters-content');
-      const filterActions = document.querySelector('.filter-actions');
-
-      if (filtersContent.style.display === 'none' || filtersContent.style.display === '') {
-        filtersContent.style.display = 'grid';
-        filterActions.style.display = 'flex';
-        this.innerHTML = '<i class="fas fa-times"></i> Masquer les filtres';
-      } else {
-        filtersContent.style.display = 'none';
-        filterActions.style.display = 'none';
-        this.innerHTML = '<i class="fas fa-sliders-h"></i> Afficher les filtres';
-      }
-    });
-
-    // Initially hide filters
-    document.querySelector('.filters-content').style.display = 'none';
-    document.querySelector('.filter-actions').style.display = 'none';
-
-    document.querySelectorAll('.collapsible-header').forEach(header => {
-      header.addEventListener('click', () => {
-        const content = header.nextElementSibling;
-        content.classList.toggle('active');
+    document.addEventListener("DOMContentLoaded", () => {
+      // Mobile menu toggle
+      document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+        document.querySelector('.main-nav').classList.toggle('active');
       });
-    });
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const updatedColisId = params.get('updated_colis');
-
-      if (updatedColisId) {
-        // Simulate click on the collapsible header to expand it (always works)
-        const header = document.querySelector('#affectes-covoiturage .collapsible-header');
-        if (header) header.click(); // This will open it using your existing JS logic
-
-        // Scroll to the specific colis after a short delay
-        setTimeout(() => {
-          const targetColis = document.getElementById(`colis-${updatedColisId}`);
-          if (targetColis) {
-            targetColis.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            targetColis.style.transition = 'box-shadow 0.3s ease';
-            targetColis.style.boxShadow = '0 0 15px 4px #97c3a2';
-            setTimeout(() => targetColis.style.boxShadow = '', 2000);
-          }
-        }, 500); // Delay to ensure collapsible is fully open
-      }
+      // Ensure dashboard button is visible
+      document.querySelector('.dashboard-btn').style.display = 'inline-flex';
+      document.querySelector('.logout-btn').style.display = 'inline-flex';
     });
   </script>
+  <script>
+    // Pass PHP data to JS
+    const colisMarkers = <?= json_encode($listByCovoit) ?>;
+  </script>
+  <script src="assets/js/colisMaps.js"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRqtevb1ZGEqlL_tceScv_8nI-XccCsrI&libraries=places&callback=initMap"
+    async defer></script>
   <script>
     const notifyBtn = document.querySelector('.notify-button');
     const modal = document.getElementById('notificationModal');
