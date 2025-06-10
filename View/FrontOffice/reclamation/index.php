@@ -18,8 +18,6 @@ $currentUser = null;
 if (isset($_SESSION['user_id'])) {
   $currentUser = $userController->showUser($_SESSION['user_id']);
 }
-
-
 $ReclamationC = new ReclamationController();
 
 // Always load dropdown data
@@ -167,6 +165,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <label for="description">Description détaillée</label>
                   <textarea name="description" id="description" rows="5"
                     placeholder="Veuillez décrire votre problème en détail..."></textarea>
+                  <button type="button" class="btn btn-secondary" id="auto-description-btn"
+                    style="margin-top:5px;">Auto</button>
+                  <span id="description-error" class="error-message"></span>
                 </div>
                 <input type="hidden" name="statut" id="statut" value="En attente">
               </div>
@@ -284,7 +285,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </main>
 
   <?php include '../../assets/footer.php'; ?>
+  <script>
+    document.getElementById('auto-description-btn').addEventListener('click', async function () {
+      const objet = document.getElementById('complaint-type').value;
+      const description = document.getElementById('description');
+      const errorSpan = document.getElementById('description-error');
 
+      if (!objet) {
+        errorSpan.textContent = "Veuillez d'abord sélectionner un objet.";
+        return;
+      }
+      errorSpan.textContent = "";
+      this.disabled = true;
+      this.textContent = '...';
+
+      const systemContent = `You are speaking to a dear user of TransitX. Please generate a detailed, polite, and helpful complaint description in French for the following subject: "${objet}". Respond ONLY with the suggested description.`;
+
+      try {
+        const response = await axios.post('https://api.zukijourney.com/v1/chat/completions', {
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: systemContent },
+            { role: 'user', content: objet }
+          ]
+        }, {
+          headers: {
+            'Authorization': 'Bearer zu-c3b9ff6938b69d9d959f0aaf722415c8',
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const suggestion = response.data.choices?.[0]?.message?.content?.trim();
+        if (suggestion) {
+          description.value = suggestion;
+        } else {
+          errorSpan.textContent = "Impossible de générer une description.";
+        }
+      } catch (e) {
+        errorSpan.textContent = "Erreur lors de la génération automatique.";
+      }
+      this.disabled = false;
+      this.textContent = 'Auto';
+    });
+  </script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       // Mobile menu toggle
