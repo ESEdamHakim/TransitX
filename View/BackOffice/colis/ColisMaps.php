@@ -54,7 +54,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
           <h2
             style="display: flex; align-items: center; text-align: center; font-size: 1.5rem; margin: 0; color: var(--secondary); font-weight: 1000;">
             <i class="fas fa-box-open" style="margin-right: 10px; color: var(--primary);"></i>
-            Colis Affectés à Mes Covoiturages
+            Tous les Colis
             <i class="fas fa-map-marker-alt" style="margin-left: 10px; font-size: 1.3rem; color: var(--primary);"></i>
           </h2>
         </div>

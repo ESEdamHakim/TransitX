@@ -758,3 +758,26 @@
   background-color: rgba(220, 53, 69, 0.2);
   color: var(--danger);
 }
+
+.todo-section-header {
+    background: linear-gradient(90deg, #eaf3f7 0%, #f8fafc 100%);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(31, 79, 101, 0.06);
+    padding: 12px 18px 10px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-left: 4px solid #86b391;
+    position: relative;
+}
+
+.todo-section-header h2 {
+    font-size: 1.4rem;
+    font-weight: 1500;
+    color: #1f4f65;
+    margin: 0 0 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.01em;
+}

@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             document.getElementById('editProfileModal').classList.remove('active');
                             document.getElementById('editProfileContent').innerHTML = '';
                             // Optionally reload the page or a section here
-                            window.location.href = 'crud.php';
+                            window.location.href = 'index.php';
                         }, 800);
                     }
                 })
