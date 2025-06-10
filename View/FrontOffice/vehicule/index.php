@@ -141,7 +141,7 @@ if (isset($_SESSION['user_id'])) {
                             <label for="modele">Modèle</label>
                             <input type="text" id="modele" name="modele" placeholder="Modèle du véhicule">
                             <button type="button" class="btn btn-secondary auto-btn" data-target="modele"
-                                style="margin-top:5px;" >Auto</button>
+                                style="margin-top:5px;">Auto</button>
                             <span id="modele-error" class="error-message"></span>
                         </div>
                     </div>
@@ -178,41 +178,94 @@ if (isset($_SESSION['user_id'])) {
 
     <?php include '../../assets/footer.php'; ?>
     <script>
+        // Helper to validate marque or modele via API
+        async function validateCarField(targetId, value) {
+            const systemContent = `You are speaking to a dear user of TransitX. Please correct and standardize the following vehicle ${targetId} for spelling and accuracy. If the value does not correspond to a real car ${targetId === 'marque' ? 'brand' : 'model'}, respond ONLY with "NOT_FOUND". Otherwise, respond ONLY with the corrected value.`;
+            try {
+                const response = await axios.post('https://api.zukijourney.com/v1/chat/completions', {
+                    model: 'gpt-4o-mini',
+                    messages: [
+                        { role: 'system', content: systemContent },
+                        { role: 'user', content: value }
+                    ]
+                }, {
+                    headers: {
+                        'Authorization': 'Bearer zu-c3b9ff6938b69d9d959f0aaf722415c8',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                return response.data.choices?.[0]?.message?.content?.trim();
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Auto button logic
         document.querySelectorAll('.auto-btn').forEach(btn => {
             btn.addEventListener('click', async function () {
                 const targetId = btn.getAttribute('data-target');
                 const input = document.getElementById(targetId);
+                const errorSpan = document.getElementById(targetId + '-error');
                 const originalValue = input.value.trim();
                 if (!originalValue) return;
 
-                // Show loading state
                 btn.disabled = true;
                 btn.textContent = '...';
+                errorSpan.textContent = '';
 
-                const systemContent = `You are speaking to a dear user of TransitX. Please correct and standardize the following vehicle ${targetId} for spelling and accuracy. Respond with only the corrected value.`;
-                try {
-                    const response = await axios.post('https://api.zukijourney.com/v1/chat/completions', {
-                        model: 'gpt-4o-mini',
-                        messages: [
-                            { role: 'system', content: systemContent },
-                            { role: 'user', content: originalValue }
-                        ]
-                    }, {
-                        headers: {
-                            'Authorization': 'Bearer zu-c3b9ff6938b69d9d959f0aaf722415c8',
-                            'Content-Type': 'application/json'
-                        }
-                    });
+                const corrected = await validateCarField(targetId, originalValue);
 
-                    // Set the corrected value
-                    const corrected = response.data.choices?.[0]?.message?.content?.trim();
-                    if (corrected) input.value = corrected;
-                } catch (e) {
-                    alert("Erreur lors de la correction automatique.");
+                if (corrected === "NOT_FOUND") {
+                    input.value = '';
+                    errorSpan.textContent = `Ce champ ne correspond pas à une ${targetId === 'marque' ? 'marque' : 'modèle'} de voiture reconnue.`;
+                } else if (corrected) {
+                    input.value = corrected;
+                    errorSpan.textContent = '';
+                } else {
+                    errorSpan.textContent = "Erreur lors de la correction automatique.";
                 }
+
                 btn.disabled = false;
                 btn.textContent = 'Auto';
             });
+        });
+
+        // Prevent form submission if marque or modele are invalid
+        document.querySelector('.create-ride-form').addEventListener('submit', async function (e) {
+            const marqueInput = document.getElementById('marque');
+            const modeleInput = document.getElementById('modele');
+            const marqueError = document.getElementById('marque-error');
+            const modeleError = document.getElementById('modele-error');
+            let valid = true;
+
+            marqueError.textContent = '';
+            modeleError.textContent = '';
+
+            // Validate marque
+            if (marqueInput.value.trim()) {
+                const marqueResult = await validateCarField('marque', marqueInput.value.trim());
+                if (marqueResult === "NOT_FOUND") {
+                    marqueError.textContent = "Cette marque n'existe pas.";
+                    valid = false;
+                } else if (marqueResult) {
+                    marqueInput.value = marqueResult;
+                }
+            }
+
+            // Validate modele
+            if (modeleInput.value.trim()) {
+                const modeleResult = await validateCarField('modele', modeleInput.value.trim());
+                if (modeleResult === "NOT_FOUND") {
+                    modeleError.textContent = "Ce modèle n'existe pas.";
+                    valid = false;
+                } else if (modeleResult) {
+                    modeleInput.value = modeleResult;
+                }
+            }
+
+            if (!valid) {
+                e.preventDefault();
+            }
         });
     </script>
     <script src="menuToggle.js"></script>
