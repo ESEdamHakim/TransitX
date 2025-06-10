@@ -75,6 +75,7 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   transition: var(--transition);
+  color: #2c3e50;
 }
 
 .blog-detail:hover {
@@ -205,7 +206,7 @@
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   font-family: var(--font-main);
-  color: var(--text-dark);
+  color: #2c3e50;
   background-color: var(--bg-light);
   transition: var(--transition);
 }
@@ -269,7 +270,7 @@
 .content {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: var(--text-dark);
+  color: #2c3e50;
 }
 
 .content h3 {
@@ -294,7 +295,7 @@
 
 .content p {
   margin-bottom: 25px;
-  color: var(--text-light);
+  color: #2c3e50;
 }
 
 /* Social Share */
@@ -308,7 +309,7 @@
 .social-share p {
   font-size: 1.1rem;
   margin-bottom: 20px;
-  color: var(--text-dark);
+  color: #2c3e50;
   font-weight: 500;
 }
 
@@ -316,7 +317,7 @@
   display: inline-block;
   margin: 0 15px;
   font-size: 32px;
-  color: var(--text-dark);
+  color: #2c3e50;
   transition: var(--transition);
 }
 
@@ -747,7 +748,7 @@
 }
 
 .modal-content p {
-  color: var(--text-dark);
+  color: #2c3e50;
   line-height: 1.8;
 }
 
@@ -780,7 +781,7 @@
   font-size: 1rem;
   font-family: var(--font-main);
   background: var(--bg-light);
-  color: var(--text-dark);
+  color: #2c3e50;
   transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
   resize: vertical;
@@ -797,7 +798,7 @@
 
 /* Danger Button (e.g., Delete) */
 .btn.danger {
-  background-color: #1a4055;
+  background-color: #2c3e50;
   /* Dark teal-blue */
   color: #ffffff;
   border: none;
