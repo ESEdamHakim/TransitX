@@ -26,9 +26,6 @@
           <li><a href="#">Bus</a></li>
           <li><a href="#">Colis</a></li>
           <li><a href="#">Covoiturage</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Réclamation</a></li>
-          <li><a href="#">Véhicule</a></li>
           <a href="loginMobile.php" class="btn btn-primary logout-btn">Se Connecter</a>
           <a href="View/FrontOffice/user/register.php" class="btn btn-outline">S'identifier</a>
 

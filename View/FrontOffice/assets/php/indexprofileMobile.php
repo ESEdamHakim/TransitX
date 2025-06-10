@@ -7,6 +7,6 @@
     </div>
     <div class="dropdown-content" id="profileDropdown">
         <a href="assets/php/calendar.php"> <i class="fas fa-calendar-alt"></i>Calendrier</a>
-        <a href="../../index.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+        <a href="../../indexMobile.php"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
     </div>
 </div>
