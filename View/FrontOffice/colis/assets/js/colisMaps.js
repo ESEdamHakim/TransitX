@@ -25,8 +25,8 @@ function initMap() {
 
   const colisIcon = {
     url: "../../assets/images/parcels.png",
-    scaledSize: new google.maps.Size(20, 20),
-    anchor: new google.maps.Point(20, 20)
+    scaledSize: new google.maps.Size(22, 22),
+    anchor: new google.maps.Point(22, 22)
   };
 
   // Add a marker for each colis
