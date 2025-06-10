@@ -228,14 +228,16 @@
         <div id="client-booked-modal" class="client-booked-modal">
             <div class="client-booked-modal-content">
                 <button class="close-client-booked-modal" aria-label="Fermer"><span>&times;</span></button>
-                <h2 class="client-booked-modal-title">Détails du Conducteur</h2>
+                <h2 class="modal-header">Détails du Conducteur</h2>
+                <div class="modal-body">
                 <p><strong>Nom:</strong> <span id="client-nom"></span></p>
                 <p><strong>Prénom:</strong> <span id="client-prenom"></span></p>
                 <p><strong>Email:</strong> <span id="client-email"></span></p>
                 <p><strong>Téléphone:</strong> <span id="client-telephone"></span></p>
-                <div class="client-modal-actions">
-                    <button class="btn secondary cancel-btn reject-client-request">Refuser</button>
-                    <button class="btn primary accept-client-request">Accepter</button>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn secondary cancel-btn reject-client-request" style="background-color:#86b391; margin-right:6px;" >Refuser</button>
+                    <button class="btn primary accept-client-request" style="background-color:#5885a0; margin-right:6px;">Accepter</button>
                 </div>
             </div>
         </div>
