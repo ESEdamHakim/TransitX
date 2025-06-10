@@ -274,6 +274,9 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
             <p>Gérez et suivez tous vos envois de colis</p>
           </div>
           <div class="dashboard-actions">
+            <a href="ColisMaps.php" class="btn btn-primary">
+              <i class="fas fa-eye"></i> Voir en Maps
+            </a>
             <a href="index.php" class="btn btn-primary">
               <i class="fas fa-plus"></i> Nouveau Colis
             </a>
