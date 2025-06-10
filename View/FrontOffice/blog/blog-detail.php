@@ -262,7 +262,7 @@ function getReplies($pdo, $parentId)
                         </div>
 
                         <!-- Contenu du commentaire -->
-                        <div class="comment-content" style="margin-top: 10px;,color: #111;">
+                        <div class="comment-content" style="margin-top: 10px;">
                             <p><?php echo nl2br(htmlspecialchars($commentaire['contenu_commentaire'])); ?></p>
                         </div>
 
