@@ -444,11 +444,11 @@ class UserC
     public function getNameById($id)
     {
         $db = config::getConnexion();
-        $stmt = $db->prepare("SELECT nom FROM user WHERE id = :id");
+        $stmt = $db->prepare("SELECT prenom FROM user WHERE id = :id");
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? $row['nom'] : 'Utilisateur';
+        return $row ? $row['prenom'] : 'Utilisateur';
     }
 
     public function getImageById($id)

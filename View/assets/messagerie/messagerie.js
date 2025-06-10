@@ -70,9 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (openBtn && modal && closeBtn) {
         // Open Modal
-        openBtn.addEventListener('click', function () {
-            modal.style.display = 'flex';
-        });
+openBtn.addEventListener('click', function (e) {
+    e.preventDefault(); // Prevent form submit or default action
+    modal.style.display = 'flex';
+});
 
         // Close Modal
         function closeModal() {

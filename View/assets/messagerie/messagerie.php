@@ -5,7 +5,8 @@ $user_nom = $userC->getNameById($user_id);
 $user_image = $userC->getImageById($user_id);
 ?>
 <!-- Messagerie Button -->
-<button id="openMessagerieBtn" class="messagerie-btn">
+<!-- Messagerie Button -->
+<button id="openMessagerieBtn" class="messagerie-btn" type="button">
     <i class="fas fa-comments"></i>
 </button>
 <!-- Messagerie Modal -->
