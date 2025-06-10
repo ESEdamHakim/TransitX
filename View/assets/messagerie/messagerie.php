@@ -16,7 +16,7 @@ $user_image = $userC->getImageById($user_id);
             <div class="chat-container">
                 <div id="messages" class="messages"></div>
                 <div class="chat-inputs">
-                    <input type="text" id="message" placeholder="Votre message" maxlength="500">
+                    <input type="text" id="message" placeholder="Votre message" style="width: 100%; min-width: 330px;">
                     <button id="sendBtn">Envoyer</button>
                 </div>
             </div>
