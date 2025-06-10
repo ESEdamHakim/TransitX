@@ -133,11 +133,15 @@ if (isset($_SESSION['user_id'])) {
                         <div class="form-group">
                             <label for="marque">Marque</label>
                             <input type="text" id="marque" name="marque" placeholder="Marque du véhicule">
+                            <button type="button" class="btn btn-secondary auto-btn" data-target="marque"
+                                style="margin-top:5px;">Auto</button>
                             <span id="marque-error" class="error-message"></span>
                         </div>
                         <div class="form-group">
                             <label for="modele">Modèle</label>
                             <input type="text" id="modele" name="modele" placeholder="Modèle du véhicule">
+                            <button type="button" class="btn btn-secondary auto-btn" data-target="modele"
+                                style="margin-top:5px;" >Auto</button>
                             <span id="modele-error" class="error-message"></span>
                         </div>
                     </div>
@@ -173,7 +177,44 @@ if (isset($_SESSION['user_id'])) {
     </main>
 
     <?php include '../../assets/footer.php'; ?>
+    <script>
+        document.querySelectorAll('.auto-btn').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const targetId = btn.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const originalValue = input.value.trim();
+                if (!originalValue) return;
 
+                // Show loading state
+                btn.disabled = true;
+                btn.textContent = '...';
+
+                const systemContent = `You are speaking to a dear user of TransitX. Please correct and standardize the following vehicle ${targetId} for spelling and accuracy. Respond with only the corrected value.`;
+                try {
+                    const response = await axios.post('https://api.zukijourney.com/v1/chat/completions', {
+                        model: 'gpt-4o-mini',
+                        messages: [
+                            { role: 'system', content: systemContent },
+                            { role: 'user', content: originalValue }
+                        ]
+                    }, {
+                        headers: {
+                            'Authorization': 'Bearer zu-c3b9ff6938b69d9d959f0aaf722415c8',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    // Set the corrected value
+                    const corrected = response.data.choices?.[0]?.message?.content?.trim();
+                    if (corrected) input.value = corrected;
+                } catch (e) {
+                    alert("Erreur lors de la correction automatique.");
+                }
+                btn.disabled = false;
+                btn.textContent = 'Auto';
+            });
+        });
+    </script>
     <script src="menuToggle.js"></script>
     <script src="validAddVehicule.js"></script>
     <script src="validDeleteVehicule.js"></script>
