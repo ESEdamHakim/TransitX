@@ -62,7 +62,6 @@ if (isset($_SESSION['user_id'])) {
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-  <script src='https://meet.jit.si/external_api.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
@@ -322,9 +321,6 @@ if (isset($_SESSION['user_id'])) {
             <span></span><span></span>
             <button class="btn primary" id="export-pdf-btn">
               <i class="fas fa-file-pdf"></i> PDF
-            </button>
-            <button class="btn primary" id="start-meeting-btn">
-              <i class="fas fa-video"></i> Réunion
             </button>
             <button class="btn primary" id="ai-assistance-btn">
               <i class="fas fa-robot"></i> Assistance IA
@@ -737,95 +733,6 @@ if (isset($_SESSION['user_id'])) {
       deleteModal.classList.remove('active');
     });
 
-    // Jitsi Meet Integration
-    let api = null;
-
-    // Start Meeting Button Event Listener
-    document.getElementById('start-meeting-btn').addEventListener('click', startMeeting);
-
-    function generateMeetingId() {
-      const timestamp = new Date().getTime();
-      const random = Math.random().toString(36).substring(7);
-      return `TransitX_${timestamp}_${random}`;
-    }
-
-    function startMeeting() {
-      const domain = 'meet.jit.si';
-      const options = {
-        roomName: generateMeetingId(),
-        width: '100%',
-        height: '100%',
-        parentNode: document.querySelector('#meet'),
-        lang: 'fr',
-        userInfo: {
-          displayName: '<?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name'] : "Administrateur"; ?>'
-        },
-        configOverwrite: {
-          startWithAudioMuted: true,
-          startWithVideoMuted: true,
-          prejoinPageEnabled: false,
-          disableDeepLinking: true
-        },
-        interfaceConfigOverwrite: {
-          TOOLBAR_BUTTONS: [
-            'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
-            'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
-            'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
-            'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-            'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone',
-            'security'
-          ],
-          SHOW_JITSI_WATERMARK: false,
-          SHOW_WATERMARK_FOR_GUESTS: false,
-          DEFAULT_BACKGROUND: '#3c3c3c',
-          DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',
-          TOOLBAR_ALWAYS_VISIBLE: true
-        }
-      };
-
-      // Show the meeting container
-      document.getElementById('meet-container').classList.add('active');
-
-      // Initialize the Jitsi Meet API
-      api = new JitsiMeetExternalAPI(domain, options);
-
-      // Add event listeners
-      api.addEventListeners({
-        readyToClose: closeMeeting,
-        participantLeft: handleParticipantLeft,
-        participantJoined: handleParticipantJoined,
-        videoConferenceJoined: handleVideoConferenceJoined,
-        videoConferenceLeft: handleVideoConferenceLeft
-      });
-    }
-
-    function closeMeeting() {
-      if (api) {
-        api.dispose();
-        api = null;
-      }
-      document.getElementById('meet-container').classList.remove('active');
-    }
-
-    function handleParticipantLeft(participant) {
-      console.log('Participant left', participant);
-      showNotification('Un participant a quitté la réunion');
-    }
-
-    function handleParticipantJoined(participant) {
-      console.log('Participant joined', participant);
-      showNotification('Un nouveau participant a rejoint la réunion');
-    }
-
-    function handleVideoConferenceJoined(participant) {
-      console.log('Video conference joined', participant);
-      showNotification('Vous avez rejoint la réunion');
-    }
-
-    function handleVideoConferenceLeft(participant) {
-      console.log('Video conference left', participant);
-      closeMeeting();
-    }
 
     function showNotification(message) {
       const notification = document.createElement('div');
