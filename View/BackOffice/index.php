@@ -4,6 +4,8 @@ require_once __DIR__ . '/../../Controller/UserC.php';
 $userController = new UserC();
 $serviceCounts = $userController->getServicesDistributionCounts();
 $dashboardStats = $userController->getDashboardStats();
+$activeMeetingRoom = $userController->getActiveMeetingRoom();
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
@@ -248,16 +250,15 @@ if (isset($_SESSION['user_id'])) {
           <p>Bienvenue sur le tableau de bord TransitX</p>
         </div>
         <div class="header-right">
-          <button id="hostMeetingBtn" class="btn-outline"
-            style="margin-left: 12px; display: flex; align-items: center;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="#1f4f65" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;">
-              <rect x="3" y="7" width="14" height="10" rx="2" />
-              <path d="M17 9l4 3-4 3V9z" />
-            </svg>
-            <span>Héberger une réunion</span>
+          <?php if ($activeMeetingRoom): ?>
+            <button id="joinMeetingBtn" class="btn primary">
+              <i class="fas fa-video"></i> Rejoindre la réunion
+            </button>
+          <?php endif; ?>
+          <button id="hostMeetingBtn" class="btn primary">
+            <i class="fas fa-video"></i> Démarrer une réunion
           </button>
-          <button onclick="window.location.href='blog/todo.php'" class="btn primary" style="margin-left:10px;">
+          <button onclick="window.location.href='blog/todo.php'" class="btn primary">
             <i class="fas fa-check-square"></i> To-Do List
           </button>
           <div class="actions-container">
@@ -418,10 +419,96 @@ if (isset($_SESSION['user_id'])) {
           }
         });
       }
-     
+      const hostBtn = document.getElementById('hostMeetingBtn');
+      const joinBtn = document.getElementById('joinMeetingBtn');
+      const jitsiModal = document.getElementById('jitsiModal');
+      const closeJitsiModal = document.getElementById('closeJitsiModal');
+      const jitsiContainer = document.getElementById('jitsiContainer');
+      let api = null;
+      let currentRoomName = null;
+
+      function openJitsiModal(roomName = null) {
+        jitsiModal.style.display = 'flex';
+        // If no roomName provided, generate and save one (host)
+        if (!roomName) {
+          roomName = 'TransitXMeeting_' + Math.random().toString(36).substring(2, 10);
+          // Save room name to session via AJAX
+          fetch('saveRoom.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ roomName })
+          });
+        }
+        currentRoomName = roomName;
+        jitsiContainer.innerHTML = '';
+        api = new JitsiMeetExternalAPI('meet.jit.si', {
+          roomName: roomName,
+          parentNode: jitsiContainer,
+          width: '100%',
+          height: '100%',
+          userInfo: {
+            displayName: window.CURRENT_USER_ID ? 'Utilisateur ' + window.CURRENT_USER_ID : 'Utilisateur'
+          }
+        });
+      }
+
+      function closeJitsi() {
+        jitsiModal.style.display = 'none';
+        if (api) {
+          api.dispose();
+          api = null;
+        }
+        jitsiContainer.innerHTML = '';
+        // Only the host should clear the room
+        if (currentRoomName) {
+          fetch('clearRoom.php', { method: 'POST' });
+          currentRoomName = null;
+        }
+      }
+
+      if (hostBtn) {
+        hostBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          openJitsiModal();
+        });
+      }
+      if (closeJitsiModal) {
+        closeJitsiModal.addEventListener('click', closeJitsi);
+      }
+      // Optional: close modal on overlay click
+      jitsiModal.addEventListener('click', function (e) {
+        if (e.target === jitsiModal) closeJitsi();
+      });
+      // Optional: close on ESC
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && jitsiModal.style.display === 'flex') closeJitsi();
+      });
+
+      // Join Meeting Button logic
+      if (joinBtn) {
+        joinBtn.addEventListener('click', function () {
+          fetch('getRoom.php')
+            .then(res => res.json())
+            .then(data => {
+              if (data.roomName) {
+                openJitsiModal(data.roomName);
+              } else {
+                alert("Aucune réunion en cours.");
+              }
+            });
+        });
+      }
     });
   </script>
-  
+
+  <!-- Jitsi Meeting Modal -->
+  <div id="jitsiModal" class="meet-modal">
+    <div id="jitsiModalContent" class="meet-modal-content">
+      <button id="closeJitsiModal">&times;</button>
+      <div id="jitsiContainer"></div>
+    </div>
+  </div>
+
   <script src="../assets/messagerie/messagerieindex.js"> </script>
   <script src="assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>

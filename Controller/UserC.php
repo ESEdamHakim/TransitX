@@ -460,4 +460,17 @@ class UserC
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row && !empty($row['image']) ? $row['image'] : '../assets/images/user-placeholder.png';
     }
+    public function getActiveMeetingRoom() {
+    $db = config::getConnexion();
+    $stmt = $db->query("SELECT room_name FROM jitsi_meeting ORDER BY created_at DESC LIMIT 1");
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row && !empty($row['room_name']) ? $row['room_name'] : null;
+}
+public function saveMeetingRoom($roomName) {
+    $db = config::getConnexion();
+    $db->exec("DELETE FROM jitsi_meeting");
+    $stmt = $db->prepare("INSERT INTO jitsi_meeting (room_name) VALUES (:room_name)");
+    $stmt->bindValue(':room_name', $roomName);
+    $stmt->execute();
+}
 }

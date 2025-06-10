@@ -725,3 +725,72 @@ ul {
 .btn.block {
   width: 100%;
 }
+
+
+/* Jitsi Meet Modal Overlay */
+.meet-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(31,79,101,0.10); /* subtle overlay */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+/* Jitsi Modal Content */
+.meet-modal-content {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(31,79,101,0.22);
+    max-width: 1200px;
+    width: 90vw;
+    height: 85vh;
+    min-width: 340px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Close Button */
+#closeJitsiModal {
+    position: absolute;
+    top: 18px;
+    right: 24px;
+    background: none;
+    border: none;
+    font-size: 2.2rem;
+    color: #1f4f65;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.2s;
+}
+#closeJitsiModal:hover {
+    color: #e74c3c;
+}
+
+/* Jitsi Container */
+#jitsiContainer {
+    flex: 1;
+    min-height: 500px;
+    width: 100%;
+    height: 100%;
+    border-radius: 0 0 20px 20px;
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .meet-modal-content {
+        max-width: 99vw;
+        width: 99vw;
+        height: 95vh;
+        min-width: 0;
+        min-height: 300px;
+    }
+}
