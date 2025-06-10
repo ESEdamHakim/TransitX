@@ -879,3 +879,54 @@ textarea::placeholder {
     margin-right: 0 !important;
   }
 }
+.bot-section-title {
+    font-weight: bold;
+    margin: 8px 0 4px 0;
+    color: #1f4f65;
+}
+.bot-list {
+    list-style: none;
+    padding: 0 0 0 10px;
+    margin: 0 0 8px 0;
+}
+.bot-list-item {
+    background: #f6fafd;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    padding: 6px 10px;
+    font-size: 0.98em;
+    line-height: 1.5;
+}
+.bot-empty {
+    color: #888;
+    font-style: italic;
+    margin-bottom: 8px;
+}
+.bot-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+.bot-card {
+    background: #f6fafd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(31,79,101,0.07);
+    padding: 12px 16px;
+    margin-bottom: 0;
+    font-size: 1em;
+    line-height: 1.6;
+    border-left: 4px solid #1f4f65;
+}
+.trajet-card {
+    border-left-color: #97c3a2;
+}
+.bus-card {
+    border-left-color: #d7dd83;
+}
+.bot-section-title {
+    font-weight: bold;
+    margin: 18px 0 8px 0;
+    color: #1f4f65;
+    font-size: 1.08em;
+}

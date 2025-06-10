@@ -172,7 +172,67 @@ function addBotMessage(text) {
 
     const messageDiv = document.createElement('div');
     messageDiv.className = 'message bot-message';
-    messageDiv.textContent = text;
+
+    // Improved formatting for bus/trajet lists as cards
+    if (text.includes('📍 Trajets:') || text.includes('🚌 Bus:')) {
+        // Split sections
+        const trajetSection = text.match(/📍 Trajets:\n([\s\S]*?)\n\n🚌 Bus:/);
+        const busSection = text.match(/🚌 Bus:\n([\s\S]*)/);
+
+        let html = '';
+
+        // Format Trajets as cards
+        if (trajetSection && trajetSection[1].trim() !== 'Aucun trajet disponible.') {
+            html += `<div class="bot-section-title">📍 Trajets</div>`;
+            const trajets = trajetSection[1].trim().split('\n').filter(line => line.startsWith('-'));
+            html += '<div class="bot-card-list">';
+            trajets.forEach(line => {
+                html += `<div class="bot-card trajet-card">${line
+                    .replace(/Départ:/, '<b>Départ:</b>')
+                    .replace(/Arrivée:/, '<b>Arrivée:</b>')
+                    .replace(/Heure départ:/, '<b>Heure départ:</b>')
+                    .replace(/Durée:/, '<b>Durée:</b>')
+                    .replace(/Distance:/, '<b>Distance:</b>')
+                    .replace(/Prix:/, '<b>Prix:</b>')
+                }</div>`;
+            });
+            html += '</div>';
+        } else if (trajetSection) {
+            html += `<div class="bot-section-title">📍 Trajets</div><div class="bot-empty">Aucun trajet disponible.</div>`;
+        }
+
+        // Format Buses as cards
+        if (busSection && busSection[1].trim() !== 'Aucun bus disponible.') {
+            html += `<div class="bot-section-title">🚌 Bus</div>`;
+            const buses = busSection[1].trim().split('\n').filter(line => line.startsWith('-'));
+            html += '<div class="bot-card-list">';
+            buses.forEach(line => {
+                html += `<div class="bot-card bus-card">${line
+                    .replace(/Numéro:/, '<b>Numéro:</b>')
+                    .replace(/Marque:/, '<b>Marque:</b>')
+                    .replace(/Modèle:/, '<b>Modèle:</b>')
+                    .replace(/Matricule:/, '<b>Matricule:</b>')
+                    .replace(/Capacité:/, '<b>Capacité:</b>')
+                    .replace(/Disponibles:/, '<b>Disponibles:</b>')
+                    .replace(/Date mise en service:/, '<b>Date mise en service:</b>')
+                }</div>`;
+            });
+            html += '</div>';
+        } else if (busSection) {
+            html += `<div class="bot-section-title">🚌 Bus</div><div class="bot-empty">Aucun bus disponible.</div>`;
+        }
+
+        messageDiv.innerHTML = html;
+    } else {
+        // Fallback: plain text
+        messageDiv.textContent = text;
+    }
+
+    // Time
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'message-time';
+    timeDiv.textContent = getCurrentTime();
+    messageDiv.appendChild(timeDiv);
 
     // Read Aloud button
     const readBtn = document.createElement('button');
@@ -192,17 +252,9 @@ function addBotMessage(text) {
             window.speechSynthesis.speak(utterance);
         }
     };
-
-    // Time
-    const timeDiv = document.createElement('div');
-    timeDiv.className = 'message-time';
-    timeDiv.textContent = getCurrentTime();
-    messageDiv.appendChild(timeDiv);
-
-    // Add read button after message
     messageDiv.appendChild(readBtn);
 
-    container.appendChild(avatar); // bot avatar on the left
+    container.appendChild(avatar);
     container.appendChild(messageDiv);
     chatBox.appendChild(container);
     chatBox.scrollTop = chatBox.scrollHeight;
