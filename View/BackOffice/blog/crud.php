@@ -98,11 +98,15 @@ $topArticles = $articleC->getMostCommentedArticles();
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+          <link rel="stylesheet" href="../../assets/messagerie/messagerie.css">
+
 
 </head>
 
 <body>
     <?php include '../../assets/chatbot/chatbot.php'; ?>
+          <?php include '../../assets/messagerie/messagerie.php'; ?>
+
 
   <div class="dashboard">
     <?php include 'sidebar.php'; ?>
@@ -365,6 +369,7 @@ $topArticles = $articleC->getMostCommentedArticles();
     ?>;
   </script>
   <script src="assets/js/main.js"></script>
+    <script src="../../assets/messagerie/messagerie.js"> </script>
   <script src="../assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

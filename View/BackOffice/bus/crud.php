@@ -33,11 +33,15 @@ $buslist = $busController->listBuses();
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+      <link rel="stylesheet" href="../../assets/messagerie/messagerie.css">
+
 
 </head>
 
 <body>
     <?php include '../../assets/chatbot/chatbot.php'; ?>
+      <?php include '../../assets/messagerie/messagerie.php'; ?>
+
 
   <div class="dashboard">
     <?php include 'sidebar.php'; ?>
@@ -163,6 +167,7 @@ $buslist = $busController->listBuses();
   <?php include '../assets/php/profileManage.php'; ?>
 
   <script src="assets/js/main.js"></script>
+  <script src="../../assets/messagerie/messagerie.js"> </script>
   <script src="../assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

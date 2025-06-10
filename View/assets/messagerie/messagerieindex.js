@@ -12,15 +12,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchMessages() {
-        fetch('../../assets/messagerie/get_messages.php')
+        fetch('../assets/messagerie/get_messages.php')
             .then(res => res.json())
             .then(data => {
                 messagesDiv.innerHTML = '';
                 data.forEach(msg => {
                     // If your backend returns image, use it; otherwise, fallback to a default
                     const imgSrc = msg.image && msg.image !== ''
-                        ? '../../assets/uploads/profiles/' + escapeHTML(msg.image)
-                        : '../../assets/images/user-placeholder.png';
+                        ? '../assets/uploads/profiles/' + escapeHTML(msg.image)
+                        : '../assets/images/user-placeholder.png';
                     const row = document.createElement('div');
                     row.className = 'message-row';
                     row.innerHTML = `
@@ -37,11 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function sendMessage() {
         const username = typeof CURRENT_USER_NOM !== 'undefined' ? CURRENT_USER_NOM : 'Utilisateur';
-        const image = typeof CURRENT_USER_IMAGE !== 'undefined' ? CURRENT_USER_IMAGE : '../../assets/images/user-placeholder.png';
+        const image = typeof CURRENT_USER_IMAGE !== 'undefined' ? CURRENT_USER_IMAGE : '../assets/images/user-placeholder.png';
         const message = messageInput.value.trim();
         if (!username || !message) return;
 
-        fetch('../../assets/messagerie/send_messages.php', {
+        fetch('../assets/messagerie/send_messages.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, image, message })

@@ -36,12 +36,16 @@ $clients = $ReclamationC->getAllClients();
   <link rel="stylesheet" href="assets/css/crud.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/chatbot/chatbot.css">
+          <link rel="stylesheet" href="../../assets/messagerie/messagerie.css">
+
 
 
 </head>
 
 <body>
     <?php include '../../assets/chatbot/chatbot.php'; ?>
+          <?php include '../../assets/messagerie/messagerie.php'; ?>
+
 
   <div class="dashboard">
     <?php include 'sidebar.php'; ?>
@@ -268,6 +272,8 @@ $clients = $ReclamationC->getAllClients();
   <script src="assets/js/profileManage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="assets/js/chatbot.js"> </script>
+    <script src="../../assets/messagerie/messagerie.js"> </script>
+
 </body>
 
 </html>

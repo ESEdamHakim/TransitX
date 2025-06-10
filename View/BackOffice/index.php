@@ -422,7 +422,7 @@ if (isset($_SESSION['user_id'])) {
     });
   </script>
   
-  <script src="../assets/messagerie/messagerie.js"> </script>
+  <script src="../assets/messagerie/messagerieindex.js"> </script>
   <script src="assets/js/profile.js"></script>
   <script src="assets/js/profileManage.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
