@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 messagesDiv.innerHTML = '';
                 data.forEach(msg => {
                     // If your backend returns image, use it; otherwise, fallback to a default
-                    const imgSrc = msg.image ? escapeHTML(msg.image) : '../assets/images/user-placeholder.png';
+                    const imgSrc = msg.image && msg.image !== ''
+                        ? '../assets/uploads/profiles/' + escapeHTML(msg.image)
+                        : '../assets/images/user-placeholder.png';
                     const row = document.createElement('div');
                     row.className = 'message-row';
                     row.innerHTML = `

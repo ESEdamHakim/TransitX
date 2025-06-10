@@ -1,7 +1,8 @@
 <?php
-// Adjust these session keys to match your authentication logic
-$user_nom = isset($_SESSION['nom']) ? $_SESSION['nom'] : 'Utilisateur';
-$user_image = isset($_SESSION['image']) ? $_SESSION['image'] : '../assets/images/user-placeholder.png'; // default image if not set
+$userC = new UserC();
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+$user_nom = $userC->getNameById($user_id);
+$user_image = $userC->getImageById($user_id);
 ?>
 <!-- Messagerie Button -->
 <button id="openMessagerieBtn" class="messagerie-btn">
@@ -15,7 +16,6 @@ $user_image = isset($_SESSION['image']) ? $_SESSION['image'] : '../assets/images
             <div class="chat-container">
                 <div id="messages" class="messages"></div>
                 <div class="chat-inputs">
-                    <!-- Username input removed -->
                     <input type="text" id="message" placeholder="Votre message" maxlength="500">
                     <button id="sendBtn">Envoyer</button>
                 </div>
@@ -24,7 +24,7 @@ $user_image = isset($_SESSION['image']) ? $_SESSION['image'] : '../assets/images
     </div>
 </div>
 <script>
-    // Pass PHP session data to JS
+    // Pass PHP user data to JS
     const CURRENT_USER_NOM = <?= json_encode($user_nom) ?>;
     const CURRENT_USER_IMAGE = <?= json_encode($user_image) ?>;
 </script>

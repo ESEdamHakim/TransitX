@@ -441,4 +441,23 @@ class UserC
             return null;
         }
     }
+    public function getNameById($id)
+    {
+        $db = config::getConnexion();
+        $stmt = $db->prepare("SELECT nom FROM user WHERE id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? $row['nom'] : 'Utilisateur';
+    }
+
+    public function getImageById($id)
+    {
+        $db = config::getConnexion();
+        $stmt = $db->prepare("SELECT image FROM user WHERE id = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row && !empty($row['image']) ? $row['image'] : '../assets/images/user-placeholder.png';
+    }
 }
