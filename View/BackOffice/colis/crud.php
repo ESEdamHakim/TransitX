@@ -60,6 +60,9 @@ $clients = $ColisC->getAllClients();
             <button><i class="fas fa-search"></i></button>
           </div>
           <div class="actions">
+            <a href="ColisMaps.php" class="btn primary">
+              <i class="fas fa-eye"></i> Voir en maps
+            </a>
             <a href="addColis.php" class="btn primary">
               <i class="fas fa-plus"></i> Ajouter un Colis
             </a>
