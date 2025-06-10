@@ -244,20 +244,19 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
           </div>
         </ul>
       </nav>
-      <div class="header-right">      
-        <!-- Notification Button -->
-        <button class="notify-button position-relative" title="Notifications">
-          <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
-          <!-- Notification Badge -->
-          <?php if (count($notifications) > 0): ?>
-            <span
-              class="notif-badge absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
-              <?= count($notifications) ?>
-            </span>
-          <?php endif; ?>
-        </button>
+      <div class="header-right">
         <div class="actions">
-          
+          <!-- Notification Button -->
+          <button class="notify-button position-relative" title="Notifications">
+            <i class="fa-regular fa-bell text-2xl" style="color: #86b391;"></i>
+            <!-- Notification Badge -->
+            <?php if (count($notifications) > 0): ?>
+              <span
+                class="notif-badge absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full badge-pulse">
+                <?= count($notifications) ?>
+              </span>
+            <?php endif; ?>
+          </button>
           <button class="mobile-menu-btn">
             <i class="fas fa-bars"></i>
           </button>
@@ -278,7 +277,7 @@ $notifications = $ColisC->getNotificationByIdUser($_SESSION['user_id']);
               <i class="fas fa-map-marker-alt" style="margin-left: 10px; font-size: 1.3rem; color: var(--primary);"></i>
             </h2>
           </div>
-          <div id="colis-map" style="width:100%;height:500px;border-radius:12px;"></div>
+          <div id="colis-map" style="height:500px;height:500px;border-radius:12px;"></div>
 
         </div>
       </div>
